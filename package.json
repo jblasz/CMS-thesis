@@ -24,7 +24,12 @@
     "eject": "react-scripts eject",
     "watch": "npm-watch",
     "serve": "serve -s build",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings 0 --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
   },
   "watch": {
     "build": {
@@ -59,7 +64,10 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
     "npm-watch": "^0.6.0",
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1"
   }
 }

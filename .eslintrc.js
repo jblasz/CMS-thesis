@@ -21,5 +21,9 @@ module.exports = {
     ],
     '@typescript-eslint/indent': [2, 2],
     'import/extensions': 'off',
+    'no-use-before-define': 'off',
+    'no-console': 'off',
+    'no-param-reassign': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
 };
