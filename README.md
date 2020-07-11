@@ -1,4 +1,6 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+For simple dev setup, run `yarn && yarn start`.
+
+For a production build dev setup (fewer warnings!), run `yarn && yarn watch` in one terminal, and `yarn serve` in another.
 
 ## Available Scripts
 
@@ -10,7 +12,17 @@ Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+You will also see any lint errors in the console.<br />
+
+Note: This is not a production build.
+
+### `yarn watch`
+
+Run a production build at /build, and rebuild each time file changes detected. Serve the build with `yarn serve`
+
+### `yarn serve`
+
+Serve whatever is in /build.
 
 ### `yarn test`
 
