@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['airbnb', 'plugin:@typescript-eslint/recommended'],
+  extends: ['airbnb', 'plugin:@typescript-eslint/recommended','plugin:react-hooks/recommended'],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint', 'prettier'],
   settings: {
@@ -25,5 +25,7 @@ module.exports = {
     'no-console': 'off',
     'no-param-reassign': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'import/prefer-default-export': 'off',
+    'no-plusplus': 'off',
   },
 };
