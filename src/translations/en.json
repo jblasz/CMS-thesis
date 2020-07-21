@@ -1,0 +1,23 @@
+{
+  "WEBSITE_NAME": "A wondrous website",
+  "NAVBAR": {
+    "HOMEPAGE": "Home",
+    "DASHBOARD": "Dashboard",
+    "LOGIN": "Login",
+    "REGISTER": "Register",
+    "COURSES": "Courses",
+    "ARTICLES": "Articles",
+    "RESEARCH": "Research"
+  },
+  "FOOTER": {
+    "DESCR": "This is the site's footer",
+    "MINI_url": "MINI pw",
+    "PW_URL": "Warsaw University of Technology"
+  },
+  "LOGIN": {
+    "LOGGED_IN": "Welcome,",
+    "NOT_LOGGED_IN": "You are not logged in.",
+    "LOGIN": "login",
+    "LOGOUT": "logout"
+  }
+}

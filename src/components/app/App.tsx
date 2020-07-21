@@ -1,29 +1,39 @@
 import React from 'react';
-import logo from '../../images/logo.svg';
 import './App.css';
-import { useApp } from './hooks';
-import { NavigationBar } from '../navbar';
+import { Route } from 'react-router-dom';
+import Switch from 'react-bootstrap/esm/Switch';
+import { Container } from 'react-bootstrap';
+import { NavigationBarComponent } from '../navbar';
+import { HomeComponent } from '../home';
+import { LoginComponent } from '../login';
+import { RegisterComponent } from '../register';
+import { CoursesComponent } from '../courses';
+import { ResearchComponent } from '../research';
+import { ArticlesComponent } from '../articles';
+import { FooterComponent } from '../footer';
 
 function App(): JSX.Element {
-  const { welcomeMessage } = useApp();
-  // const { t, i18n } = useTranslation('common');
   return (
     <div className="App">
-      <NavigationBar />
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          { welcomeMessage }
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      {/* <header className="App-header" /> */}
+      <header>
+        <NavigationBarComponent />
       </header>
+      <Container fluid>
+        <main>
+          <Switch>
+            <Route exact path="/" component={HomeComponent} />
+            <Route exact path="/login" component={LoginComponent} />
+            <Route path="/register" component={RegisterComponent} />
+            <Route path="/courses" component={CoursesComponent} />
+            <Route path="/research" component={ResearchComponent} />
+            <Route path="/articles" component={ArticlesComponent} />
+          </Switch>
+        </main>
+      </Container>
+      <footer>
+        <FooterComponent />
+      </footer>
     </div>
   );
 }

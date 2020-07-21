@@ -3,38 +3,36 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
+import { BrowserRouter } from 'react-router-dom';
 import App from './components/app/App';
 import * as serviceWorker from './serviceWorker';
-import commonEN from './translations/en/common.json';
-import commonPL from './translations/pl/common.json';
-import landingEN from './translations/en/landing.json';
-import landingPL from './translations/pl/landing.json';
+import en from './translations/en.json';
+import pl from './translations/pl.json';
 
 // load bootstrap styles
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { populateInMemoryDBWithSomeMocks } from './services/mocks/in-memory-course-mocks';
 
 // load translations
 i18next.init({
   interpolation: { escapeValue: false }, // React already does escaping
   lng: 'en',
+  defaultNS: 'common',
   resources: {
-    en: {
-      common: commonEN,
-      landing: landingEN,
-    },
-    pl: {
-      common: commonPL,
-      landing: landingPL,
-    },
+    en: { common: en },
+    pl: { common: pl },
   },
 });
 
+// load mocks
+populateInMemoryDBWithSomeMocks();
+
 ReactDOM.render(
-  <React.StrictMode>
-    <I18nextProvider i18n={i18next}>
+  <I18nextProvider i18n={i18next}>
+    <BrowserRouter>
       <App />
-    </I18nextProvider>
-  </React.StrictMode>,
+    </BrowserRouter>
+  </I18nextProvider>,
   document.getElementById('root'),
 );
 
