@@ -7,7 +7,7 @@ function FooterComponent(): JSX.Element {
   const [t] = useTranslation();
 
   return (
-    <Navbar bg="light" expand="lg" fixed="bottom">
+    <Navbar bg="light" expand="lg" sticky="bottom">
       <Navbar.Text>
         {t('FOOTER.DESCR')}
       </Navbar.Text>

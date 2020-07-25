@@ -22,7 +22,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
   const [loggedIn, login] = useState(false);
 
   return (
-    <Navbar bg="light" expand="lg" sticky="top">
+    <Navbar bg="light" expand="lg" fixed="top">
       <Navbar.Brand href="/">{t('WEBSITE_NAME')}</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
@@ -33,7 +33,9 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
             {t('NAVBAR.HOMEPAGE')}
           </Link>
           <Dropdown as={ButtonGroup}>
-            <Button variant="info">{t('NAVBAR.COURSES')}</Button>
+            <Button variant="info">
+              <Link to="/courses">{t('NAVBAR.COURSES')}</Link>
+            </Button>
             <Dropdown.Toggle split variant="success" id="dropdown-split-toggle" />
             <Dropdown.Menu>
               <Dropdown.Item disabled>{t('NAVBAR.COURSES_PL')}</Dropdown.Item>

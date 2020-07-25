@@ -35,7 +35,7 @@ function App():JSX.Element {
             <Route exact path="/" component={HomeComponent} />
             <Route exact path="/login" component={LoginComponent} />
             <Route path="/register" component={RegisterComponent} />
-            <Route path="/courses" component={CoursesComponent} />
+            <Route path="/courses" component={() => <CoursesComponent courses={courses} />} />
             <Route path="/research" component={ResearchComponent} />
             <Route path="/articles" component={ArticlesComponent} />
           </Switch>

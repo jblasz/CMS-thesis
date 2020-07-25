@@ -22,5 +22,9 @@
     "LOGIN": "login",
     "LOGOUT": "logout",
     "WELCOME": "Welcome"
+  },
+  "COURSE": {
+    "CONDUCTED_IN_LANGUAGE": "Conducted in",
+    "GOTO": "Details"
   }
 }
