@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Route } from 'react-router-dom';
 import Switch from 'react-bootstrap/esm/Switch';
@@ -11,13 +11,23 @@ import { CoursesComponent } from '../courses';
 import { ResearchComponent } from '../research';
 import { ArticlesComponent } from '../articles';
 import { FooterComponent } from '../footer';
+import { getCourses } from '../../services/courses/courses.service';
+import { Course } from '../../interfaces/course';
 
-function App(): JSX.Element {
+function App():JSX.Element {
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  const getAndSetCourses = async () => {
+    const loadedCourses = await getCourses();
+    setCourses(loadedCourses.courses.map((x) => new Course(x)));
+  };
+
+  useEffect(() => { getAndSetCourses(); }, []);
+
   return (
     <div className="App">
-      {/* <header className="App-header" /> */}
       <header>
-        <NavigationBarComponent />
+        <NavigationBarComponent courses={courses} />
       </header>
       <Container fluid>
         <main>

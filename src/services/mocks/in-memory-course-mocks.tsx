@@ -9,8 +9,9 @@ let generatorCount = 0;
 export function generateCourseMock(): Course {
   return new Course({
     _id: v4(),
-    name: `random_name_${generatorCount++}}`,
+    name: `random_name_${generatorCount++}`,
     description: loremIpsum(),
+    language: Math.random() > 0.5 ? 'en' : 'pl',
   });
 }
 

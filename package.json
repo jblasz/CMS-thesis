@@ -32,7 +32,7 @@
   "scripts": {
     "start": "yarn && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "echo 'would react-scripts for my tests. If I had any.'",
     "eject": "react-scripts eject",
     "watch": "npm-watch",
     "serve": "serve -s build",
