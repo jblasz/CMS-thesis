@@ -26,16 +26,12 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
                 {`${t('COURSE.CONDUCTED_IN_LANGUAGE')}: ${
                   course.language
                 }`}
-
               </ListGroup.Item>
               <ListGroup.Item>
-                SomeOtherProperty: SomeOtherPropertyValue
+                {`${t('COURSE.SEMESTER')}: ${course.semester}`}
               </ListGroup.Item>
               <ListGroup.Item>
-                AnotherProperty: AnotherPropertyValue
-              </ListGroup.Item>
-              <ListGroup.Item>
-                YetAnotherProperty: YetAnotherPropertyValue
+                {`${t('COURSE.LABORATORIES_DEFINED')}: ${course.laboratories.length}`}
               </ListGroup.Item>
             </ListGroup>
             <Link

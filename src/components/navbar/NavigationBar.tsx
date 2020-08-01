@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import {
-  Navbar, Nav, Form, Button, FormLabel, Dropdown, ButtonGroup,
+  Navbar, Nav, Form, Button, FormLabel, NavDropdown
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { faHome, faSitemap } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { Course } from '../../interfaces/course';
+import { Course, CourseLanguage } from '../../interfaces/course';
 
 interface NavigationBarComponentProps {
   courses: Course[]
@@ -14,50 +14,45 @@ interface NavigationBarComponentProps {
 
 function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element {
   const { courses } = props;
-
-  console.log(courses);
-
   const [t] = useTranslation();
-
   const [loggedIn, login] = useState(false);
-
   return (
-    <Navbar bg="light" expand="lg" fixed="top">
+    <Navbar bg="light" variant="light" expand="lg" fixed="top" collapseOnSelect>
       <Navbar.Brand href="/">{t('WEBSITE_NAME')}</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
           <Link className="nav-link" to="/">
             <FontAwesomeIcon icon={faHome} className="mr-1" />
             {' '}
             {t('NAVBAR.HOMEPAGE')}
           </Link>
-          <Dropdown as={ButtonGroup}>
-            <Button variant="info">
-              <Link to="/courses">{t('NAVBAR.COURSES')}</Link>
-            </Button>
-            <Dropdown.Toggle split variant="success" id="dropdown-split-toggle" />
-            <Dropdown.Menu>
-              <Dropdown.Item disabled>{t('NAVBAR.COURSES_PL')}</Dropdown.Item>
-              <Dropdown.Divider />
-              {courses.filter((course) => course.language === 'pl').map((course) => (
-                <Dropdown.Item key={course._id} as="button">
-                  <Link className="nav-link" to={`/courses/${course._id}`}>
-                    {course.name}
-                  </Link>
-                </Dropdown.Item>
-              ))}
-              <Dropdown.Item disabled>{t('NAVBAR.COURSES_EN')}</Dropdown.Item>
-              <Dropdown.Divider />
-              {courses.filter((course) => course.language === 'en').map((course) => (
-                <Dropdown.Item key={course._id} as="button">
-                  <Link className="nav-link" to={`/courses/${course._id}`}>
-                    {course.name}
-                  </Link>
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
+
+          <NavDropdown title={t('NAVBAR.COURSES')} id="basic-nav-dropdown">
+            <NavDropdown.Item key="all-courses" as="button">
+              <Link className="nav-link" to="/courses">
+                {t('NAVBAR.ALL_COURSES')}
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item disabled>{t('NAVBAR.COURSES_PL')}</NavDropdown.Item>
+            <NavDropdown.Divider />
+            {courses.filter((course) => course.language === CourseLanguage.PL).map((course) => (
+              <NavDropdown.Item key={course._id} as="button">
+                <Link className="nav-link" to={`/courses/${course._id}`}>
+                  {course.name}
+                </Link>
+              </NavDropdown.Item>
+            ))}
+            <NavDropdown.Item disabled>{t('NAVBAR.COURSES_EN')}</NavDropdown.Item>
+            <NavDropdown.Divider />
+            {courses.filter((course) => course.language === CourseLanguage.EN).map((course) => (
+              <NavDropdown.Item key={course._id} as="button">
+                <Link className="nav-link" to={`/courses/${course._id}`}>
+                  {course.name}
+                </Link>
+              </NavDropdown.Item>
+            ))}
+          </NavDropdown>
           <Link className="nav-link" to="/articles">{t('NAVBAR.ARTICLES')}</Link>
           <Link className="nav-link" to="/research">{t('NAVBAR.RESEARCH')}</Link>
           {loggedIn ? (

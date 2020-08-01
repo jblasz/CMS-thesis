@@ -9,7 +9,8 @@
     "ARTICLES": "Articles",
     "RESEARCH": "Research",
     "COURSES_EN": "In English",
-    "COURSES_PL": "In Polish"
+    "COURSES_PL": "In Polish",
+    "ALL_COURSES": "Overview"
   },
   "FOOTER": {
     "DESCR": "This is the site's footer",
@@ -25,6 +26,9 @@
   },
   "COURSE": {
     "CONDUCTED_IN_LANGUAGE": "Conducted in",
-    "GOTO": "Details"
+    "GOTO": "Details",
+    "LABORATORIES_DEFINED": "Laboratories defined",
+    "SEMESTER": "Semester",
+    "ID": "ID"
   }
 }
