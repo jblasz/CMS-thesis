@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Navbar, Nav, Form, Button, FormLabel, NavDropdown
+  Navbar, Nav, Form, Button, FormLabel, NavDropdown,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { faHome, faSitemap } from '@fortawesome/free-solid-svg-icons';

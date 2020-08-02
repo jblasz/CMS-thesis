@@ -1,5 +1,5 @@
-import { Spinner, Container, Jumbotron } from "react-bootstrap"
-import React from "react"
+import { Spinner, Container, Jumbotron } from 'react-bootstrap';
+import React from 'react';
 // import { useTranslation } from "react-i18next";
 
 function LoadingSpinner(): JSX.Element {
@@ -11,7 +11,7 @@ function LoadingSpinner(): JSX.Element {
         <Spinner animation="border" />
       </Container>
     </Jumbotron>
-  )
+  );
 }
 
-export default LoadingSpinner
+export default LoadingSpinner;

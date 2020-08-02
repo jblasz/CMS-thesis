@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom';
 import { Container, Jumbotron } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Course, CourseLanguage } from '../../interfaces/course';
@@ -12,6 +12,7 @@ function CourseComponent(): JSX.Element {
 
   const [courseState, setCourseState] = useState({
     loading: true,
+    error: false,
     course: new Course({
       _id: id,
       description: '',
@@ -24,35 +25,50 @@ function CourseComponent(): JSX.Element {
     }),
   });
 
-  const { course, loading } = courseState;
+  const { course, loading, error } = courseState;
 
   const getAndSetCourse = async (courseID: string) => {
-    const c = await getCourse(courseID);
-    setCourseState({
-      loading: false,
-      course: new Course(c),
-    });
+    try {
+      const c = await getCourse(courseID);
+      setCourseState({
+        loading: false,
+        course: new Course(c),
+        error: false,
+      });
+    } catch (e) {
+      setCourseState({
+        loading: false,
+        course: new Course(),
+        error: true,
+      });
+    }
   };
 
   useEffect(() => {
     getAndSetCourse(id);
   }, [id]);
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <Redirect to="/404" />;
+  }
+
   return (
     <Container>
-      {loading ? <LoadingSpinner /> : (
-        <Jumbotron>
-          <h1>
-            {course.name}
-          </h1>
-          <small>
-            {`${t('COURSE.ID')}: ${id}`}
-          </small>
-          <p>
-            {course.description}
-          </p>
-        </Jumbotron>
-      )}
+      <Jumbotron>
+        <h1>
+          {course.name}
+        </h1>
+        <small>
+          {`${t('COURSE.ID')}: ${id}`}
+        </small>
+        <p>
+          {course.description}
+        </p>
+      </Jumbotron>
     </Container>
   );
 }
