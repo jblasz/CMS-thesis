@@ -18,7 +18,14 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
   const [loggedIn, login] = useState(false);
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top" collapseOnSelect>
-      <Navbar.Brand href="/">{t('WEBSITE_NAME')}</Navbar.Brand>
+      <Link to="/">
+        {' '}
+        <Navbar.Brand>
+          {t('WEBSITE_NAME')}
+        </Navbar.Brand>
+
+      </Link>
+
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">

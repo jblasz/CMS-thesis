@@ -29,7 +29,10 @@
     "GOTO": "Details",
     "LABORATORIES_DEFINED": "Laboratories defined",
     "SEMESTER": "Semester",
-    "ID": "ID"
+    "ID": "ID",
+    "LABORATORY": {
+      "NUMBER": "Laboratory"
+    }
   },
   "404": {
     "404": "404",

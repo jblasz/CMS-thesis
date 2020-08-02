@@ -19,10 +19,11 @@ function generateList(count: number, stackAdditionalRandom = 0) {
   return ret;
 }
 
-export function generateCourseMock(): Course {
+export function generateCourseMock(id = v4()): Course {
   const groups = generateList(2, 2).map(() => generateCourseGroupMock());
+  labCount = 1;
   return new Course({
-    _id: v4(),
+    _id: id,
     name: `Course Name Mk ${generatorCount++}`,
     description: loremIpsum(),
     language: Math.random() > 0.5 ? CourseLanguage.EN : CourseLanguage.PL,
@@ -45,9 +46,13 @@ export function generateCourseGroupMock(): CourseGroup {
   });
 }
 
+let labCount = 1;
+
 export function generateLaboratoryMock(groups?: CourseGroup[]): CourseLaboratory {
   return new CourseLaboratory({
     _id: v4(),
+    nameShort: (labCount++).toString(),
+    name: loremIpsum().split(' ').slice(0, 3).join(' '),
     description: loremIpsum(),
     tasks: groups
       ? groups.reduce(
@@ -83,6 +88,6 @@ export async function getCourseMockResponse(_id: string) {
 }
 
 export function populateInMemoryDBWithSomeMocks(count = 5) {
-  inMemoryCourseMocks.push(...generateList(count).map(() => generateCourseMock()));
+  inMemoryCourseMocks.push(generateCourseMock('staticCourseID'), ...generateList(count).map(() => generateCourseMock()));
   console.log('generated some mocks for in-memory:', inMemoryCourseMocks);
 }

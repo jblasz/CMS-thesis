@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// load bootstrap styles
+import 'bootstrap/dist/css/bootstrap.css';
+
 import './index.css';
 import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
@@ -9,8 +12,6 @@ import * as serviceWorker from './serviceWorker';
 import en from './translations/en.json';
 import pl from './translations/pl.json';
 
-// load bootstrap styles
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { populateInMemoryDBWithSomeMocks } from './services/mocks/in-memory-course-mocks';
 
 // load translations

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
-import { Container, Jumbotron } from 'react-bootstrap';
+import {
+  Container, Jumbotron, ListGroup,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { LoadingSpinner } from '../loading-spinner';
@@ -58,17 +60,30 @@ function CourseComponent(): JSX.Element {
 
   return (
     <Container>
-      <Jumbotron>
-        <h1>
-          {course.name}
-        </h1>
-        <small>
-          {`${t('COURSE.ID')}: ${id}`}
-        </small>
-        <p>
-          {course.description}
-        </p>
-      </Jumbotron>
+      <Container fluid>
+        <Jumbotron>
+          <h1>
+            {course.name}
+          </h1>
+          <small>
+            {`${t('COURSE.ID')}: ${id}`}
+          </small>
+          <p>
+            {course.description}
+          </p>
+
+        </Jumbotron>
+      </Container>
+      <ListGroup>
+        {course.laboratories.map((lab) => (
+          <ListGroup.Item key={lab._id}>
+            <h1>{`${t('COURSE.LABORATORY.NUMBER')} ${lab.nameShort}`}</h1>
+            <h2>{lab.name}</h2>
+            <small>{lab._id}</small>
+            <p>{lab.description}</p>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
     </Container>
   );
 }
