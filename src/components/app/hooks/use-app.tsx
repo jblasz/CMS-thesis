@@ -1,14 +1,6 @@
-import { Course } from '../../../interfaces/course';
-
-export interface AppContext {
-  courses: Course[]
-}
-
-export function getBaseState(): AppContext {
-  return {
-    courses: [],
-  };
-}
+export type AppState = {
+  returnTo?: string;
+};
 
 export function useApp() {
   return {

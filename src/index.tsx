@@ -13,6 +13,7 @@ import en from './translations/en.json';
 import pl from './translations/pl.json';
 
 import { populateInMemoryDBWithSomeMocks } from './services/mocks/in-memory-course-mocks';
+import { Auth0ProviderWithHistory } from './components/auth0-provider-with-history';
 
 // load translations
 i18next.init({
@@ -31,7 +32,9 @@ populateInMemoryDBWithSomeMocks();
 ReactDOM.render(
   <I18nextProvider i18n={i18next}>
     <BrowserRouter>
-      <App />
+      <Auth0ProviderWithHistory>
+        <App />
+      </Auth0ProviderWithHistory>
     </BrowserRouter>
   </I18nextProvider>,
   document.getElementById('root'),

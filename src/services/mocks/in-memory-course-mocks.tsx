@@ -49,6 +49,12 @@ export function generateCourseGroupMock(): CourseGroup {
 let labCount = 1;
 
 export function generateLaboratoryMock(groups?: CourseGroup[]): CourseLaboratory {
+  const rootDate = new Date(
+    2020,
+    labCount,
+    Math.ceil(Math.random() * 14),
+    10,
+  );
   return new CourseLaboratory({
     _id: v4(),
     nameShort: (labCount++).toString(),
@@ -56,18 +62,35 @@ export function generateLaboratoryMock(groups?: CourseGroup[]): CourseLaboratory
     description: loremIpsum(),
     tasks: groups
       ? groups.reduce(
-        (agg: TaskToGroupMapping, group) => ({ ...agg, [group._id]: generateCourseTaskMock() }), {},
+        (agg: TaskToGroupMapping, group) => ({
+          ...agg,
+          [group._id]: generateCourseTaskMock(rootDate, 90 * 60 * 1000),
+        }), {},
       )
       : {},
   });
 }
 
-export function generateCourseTaskMock():CourseTask {
-  return {
+export function generateCourseTaskMock(dateFrom?: Date, duration?: number):CourseTask {
+  const date = dateFrom
+    && new Date(
+      dateFrom.getUTCFullYear(),
+      dateFrom.getUTCMonth(),
+      dateFrom.getUTCDay() + (Math.random() > 0.8 ? 1 : 0),
+      dateFrom.getUTCHours() + (Math.round(Math.random() * 8)),
+    );
+  // offset the time of each task starting a bit
+  return new CourseTask({
     _id: v4(),
     description: loremIpsum(),
     gracePeriod: Math.random() > 0.5 ? Math.round(Math.random() * 1000 * 60 * 15) : 0,
-  };
+    ...(date && duration
+      ? {
+        dateFrom: new Date(date),
+        dateTo: new Date(date.valueOf() + duration),
+      }
+      : {}),
+  });
 }
 
 export async function getCoursesListMockResponse() {

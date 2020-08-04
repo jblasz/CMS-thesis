@@ -25,6 +25,7 @@ function App():JSX.Element {
   };
 
   useEffect(() => { getAndSetCourses(); }, []);
+
   return (
     <div className="App">
       <header>

@@ -18,10 +18,11 @@
     "PW_URL": "Warsaw University of Technology"
   },
   "LOGIN": {
-    "LOGGED_IN": "Welcome,",
+    "LOGGED_IN_AS": "Logged in as",
     "NOT_LOGGED_IN": "You are not logged in.",
-    "LOGIN": "login",
-    "LOGOUT": "logout",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "SIGNUP": "Signup",
     "WELCOME": "Welcome"
   },
   "COURSE": {
@@ -30,8 +31,17 @@
     "LABORATORIES_DEFINED": "Laboratories defined",
     "SEMESTER": "Semester",
     "ID": "ID",
+    "GROUP_ID": "Students signed up for group id",
     "LABORATORY": {
-      "NUMBER": "Laboratory"
+      "NUMBER": "Laboratory",
+      "PER_GROUP_TASKS": "Tasks for each group",
+      "TASK": {
+        "GROUP_ID": "Group id",
+        "STARTS_AT": "Task available and submissions accepted",
+        "START_NOT_DEFINED": "Task commencement date not yet defined",
+        "ENDS_AT": "Submissions no longer accepted by",
+        "END_NOT_DEFINED": "Task closure date not yet defined"
+      }
     }
   },
   "404": {

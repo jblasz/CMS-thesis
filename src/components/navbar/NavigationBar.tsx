@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Navbar, Nav, Form, Button, FormLabel, NavDropdown,
+  Navbar, Nav, NavDropdown,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { faHome, faSitemap } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Course, CourseLanguage } from '../../interfaces/course';
+import { AuthNav } from '../auth-nav';
 
 interface NavigationBarComponentProps {
   courses: Course[]
@@ -15,7 +17,9 @@ interface NavigationBarComponentProps {
 function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element {
   const { courses } = props;
   const [t] = useTranslation();
-  const [loggedIn, login] = useState(false);
+  const { isAuthenticated } = useAuth0();
+
+  console.log(useAuth0());
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top" collapseOnSelect>
       <Link to="/">
@@ -23,7 +27,6 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
         <Navbar.Brand>
           {t('WEBSITE_NAME')}
         </Navbar.Brand>
-
       </Link>
 
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -62,7 +65,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
           </NavDropdown>
           <Link className="nav-link" to="/articles">{t('NAVBAR.ARTICLES')}</Link>
           <Link className="nav-link" to="/research">{t('NAVBAR.RESEARCH')}</Link>
-          {loggedIn ? (
+          {isAuthenticated ? (
             <Link className="nav-link" to="/dashboard">
               <FontAwesomeIcon icon={faSitemap} />
               {' '}
@@ -70,15 +73,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
             </Link>
           ) : ''}
         </Nav>
-        <Form>
-          <FormLabel className="mr-2">
-            <h6>
-              {loggedIn ? `${t('LOGIN.WELCOME')}, Mr Fox` : t('LOGIN.NOT_LOGGED_IN')}
-            </h6>
-          </FormLabel>
-          <Button onClick={() => login(!loggedIn)}>{!loggedIn ? t('LOGIN.LOGIN') : t('LOGIN.LOGOUT')}</Button>
-          <Link to="/register">{t('NAVBAR.REGISTER')}</Link>
-        </Form>
+        <AuthNav />
       </Navbar.Collapse>
     </Navbar>
   );

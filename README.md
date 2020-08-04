@@ -1,5 +1,7 @@
 ## Development setup
 
+You *have to* have environment variables set pertaining to Auth0 set to use authentication features locally. Contact an admin to get what is needed to be put in a `.env` file.
+
 Run `yarn`.
 
 Please copy the following to your .vscode/settings.json:
