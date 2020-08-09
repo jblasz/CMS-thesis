@@ -6,7 +6,6 @@ import { NavigationBarComponent } from '../navbar';
 import { HomeComponent } from '../home';
 import { LoginComponent } from '../login';
 import { RegisterComponent } from '../register';
-import { CoursesComponent } from '../courses';
 import { ResearchComponent } from '../research';
 import { ArticlesComponent } from '../articles';
 import { FooterComponent } from '../footer';
@@ -15,6 +14,9 @@ import { Course } from '../../interfaces/course';
 import { Component404 } from '../404';
 
 import './App.css';
+import { CourseListComponent } from '../courseList';
+import { CourseComponent } from '../course';
+import { LaboratoryComponent } from '../laboratory';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -37,7 +39,9 @@ function App():JSX.Element {
             <Route exact path="/" component={HomeComponent} />
             <Route exact path="/login" component={LoginComponent} />
             <Route exact path="/register" component={RegisterComponent} />
-            <Route path="/courses" component={() => <CoursesComponent courses={courses} />} />
+            <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
+            <Route exact path="/courses/:id" component={CourseComponent} />
+            <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
             <Route exact path="/research" component={ResearchComponent} />
             <Route exact path="/articles" component={ArticlesComponent} />
             <Route exact path="/404" component={Component404} />

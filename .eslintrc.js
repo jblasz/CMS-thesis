@@ -27,6 +27,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     'import/prefer-default-export': 'off',
     'no-plusplus': 'off',
-    'no-underscore-dangle': ["error", { "allow": ["_id"] }]
+    'no-underscore-dangle': ["error", { "allow": ["_id"] }],
+    'no-restricted-syntax': 'off'
   },
 };

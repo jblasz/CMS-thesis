@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Redirect } from 'react-router-dom';
+import { useParams, Redirect, Link } from 'react-router-dom';
 import {
-  Container, Jumbotron, ListGroup, Row, Col,
+  Container, Jumbotron, ListGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { LoadingSpinner } from '../loading-spinner';
 import { getCourse } from '../../services/courses/courses.service';
-import { formatDate } from '../../utils';
 
 function CourseComponent(): JSX.Element {
   const { id } = useParams();
@@ -63,33 +62,10 @@ function CourseComponent(): JSX.Element {
     <Container>
       <Container fluid>
         <Jumbotron>
-          <h1>
-            {course.name}
-          </h1>
-          <small>
-            {`${t('COURSE.ID')}: ${id}`}
-          </small>
-          <p>
-            {course.description}
-          </p>
+          <h1>{course.name}</h1>
+          <small>{`${t('COURSE.ID')}: ${id}`}</small>
+          <p>{course.description}</p>
         </Jumbotron>
-      </Container>
-      <Container fluid>
-        <Row>
-          {course.groups.map((group) => (
-            <Col>
-              <Row>
-                {`${t('COURSE.GROUP_ID')}:`}
-                <small>{group._id}</small>
-              </Row>
-              {group.students.map((student) => (
-                <Row>
-                  <small>{student._id}</small>
-                </Row>
-              ))}
-            </Col>
-          ))}
-        </Row>
       </Container>
       <ListGroup>
         {course.laboratories.map((lab) => (
@@ -98,27 +74,14 @@ function CourseComponent(): JSX.Element {
             <h2>{lab.name}</h2>
             <small>{lab._id}</small>
             <p>{lab.description}</p>
-            <h4>{t('COURSE.LABORATORY.PER_GROUP_TASKS')}</h4>
-            <ListGroup variant="flush">
-              {course.groups.map((group) => {
-                const task = lab.tasks[group._id];
-                return (
-                  <ListGroup.Item>
-                    <Col>
-                      <Row>
-                        <h4>{`${t('COURSE.LABORATORY.TASK.GROUP_ID')}: ${group._id}`}</h4>
-                      </Row>
-                      <Row>
-                        <small>{task.dateFrom ? `${t('COURSE.LABORATORY.TASK.STARTS_AT')}: ${formatDate(task.dateFrom, true)}` : t('COURSE.LABORATORY.TASK.START_NOT_DEFINED')}</small>
-                      </Row>
-                      <Row>
-                        <small>{task.dateTo ? `${t('COURSE.LABORATORY.TASK.ENDS_AT')}: ${formatDate(task.dateTo, true)}` : t('COURSE.LABORATORY.TASK.END_NOT_DEFINED')}</small>
-                      </Row>
-                    </Col>
-                  </ListGroup.Item>
-                );
-              })}
-            </ListGroup>
+            <Link
+              className="mt-2 btn btn-primary btn-lg active"
+              role="button"
+              aria-pressed="true"
+              to={`/courses/${course._id}/laboratory/${lab._id}`}
+            >
+              {t('COURSE.LABORATORY.GOTO')}
+            </Link>
           </ListGroup.Item>
         ))}
       </ListGroup>

@@ -37,6 +37,7 @@ export function generateCourseMock(id = v4()): Course {
 export function generateCourseGroupMock(): CourseGroup {
   return new CourseGroup({
     _id: v4(),
+    name: loremIpsum().split(' ')[0],
     students: generateList(10, 5).map((n) => new Student({
       _id: v4(),
       email: `mail_${n}@domain.com`,
@@ -113,4 +114,20 @@ export async function getCourseMockResponse(_id: string) {
 export function populateInMemoryDBWithSomeMocks(count = 5) {
   inMemoryCourseMocks.push(generateCourseMock('staticCourseID'), ...generateList(count).map(() => generateCourseMock()));
   console.log('generated some mocks for in-memory:', inMemoryCourseMocks);
+}
+
+export async function getLaboratoryMockResponse(_id: string) {
+  let found = null;
+  for (const course of inMemoryCourseMocks) {
+    const f = course.laboratories.find((x) => x._id === _id);
+    if (f) {
+      found = f;
+      break;
+    }
+  }
+
+  if (found) {
+    return Promise.resolve(new CourseLaboratory(found));
+  }
+  return Promise.reject();
 }

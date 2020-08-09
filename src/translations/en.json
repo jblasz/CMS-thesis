@@ -35,8 +35,11 @@
     "LABORATORY": {
       "NUMBER": "Laboratory",
       "PER_GROUP_TASKS": "Tasks for each group",
+      "GOTO": "Details",
+      "BACK_TO_COURSE": "Back to course",
       "TASK": {
-        "GROUP_ID": "Group id",
+        "GROUP_ID": "ID",
+        "GROUP_NAME": "Group",
         "STARTS_AT": "Task available and submissions accepted",
         "START_NOT_DEFINED": "Task commencement date not yet defined",
         "ENDS_AT": "Submissions no longer accepted by",
