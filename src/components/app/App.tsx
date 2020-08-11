@@ -12,11 +12,14 @@ import { FooterComponent } from '../footer';
 import { getCourses } from '../../services/courses/courses.service';
 import { Course } from '../../interfaces/course';
 import { Component404 } from '../404';
-
-import './App.css';
 import { CourseListComponent } from '../courseList';
 import { CourseComponent } from '../course';
 import { LaboratoryComponent } from '../laboratory';
+
+import './App.css';
+import { PrivateRoute } from '../private-route';
+import { ProfileComponent } from '../profile';
+import { AdminPanelComponent } from '../admin-panel/AdminPanel';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -44,6 +47,8 @@ function App():JSX.Element {
             <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
             <Route exact path="/research" component={ResearchComponent} />
             <Route exact path="/articles" component={ArticlesComponent} />
+            <PrivateRoute exact path="/profile" component={ProfileComponent} />
+            <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
             <Route exact path="/404" component={Component404} />
           </Switch>
         </main>

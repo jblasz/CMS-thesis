@@ -3,7 +3,7 @@ import {
   Navbar, Nav, NavDropdown,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { faHome, faSitemap } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSitemap, faUserCog } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -70,6 +70,13 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               <FontAwesomeIcon icon={faSitemap} />
               {' '}
               {t('NAVBAR.DASHBOARD')}
+            </Link>
+          ) : ''}
+          {isAuthenticated ? (
+            <Link className="nav-link" to="/admin">
+              <FontAwesomeIcon icon={faUserCog} />
+              {' '}
+              {t('NAVBAR.ADMIN')}
             </Link>
           ) : ''}
         </Nav>

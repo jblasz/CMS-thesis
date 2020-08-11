@@ -49,7 +49,7 @@
   },
   "404": {
     "404": "404",
-    "DOES_NOT_EXIST": "This page does not exist, or you have insufficient permissions to access it",
+    "DOES_NOT_EXIST": "This page either does not exist, or you have insufficient permissions to access it",
     "GO_BACK": "Take me back"
   }
 }
