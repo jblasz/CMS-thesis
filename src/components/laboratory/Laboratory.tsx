@@ -96,6 +96,9 @@ function LaboratoryComponent(): JSX.Element {
                   </small>
                 </Row>
                 <Row>
+                  {task.description}
+                </Row>
+                <Row>
                   <small>
                     {task.dateFrom
                       ? `${t(

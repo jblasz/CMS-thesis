@@ -1,14 +1,17 @@
 import React from 'react';
-import { Navbar } from 'react-bootstrap';
+import { Navbar, Button } from 'react-bootstrap';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { LogoutButton } from '../logout-button';
 import { LoginButton } from '../login-button';
+import polishFlag from '../../images/poland.svg';
+import britishFlag from '../../images/uk.svg';
+import './AuthNav.css';
 
 function AuthNav() {
   const { isAuthenticated, user } = useAuth0();
-  const [t] = useTranslation();
+  const [t, i18n] = useTranslation();
   return (
     <Navbar className="justify-content-end">
       {
@@ -25,6 +28,13 @@ function AuthNav() {
         )
       }
       {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+      <Button variant="light" className="flag-wrapper" onClick={() => { i18n.changeLanguage(i18n.language === 'en' ? 'pl' : 'en'); console.log('changing language'); }}>
+        {
+          i18n.language === 'en'
+            ? <img src={britishFlag} className="img-responsive flag" alt="britishFlag" />
+            : <img src={polishFlag} className="img-responsive flag" alt="polishFlag" />
+        }
+      </Button>
     </Navbar>
   );
 }

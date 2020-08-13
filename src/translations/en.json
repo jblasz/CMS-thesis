@@ -45,6 +45,10 @@
         "ENDS_AT": "Submissions no longer accepted by",
         "END_NOT_DEFINED": "Task closure date not yet defined"
       }
+    },
+    "FILTER": {
+      "LANGUAGE": "Language",
+      "SEMESTER": "Semester"
     }
   },
   "404": {

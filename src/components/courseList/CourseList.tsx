@@ -22,7 +22,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
       <InputGroup className="mb-3">
         <InputGroup.Prepend>
           <InputGroup.Text>
-            Language...
+            {t('COURSE.FILTER.LANGUAGE')}
           </InputGroup.Text>
           <FormControl
             as="select"
@@ -36,7 +36,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
             }
           </FormControl>
           <InputGroup.Text>
-            Language...
+            {t('COURSE.FILTER.SEMESTER')}
           </InputGroup.Text>
           <FormControl
             as="select"
