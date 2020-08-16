@@ -1,10 +1,11 @@
 import React from 'react';
+import { Container } from 'react-bootstrap';
 
 function AdminCoursesComponent(): JSX.Element {
   return (
-    <h1>
-      Course list component
-    </h1>
+    <Container>
+      Admin course list component
+    </Container>
   );
 }
 

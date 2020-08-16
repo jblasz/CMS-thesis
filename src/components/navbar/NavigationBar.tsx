@@ -3,7 +3,7 @@ import {
   Navbar, Nav, NavDropdown,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { faHome, faSitemap, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSitemap } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -34,8 +34,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
         <Nav className="mr-auto">
           <Link className="nav-link" to="/">
             <FontAwesomeIcon icon={faHome} className="mr-1" />
-            {' '}
-            {t('NAVBAR.HOMEPAGE')}
+            {` ${t('NAVBAR.HOMEPAGE')}`}
           </Link>
 
           <NavDropdown title={t('NAVBAR.COURSES')} id="basic-nav-dropdown">
@@ -68,16 +67,28 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
           {isAuthenticated ? (
             <Link className="nav-link" to="/dashboard">
               <FontAwesomeIcon icon={faSitemap} />
-              {' '}
-              {t('NAVBAR.DASHBOARD')}
+              {` ${t('NAVBAR.DASHBOARD')}`}
             </Link>
           ) : ''}
           {isAuthenticated ? (
-            <Link className="nav-link" to="/admin">
-              <FontAwesomeIcon icon={faUserCog} />
-              {' '}
-              {t('NAVBAR.ADMIN')}
-            </Link>
+            <NavDropdown title={t('NAVBAR.ADMIN.DESCR')} id="nav-admin-dropdown">
+              <NavDropdown.Item key="nav-admin-dropdown-dashboard" as="button">
+                <Link className="nav-link" to="/admin">
+                  {` ${t('NAVBAR.ADMIN.DASHBOARD')}`}
+                </Link>
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item key="nav-admin-dropdown-courses" as="button">
+                <Link className="nav-link" to="/admin/courses">
+                  {`${t('NAVBAR.ADMIN.COURSES')}`}
+                </Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item key="nav-admin-dropdown-students" as="button">
+                <Link className="nav-link" to="/admin/students">
+                  {`${t('NAVBAR.ADMIN.STUDENTS')}`}
+                </Link>
+              </NavDropdown.Item>
+            </NavDropdown>
           ) : ''}
         </Nav>
         <AuthNav />

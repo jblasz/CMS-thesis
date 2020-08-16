@@ -10,7 +10,13 @@
     "RESEARCH": "Research",
     "COURSES_EN": "In English",
     "COURSES_PL": "In Polish",
-    "ALL_COURSES": "Overview"
+    "ALL_COURSES": "Overview",
+    "ADMIN": {
+      "DESCR": "Admin",
+      "DASHBOARD": "Dashboard",
+      "COURSES": "Courses",
+      "STUDENTS": "Students"
+    }
   },
   "FOOTER": {
     "DESCR": "This is the site's footer",

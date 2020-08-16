@@ -92,7 +92,6 @@ function LaboratoryComponent(): JSX.Element {
                     {`${t('COURSE.LABORATORY.TASK.GROUP_ID')}: ${
                       group._id
                     }`}
-
                   </small>
                 </Row>
                 <Row>

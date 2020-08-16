@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 
-export function AdminPanelComponent(): JSX.Element {
+function AdminStudentsComponent(): JSX.Element {
   return (
     <Container>
-      Admin dashboard.
+      Admin students component
     </Container>
   );
 }
 
-export default AdminPanelComponent;
+export default AdminStudentsComponent;
