@@ -61,5 +61,23 @@
     "404": "404",
     "DOES_NOT_EXIST": "This page either does not exist, or you have insufficient permissions to access it",
     "GO_BACK": "Take me back"
+  },
+  "ADMIN": {
+    "COURSES": {
+      "UUID": "ID",
+      "NAME": "Name",
+      "SEMESTER": "Sem",
+      "LANGUAGE": "Lan",
+      "GROUPS_COUNT": "Grps",
+      "STUDENTS_COUNT": "Students",
+      "LAB_COUNT": "Labs"
+    },
+    "COURSE": {
+      "NAME": "Name",
+      "LANGUAGE": "Language",
+      "DESCRIPTION": "Description",
+      "CREATE_GROUP": "Create group",
+      "GROUP_NAME": "Group name"
+    }
   }
 }

@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
-import App from './components/app/App';
+import { App } from './components/app';
 import * as serviceWorker from './serviceWorker';
 
 import { populateInMemoryDBWithSomeMocks } from './services/mocks/in-memory-course-mocks';
