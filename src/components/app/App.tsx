@@ -23,6 +23,7 @@ import { AdminCoursesComponent } from '../admin-courses';
 import { AdminCourseComponent } from '../admin-course';
 import { AdminStudentsComponent } from '../admin-students';
 import { AdminStudentComponent } from '../admin-student';
+import { AdminCourseGroupComponent } from '../admin-course-group';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -56,6 +57,7 @@ function App():JSX.Element {
             <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
             <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
             <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
+            <PrivateRoute exact path="/admin/courses/:id/group/:groupID" component={AdminCourseGroupComponent} />
             <Route exact path="/404" component={Component404} />
           </Switch>
         </main>

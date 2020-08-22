@@ -34,16 +34,21 @@ export function generateCourseMock(id = v4()): Course {
   });
 }
 
+let studentCount = 1;
+
 export function generateCourseGroupMock(): CourseGroup {
   return new CourseGroup({
     _id: v4(),
     name: loremIpsum().split(' ')[0],
-    students: generateList(10, 5).map((n) => new Student({
-      _id: v4(),
-      email: `mail_${n}@domain.com`,
-      name: `student Mk ${n}`,
-      usosId: '123321',
-    })),
+    students: generateList(10, 5).map(() => {
+      const n = studentCount++;
+      return new Student({
+        _id: v4(),
+        email: `mail_${n}@domain.com`,
+        name: `student Mk ${n}`,
+        usosId: '123321',
+      });
+    }),
   });
 }
 
@@ -109,6 +114,16 @@ export async function getCourseMockResponse(_id: string) {
     return Promise.resolve(new Course(f));
   }
   return Promise.reject();
+}
+
+export async function setCourseMockResponse(course: Course) {
+  const f = inMemoryCourseMocks.findIndex((x) => x._id === course._id);
+  if (f !== -1) {
+    inMemoryCourseMocks[f] = course;
+  } else {
+    inMemoryCourseMocks.push(course);
+  }
+  return Promise.resolve({ ok: true, course: await getCourseMockResponse(course._id) });
 }
 
 export function populateInMemoryDBWithSomeMocks(count = 5) {

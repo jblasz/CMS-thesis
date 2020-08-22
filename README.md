@@ -1,3 +1,7 @@
+## Necessities
+
+You need `node` and `yarn`, and a `.env` environment file with two variables (newlie-separated) defined, `REACT_APP_AUTH0_CLIENT_ID=` and `REACT_APP_AUTH0_DOMAIN=`, where the equality sign is followed by top secret strings. Ask me to get them. Those variables are required for Auth0 to work.
+
 ## Development setup
 
 You *have to* have environment variables set pertaining to Auth0 set to use authentication features locally. Contact an admin to get what is needed to be put in a `.env` file.

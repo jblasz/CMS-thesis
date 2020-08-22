@@ -77,7 +77,13 @@
       "LANGUAGE": "Language",
       "DESCRIPTION": "Description",
       "CREATE_GROUP": "Create group",
-      "GROUP_NAME": "Group name"
+      "GROUP_NAME": "Group name",
+      "SET_EDIT_MODE": "Enable editing mode",
+      "SET_READONLY_MODE": "Disable editing mode",
+      "NO_STUDENTS_YET": "No students have enlisted yet",
+      "STUDENTS_SIGNED_UP": "students have signed up",
+      "GROUP_GOTO": "Details",
+      "SAVE_CHANGES": "Upload changes"
     }
   }
 }
