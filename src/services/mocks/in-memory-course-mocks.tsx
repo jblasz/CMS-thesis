@@ -116,6 +116,16 @@ export async function getCourseMockResponse(_id: string) {
   return Promise.reject();
 }
 
+export async function getCourseGroupMockResponse(_id: string) {
+  for (const course of inMemoryCourseMocks) {
+    const f = course.groups.find((group) => group._id === _id);
+    if (f) {
+      return Promise.resolve(new CourseGroup(f));
+    }
+  }
+  return Promise.reject();
+}
+
 export async function setCourseMockResponse(course: Course) {
   const f = inMemoryCourseMocks.findIndex((x) => x._id === course._id);
   if (f !== -1) {
@@ -124,6 +134,18 @@ export async function setCourseMockResponse(course: Course) {
     inMemoryCourseMocks.push(course);
   }
   return Promise.resolve({ ok: true, course: await getCourseMockResponse(course._id) });
+}
+
+export async function setCourseGroupResponse(group: CourseGroup) {
+  for (const course of inMemoryCourseMocks) {
+    const f = course.groups.findIndex((x) => x._id === group._id);
+    if (f > -1) {
+      course.groups[f] = group;
+      // eslint-disable-next-line no-await-in-loop
+      return Promise.resolve({ ok: true, group: await getCourseGroupMockResponse(group._id) });
+    }
+  }
+  return Promise.reject();
 }
 
 export function populateInMemoryDBWithSomeMocks(count = 5) {

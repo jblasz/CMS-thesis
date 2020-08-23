@@ -84,6 +84,12 @@
       "STUDENTS_SIGNED_UP": "students have signed up",
       "GROUP_GOTO": "Details",
       "SAVE_CHANGES": "Upload changes"
+    },
+    "GROUP": {
+      "STUDENTS_ID": "ID",
+      "STUDENTS_NAME": "Name",
+      "STUDENTS_EMAIL": "Email",
+      "STUDENTS_NA": "N/A"
     }
   }
 }

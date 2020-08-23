@@ -17,6 +17,7 @@ export class Student implements IStudent {
   constructor(o?: IStudent) {
     if (o) {
       this._id = o._id || '';
+      this.email = o.email || '';
       this.name = o.name || '';
       this.usosId = o.usosId || '';
     }
