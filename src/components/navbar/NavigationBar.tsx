@@ -70,6 +70,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               {` ${t('NAVBAR.DASHBOARD')}`}
             </Link>
           ) : ''}
+          <Link className="nav-link" to="/code">{t('NAVBAR.CODE')}</Link>
           {isAuthenticated ? (
             <NavDropdown title={t('NAVBAR.ADMIN.DESCR')} id="nav-admin-dropdown">
               <NavDropdown.Item key="nav-admin-dropdown-dashboard" as="button">

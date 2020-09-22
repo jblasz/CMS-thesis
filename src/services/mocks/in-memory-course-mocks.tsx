@@ -5,6 +5,13 @@ import { CourseLaboratory, TaskToGroupMapping } from '../../interfaces/courseLab
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { Student } from '../../interfaces/student';
 import { CourseTask } from '../../interfaces/courseTask';
+import {
+  GetCourseGroupResponse,
+  GetCourseResponse,
+  GetLaboratoryResponse,
+  PostCourseGroupResponse,
+  PostCourseResponse,
+} from '../../interfaces/api';
 
 const inMemoryCourseMocks: Course[] = [];
 
@@ -108,41 +115,43 @@ export async function putCourseMockResponse(course: Course) {
   return Promise.resolve({ status: 'ok' });
 }
 
-export async function getCourseMockResponse(_id: string) {
+export async function getCourseMockResponse(_id: string): Promise<GetCourseResponse> {
   const f = inMemoryCourseMocks.find((x) => x._id === _id);
   if (f) {
-    return Promise.resolve(new Course(f));
+    return Promise.resolve({ course: new Course(f) });
   }
   return Promise.reject();
 }
 
-export async function getCourseGroupMockResponse(_id: string) {
+export async function getCourseGroupMockResponse(_id: string): Promise<GetCourseGroupResponse> {
   for (const course of inMemoryCourseMocks) {
     const f = course.groups.find((group) => group._id === _id);
     if (f) {
-      return Promise.resolve(new CourseGroup(f));
+      return Promise.resolve({ group: new CourseGroup(f) });
     }
   }
   return Promise.reject();
 }
 
-export async function setCourseMockResponse(course: Course) {
+export async function setCourseMockResponse(course: Course): Promise<PostCourseResponse> {
   const f = inMemoryCourseMocks.findIndex((x) => x._id === course._id);
   if (f !== -1) {
     inMemoryCourseMocks[f] = course;
   } else {
     inMemoryCourseMocks.push(course);
   }
-  return Promise.resolve({ ok: true, course: await getCourseMockResponse(course._id) });
+  return Promise.resolve({ ok: true, course: (await getCourseMockResponse(course._id)).course });
 }
 
-export async function setCourseGroupResponse(group: CourseGroup) {
+export async function setCourseGroupResponse(group: CourseGroup): Promise<PostCourseGroupResponse> {
   for (const course of inMemoryCourseMocks) {
     const f = course.groups.findIndex((x) => x._id === group._id);
     if (f > -1) {
       course.groups[f] = group;
-      // eslint-disable-next-line no-await-in-loop
-      return Promise.resolve({ ok: true, group: await getCourseGroupMockResponse(group._id) });
+      return Promise.resolve(
+        // eslint-disable-next-line no-await-in-loop
+        { ok: true, group: (await getCourseGroupMockResponse(group._id)).group },
+      );
     }
   }
   return Promise.reject();
@@ -153,7 +162,7 @@ export function populateInMemoryDBWithSomeMocks(count = 5) {
   console.log('generated some mocks for in-memory:', inMemoryCourseMocks);
 }
 
-export async function getLaboratoryMockResponse(_id: string) {
+export async function getLaboratoryMockResponse(_id: string): Promise<GetLaboratoryResponse> {
   let found = null;
   for (const course of inMemoryCourseMocks) {
     const f = course.laboratories.find((x) => x._id === _id);
@@ -164,7 +173,7 @@ export async function getLaboratoryMockResponse(_id: string) {
   }
 
   if (found) {
-    return Promise.resolve(new CourseLaboratory(found));
+    return Promise.resolve({ laboratory: new CourseLaboratory(found) });
   }
   return Promise.reject();
 }

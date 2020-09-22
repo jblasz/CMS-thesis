@@ -42,7 +42,7 @@ function AdminCourseGroupComponent(): JSX.Element {
       const c = await getCourseGroup(id);
       setCourseGroupState({
         loading: false,
-        group: new CourseGroup(c),
+        group: new CourseGroup(c.group),
         error: false,
       });
     } catch (e) {

@@ -31,8 +31,8 @@ function LaboratoryComponent(): JSX.Element {
         const [crs, lab] = await Promise.all([getCourse(id), getLaboratory(labID)]);
         setCourseState({
           loading: false,
-          course: new Course(crs),
-          laboratory: new CourseLaboratory(lab),
+          course: new Course(crs.course),
+          laboratory: new CourseLaboratory(lab.laboratory),
           error: false,
         });
       } catch (e) {

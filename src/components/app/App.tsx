@@ -24,6 +24,7 @@ import { AdminCourseComponent } from '../admin-course';
 import { AdminStudentsComponent } from '../admin-students';
 import { AdminStudentComponent } from '../admin-student';
 import { AdminCourseGroupComponent } from '../admin-course-group';
+import { CodeValidationComponent } from '../code-validation';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -51,6 +52,7 @@ function App():JSX.Element {
             <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
             <Route exact path="/research" component={ResearchComponent} />
             <Route exact path="/articles" component={ArticlesComponent} />
+            <Route exact path="/code" component={CodeValidationComponent} />
             <PrivateRoute exact path="/profile" component={ProfileComponent} />
             <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
             <PrivateRoute exact path="/admin/students" component={AdminStudentsComponent} />

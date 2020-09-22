@@ -27,7 +27,7 @@
     "uuid": "^8.2.0"
   },
   "scripts": {
-    "start": "yarn && react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "echo 'would react-scripts for my tests. If I had any.'",
     "eject": "react-scripts eject",

@@ -34,7 +34,7 @@ function CourseComponent(): JSX.Element {
       const c = await getCourse(courseID);
       setCourseState({
         loading: false,
-        course: new Course(c),
+        course: new Course(c.course),
         error: false,
       });
     } catch (e) {

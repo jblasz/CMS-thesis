@@ -1,44 +1,42 @@
-import { Course, ICourse } from '../../interfaces/course';
+import { Course } from '../../interfaces/course';
 import {
   getCoursesListMockResponse,
   getCourseMockResponse,
-  putCourseMockResponse,
   getLaboratoryMockResponse,
   setCourseMockResponse,
   getCourseGroupMockResponse,
   setCourseGroupResponse,
 } from '../mocks/in-memory-course-mocks';
-import { ICourseLaboratory } from '../../interfaces/courseLaboratory';
-import { ICourseGroup, CourseGroup } from '../../interfaces/courseGroup';
+import { CourseGroup } from '../../interfaces/courseGroup';
+import {
+  GetCoursesResponse,
+  GetCourseResponse,
+  GetCourseGroupResponse,
+  PostCourseResponse,
+  PostCourseGroupResponse,
+  GetLaboratoryResponse,
+} from '../../interfaces/api';
 
-export async function getCourses(): Promise<{ courses: ICourse[] }> {
+export async function getCourses(): Promise<GetCoursesResponse> {
   return getCoursesListMockResponse();
 }
 
-export async function getCourse(_id: string): Promise<ICourse> {
+export async function getCourse(_id: string): Promise<GetCourseResponse> {
   return getCourseMockResponse(_id);
 }
 
-export async function getCourseGroup(_id: string): Promise<ICourseGroup> {
+export async function getCourseGroup(_id: string): Promise<GetCourseGroupResponse> {
   return getCourseGroupMockResponse(_id);
 }
 
-export async function setCourse(course: Course): Promise<{ok: boolean, course: ICourse}> {
+export async function setCourse(course: Course): Promise<PostCourseResponse> {
   return setCourseMockResponse(course);
 }
 
-export async function setCourseGroup(group: CourseGroup):
-Promise<{
-  ok: boolean,
-  group: ICourseGroup
-}> {
+export async function setCourseGroup(group: CourseGroup): Promise<PostCourseGroupResponse> {
   return setCourseGroupResponse(group);
 }
 
-export async function putCourse(course: Course): Promise<{ status: string }> {
-  return putCourseMockResponse(course);
-}
-
-export async function getLaboratory(_id: string): Promise<ICourseLaboratory> {
+export async function getLaboratory(_id: string): Promise<GetLaboratoryResponse> {
   return getLaboratoryMockResponse(_id);
 }
