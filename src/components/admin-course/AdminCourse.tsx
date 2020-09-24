@@ -2,7 +2,7 @@ import React, {
   useState, useEffect,
 } from 'react';
 import {
-  Container, Form, Col, Button, Card, CardDeck,
+  Container, Form, Col, Button, Table,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useParams, Redirect, Link } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 
 function AdminCourseComponent(): JSX.Element {
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   const [t] = useTranslation();
 
   const [courseState, setCourseState] = useState({
@@ -149,9 +149,33 @@ function AdminCourseComponent(): JSX.Element {
           />
         </Form.Row>
         <Form.Row>
-          <CardDeck>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>{t('ADMIN.COURSE.GROUP_NAME')}</th>
+                <th>{t('ADMIN.COURSE.STUDENT_COUNT')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {course.groups.map((group) => (
+                <tr key={group._id}>
+                  <td>
+                    <Link to={`/admin/courses/${course._id}/group/${group._id}`}>
+                      {`${group.name || t('ADMIN.COURSE.GROUP_NAME_NOT_DEFINED')} `}
+                      <small>{group._id}</small>
+                    </Link>
+                  </td>
+                  <td>
+                    {group.students.length}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          {/* <CardDeck>
             {course.groups.map((group) => (
-              <Card className="mb-4" style={{ minWidth: '350px', maxWidth: '350px' }} key={group._id}>
+              <Card className="mb-4" style={{ minWidth: '350px', maxWidth: '350px' }}
+              key={group._id}>
                 <Card.Body>
                   <Card.Title>
                     <Form.Group as={Col}>
@@ -174,11 +198,12 @@ function AdminCourseComponent(): JSX.Element {
                       {t('ADMIN.COURSE.GROUP_GOTO')}
                     </Button>
                   </Link>
-                  <Card.Text>{!group.students.length ? t('ADMIN.COURSE.NO_STUDENTS_YET') : `${group.students.length} ${t('ADMIN.COURSE.STUDENTS_SIGNED_UP')}`}</Card.Text>
+                  <Card.Text>{!group.students.length ? t('ADMIN.COURSE.NO_STUDENTS_YET') :
+                  `${group.students.length} ${t('ADMIN.COURSE.STUDENTS_SIGNED_UP')}`}</Card.Text>
                 </Card.Body>
               </Card>
             ))}
-          </CardDeck>
+          </CardDeck> */}
         </Form.Row>
       </Form>
     </Container>
