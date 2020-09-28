@@ -2,7 +2,7 @@ import { ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
 
-interface ApiPostResponse {
+export interface ApiPostResponse {
   ok: boolean
 }
 
@@ -27,6 +27,10 @@ export interface PostCourseResponse extends ApiPostResponse {
 }
 
 export interface PostCourseGroupResponse extends ApiPostResponse {
+  group: ICourseGroup
+}
+
+export interface PatchCourseGroupStudentResponse extends ApiPostResponse {
   group: ICourseGroup
 }
 

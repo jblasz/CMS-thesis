@@ -3,33 +3,30 @@ import { loremIpsum } from 'lorem-ipsum';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { CourseLaboratory, TaskToGroupMapping } from '../../interfaces/courseLaboratory';
 import { CourseGroup } from '../../interfaces/courseGroup';
-import { Student } from '../../interfaces/student';
 import { CourseTask } from '../../interfaces/courseTask';
 import {
+  ApiPostResponse,
   GetCourseGroupResponse,
   GetCourseResponse,
   GetLaboratoryResponse,
+  PatchCourseGroupStudentResponse,
   PostCourseGroupResponse,
   PostCourseResponse,
 } from '../../interfaces/api';
+import { getRandomStudents, getStudentMockResponse } from './in-memory-student-mocks';
+import { generateList } from '../../utils';
 
 const inMemoryCourseMocks: Course[] = [];
 
 let generatorCount = 0;
 
-function generateList(count: number, stackAdditionalRandom = 0) {
-  const len = count + Math.floor(Math.random() * stackAdditionalRandom);
-  const ret = [];
-  for (let i = 0; i < len; i++) {
-    ret.push(i);
-  }
-  return ret;
-}
-
-export function generateCourseMock(id = v4()): Course {
+export function generateCourseMock(id = v4()) {
   const groups = generateList(2, 2).map(() => generateCourseGroupMock());
+  if (id === 'staticCourseID') {
+    groups.unshift(generateCourseGroupMock('staticGroupID'));
+  }
   labCount = 1;
-  return new Course({
+  inMemoryCourseMocks.push(new Course({
     _id: id,
     name: `Course Name Mk ${generatorCount++}`,
     description: loremIpsum(),
@@ -38,24 +35,14 @@ export function generateCourseMock(id = v4()): Course {
     groups,
     laboratories: generateList(3, 5).map(() => generateLaboratoryMock(groups)),
     links: [],
-  });
+  }));
 }
 
-let studentCount = 1;
-
-export function generateCourseGroupMock(): CourseGroup {
+export function generateCourseGroupMock(id = v4()): CourseGroup {
   return new CourseGroup({
-    _id: v4(),
+    _id: id,
     name: loremIpsum().split(' ')[0],
-    students: generateList(10, 5).map(() => {
-      const n = studentCount++;
-      return new Student({
-        _id: v4(),
-        email: `mail_${n}@domain.com`,
-        name: `student Mk ${n}`,
-        usosId: '123321',
-      });
-    }),
+    students: getRandomStudents(10 + Math.ceil(Math.random() * 5)),
   });
 }
 
@@ -157,11 +144,6 @@ export async function setCourseGroupResponse(group: CourseGroup): Promise<PostCo
   return Promise.reject();
 }
 
-export function populateInMemoryDBWithSomeMocks(count = 5) {
-  inMemoryCourseMocks.push(generateCourseMock('staticCourseID'), ...generateList(count).map(() => generateCourseMock()));
-  console.log('generated some mocks for in-memory:', inMemoryCourseMocks);
-}
-
 export async function getLaboratoryMockResponse(_id: string): Promise<GetLaboratoryResponse> {
   let found = null;
   for (const course of inMemoryCourseMocks) {
@@ -174,6 +156,55 @@ export async function getLaboratoryMockResponse(_id: string): Promise<GetLaborat
 
   if (found) {
     return Promise.resolve({ laboratory: new CourseLaboratory(found) });
+  }
+  return Promise.reject();
+}
+
+export async function patchCourseGroupStudentMockResponse(
+  courseID: string,
+  groupID: string,
+  studentID: string,
+): Promise<PatchCourseGroupStudentResponse> {
+  const course = inMemoryCourseMocks.find((x) => x._id === courseID);
+  const group = course && course.groups.find((x) => x._id === groupID);
+  const { student } = await getStudentMockResponse(studentID);
+  if (course && group && student) {
+    if (!group.students.find((x) => x._id === student._id)) {
+      group.students.push(student);
+    }
+    return Promise.resolve({ ok: true, group });
+  }
+  return Promise.reject();
+}
+
+export async function deleteGroupMockResponse(_id: string): Promise<ApiPostResponse> {
+  let found = false;
+  for (const course of inMemoryCourseMocks) {
+    const f = course.groups.findIndex((x) => x._id === _id);
+    if (f > -1) {
+      found = true;
+      course.groups.splice(f, 1);
+      break;
+    }
+  }
+  if (found) {
+    return Promise.resolve({ ok: true });
+  }
+  return Promise.reject();
+}
+
+export async function deleteLaboratoryMockResponse(_id: string): Promise<ApiPostResponse> {
+  let found = false;
+  for (const course of inMemoryCourseMocks) {
+    const f = course.laboratories.findIndex((x) => x._id === _id);
+    if (f > -1) {
+      found = true;
+      course.laboratories.splice(f, 1);
+      break;
+    }
+  }
+  if (found) {
+    return Promise.resolve({ ok: true });
   }
   return Promise.reject();
 }

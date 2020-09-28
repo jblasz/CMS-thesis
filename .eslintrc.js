@@ -28,6 +28,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-plusplus': 'off',
     'no-underscore-dangle': ["error", { "allow": ["_id"] }],
-    'no-restricted-syntax': 'off'
+    'no-restricted-syntax': 'off',
+    'no-alert': 'off'
   },
 };

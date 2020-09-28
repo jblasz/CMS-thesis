@@ -59,7 +59,7 @@ function App():JSX.Element {
             <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
             <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
             <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
-            <PrivateRoute exact path="/admin/courses/:id/group/:groupID" component={AdminCourseGroupComponent} />
+            <PrivateRoute exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
             <Route exact path="/404" component={Component404} />
           </Switch>
         </main>
