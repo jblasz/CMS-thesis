@@ -6,12 +6,12 @@ import { useParams, Redirect, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { Course } from '../../interfaces/course';
-import { getCourse, getLaboratory } from '../../services/courses/courses.service';
+import { getCourse, getLaboratory } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { formatDate } from '../../utils';
 
 function LaboratoryComponent(): JSX.Element {
-  const { id, labID } = useParams();
+  const { id, labID } = useParams<{ id: string, labID: string }>();
   const [t] = useTranslation();
 
   const [courseState, setCourseState] = useState({
@@ -28,7 +28,7 @@ function LaboratoryComponent(): JSX.Element {
   useEffect(() => {
     const getAndSetLaboratoryAndCourse = async () => {
       try {
-        const [crs, lab] = await Promise.all([getCourse(id), getLaboratory(labID)]);
+        const [crs, lab] = await Promise.all([getCourse(id), getLaboratory(id, labID)]);
         setCourseState({
           loading: false,
           course: new Course(crs.course),

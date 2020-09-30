@@ -7,9 +7,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useParams, Redirect, Link } from 'react-router-dom';
 import { Course, CourseLanguage } from '../../interfaces/course';
-import { getCourse, setCourse } from '../../services/courses/courses.service';
+import { getCourse, setCourse } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
+import { formatDate } from '../../utils';
+import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 
 function AdminCourseComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
@@ -83,20 +85,6 @@ function AdminCourseComponent(): JSX.Element {
             variant="primary"
             type="submit"
             disabled={readonly}
-            onClick={(event) => {
-              event.preventDefault();
-              if (course.groups.find((x) => x.name === '')) { return; }
-              course.groups.push(new CourseGroup());
-              setCourseState({ loading: false, error: false, course });
-            }}
-          >
-            {t('ADMIN.COURSE.CREATE_GROUP')}
-          </Button>
-          <Button
-            className="mx-1"
-            variant="primary"
-            type="submit"
-            disabled={readonly}
             onClick={async (event) => {
               event.preventDefault();
               await setCourse(course);
@@ -152,6 +140,55 @@ function AdminCourseComponent(): JSX.Element {
           <Table responsive>
             <thead>
               <tr>
+                <th>{t('ADMIN.COURSE.LAB_NAME')}</th>
+                <th>{t('ADMIN.COURSE.LAB_START')}</th>
+                <th>{t('ADMIN.COURSE.LAB_END')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {course.laboratories.map((lab) => (
+                <tr key={lab._id}>
+                  <td>
+                    <Link to={`/admin/courses/${course._id}/lab/${lab._id}`}>
+                      {`${lab.name || t('ADMIN.COURSE.LAB_NAME_NOT_DEFINED')} `}
+                      <small>{lab._id}</small>
+                    </Link>
+                  </td>
+                  <td>
+                    {lab.starts ? formatDate(lab.starts, true) : t('ADMIN.COURSE.LAB_START_NOT_DEFINED')}
+                  </td>
+                  <td>
+                    {lab.ends ? formatDate(lab.ends, true) : t('ADMIN.COURSE.LAB_END_NOT_DEFINED')}
+                  </td>
+                </tr>
+              ))}
+              <tr>
+                <td>
+                  <Button
+                    className="mx-1"
+                    variant="primary"
+                    type="submit"
+                    disabled={readonly}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      if (course.laboratories.find((x) => x.name === '')) { return; }
+                      course.laboratories.push(new CourseLaboratory());
+                      setCourseState({ loading: false, error: false, course });
+                    }}
+                  >
+                    {t('ADMIN.COURSE.CREATE_LAB')}
+                  </Button>
+                </td>
+                <td />
+                <td />
+              </tr>
+            </tbody>
+          </Table>
+        </Form.Row>
+        <Form.Row>
+          <Table responsive>
+            <thead>
+              <tr>
                 <th>{t('ADMIN.COURSE.GROUP_NAME')}</th>
                 <th>{t('ADMIN.COURSE.STUDENT_COUNT')}</th>
               </tr>
@@ -170,9 +207,28 @@ function AdminCourseComponent(): JSX.Element {
                   </td>
                 </tr>
               ))}
+              <tr>
+                <td>
+                  <Button
+                    className="mx-1"
+                    variant="primary"
+                    type="submit"
+                    disabled={readonly}
+                    onClick={(event) => {
+                      event.preventDefault();
+                      if (course.groups.find((x) => x.name === '')) { return; }
+                      course.groups.push(new CourseGroup());
+                      setCourseState({ loading: false, error: false, course });
+                    }}
+                  >
+                    {t('ADMIN.COURSE.CREATE_GROUP')}
+                  </Button>
+                </td>
+              </tr>
             </tbody>
           </Table>
-          {/* <CardDeck>
+        </Form.Row>
+        {/* <CardDeck>
             {course.groups.map((group) => (
               <Card className="mb-4" style={{ minWidth: '350px', maxWidth: '350px' }}
               key={group._id}>
@@ -204,7 +260,6 @@ function AdminCourseComponent(): JSX.Element {
               </Card>
             ))}
           </CardDeck> */}
-        </Form.Row>
       </Form>
     </Container>
   );

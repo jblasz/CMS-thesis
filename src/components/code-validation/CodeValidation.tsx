@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LoadingSpinner } from '../loading-spinner';
-import { postCode } from '../../services/courses/codes.service';
+import { postCode } from '../../services/api/codes.service';
 import { PostCodeResponseType } from '../../interfaces/api';
 import { ICourse } from '../../interfaces/course';
 

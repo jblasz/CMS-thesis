@@ -6,10 +6,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { LoadingSpinner } from '../loading-spinner';
-import { getCourse } from '../../services/courses/courses.service';
+import { getCourse } from '../../services/api/courses.service';
 
 function CourseComponent(): JSX.Element {
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   const [t] = useTranslation();
 
   const [courseState, setCourseState] = useState({

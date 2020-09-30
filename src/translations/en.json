@@ -87,13 +87,22 @@
       "LANGUAGE": "Language",
       "DESCRIPTION": "Description",
       "CREATE_GROUP": "Create group",
+      "CREATE_LAB": "Create lab",
       "GROUP_NAME": "Group name",
       "SET_EDIT_MODE": "Enable editing mode",
       "SET_READONLY_MODE": "Disable editing mode",
       "NO_STUDENTS_YET": "No students have enlisted yet",
       "STUDENTS_SIGNED_UP": "students have signed up",
       "GROUP_GOTO": "Details",
-      "SAVE_CHANGES": "Upload changes"
+      "SAVE_CHANGES": "Upload changes",
+      "STUDENT_COUNT": "Students",
+      "LAB_NAME": "Lab name",
+      "LAB_START": "Starts",
+      "LAB_START_NOT_DEFINED": "Not yet defined",
+      "LAB_END_NOT_DEFINED": "Not yet defined",
+      "LAB_END": "Ends",
+      "LAB_NAME_NOT_DEFINED": "As yet unnamed",
+      "GROUP_NAME_NOT_DEFINED": "As yet unnamed"
     },
     "GROUP": {
       "STUDENTS_ID": "ID",

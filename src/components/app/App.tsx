@@ -9,7 +9,7 @@ import { RegisterComponent } from '../register';
 import { ResearchComponent } from '../research';
 import { ArticlesComponent } from '../articles';
 import { FooterComponent } from '../footer';
-import { getCourses } from '../../services/courses/courses.service';
+import { getCourses } from '../../services/api/courses.service';
 import { Course } from '../../interfaces/course';
 import { Component404 } from '../404';
 import { CourseListComponent } from '../courseList';

@@ -12,6 +12,7 @@ import {
   PatchCourseGroupStudentResponse,
   PostCourseGroupResponse,
   PostCourseResponse,
+  PutCourseLaboratoryResponse,
 } from '../../interfaces/api';
 import { getRandomStudents, getStudentMockResponse } from './in-memory-student-mocks';
 import { generateList } from '../../utils';
@@ -60,6 +61,9 @@ export function generateLaboratoryMock(groups?: CourseGroup[]): CourseLaboratory
     nameShort: (labCount++).toString(),
     name: loremIpsum().split(' ').slice(0, 3).join(' '),
     description: loremIpsum(),
+    location: `room ${Math.round(Math.random() * 400)}`,
+    starts: new Date(0),
+    ends: new Date(60 * 60 * 1000),
     tasks: groups
       ? groups.reduce(
         (agg: TaskToGroupMapping, group) => ({
@@ -97,11 +101,6 @@ export async function getCoursesListMockResponse() {
   return Promise.resolve({ courses: inMemoryCourseMocks.map((x) => new Course(x)) });
 }
 
-export async function putCourseMockResponse(course: Course) {
-  inMemoryCourseMocks.push(course);
-  return Promise.resolve({ status: 'ok' });
-}
-
 export async function getCourseMockResponse(_id: string): Promise<GetCourseResponse> {
   const f = inMemoryCourseMocks.find((x) => x._id === _id);
   if (f) {
@@ -110,52 +109,125 @@ export async function getCourseMockResponse(_id: string): Promise<GetCourseRespo
   return Promise.reject();
 }
 
-export async function getCourseGroupMockResponse(_id: string): Promise<GetCourseGroupResponse> {
-  for (const course of inMemoryCourseMocks) {
-    const f = course.groups.find((group) => group._id === _id);
-    if (f) {
-      return Promise.resolve({ group: new CourseGroup(f) });
-    }
+export async function getCourseGroupMockResponse(
+  courseID: string, groupID: string,
+): Promise<GetCourseGroupResponse> {
+  const course = inMemoryCourseMocks.find((x) => x._id === courseID);
+  const group = course && course.groups.find((x) => x._id === groupID);
+  if (group) {
+    return Promise.resolve({ group: new CourseGroup(group) });
   }
   return Promise.reject();
 }
 
 export async function setCourseMockResponse(course: Course): Promise<PostCourseResponse> {
-  const f = inMemoryCourseMocks.findIndex((x) => x._id === course._id);
-  if (f !== -1) {
-    inMemoryCourseMocks[f] = course;
-  } else {
-    inMemoryCourseMocks.push(course);
+  course.groups.forEach((group) => {
+    if (!group._id) {
+      group._id = v4();
+    }
+  });
+  course.laboratories.forEach((laboratory) => {
+    if (!laboratory._id) {
+      laboratory._id = v4();
+    }
+  });
+  if (course._id) {
+    const f = inMemoryCourseMocks.findIndex((x) => x._id === course._id);
+    if (f > -1) {
+      inMemoryCourseMocks[f] = course;
+      return Promise.resolve(
+        {
+          ok: true,
+          course: (await getCourseMockResponse(course._id)).course,
+        },
+      );
+    }
+    return Promise.reject();
   }
+  inMemoryCourseMocks.push({
+    ...course,
+    _id: v4(),
+  });
+
   return Promise.resolve({ ok: true, course: (await getCourseMockResponse(course._id)).course });
 }
 
-export async function setCourseGroupResponse(group: CourseGroup): Promise<PostCourseGroupResponse> {
-  for (const course of inMemoryCourseMocks) {
-    const f = course.groups.findIndex((x) => x._id === group._id);
-    if (f > -1) {
-      course.groups[f] = group;
+export async function setCourseGroupResponse(
+  courseID: string,
+  group: CourseGroup,
+): Promise<PostCourseGroupResponse> {
+  const course = inMemoryCourseMocks.find((x) => x._id === courseID);
+  if (!course) {
+    return Promise.reject();
+  }
+  if (group._id) {
+    const toReplace = course.groups.findIndex((x) => x._id === group._id);
+    if (toReplace > -1) {
+      course.groups[toReplace] = group;
       return Promise.resolve(
         // eslint-disable-next-line no-await-in-loop
-        { ok: true, group: (await getCourseGroupMockResponse(group._id)).group },
+        { ok: true, group: (await getCourseGroupMockResponse(course._id, group._id)).group },
       );
     }
+  } else {
+    course.groups.push({
+      ...group,
+      _id: v4(),
+    });
+    return Promise.resolve(
+      // eslint-disable-next-line no-await-in-loop
+      { ok: true, group: (await getCourseGroupMockResponse(course._id, group._id)).group },
+    );
   }
   return Promise.reject();
 }
 
-export async function getLaboratoryMockResponse(_id: string): Promise<GetLaboratoryResponse> {
-  let found = null;
-  for (const course of inMemoryCourseMocks) {
-    const f = course.laboratories.find((x) => x._id === _id);
-    if (f) {
-      found = f;
-      break;
-    }
-  }
+export async function getLaboratoryMockResponse(
+  courseID: string,
+  labID: string,
+): Promise<GetLaboratoryResponse> {
+  const course = inMemoryCourseMocks.find((x) => x._id === courseID);
+  const lab = course && course.laboratories.find((x) => x._id === labID);
 
-  if (found) {
-    return Promise.resolve({ laboratory: new CourseLaboratory(found) });
+  if (lab) {
+    return Promise.resolve({ laboratory: new CourseLaboratory(lab) });
+  }
+  return Promise.reject();
+}
+
+export async function setCourseLabMockResponse(
+  courseID: string,
+  lab: CourseLaboratory,
+): Promise<PutCourseLaboratoryResponse> {
+  const course = inMemoryCourseMocks.find((x) => x._id === courseID);
+  if (!course) {
+    return Promise.reject();
+  }
+  if (lab._id) {
+    const toReplace = course.laboratories.findIndex((x) => x._id === lab._id);
+    if (toReplace > -1) {
+      course.laboratories[toReplace] = lab;
+      return Promise.resolve(
+        // eslint-disable-next-line no-await-in-loop
+        {
+          ok: true,
+          laboratory: (await getLaboratoryMockResponse(course._id, lab._id)).laboratory,
+        },
+      );
+    }
+  } else {
+    const topush = {
+      ...lab,
+      _id: v4(),
+    };
+    course.laboratories.push(topush);
+    return Promise.resolve(
+      // eslint-disable-next-line no-await-in-loop
+      {
+        ok: true,
+        laboratory: (await getLaboratoryMockResponse(course._id, topush._id)).laboratory,
+      },
+    );
   }
   return Promise.reject();
 }
@@ -193,17 +265,17 @@ export async function deleteGroupMockResponse(_id: string): Promise<ApiPostRespo
   return Promise.reject();
 }
 
-export async function deleteLaboratoryMockResponse(_id: string): Promise<ApiPostResponse> {
-  let found = false;
-  for (const course of inMemoryCourseMocks) {
-    const f = course.laboratories.findIndex((x) => x._id === _id);
-    if (f > -1) {
-      found = true;
-      course.laboratories.splice(f, 1);
-      break;
-    }
+export async function deleteLaboratoryMockResponse(
+  courseID: string,
+  labID: string,
+): Promise<ApiPostResponse> {
+  const course = inMemoryCourseMocks.find((x) => x._id === courseID);
+  if (!course) {
+    return Promise.reject();
   }
-  if (found) {
+  const f = course.laboratories.findIndex((x) => x._id === labID);
+  if (f) {
+    course.laboratories.splice(f, 1);
     return Promise.resolve({ ok: true });
   }
   return Promise.reject();

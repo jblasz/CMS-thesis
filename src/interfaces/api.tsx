@@ -30,6 +30,10 @@ export interface PostCourseGroupResponse extends ApiPostResponse {
   group: ICourseGroup
 }
 
+export interface PutCourseLaboratoryResponse extends ApiPostResponse {
+  laboratory: ICourseLaboratory
+}
+
 export interface PatchCourseGroupStudentResponse extends ApiPostResponse {
   group: ICourseGroup
 }

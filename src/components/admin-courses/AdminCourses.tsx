@@ -3,7 +3,7 @@ import { Container, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Course } from '../../interfaces/course';
-import { getCourses } from '../../services/courses/courses.service';
+import { getCourses } from '../../services/api/courses.service';
 
 function AdminCoursesComponent(): JSX.Element {
   const [t] = useTranslation();
