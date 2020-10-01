@@ -75,7 +75,7 @@ export async function deleteCourseGroup(_id: string): Promise<ApiPostResponse> {
 /**
  * /course/:id/laboratory/:id2 GET
  */
-export async function getLaboratory(
+export async function getCourseLaboratory(
   courseID: string,
   labID: string,
 ): Promise<GetLaboratoryResponse> {
@@ -95,7 +95,7 @@ export async function putLaboratory(
 /**
  * /course/:id/laboratory/:id2 DELETE
  */
-export async function deleteLaboratory(
+export async function deleteCourseLaboratory(
   courseID: string,
   labID: string,
 ): Promise<ApiPostResponse> {

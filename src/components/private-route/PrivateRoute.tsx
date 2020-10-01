@@ -6,7 +6,7 @@ import { LoadingSpinner } from '../loading-spinner';
 function PrivateRoute(props: RouteProps) {
   const { component, ...other } = props;
   if (!component) {
-    throw new Error('');
+    throw new Error('Component missing?');
   }
   return (
     <Route

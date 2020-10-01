@@ -27,7 +27,7 @@ export function generateCourseMock(id = v4()) {
     groups.unshift(generateCourseGroupMock('staticGroupID'));
   }
   labCount = 1;
-  inMemoryCourseMocks.push(new Course({
+  const topush = new Course({
     _id: id,
     name: `Course Name Mk ${generatorCount++}`,
     description: loremIpsum(),
@@ -36,7 +36,11 @@ export function generateCourseMock(id = v4()) {
     groups,
     laboratories: generateList(3, 5).map(() => generateLaboratoryMock(groups)),
     links: [],
-  }));
+  });
+  if (id === 'staticCourseID') {
+    topush.laboratories[0]._id = 'staticLabID';
+  }
+  inMemoryCourseMocks.push(topush);
 }
 
 export function generateCourseGroupMock(id = v4()): CourseGroup {
@@ -49,29 +53,29 @@ export function generateCourseGroupMock(id = v4()): CourseGroup {
 
 let labCount = 1;
 
-export function generateLaboratoryMock(groups?: CourseGroup[]): CourseLaboratory {
+export function generateLaboratoryMock(groups: CourseGroup[] = [], id = v4()): CourseLaboratory {
   const rootDate = new Date(
     2020,
     labCount,
     Math.ceil(Math.random() * 14),
     10,
   );
+  const tasks = (groups && groups.reduce(
+    (agg: TaskToGroupMapping, group) => ({
+      ...agg,
+      [group._id]: generateCourseTaskMock(rootDate, 90 * 60 * 1000),
+    }),
+    {},
+  )) || {};
+  if (groups && groups.find((x) => x._id === 'staticGroupID')) {
+    tasks.staticGroupID._id = 'staticLabGroupID';
+  }
   return new CourseLaboratory({
-    _id: v4(),
+    _id: id,
     nameShort: (labCount++).toString(),
     name: loremIpsum().split(' ').slice(0, 3).join(' '),
     description: loremIpsum(),
-    location: `room ${Math.round(Math.random() * 400)}`,
-    starts: new Date(0),
-    ends: new Date(60 * 60 * 1000),
-    tasks: groups
-      ? groups.reduce(
-        (agg: TaskToGroupMapping, group) => ({
-          ...agg,
-          [group._id]: generateCourseTaskMock(rootDate, 90 * 60 * 1000),
-        }), {},
-      )
-      : {},
+    tasks,
   });
 }
 
@@ -189,7 +193,12 @@ export async function getLaboratoryMockResponse(
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   const lab = course && course.laboratories.find((x) => x._id === labID);
 
-  if (lab) {
+  if (course && lab) {
+    course.groups.forEach((group) => {
+      if (!Object.keys(lab.tasks).includes(group._id)) {
+        lab.tasks[group._id] = new CourseTask();
+      }
+    });
     return Promise.resolve({ laboratory: new CourseLaboratory(lab) });
   }
   return Promise.reject();

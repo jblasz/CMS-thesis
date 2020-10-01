@@ -10,7 +10,6 @@ import { Course, CourseLanguage } from '../../interfaces/course';
 import { getCourse, setCourse } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
-import { formatDate } from '../../utils';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 
 function AdminCourseComponent(): JSX.Element {
@@ -141,24 +140,16 @@ function AdminCourseComponent(): JSX.Element {
             <thead>
               <tr>
                 <th>{t('ADMIN.COURSE.LAB_NAME')}</th>
-                <th>{t('ADMIN.COURSE.LAB_START')}</th>
-                <th>{t('ADMIN.COURSE.LAB_END')}</th>
               </tr>
             </thead>
             <tbody>
               {course.laboratories.map((lab) => (
                 <tr key={lab._id}>
                   <td>
-                    <Link to={`/admin/courses/${course._id}/lab/${lab._id}`}>
+                    <Link to={`/admin/courses/${course._id}/laboratory/${lab._id}`}>
                       {`${lab.name || t('ADMIN.COURSE.LAB_NAME_NOT_DEFINED')} `}
                       <small>{lab._id}</small>
                     </Link>
-                  </td>
-                  <td>
-                    {lab.starts ? formatDate(lab.starts, true) : t('ADMIN.COURSE.LAB_START_NOT_DEFINED')}
-                  </td>
-                  <td>
-                    {lab.ends ? formatDate(lab.ends, true) : t('ADMIN.COURSE.LAB_END_NOT_DEFINED')}
                   </td>
                 </tr>
               ))}
@@ -179,8 +170,6 @@ function AdminCourseComponent(): JSX.Element {
                     {t('ADMIN.COURSE.CREATE_LAB')}
                   </Button>
                 </td>
-                <td />
-                <td />
               </tr>
             </tbody>
           </Table>
