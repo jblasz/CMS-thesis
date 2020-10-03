@@ -1,5 +1,6 @@
+import { GetResourcesResponse } from '../../interfaces/api';
 import { Resource } from '../../interfaces/resource';
-import { getResourceMockResponse, putResourceMockResponse } from '../mocks/in-memory-resource-mocks';
+import { getResourceMockResponse, getResourcesMockResponse, putResourceMockResponse } from '../mocks/in-memory-resource-mocks';
 
 /**
  * /resource/:id GET
@@ -13,4 +14,11 @@ export async function getResource(_id: string) {
  */
 export async function putResource(resource: Resource) {
   return putResourceMockResponse(resource);
+}
+
+/**
+ * /resource GET
+ */
+export async function getResources(): Promise<GetResourcesResponse> {
+  return getResourcesMockResponse();
 }

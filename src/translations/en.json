@@ -109,6 +109,18 @@
       "STUDENTS_NAME": "Name",
       "STUDENTS_EMAIL": "Email",
       "STUDENTS_NA": "N/A"
+    },
+    "LABORATORY": {
+      "SET_EDIT_MODE": "Enable editing mode",
+      "SET_READONLY_MODE": "Disable editing mode",
+      "DELETE": "Remove laboratory",
+      "GROUP_TASKS": "Tasks per each group",
+      "TASK_FOR_GROUP": "Task for group",
+      "START": "Laboratory starts at",
+      "END": "Laboratory ends at",
+      "GRACE": "Laboratory has a grace period of",
+      "TASK": "Task resource",
+      "PUBLIC_DESCRIPTION": "Public course description"
     }
   }
 }

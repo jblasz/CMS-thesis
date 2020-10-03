@@ -17,6 +17,8 @@ export class CourseTask implements ICourseTask {
 
   gracePeriod = 0
 
+  resourceId?: string
+
   constructor(o?: ICourseTask) {
     if (o) {
       this._id = o._id || '';

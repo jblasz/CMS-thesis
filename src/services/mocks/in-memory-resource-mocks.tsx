@@ -1,9 +1,27 @@
+import { loremIpsum } from 'lorem-ipsum';
 import { v4 } from 'uuid';
 import { Resource, Submission } from '../../interfaces/resource';
+import { generateList } from '../../utils';
 
 const inMemoryResourceMocks: Resource[] = [];
 
 const inMemorySubmissionMocks: Submission[] = [];
+
+export function generateResourceMocks(count = 10) {
+  generateList(count).forEach(() => inMemoryResourceMocks.push(
+    {
+      _id: v4(),
+      name: loremIpsum().split(' ').slice(0, 3).join(' '),
+      resource: new ArrayBuffer(5),
+    },
+  ));
+}
+
+export async function getResourcesMockResponse() {
+  return Promise.resolve(
+    { resources: inMemoryResourceMocks.map((x) => ({ _id: x._id, name: x.name })) },
+  );
+}
 
 export async function getResourceMockResponse(id: string) {
   const f = inMemoryResourceMocks.find((x) => x._id === id);
@@ -24,6 +42,7 @@ export async function putResourceMockResponse(resource: Resource) {
     inMemoryResourceMocks.push({
       _id: v4(),
       resource: resource.resource,
+      name: loremIpsum().split(' ').slice(0, 3).join(' '),
     });
     return Promise.resolve(await getResourceMockResponse(resource._id));
   }

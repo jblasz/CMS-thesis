@@ -280,12 +280,12 @@ export async function deleteLaboratoryMockResponse(
 ): Promise<ApiPostResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   if (!course) {
-    return Promise.reject();
+    return Promise.reject(new Error('No course of this id'));
   }
   const f = course.laboratories.findIndex((x) => x._id === labID);
-  if (f) {
+  if (f > -1) {
     course.laboratories.splice(f, 1);
     return Promise.resolve({ ok: true });
   }
-  return Promise.reject();
+  return Promise.reject(new Error('No lab of this id'));
 }

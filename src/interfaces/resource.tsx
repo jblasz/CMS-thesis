@@ -1,5 +1,9 @@
-export interface Resource {
+export interface ResourceMeta {
   _id: string
+  name: string
+}
+
+export interface Resource extends ResourceMeta {
   resource: ArrayBuffer
 }
 

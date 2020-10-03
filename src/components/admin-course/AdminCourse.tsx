@@ -87,7 +87,7 @@ function AdminCourseComponent(): JSX.Element {
             onClick={async (event) => {
               event.preventDefault();
               await setCourse(course);
-              toggleEditState();
+              await toggleEditState();
             }}
           >
             {t('ADMIN.COURSE.SAVE_CHANGES')}

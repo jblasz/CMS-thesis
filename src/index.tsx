@@ -12,6 +12,9 @@ import { Auth0ProviderWithHistory } from './components/auth0-provider-with-histo
 import i18n from './services/i18n/i18n';
 import { populateInMemoryDBWithSomeMocks } from './services/mocks';
 
+// datepicker style
+import 'react-datepicker/dist/react-datepicker.css';
+
 // load mocks
 populateInMemoryDBWithSomeMocks();
 

@@ -1,6 +1,7 @@
 import { ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
+import { ResourceMeta } from './resource';
 
 export interface ApiPostResponse {
   ok: boolean
@@ -45,4 +46,8 @@ export enum PostCodeResponseType {
 export interface PostCodeResponse extends ApiPostResponse {
   type: PostCodeResponseType
   courseSignup?: ICourse
+}
+
+export interface GetResourcesResponse {
+  resources: ResourceMeta[]
 }
