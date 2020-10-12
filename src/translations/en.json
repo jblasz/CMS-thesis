@@ -102,7 +102,9 @@
       "LAB_END_NOT_DEFINED": "Not yet defined",
       "LAB_END": "Ends",
       "LAB_NAME_NOT_DEFINED": "As yet unnamed",
-      "GROUP_NAME_NOT_DEFINED": "As yet unnamed"
+      "GROUP_NAME_NOT_DEFINED": "As yet unnamed",
+      "DELETE": "Remove course",
+      "ADD_STUDENT": "Add student"
     },
     "GROUP": {
       "STUDENTS_ID": "ID",
@@ -120,7 +122,8 @@
       "END": "Laboratory ends at",
       "GRACE": "Laboratory has a grace period of",
       "TASK": "Task resource",
-      "PUBLIC_DESCRIPTION": "Public course description"
+      "PUBLIC_DESCRIPTION": "Public course description",
+      "UPLOAD": "Upload changes"
     }
   }
 }

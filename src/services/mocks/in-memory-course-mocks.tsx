@@ -72,7 +72,6 @@ export function generateLaboratoryMock(groups: CourseGroup[] = [], id = v4()): C
   }
   return new CourseLaboratory({
     _id: id,
-    nameShort: (labCount++).toString(),
     name: loremIpsum().split(' ').slice(0, 3).join(' '),
     description: loremIpsum(),
     tasks,
@@ -225,10 +224,10 @@ export async function setCourseLabMockResponse(
       );
     }
   } else {
-    const topush = {
+    const topush = new CourseLaboratory({
       ...lab,
       _id: v4(),
-    };
+    });
     course.laboratories.push(topush);
     return Promise.resolve(
       // eslint-disable-next-line no-await-in-loop

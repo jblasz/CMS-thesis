@@ -89,6 +89,11 @@ export async function putLaboratory(
   courseID: string,
   lab: CourseLaboratory,
 ): Promise<GetLaboratoryResponse> {
+  const { error } = lab.validate();
+  if (error) {
+    console.error(error);
+    return Promise.reject(error);
+  }
   return setCourseLabMockResponse(courseID, lab);
 }
 

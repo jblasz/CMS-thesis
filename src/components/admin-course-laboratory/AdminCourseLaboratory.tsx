@@ -12,55 +12,53 @@ import { LoadingSpinner } from '../loading-spinner';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { getResources } from '../../services/api/resources.service';
 import { ResourceMeta } from '../../interfaces/resource';
+import { CourseTask } from '../../interfaces/courseTask';
 
 function AdminCourseLaboratoryComponent(): JSX.Element {
   const { courseID, labID } = useParams<{labID: string, courseID: string}>();
 
   const [t] = useTranslation();
-
-  const getDefaultState = useCallback(() => ({
-    loading: false,
-    error: false,
-    laboratory: new CourseLaboratory({
-      _id: labID,
-      name: '',
-      description: '',
-      nameShort: '',
-      tasks: {},
-    }),
-    resourceNames: [] as ResourceMeta[],
-    sortDirection: 1,
-  }), [labID]);
-
-  const [state, setState] = useState(getDefaultState());
-
+  const [laboratory, setLaboratory] = useState(new CourseLaboratory(labID));
+  const [{ loading, loadError }, setLoadingStatus] = useState({ loading: false, loadError: false });
   const [readonly, setReadonly] = useState(true);
-
-  const [chosenGroupID, setChosenGroupID] = useState('');
-
-  const {
-    loading, error, laboratory, resourceNames,
-  } = state;
+  const [{ chosenGroupID }, setChosenGroup] = useState<{chosenGroupID: string}>({ chosenGroupID: '' });
+  const [validationError, setValidationError] = useState('');
+  const [resourceNames, setResourceNames] = useState<ResourceMeta[]>([]);
 
   const toggleEditState = async () => {
     await getAndSetCourseLaboratory();
     setReadonly(!readonly);
   };
 
+  const validateAndSetLaboratory = useCallback((
+    lab: CourseLaboratory, taskID?: string, task?: CourseTask,
+  ) => {
+    if (taskID && task) {
+      lab.tasks[taskID] = task;
+    }
+    const { ok, error = '' } = lab.validate();
+    setValidationError(!ok ? error : '');
+    setLaboratory(lab);
+    const choice = taskID || (Object.keys(lab.tasks) && Object.keys(lab.tasks)[0]) || '';
+    console.log('setting', lab, taskID, task);
+    setChosenGroup(choice ? { chosenGroupID: choice } : { chosenGroupID: '' });
+  }, []);
+
   const getAndSetCourseLaboratory = useCallback(async () => {
     try {
-      setState({ ...getDefaultState(), loading: true });
+      setLoadingStatus({ loadError: false, loading: true });
       const [r, r2] = await Promise.all([getCourseLaboratory(courseID, labID), getResources()]);
-      setState({
-        ...getDefaultState(),
-        laboratory: new CourseLaboratory(r.laboratory),
-        resourceNames: r2.resources,
-      });
+      const lab = new CourseLaboratory(r.laboratory);
+      validateAndSetLaboratory(lab);
+      setResourceNames(r2.resources);
+      const firstGroup = Object.keys(lab.tasks) && Object.keys(lab.tasks)[0];
+      setChosenGroup({ chosenGroupID: firstGroup || '' });
+      setLoadingStatus({ loadError: false, loading: false });
     } catch (e) {
       console.error(e);
-      setState({ ...getDefaultState(), error: true });
+      setLoadingStatus({ loadError: true, loading: false });
     }
-  }, [courseID, labID, getDefaultState]);
+  }, [courseID, labID, validateAndSetLaboratory]);
 
   useEffect(() => {
     getAndSetCourseLaboratory();
@@ -70,12 +68,17 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
-  if (error) {
+  if (loadError) {
     return <Redirect to="/404" />;
   }
   return (
     <Container>
       <Form className="my-2">
+        {validationError ? (
+          <Form.Row className="error-strip">
+            {`${t('COMMON.VALIDATION_ERROR')}: ${validationError}`}
+          </Form.Row>
+        ) : ''}
         <Form.Row>
           <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.LABORATORY.SET_EDIT_MODE') : t('ADMIN.LABORATORY.SET_READONLY_MODE')}</Button>
           <Button
@@ -96,7 +99,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
             disabled={readonly}
             onClick={async () => {
               try {
-                setState({ ...getDefaultState(), loading: true });
+                setLoadingStatus({ loadError: false, loading: true });
                 await deleteCourseLaboratory(courseID, laboratory._id);
                 alert('course deleted succesfully');
                 await getAndSetCourseLaboratory();
@@ -124,7 +127,9 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                 checked={chosenGroupID === groupID}
                 value={groupID}
                 onClick={() => {
-                  setChosenGroupID(groupID);
+                  setChosenGroup(
+                    { chosenGroupID: groupID },
+                  );
                 }}
               >
                 {groupID}
@@ -133,7 +138,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
           </ButtonGroup>
         </Form.Row>
       </Form>
-      {chosenGroupID ? (() => {
+      {chosenGroupID && laboratory.tasks[chosenGroupID] ? (() => {
         const task = laboratory.tasks[chosenGroupID];
         return (
           <Jumbotron>
@@ -149,7 +154,11 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                     onChange={(date) => {
                       if (date instanceof Date) {
                         task.dateFrom = new Date(date);
-                        setState({ ...state });
+                        validateAndSetLaboratory(
+                          laboratory,
+                          chosenGroupID,
+                          task,
+                        );
                       }
                     }}
                   />
@@ -162,7 +171,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                     onChange={(date) => {
                       if (date instanceof Date) {
                         task.dateTo = new Date(date);
-                        setState({ ...state });
+                        validateAndSetLaboratory(laboratory, chosenGroupID, task);
                       }
                     }}
                   />
@@ -172,16 +181,16 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                     <Form.Label>{t('ADMIN.LABORATORY.TASK')}</Form.Label>
                     <Form.Control
                       as="select"
-                      value={task.resourceId}
+                      value={task.resourceId || ''}
                       disabled={readonly}
                       onChange={
                         (event) => {
                           task.resourceId = event.target.value;
-                          setState({ ...state });
+                          validateAndSetLaboratory(laboratory, chosenGroupID, task);
                         }
                       }
                     >
-                      <option>{undefined}</option>
+                      <option value={undefined}>None</option>
                       {resourceNames.map((resource) => (<option value={resource._id} key={resource._id}>{`${resource.name} - ${resource._id}`}</option>))}
                     </Form.Control>
                   </Form.Group>
@@ -198,7 +207,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                         const v = parseFloat(event.target.value);
                         // eslint-disable-next-line no-restricted-globals
                         task.gracePeriod = isNaN(v) ? 0 : v;
-                        setState({ ...state });
+                        validateAndSetLaboratory(laboratory, chosenGroupID, task);
                       }
                     }
                   />
@@ -215,7 +224,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                       disabled={readonly}
                       onChange={(event) => {
                         task.description = event.target.value;
-                        setState({ ...state });
+                        validateAndSetLaboratory(laboratory, chosenGroupID, task);
                       }}
                     />
                   </Form.Group>

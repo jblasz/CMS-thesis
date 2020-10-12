@@ -70,8 +70,7 @@ function CourseComponent(): JSX.Element {
       <ListGroup>
         {course.laboratories.map((lab) => (
           <ListGroup.Item key={lab._id}>
-            <h1>{`${t('COURSE.LABORATORY.NUMBER')} ${lab.nameShort}`}</h1>
-            <h2>{lab.name}</h2>
+            <h1>{lab.name}</h1>
             <small>{lab._id}</small>
             <p>{lab.description}</p>
             <Link

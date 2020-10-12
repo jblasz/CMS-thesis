@@ -57,8 +57,7 @@ function LaboratoryComponent(): JSX.Element {
   }
   return (
     <Container>
-      <h1>{`${t('COURSE.LABORATORY.NUMBER')} ${laboratory.nameShort}`}</h1>
-      <h2>{laboratory.name}</h2>
+      <h1>{laboratory.name}</h1>
       <small>{laboratory._id}</small>
       <p>{laboratory.description}</p>
       <Link

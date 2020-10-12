@@ -5,3 +5,9 @@ body {
 .carousel-caption {
   color: black
 }
+
+.error-strip {
+  padding: 5px;
+  margin: 5px;
+  background-color: red;
+}
