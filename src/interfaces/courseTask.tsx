@@ -7,6 +7,7 @@ export interface ICourseTask {
   dateFrom?: Date
   dateTo?: Date
   gracePeriod: number
+  resourceId?: string
 }
 
 export class CourseTask implements ICourseTask, Validable {
@@ -26,6 +27,7 @@ export class CourseTask implements ICourseTask, Validable {
     if (o) {
       this._id = o._id || '';
       this.description = o.description || '';
+      this.resourceId = o.resourceId || '';
       if (o.dateFrom) { this.dateFrom = new Date(o.dateFrom); }
       if (o.dateTo) { this.dateTo = new Date(o.dateTo); }
     }

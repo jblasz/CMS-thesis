@@ -3,7 +3,7 @@ import {
 } from 'react-bootstrap';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams, Redirect } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import {
   deleteCourseLaboratory, getCourseLaboratory, putLaboratory,
@@ -19,10 +19,10 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
 
   const [t] = useTranslation();
   const [laboratory, setLaboratory] = useState(new CourseLaboratory(labID));
-  const [{ loading, loadError }, setLoadingStatus] = useState({ loading: false, loadError: false });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [readonly, setReadonly] = useState(true);
   const [{ chosenGroupID }, setChosenGroup] = useState<{chosenGroupID: string}>({ chosenGroupID: '' });
-  const [validationError, setValidationError] = useState('');
   const [resourceNames, setResourceNames] = useState<ResourceMeta[]>([]);
 
   const toggleEditState = async () => {
@@ -36,27 +36,27 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
     if (taskID && task) {
       lab.tasks[taskID] = task;
     }
-    const { ok, error = '' } = lab.validate();
-    setValidationError(!ok ? error : '');
+    const res = lab.validate();
+    setError(res.error || '');
     setLaboratory(lab);
     const choice = taskID || (Object.keys(lab.tasks) && Object.keys(lab.tasks)[0]) || '';
-    console.log('setting', lab, taskID, task);
     setChosenGroup(choice ? { chosenGroupID: choice } : { chosenGroupID: '' });
   }, []);
 
   const getAndSetCourseLaboratory = useCallback(async () => {
     try {
-      setLoadingStatus({ loadError: false, loading: true });
+      setLoading(true);
       const [r, r2] = await Promise.all([getCourseLaboratory(courseID, labID), getResources()]);
       const lab = new CourseLaboratory(r.laboratory);
       validateAndSetLaboratory(lab);
       setResourceNames(r2.resources);
       const firstGroup = Object.keys(lab.tasks) && Object.keys(lab.tasks)[0];
       setChosenGroup({ chosenGroupID: firstGroup || '' });
-      setLoadingStatus({ loadError: false, loading: false });
+      setLoading(false);
     } catch (e) {
       console.error(e);
-      setLoadingStatus({ loadError: true, loading: false });
+      setLoading(false);
+      setError(e);
     }
   }, [courseID, labID, validateAndSetLaboratory]);
 
@@ -67,16 +67,12 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   if (loading) {
     return <LoadingSpinner />;
   }
-
-  if (loadError) {
-    return <Redirect to="/404" />;
-  }
   return (
     <Container>
       <Form className="my-2">
-        {validationError ? (
+        {error ? (
           <Form.Row className="error-strip">
-            {`${t('COMMON.VALIDATION_ERROR')}: ${validationError}`}
+            {`${t('COMMON.ERROR')}: ${error}`}
           </Form.Row>
         ) : ''}
         <Form.Row>
@@ -99,7 +95,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
             disabled={readonly}
             onClick={async () => {
               try {
-                setLoadingStatus({ loadError: false, loading: true });
+                setLoading(true);
                 await deleteCourseLaboratory(courseID, laboratory._id);
                 alert('course deleted succesfully');
                 await getAndSetCourseLaboratory();

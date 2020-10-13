@@ -1,4 +1,7 @@
 {
+  "COMMON": {
+    "ERROR": "Error"
+  },
   "WEBSITE_NAME": "A wondrous website",
   "NAVBAR": {
     "HOMEPAGE": "Home",

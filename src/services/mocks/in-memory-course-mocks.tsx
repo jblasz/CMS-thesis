@@ -109,7 +109,7 @@ export async function getCourseMockResponse(_id: string): Promise<GetCourseRespo
   if (f) {
     return Promise.resolve({ course: new Course(f) });
   }
-  return Promise.reject();
+  return Promise.reject(new Error('404 not found'));
 }
 
 export async function getCourseGroupMockResponse(
@@ -120,7 +120,7 @@ export async function getCourseGroupMockResponse(
   if (group) {
     return Promise.resolve({ group: new CourseGroup(group) });
   }
-  return Promise.reject();
+  return Promise.reject(new Error('404 not found'));
 }
 
 export async function setCourseMockResponse(course: Course): Promise<PostCourseResponse> {
@@ -147,10 +147,10 @@ export async function setCourseMockResponse(course: Course): Promise<PostCourseR
     }
     return Promise.reject();
   }
-  inMemoryCourseMocks.push({
+  inMemoryCourseMocks.push(new Course({
     ...course,
     _id: v4(),
-  });
+  }));
 
   return Promise.resolve({ ok: true, course: (await getCourseMockResponse(course._id)).course });
 }
@@ -173,16 +173,16 @@ export async function setCourseGroupResponse(
       );
     }
   } else {
-    course.groups.push({
+    course.groups.push(new CourseGroup({
       ...group,
       _id: v4(),
-    });
+    }));
     return Promise.resolve(
       // eslint-disable-next-line no-await-in-loop
       { ok: true, group: (await getCourseGroupMockResponse(course._id, group._id)).group },
     );
   }
-  return Promise.reject();
+  return Promise.reject(new Error('404 not found'));
 }
 
 export async function getLaboratoryMockResponse(
@@ -200,7 +200,7 @@ export async function getLaboratoryMockResponse(
     });
     return Promise.resolve({ laboratory: new CourseLaboratory(lab) });
   }
-  return Promise.reject();
+  return Promise.reject(new Error('404 not found'));
 }
 
 export async function setCourseLabMockResponse(
@@ -209,7 +209,7 @@ export async function setCourseLabMockResponse(
 ): Promise<PutCourseLaboratoryResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   if (!course) {
-    return Promise.reject();
+    return Promise.reject(new Error('404 not found'));
   }
   if (lab._id) {
     const toReplace = course.laboratories.findIndex((x) => x._id === lab._id);
@@ -237,7 +237,7 @@ export async function setCourseLabMockResponse(
       },
     );
   }
-  return Promise.reject();
+  return Promise.reject(new Error('404 not found'));
 }
 
 export async function patchCourseGroupStudentMockResponse(
@@ -254,7 +254,7 @@ export async function patchCourseGroupStudentMockResponse(
     }
     return Promise.resolve({ ok: true, group });
   }
-  return Promise.reject();
+  return Promise.reject(new Error('404 not found'));
 }
 
 export async function deleteGroupMockResponse(_id: string): Promise<ApiPostResponse> {

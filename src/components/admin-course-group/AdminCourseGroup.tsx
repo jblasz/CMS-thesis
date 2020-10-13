@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container, Form, Button, Table, Col,
 } from 'react-bootstrap';
-import { useParams, Redirect, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,58 +15,38 @@ function AdminCourseGroupComponent(): JSX.Element {
 
   const [t] = useTranslation();
 
-  const [groupState, setCourseGroupState] = useState({
-    loading: true,
-    error: false,
-    newStudentName: '',
-    group: new CourseGroup({
-      _id: groupID,
-      name: '',
-      students: [],
-    }),
-    sortDirection: 1,
-  });
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [group, setGroup] = useState(new CourseGroup());
+  const [sortDirection, setSortDirection] = useState(1);
+  const [newStudentName, setNewStudentName] = useState('');
   const [readonly, setReadonly] = useState(true);
-
-  const {
-    group, loading, error, newStudentName, sortDirection,
-  } = groupState;
 
   const toggleEditState = async () => {
     await getAndSetCourseGroup();
     setReadonly(!readonly);
   };
 
+  const validateAndSetCourseGroup = useCallback((cgroup: CourseGroup) => {
+    const res = cgroup.validate();
+    if (res.error) {
+      setError(res.error);
+    }
+    setGroup(cgroup);
+  }, []);
+
   const getAndSetCourseGroup = useCallback(async () => {
     try {
-      setCourseGroupState({
-        loading: true,
-        error: false,
-        group: new CourseGroup(),
-        newStudentName: '',
-        sortDirection: 1,
-      });
+      setLoading(true);
       const c = await getCourseGroup(courseID, groupID);
-      setCourseGroupState({
-        loading: false,
-        group: new CourseGroup(c.group),
-        error: false,
-        newStudentName: '',
-        sortDirection: 1,
-
-      });
+      validateAndSetCourseGroup(new CourseGroup(c.group));
     } catch (e) {
       console.error(e);
-      setCourseGroupState({
-        loading: false,
-        group: new CourseGroup(),
-        error: true,
-        newStudentName: '',
-        sortDirection: 1,
-      });
+      setError(e);
+    } finally {
+      setLoading(false);
     }
-  }, [groupID, courseID]);
+  }, [groupID, courseID, validateAndSetCourseGroup]);
 
   useEffect(() => {
     getAndSetCourseGroup();
@@ -76,13 +56,14 @@ function AdminCourseGroupComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
-  if (error) {
-    return <Redirect to="/404" />;
-  }
-
   return (
     <Container>
       <Form className="my-2">
+        {error ? (
+          <Form.Row className="error-strip">
+            {`${t('COMMON.ERROR')}: ${error}`}
+          </Form.Row>
+        ) : ''}
         <Form.Row>
           <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
         </Form.Row>
@@ -93,22 +74,10 @@ function AdminCourseGroupComponent(): JSX.Element {
             disabled={readonly}
             onClick={async () => {
               try {
-                setCourseGroupState({
-                  loading: true,
-                  group: new CourseGroup(),
-                  error: true,
-                  newStudentName,
-                  sortDirection,
-                });
+                setLoading(true);
                 await deleteCourseGroup(group._id);
                 alert('course deleted succesfully');
-                setCourseGroupState({
-                  loading: false,
-                  group: new CourseGroup(),
-                  error: true,
-                  newStudentName,
-                  sortDirection,
-                });
+                await getAndSetCourseGroup();
               } catch (e) {
                 console.error(e);
                 alert('failed to delete course, details in console');
@@ -124,10 +93,9 @@ function AdminCourseGroupComponent(): JSX.Element {
               type="text"
               value={newStudentName}
               disabled={readonly}
-              onChange={(e) => setCourseGroupState({
-                ...groupState,
-                newStudentName: e.currentTarget.value,
-              })}
+              onChange={
+                (e) => setNewStudentName(e.target.value)
+              }
             />
           </Col>
           <Col>
@@ -136,25 +104,15 @@ function AdminCourseGroupComponent(): JSX.Element {
               disabled={readonly}
               onClick={async () => {
                 try {
-                  setCourseGroupState({
-                    loading: true,
-                    group,
-                    error: false,
-                    newStudentName,
-                    sortDirection,
-                  });
+                  setLoading(true);
                   await patchCourseGroupStudent(courseID, groupID, newStudentName);
                   await getAndSetCourseGroup();
                 } catch (e) {
                   alert('failed to add student');
                   console.error(e);
-                  setCourseGroupState({
-                    loading: false,
-                    group,
-                    error: false,
-                    newStudentName,
-                    sortDirection,
-                  });
+                  setError(e);
+                } finally {
+                  setLoading(false);
                 }
               }}
             >
@@ -172,7 +130,7 @@ function AdminCourseGroupComponent(): JSX.Element {
                 variant="light"
                 onClick={() => {
                   group.students.sort((a, b) => sortDirection * a._id.localeCompare(b._id));
-                  setCourseGroupState({ ...groupState, sortDirection: -sortDirection });
+                  setSortDirection(-sortDirection);
                 }}
               >
                 <FontAwesomeIcon
@@ -186,7 +144,7 @@ function AdminCourseGroupComponent(): JSX.Element {
                 variant="light"
                 onClick={() => {
                   group.students.sort((a, b) => sortDirection * (a.name || '').localeCompare(b.name || ''));
-                  setCourseGroupState({ ...groupState, sortDirection: -sortDirection });
+                  setSortDirection(-sortDirection);
                 }}
               >
                 <FontAwesomeIcon
@@ -200,7 +158,7 @@ function AdminCourseGroupComponent(): JSX.Element {
                 variant="light"
                 onClick={() => {
                   group.students.sort((a, b) => sortDirection * (a.email || '').localeCompare(b.email || ''));
-                  setCourseGroupState({ ...groupState, sortDirection: -sortDirection });
+                  setSortDirection(-sortDirection);
                 }}
               >
                 <FontAwesomeIcon

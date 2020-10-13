@@ -28,7 +28,7 @@ function AuthNav() {
         )
       }
       {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-      <Button variant="light" className="flag-wrapper" onClick={() => { i18n.changeLanguage(i18n.language === 'en' ? 'pl' : 'en'); console.log('changing language'); }}>
+      <Button variant="light" className="flag-wrapper" onClick={() => { i18n.changeLanguage(i18n.language === 'en' ? 'pl' : 'en'); }}>
         {
           i18n.language === 'en'
             ? <img src={britishFlag} className="img-responsive flag" alt="britishFlag" />

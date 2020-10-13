@@ -1,11 +1,11 @@
 import React, {
-  useState, useEffect,
+  useState, useEffect, useCallback,
 } from 'react';
 import {
   Container, Form, Col, Button, Table,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useParams, Redirect, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { getCourse, setCourse } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
@@ -16,10 +16,8 @@ function AdminCourseComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
   const [t] = useTranslation();
 
-  const [courseState, setCourseState] = useState({
-    loading: true,
-    error: false,
-    course: new Course({
+  const [course, setCourseState] = useState(
+    new Course({
       _id: id,
       description: '',
       groups: [],
@@ -29,54 +27,51 @@ function AdminCourseComponent(): JSX.Element {
       name: '',
       semester: '',
     }),
-  });
-
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [readonly, setReadonly] = useState(true);
-
   const toggleEditState = async () => {
-    setCourseState({
-      loading: true,
-      error: false,
-      course,
-    });
-    await getAndSetCourse(id);
+    await getAndSetCourse();
     setReadonly(!readonly);
   };
 
-  const { course, loading, error } = courseState;
-
-  const getAndSetCourse = async (courseID: string) => {
-    try {
-      const c = await getCourse(courseID);
-      setCourseState({
-        loading: false,
-        course: new Course(c.course),
-        error: false,
-      });
-    } catch (e) {
-      setCourseState({
-        loading: false,
-        course: new Course(),
-        error: true,
-      });
+  const validateAndSetCourse = useCallback((crs: Course) => {
+    const res = crs.validate();
+    if (!res.ok) {
+      setError(res.error || '');
     }
-  };
+    setCourseState(crs);
+  }, []);
+
+  const getAndSetCourse = useCallback(async () => {
+    try {
+      setLoading(true);
+      const c = await getCourse(id);
+      validateAndSetCourse(new Course(c.course));
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      setError(e);
+    }
+  }, [id, validateAndSetCourse]);
 
   useEffect(() => {
-    getAndSetCourse(id);
-  }, [id]);
+    getAndSetCourse();
+  }, [getAndSetCourse]);
 
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  if (error) {
-    return <Redirect to="/404" />;
-  }
-
   return (
     <Container>
       <Form>
+        {error ? (
+          <Form.Row className="error-strip">
+            {`${t('COMMON.ERROR')}: ${error}`}
+          </Form.Row>
+        ) : ''}
         <Form.Row>
           <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
           <Button
@@ -102,7 +97,7 @@ function AdminCourseComponent(): JSX.Element {
               value={course.name}
               onChange={(event) => {
                 course.name = event.target.value;
-                setCourseState({ loading: false, error: false, course });
+                validateAndSetCourse(course);
               }}
             />
           </Form.Group>
@@ -114,7 +109,7 @@ function AdminCourseComponent(): JSX.Element {
               disabled={readonly}
               onChange={(event) => {
                 course.language = event.target.value as CourseLanguage;
-                setCourseState({ loading: false, error: false, course });
+                validateAndSetCourse(course);
               }}
             >
               <option>en</option>
@@ -131,7 +126,7 @@ function AdminCourseComponent(): JSX.Element {
             value={course.description}
             onChange={(event) => {
               course.description = event.target.value;
-              setCourseState({ loading: false, error: false, course });
+              validateAndSetCourse(course);
             }}
           />
         </Form.Row>
@@ -164,7 +159,7 @@ function AdminCourseComponent(): JSX.Element {
                       event.preventDefault();
                       if (course.laboratories.find((x) => x.name === '')) { return; }
                       course.laboratories.push(new CourseLaboratory());
-                      setCourseState({ loading: false, error: false, course });
+                      validateAndSetCourse(course);
                     }}
                   >
                     {t('ADMIN.COURSE.CREATE_LAB')}
@@ -207,7 +202,7 @@ function AdminCourseComponent(): JSX.Element {
                       event.preventDefault();
                       if (course.groups.find((x) => x.name === '')) { return; }
                       course.groups.push(new CourseGroup());
-                      setCourseState({ loading: false, error: false, course });
+                      validateAndSetCourse(course);
                     }}
                   >
                     {t('ADMIN.COURSE.CREATE_GROUP')}
@@ -217,38 +212,6 @@ function AdminCourseComponent(): JSX.Element {
             </tbody>
           </Table>
         </Form.Row>
-        {/* <CardDeck>
-            {course.groups.map((group) => (
-              <Card className="mb-4" style={{ minWidth: '350px', maxWidth: '350px' }}
-              key={group._id}>
-                <Card.Body>
-                  <Card.Title>
-                    <Form.Group as={Col}>
-                      <Form.Label>{t('ADMIN.COURSE.GROUP_NAME')}</Form.Label>
-                      <Form.Control
-                        type="string"
-                        value={group.name}
-                        // if the group doesnt have an id, it hasnt been uploaded to server yet
-                        disabled={readonly || !!group._id}
-                        onChange={(event) => {
-                          group.name = event.target.value;
-                          setCourseState({ loading: false, error: false, course });
-                          event.preventDefault();
-                        }}
-                      />
-                    </Form.Group>
-                  </Card.Title>
-                  <Link className="nav-link" to={`/admin/courses/${course._id}/group/${group._id}`}>
-                    <Button disabled={!readonly}>
-                      {t('ADMIN.COURSE.GROUP_GOTO')}
-                    </Button>
-                  </Link>
-                  <Card.Text>{!group.students.length ? t('ADMIN.COURSE.NO_STUDENTS_YET') :
-                  `${group.students.length} ${t('ADMIN.COURSE.STUDENTS_SIGNED_UP')}`}</Card.Text>
-                </Card.Body>
-              </Card>
-            ))}
-          </CardDeck> */}
       </Form>
     </Container>
   );

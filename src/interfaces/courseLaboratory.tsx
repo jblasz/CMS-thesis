@@ -47,9 +47,12 @@ export class CourseLaboratory implements ICourseLaboratory, Validable {
   }
 
   validate(): ValResult {
-    const root = Object.values(this.tasks).map((x) => x.validate()).find((x) => !x.ok);
+    const root = Object.keys(this.tasks)
+      .map((gid) => ({ ...this.tasks[gid].validate(), gid, _id: this.tasks[gid]._id }))
+      .find((x) => !x.ok);
+
     if (root) {
-      return root;
+      return { ok: false, error: `Task ${root._id} for group ${root.gid} error - ${root.error}` };
     }
     const { error } = joi.object().keys({
       description: joi.string().required(),
