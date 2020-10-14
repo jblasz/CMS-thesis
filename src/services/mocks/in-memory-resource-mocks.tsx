@@ -52,4 +52,14 @@ export async function putResourceMockResponse(resource: Resource) {
 
 export async function postSubmissionMockResponse(submission: Submission) {
   inMemorySubmissionMocks.push(submission);
+  return Promise.resolve({ ok: true });
+}
+
+export async function putResourceNameMockResponse(_id: string, name: string) {
+  const f = inMemoryResourceMocks.find((x) => x._id === _id);
+  if (f) {
+    f.name = name;
+    return Promise.resolve({ ok: true });
+  }
+  return Promise.reject(new Error('Resource of id not found'));
 }

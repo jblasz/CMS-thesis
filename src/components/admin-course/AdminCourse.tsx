@@ -7,7 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import { Course, CourseLanguage } from '../../interfaces/course';
-import { getCourse, setCourse } from '../../services/api/courses.service';
+import { getCourse } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
@@ -81,7 +81,7 @@ function AdminCourseComponent(): JSX.Element {
             disabled={readonly}
             onClick={async (event) => {
               event.preventDefault();
-              await setCourse(course);
+              await getAndSetCourse();
               await toggleEditState();
             }}
           >

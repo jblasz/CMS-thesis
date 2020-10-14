@@ -89,6 +89,11 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
                   {`${t('NAVBAR.ADMIN.STUDENTS')}`}
                 </Link>
               </NavDropdown.Item>
+              <NavDropdown.Item key="nav-admin-dropdown-resources" as="button">
+                <Link className="nav-link" to="/admin/resources">
+                  {`${t('NAVBAR.ADMIN.RESOURCES')}`}
+                </Link>
+              </NavDropdown.Item>
             </NavDropdown>
           ) : ''}
         </Nav>

@@ -1,0 +1,5 @@
+.hide-row, .hide-row > td {
+  padding: 0 8px !important;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}

@@ -80,7 +80,10 @@ function AdminCourseGroupComponent(): JSX.Element {
                 await getAndSetCourseGroup();
               } catch (e) {
                 console.error(e);
+                setError(e);
                 alert('failed to delete course, details in console');
+              } finally {
+                setLoading(false);
               }
             }}
           >
