@@ -3,3 +3,7 @@
   margin-top: 0px;
   margin-bottom: 0px;
 }
+
+.clickable-row, .clickable-row > * {
+  cursor: grab;
+}

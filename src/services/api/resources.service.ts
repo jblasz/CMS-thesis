@@ -1,8 +1,9 @@
 import { GetResourcesResponse } from '../../interfaces/api';
 import { Resource } from '../../interfaces/resource';
+import { getResourcesMockResponse } from '../mocks';
 import {
+  deleteResourceMockResponse,
   getResourceMockResponse,
-  getResourcesMockResponse,
   putResourceMockResponse,
   putResourceNameMockResponse,
 } from '../mocks/in-memory-resource-mocks';
@@ -33,4 +34,11 @@ export async function getResources(): Promise<GetResourcesResponse> {
  */
 export async function patchResourceName(_id: string, name: string) {
   return putResourceNameMockResponse(_id, name);
+}
+
+/**
+ * /resource/:id DELETE
+ */
+export async function deleteResource(_id: string) {
+  return deleteResourceMockResponse(_id);
 }

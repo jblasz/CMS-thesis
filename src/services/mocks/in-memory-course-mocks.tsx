@@ -16,10 +16,27 @@ import {
 } from '../../interfaces/api';
 import { getRandomStudents, getStudentMockResponse } from './in-memory-student-mocks';
 import { generateList } from '../../utils';
+import { grabRandomResource } from './in-memory-resource-mocks';
+import { UsedBy } from '../../interfaces/resource';
 
 const inMemoryCourseMocks: Course[] = [];
 
 let generatorCount = 0;
+
+export function getLabsReferencingResourceId(id: string): UsedBy[] {
+  const matches: UsedBy[] = [];
+  for (const course of inMemoryCourseMocks) {
+    for (const lab of course.laboratories) {
+      const groupId = Object.keys(lab.tasks).find((gid) => lab.tasks[gid].resourceId === id);
+      if (groupId) {
+        matches.push({
+          courseId: course._id, courseName: course.name, labId: lab._id, labName: lab.name, groupId,
+        });
+      }
+    }
+  }
+  return matches;
+}
 
 export function generateCourseMock(id = v4()) {
   const groups = generateList(2, 2).map(() => generateCourseGroupMock());
@@ -97,6 +114,7 @@ export function generateCourseTaskMock(dateFrom?: Date, duration?: number):Cours
         dateTo: new Date(date.valueOf() + duration),
       }
       : {}),
+    resourceId: grabRandomResource()._id,
   });
 }
 

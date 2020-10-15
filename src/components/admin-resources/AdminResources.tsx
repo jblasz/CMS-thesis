@@ -1,6 +1,7 @@
 import React, {
   useState, useEffect, useCallback, Fragment,
 } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Container, Form, Col, Button, Table, Collapse, InputGroup,
 } from 'react-bootstrap';
@@ -11,7 +12,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { LoadingSpinner } from '../loading-spinner';
 import { ResourceMeta } from '../../interfaces/resource';
-import { getResources, putResource, patchResourceName } from '../../services/api/resources.service';
+import {
+  getResources, putResource, patchResourceName, deleteResource,
+} from '../../services/api/resources.service';
 import './AdminResources.css';
 
 function AdminResourcesComponent(): JSX.Element {
@@ -31,6 +34,7 @@ function AdminResourcesComponent(): JSX.Element {
       setResources(r.resources);
       setLoading(false);
     } catch (e) {
+      console.error(e);
       setError(e);
     } finally {
       setLoading(false);
@@ -57,15 +61,20 @@ function AdminResourcesComponent(): JSX.Element {
           <Table responsive>
             <thead>
               <tr>
-                {t('ADMIN.RESOURCES.NAME')}
+                <th>{t('ADMIN.RESOURCES.HEADER')}</th>
               </tr>
             </thead>
             <tbody>
               {resources.map((resource, index) => (
                 <Fragment key={resource._id}>
                   <tr
+                    className="clickable-row"
                     onClick={() => {
-                      setUncollapsedIndex(index);
+                      if (index !== uncollapsedIndex) {
+                        setUncollapsedIndex(index);
+                      } else {
+                        setUncollapsedIndex(-1);
+                      }
                     }}
                   >
                     <td>
@@ -83,29 +92,51 @@ function AdminResourcesComponent(): JSX.Element {
                   >
                     <td>
                       <Collapse in={uncollapsedIndex === index}>
-                        <Form.Row>
-                          <Col md="auto" className="m-2 text-center">
-                            <Button className="mx-2"><FontAwesomeIcon icon={faDownload} /></Button>
-                            <Button className="mx-2"><FontAwesomeIcon icon={faUpload} /></Button>
-                          </Col>
-                          <Col className="m-2 text-center">
-                            <InputGroup className="mx-2">
-                              <InputGroup.Prepend>
-                                <InputGroup.Text>
-                                  {t('ADMIN.COURSES.RENAME')}
-                                </InputGroup.Text>
-                              </InputGroup.Prepend>
-                              <Form.Control
-                                value={rename}
-                                onChange={(event) => {
-                                  setRename(event.target.value);
-                                }}
-                              />
-                              <InputGroup.Append>
-                                <Button onClick={async () => {
+                        <div>
+                          <Form.Row>
+                            <Col md="auto" className="m-2 text-center">
+                              <Button className="mx-2"><FontAwesomeIcon icon={faDownload} /></Button>
+                              <Button className="mx-2"><FontAwesomeIcon icon={faUpload} /></Button>
+                            </Col>
+                            <Col className="m-2 text-center">
+                              <InputGroup className="mx-2">
+                                <InputGroup.Prepend>
+                                  <InputGroup.Text>
+                                    {t('ADMIN.RESOURCES.RENAME')}
+                                  </InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control
+                                  value={rename}
+                                  onChange={(event) => {
+                                    setRename(event.target.value);
+                                  }}
+                                />
+                                <InputGroup.Append>
+                                  <Button onClick={async () => {
+                                    try {
+                                      setLoading(true);
+                                      await patchResourceName(resource._id, rename);
+                                      await getAndSetResources();
+                                    } catch (e) {
+                                      setError(e);
+                                    } finally {
+                                      setLoading(false);
+                                    }
+                                  }}
+                                  >
+                                    <FontAwesomeIcon icon={faSave} />
+                                  </Button>
+                                </InputGroup.Append>
+                              </InputGroup>
+                            </Col>
+                            <Col md="auto" className="m-2 center-block">
+                              <Button
+                                className="mx-2"
+                                variant="danger"
+                                onClick={async () => {
                                   try {
                                     setLoading(true);
-                                    await patchResourceName(resource._id, rename);
+                                    await deleteResource(resource._id);
                                     await getAndSetResources();
                                   } catch (e) {
                                     setError(e);
@@ -113,25 +144,41 @@ function AdminResourcesComponent(): JSX.Element {
                                     setLoading(false);
                                   }
                                 }}
-                                >
-                                  <FontAwesomeIcon icon={faSave} />
-                                </Button>
-                              </InputGroup.Append>
-                            </InputGroup>
-                          </Col>
-                          <Col md="auto" className="m-2 center-block">
-                            <Button className="mx-2" variant="danger"><FontAwesomeIcon icon={faTrash} /></Button>
-                          </Col>
-                          {/* {resource.usedBy && resource.usedBy.length
-                          ? resource.usedBy.map((used) => (
-                            <Form.Row key={used.courseId}>
-                              <Link className="nav-link" to={`/admin/courses/${used.labId}`}>
-                                {`${t('ADMIN.COURSES.USED_BY_COURSE')} ${used.courseName}
-                                ${t('ADMIN.COURSES.USED_BY_LAB')} ${used.labId}`}
-                              </Link>
-                            </Form.Row>
-                          )) : t('ADMIN.COURSES.RESOURCE_NOT_USED')} */}
-                        </Form.Row>
+                              >
+                                <FontAwesomeIcon icon={faTrash} />
+
+                              </Button>
+                            </Col>
+                          </Form.Row>
+                          <Form.Row>
+                            {resource.usedBy && resource.usedBy.length ? (
+                              <Table responsive style={{ marginLeft: '10px' }}>
+                                <thead>
+                                  <tr>
+                                    <th>{t('ADMIN.RESOURCES.USED_BY_COURSE')}</th>
+                                    <th>{t('ADMIN.RESOURCES.USED_BY_LAB')}</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {resource.usedBy.map((used) => (
+                                    <tr key={`${used.courseId} - ${used.labId} - ${used.groupId}`} className="hide-row">
+                                      <td>
+                                        <Link className="nav-link" to={`/admin/courses/${used.courseId}`}>
+                                          {used.courseName}
+                                        </Link>
+                                      </td>
+                                      <td>
+                                        <Link className="nav-link" to={`/admin/courses/${used.courseId}/laboratory/${used.labId}`}>
+                                          {used.labName}
+                                        </Link>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </Table>
+                            ) : t('ADMIN.RESOURCES.NOT_USED')}
+                          </Form.Row>
+                        </div>
                       </Collapse>
                     </td>
                   </tr>
@@ -139,32 +186,38 @@ function AdminResourcesComponent(): JSX.Element {
               ))}
               <tr key="button-key">
                 <td>
-                  <Button
-                    className="mx-1"
-                    variant="primary"
-                    type="submit"
-                    onClick={async () => {
-                      try {
-                        setLoading(true);
-                        await putResource({ ...newResource, resource: new ArrayBuffer(0) });
-                        await getAndSetResources();
-                      } catch (e) {
-                        setError(e);
-                      } finally {
-                        setLoading(false);
-                      }
-                    }}
-                  >
-                    {t('ADMIN.RESOURCES.CREATE')}
-                  </Button>
-                  <Form.Control
-                    type="text"
-                    value={newResource.name}
-                    onChange={(event) => {
-                      setNewResource({ ...newResource, name: event.target.value });
-                    }}
-                  />
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      value={newResource.name}
+                      onChange={(event) => {
+                        setNewResource({ ...newResource, name: event.target.value });
+                      }}
+                    />
+                    <InputGroup.Append>
+                      <Button
+                        className="mx-1"
+                        variant="primary"
+                        type="submit"
+                        onClick={async () => {
+                          try {
+                            setLoading(true);
+                            await putResource({ ...newResource, resource: new ArrayBuffer(0) });
+                            await getAndSetResources();
+                          } catch (e) {
+                            console.error(e);
+                            setError(e);
+                          } finally {
+                            setLoading(false);
+                          }
+                        }}
+                      >
+                        {t('ADMIN.RESOURCES.CREATE')}
+                      </Button>
+                    </InputGroup.Append>
+                  </InputGroup>
                 </td>
+                <td />
               </tr>
             </tbody>
           </Table>

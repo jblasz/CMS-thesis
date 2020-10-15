@@ -127,6 +127,14 @@
       "TASK": "Task resource",
       "PUBLIC_DESCRIPTION": "Public course description",
       "UPLOAD": "Upload changes"
+    },
+    "RESOURCES": {
+      "HEADER": "Resources",
+      "RENAME": "Rename",
+      "CREATE": "Create",
+      "NOT_USED": "This resource is not used anywhere.",
+      "USED_BY_COURSE": "Used by course",
+      "USED_BY_LAB": "Lab"
     }
   }
 }

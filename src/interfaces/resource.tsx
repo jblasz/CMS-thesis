@@ -3,6 +3,7 @@ export interface UsedBy {
   courseName: string
   labId: string
   labName: string
+  groupId: string
 }
 
 export interface ResourceMeta {
