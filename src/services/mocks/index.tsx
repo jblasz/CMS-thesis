@@ -16,7 +16,10 @@ export async function getResourcesMockResponse(): Promise<GetResourcesResponse> 
   return Promise.resolve(
     {
       resources: ((await getResourceMocks())).map((x) => ({
-        _id: x._id, name: x.name, usedBy: getLabsReferencingResourceId(x._id),
+        _id: x._id,
+        name: x.name,
+        usedBy: getLabsReferencingResourceId(x._id),
+        permission: x.permission,
       })),
     },
   );

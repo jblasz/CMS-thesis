@@ -141,7 +141,7 @@ export async function getCourseGroupMockResponse(
   return Promise.reject(new Error('404 not found'));
 }
 
-export async function setCourseMockResponse(course: Course): Promise<PostCourseResponse> {
+export async function putCourseMockResponse(course: Course): Promise<PostCourseResponse> {
   course.groups.forEach((group) => {
     if (!group._id) {
       group._id = v4();
@@ -165,12 +165,22 @@ export async function setCourseMockResponse(course: Course): Promise<PostCourseR
     }
     return Promise.reject();
   }
-  inMemoryCourseMocks.push(new Course({
+  const n = new Course({
     ...course,
     _id: v4(),
-  }));
+  });
+  inMemoryCourseMocks.push(n);
 
-  return Promise.resolve({ ok: true, course: (await getCourseMockResponse(course._id)).course });
+  return Promise.resolve({ ok: true, course: (await getCourseMockResponse(n._id)).course });
+}
+
+export async function deleteCourseMockResponse(_id: string) {
+  const f = inMemoryCourseMocks.findIndex((x) => x._id === _id);
+  if (f > -1) {
+    inMemoryCourseMocks.splice(f, 1);
+    return Promise.resolve({ ok: true });
+  }
+  return Promise.reject(new Error('Course to delete not found'));
 }
 
 export async function setCourseGroupResponse(

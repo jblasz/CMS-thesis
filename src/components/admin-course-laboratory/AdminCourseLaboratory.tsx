@@ -5,6 +5,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import {
   deleteCourseLaboratory, getCourseLaboratory, putLaboratory,
 } from '../../services/api/courses.service';
@@ -75,20 +77,20 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
             {`${t('COMMON.ERROR')}: ${error}`}
           </Form.Row>
         ) : ''}
-        <Form.Row>
-          <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.LABORATORY.SET_EDIT_MODE') : t('ADMIN.LABORATORY.SET_READONLY_MODE')}</Button>
-          <Button
-            className="mx-1"
-            disabled={readonly}
-            onClick={async () => {
-              await putLaboratory(courseID, laboratory);
-              await toggleEditState();
-            }}
-          >
-            {t('ADMIN.LABORATORY.UPLOAD')}
-          </Button>
-        </Form.Row>
-        <Form.Row>
+        <Form.Row className="justify-content-between">
+          <Col>
+            <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.LABORATORY.SET_EDIT_MODE') : t('ADMIN.LABORATORY.SET_READONLY_MODE')}</Button>
+            <Button
+              className="mx-1"
+              disabled={readonly}
+              onClick={async () => {
+                await putLaboratory(courseID, laboratory);
+                await toggleEditState();
+              }}
+            >
+              {t('ADMIN.LABORATORY.UPLOAD')}
+            </Button>
+          </Col>
           <Button
             className="mx-1"
             variant="danger"
@@ -97,15 +99,16 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
               try {
                 setLoading(true);
                 await deleteCourseLaboratory(courseID, laboratory._id);
-                alert('course deleted succesfully');
+                alert('course laboratory deleted succesfully');
                 await getAndSetCourseLaboratory();
               } catch (e) {
-                console.error(e);
-                alert('failed to delete course, details in console');
+                setError(e);
+              } finally {
+                setLoading(false);
               }
             }}
           >
-            {t('ADMIN.LABORATORY.DELETE')}
+            <FontAwesomeIcon icon={faTrash} />
           </Button>
         </Form.Row>
         <Form.Row>

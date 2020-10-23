@@ -3,13 +3,14 @@ import {
   getCoursesListMockResponse,
   getCourseMockResponse,
   getLaboratoryMockResponse,
-  setCourseMockResponse,
+  putCourseMockResponse,
   getCourseGroupMockResponse,
   setCourseGroupResponse,
   deleteGroupMockResponse,
   deleteLaboratoryMockResponse,
   patchCourseGroupStudentMockResponse,
   setCourseLabMockResponse,
+  deleteCourseMockResponse,
 } from '../mocks/in-memory-course-mocks';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import {
@@ -43,8 +44,15 @@ export async function getCourse(_id: string): Promise<GetCourseResponse> {
 /**
  * /course/:id PUT
  */
-export async function setCourse(course: Course): Promise<PostCourseResponse> {
-  return setCourseMockResponse(course);
+export async function putCourse(course: Course): Promise<PostCourseResponse> {
+  return putCourseMockResponse(course);
+}
+
+/**
+ * /course/:id DELETE
+ */
+export async function deleteCourse(_id: string): Promise<ApiPostResponse> {
+  return deleteCourseMockResponse(_id);
 }
 
 /**

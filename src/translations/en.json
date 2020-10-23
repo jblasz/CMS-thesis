@@ -134,7 +134,12 @@
       "CREATE": "Create",
       "NOT_USED": "This resource is not used anywhere.",
       "USED_BY_COURSE": "Used by course",
-      "USED_BY_LAB": "Lab"
+      "USED_BY_LAB": "Lab",
+      "PERMISSIONS": "Permission",
+      "PERMISSIONS_ALL": "Anyone",
+      "PERMISSIONS_LOGGEDIN": "Logged in users",
+      "PERMISSIONS_TASKGROUP": "Lab task",
+      "PERMISSIONS_NONE": "Nobody"
     }
   }
 }

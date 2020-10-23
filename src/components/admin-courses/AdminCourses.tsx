@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Button, Container, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Course } from '../../interfaces/course';
-import { getCourses } from '../../services/api/courses.service';
+import { getCourses, putCourse } from '../../services/api/courses.service';
 
 function AdminCoursesComponent(): JSX.Element {
   const [t] = useTranslation();
@@ -34,7 +34,7 @@ function AdminCoursesComponent(): JSX.Element {
             <tr key={course._id}>
               <td>
                 <Link to={`/admin/courses/${course._id}`}>
-                  {course.name}
+                  {course.name || t('ADMIN.COURSES.UNNAMED')}
                   <br />
                   <small>{course._id}</small>
                 </Link>
@@ -56,6 +56,22 @@ function AdminCoursesComponent(): JSX.Element {
               </td>
             </tr>
           ))}
+          <tr>
+            <td>
+              <Button
+                className="mx-1"
+                variant="primary"
+                type="submit"
+                onClick={async () => {
+                  if (courses.find((x) => x.name === '')) { return; }
+                  await putCourse(new Course());
+                  await getAndSetCourses();
+                }}
+              >
+                {t('ADMIN.COURSES.CREATE_COURSE')}
+              </Button>
+            </td>
+          </tr>
         </tbody>
       </Table>
     </Container>

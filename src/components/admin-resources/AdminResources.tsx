@@ -11,9 +11,9 @@ import {
   faDownload, faSave, faTrash, faUpload,
 } from '@fortawesome/free-solid-svg-icons';
 import { LoadingSpinner } from '../loading-spinner';
-import { ResourceMeta } from '../../interfaces/resource';
+import { Permission, ResourceMeta } from '../../interfaces/resource';
 import {
-  getResources, putResource, patchResourceName, deleteResource,
+  getResources, putResource, patchResource, deleteResource,
 } from '../../services/api/resources.service';
 import './AdminResources.css';
 
@@ -21,10 +21,11 @@ function AdminResourcesComponent(): JSX.Element {
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  // const [sortDirection, setSortDirection] = useState(1);
   const [resources, setResources] = useState<ResourceMeta[]>([]);
   const [uncollapsedIndex, setUncollapsedIndex] = useState(0);
-  const [newResource, setNewResource] = useState<ResourceMeta>({ _id: '', name: '', usedBy: [] });
+  const [newResource, setNewResource] = useState<ResourceMeta>({
+    _id: '', name: '', usedBy: [], permission: Permission.ALL,
+  });
   const [rename, setRename] = useState('');
 
   const getAndSetResources = useCallback(async () => {
@@ -88,6 +89,7 @@ function AdminResourcesComponent(): JSX.Element {
                     className="hide-row"
                     onClick={() => {
                       setUncollapsedIndex(index);
+                      setRename(resources[index].name);
                     }}
                   >
                     <td>
@@ -111,11 +113,31 @@ function AdminResourcesComponent(): JSX.Element {
                                     setRename(event.target.value);
                                   }}
                                 />
+                                <InputGroup.Prepend>
+                                  <InputGroup.Text>
+                                    {t('ADMIN.RESOURCES.PERMISSIONS')}
+                                  </InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control
+                                  value={resource.permission}
+                                  as="select"
+                                  onChange={(event) => {
+                                    resource.permission = event.target.value as Permission;
+                                    setResources([...resources]);
+                                  }}
+                                >
+                                  <option value={Permission.ALL}>{t('ADMIN.RESOURCES.PERMISSIONS_ALL')}</option>
+                                  <option value={Permission.LOGGED_IN}>{t('ADMIN.RESOURCES.PERMISSIONS_LOGGEDIN')}</option>
+                                  <option value={Permission.TASK_GROUP}>{t('ADMIN.RESOURCES.PERMISSIONS_TASKGROUP')}</option>
+                                  <option value={Permission.NONE}>{t('ADMIN.RESOURCES.PERMISSIONS_NONE')}</option>
+                                </Form.Control>
                                 <InputGroup.Append>
                                   <Button onClick={async () => {
                                     try {
                                       setLoading(true);
-                                      await patchResourceName(resource._id, rename);
+                                      await patchResource(
+                                        resource._id, rename, resource.permission,
+                                      );
                                       await getAndSetResources();
                                     } catch (e) {
                                       setError(e);
@@ -146,7 +168,6 @@ function AdminResourcesComponent(): JSX.Element {
                                 }}
                               >
                                 <FontAwesomeIcon icon={faTrash} />
-
                               </Button>
                             </Col>
                           </Form.Row>

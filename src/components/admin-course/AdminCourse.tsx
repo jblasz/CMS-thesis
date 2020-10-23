@@ -6,8 +6,10 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Course, CourseLanguage } from '../../interfaces/course';
-import { getCourse } from '../../services/api/courses.service';
+import { deleteCourse, getCourse, putCourse } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
@@ -16,7 +18,7 @@ function AdminCourseComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
   const [t] = useTranslation();
 
-  const [course, setCourseState] = useState(
+  const [course, setCourseState] = useState<Course>(
     new Course({
       _id: id,
       description: '',
@@ -38,10 +40,8 @@ function AdminCourseComponent(): JSX.Element {
 
   const validateAndSetCourse = useCallback((crs: Course) => {
     const res = crs.validate();
-    if (!res.ok) {
-      setError(res.error || '');
-    }
-    setCourseState(crs);
+    setError(res.error || '');
+    setCourseState(new Course(crs));
   }, []);
 
   const getAndSetCourse = useCallback(async () => {
@@ -72,20 +72,41 @@ function AdminCourseComponent(): JSX.Element {
             {`${t('COMMON.ERROR')}: ${error}`}
           </Form.Row>
         ) : ''}
-        <Form.Row>
-          <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
+        <Form.Row className="justify-content-between">
+          <Col>
+            <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
+            <Button
+              className="mx-1"
+              variant="primary"
+              type="submit"
+              disabled={readonly}
+              onClick={async (event) => {
+                event.preventDefault();
+                await putCourse(course);
+                await getAndSetCourse();
+                await toggleEditState();
+              }}
+            >
+              {t('ADMIN.COURSE.SAVE_CHANGES')}
+            </Button>
+          </Col>
           <Button
-            className="mx-1"
-            variant="primary"
-            type="submit"
             disabled={readonly}
-            onClick={async (event) => {
-              event.preventDefault();
-              await getAndSetCourse();
-              await toggleEditState();
+            className="mx-2"
+            variant="danger"
+            onClick={async () => {
+              try {
+                setLoading(true);
+                await deleteCourse(course._id);
+                alert('course deleted successfully');
+              } catch (e) {
+                setError(e);
+              } finally {
+                setLoading(false);
+              }
             }}
           >
-            {t('ADMIN.COURSE.SAVE_CHANGES')}
+            <FontAwesomeIcon icon={faTrash} />
           </Button>
         </Form.Row>
         <Form.Row>
@@ -115,6 +136,18 @@ function AdminCourseComponent(): JSX.Element {
               <option>en</option>
               <option>pl</option>
             </Form.Control>
+          </Form.Group>
+          <Form.Group as={Col} key="semester">
+            <Form.Label>{t('ADMIN.COURSE.SEMESTER')}</Form.Label>
+            <Form.Control
+              type="string"
+              value={course.semester}
+              disabled={readonly}
+              onChange={(event) => {
+                course.semester = event.target.value;
+                validateAndSetCourse(course);
+              }}
+            />
           </Form.Group>
         </Form.Row>
         <Form.Row className="mb-2">
