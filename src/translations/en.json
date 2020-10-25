@@ -148,5 +148,16 @@
       "USOSID": "USOS id",
       "REGISTEREDAT": "Registered at"
     }
+  },
+  "PENDING": {
+    "LABS": {
+      "TITLE": "Upcoming labs",
+      "TIMERANGE": "next 7 days",
+      "COURSENAME": "Course",
+      "LABNAME": "Lab",
+      "GROUPNAME": "Group",
+      "STARTSAT": "Starts",
+      "ENDSAT": "Ends"
+    }
   }
 }

@@ -8,6 +8,7 @@ import {
   ApiPostResponse,
   GetCourseGroupResponse,
   GetCourseResponse,
+  GetDashboardLaboratoriesResponse,
   GetLaboratoryResponse,
   PatchCourseGroupStudentResponse,
   PostCourseGroupResponse,
@@ -38,12 +39,14 @@ export function getLabsReferencingResourceId(id: string): UsedBy[] {
   return matches;
 }
 
+let labCount = 0;
+
 export function generateCourseMock(id = v4()) {
   const groups = generateList(2, 2).map(() => generateCourseGroupMock());
   if (id === 'staticCourseID') {
     groups.unshift(generateCourseGroupMock('staticGroupID'));
   }
-  labCount = 1;
+  labCount = 0;
   const topush = new Course({
     _id: id,
     name: `Course Name Mk ${generatorCount++}`,
@@ -68,15 +71,10 @@ export function generateCourseGroupMock(id = v4()): CourseGroup {
   });
 }
 
-let labCount = 1;
-
 export function generateLaboratoryMock(groups: CourseGroup[] = [], id = v4()): CourseLaboratory {
-  const rootDate = new Date(
-    2020,
-    labCount,
-    Math.ceil(Math.random() * 14),
-    10,
-  );
+  const rootDate = new Date();
+  rootDate.setDate(rootDate.getDate() + Math.ceil((Math.random() - 0.5) * 28));
+  rootDate.setMonth(rootDate.getMonth() + labCount);
   const tasks = (groups && groups.reduce(
     (agg: TaskToGroupMapping, group) => ({
       ...agg,
@@ -315,4 +313,47 @@ export async function deleteLaboratoryMockResponse(
     return Promise.resolve({ ok: true });
   }
   return Promise.reject(new Error('No lab of this id'));
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function getDashboardLaboratoriesMockResponse(days: number):
+Promise<GetDashboardLaboratoriesResponse> {
+  const d1 = new Date();
+  d1.setDate(d1.getDate() + 1);
+  const d2 = new Date();
+  d2.setDate(d2.getDate() + 7);
+  return Promise.resolve({
+    laboratories: [
+      {
+        startsAt: new Date(new Date().valueOf() - 60 * 60 * 1000),
+        endsAt: new Date(new Date().valueOf() + 60 * 60 * 1000),
+        courseId: v4(),
+        courseName: 'some course name',
+        labId: v4(),
+        groupId: v4(),
+        groupName: 'some group',
+        labName: 'some lab name',
+      },
+      {
+        startsAt: d1,
+        endsAt: new Date(d1.valueOf() + 60 * 60 * 1000),
+        courseId: v4(),
+        courseName: 'some course name',
+        labId: v4(),
+        groupId: v4(),
+        groupName: 'some group',
+        labName: 'some lab name',
+      },
+      {
+        startsAt: d2,
+        endsAt: new Date(d2.valueOf() + 60 * 60 * 1000),
+        courseId: v4(),
+        courseName: 'some course name',
+        labId: v4(),
+        groupId: v4(),
+        groupName: 'some group',
+        labName: 'some lab name',
+      },
+    ],
+  });
 }

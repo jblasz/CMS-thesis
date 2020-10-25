@@ -24,7 +24,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [readonly, setReadonly] = useState(true);
-  const [{ chosenGroupID }, setChosenGroup] = useState<{chosenGroupID: string}>({ chosenGroupID: '' });
+  const [chosenGroupID, setChosenGroup] = useState('');
   const [resourceNames, setResourceNames] = useState<ResourceMeta[]>([]);
 
   const toggleEditState = async () => {
@@ -42,7 +42,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
     setError(res.error || '');
     setLaboratory(lab);
     const choice = taskID || (Object.keys(lab.tasks) && Object.keys(lab.tasks)[0]) || '';
-    setChosenGroup(choice ? { chosenGroupID: choice } : { chosenGroupID: '' });
+    setChosenGroup(choice || '');
   }, []);
 
   const getAndSetCourseLaboratory = useCallback(async () => {
@@ -53,7 +53,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
       validateAndSetLaboratory(lab);
       setResourceNames(r2.resources);
       const firstGroup = Object.keys(lab.tasks) && Object.keys(lab.tasks)[0];
-      setChosenGroup({ chosenGroupID: firstGroup || '' });
+      setChosenGroup(firstGroup || '');
       setLoading(false);
     } catch (e) {
       console.error(e);
@@ -127,7 +127,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                 value={groupID}
                 onClick={() => {
                   setChosenGroup(
-                    { chosenGroupID: groupID },
+                    groupID,
                   );
                 }}
               >

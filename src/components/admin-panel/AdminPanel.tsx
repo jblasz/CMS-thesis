@@ -1,10 +1,20 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import {
+  CardDeck, Container, Jumbotron, Row,
+} from 'react-bootstrap';
+import { PendingCoursesCard } from '../info-cards/PendingCoursesCard';
 
 export function AdminPanelComponent(): JSX.Element {
   return (
     <Container>
-      Admin dashboard.
+      <Row>
+        <CardDeck>
+          <PendingCoursesCard />
+        </CardDeck>
+      </Row>
+      <Jumbotron>
+        Admin panel component.
+      </Jumbotron>
     </Container>
   );
 }

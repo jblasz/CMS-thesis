@@ -72,3 +72,18 @@ export interface GetSubmissionResponse {
 export interface PatchSubmissionResponse extends ApiPostResponse {
   submission: SubmissionMeta
 }
+
+export interface PendingLaboratory {
+  courseId: string
+  courseName: string
+  labId: string
+  labName: string
+  groupId: string
+  groupName: string
+  startsAt: Date
+  endsAt: Date
+}
+
+export interface GetDashboardLaboratoriesResponse {
+  laboratories: PendingLaboratory[]
+}
