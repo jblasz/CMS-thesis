@@ -1,10 +1,58 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import {
+  Container, Table,
+} from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { Student } from '../../interfaces/student';
+import { getStudents } from '../../services/api/students.service';
+import { formatDate } from '../../utils';
 
 function AdminStudentsComponent(): JSX.Element {
+  const [t] = useTranslation();
+
+  const [students, setStudents] = useState<Student[]>([]);
+
+  const getAndSetStudents = async () => {
+    setStudents((await getStudents()).students.map((x) => new Student(x)));
+  };
+
+  useEffect(() => {
+    getAndSetStudents();
+  }, []);
+
   return (
     <Container>
-      Admin students component
+      <Table responsive>
+        <thead>
+          <tr>
+            <th>{t('ADMIN.STUDENTS.NAME')}</th>
+            <th>{t('ADMIN.STUDENTS.EMAIL')}</th>
+            <th>{t('ADMIN.STUDENTS.USOSID')}</th>
+            <th>{t('ADMIN.STUDENTS.REGISTEREDAT')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {students.map((student) => (
+            <tr key={student._id}>
+              <td>
+                <Link to={`/admin/students/${student._id}`}>
+                  {student.name || student._id}
+                </Link>
+              </td>
+              <td>
+                {student.email}
+              </td>
+              <td>
+                {student.usosId}
+              </td>
+              <td>
+                {(student.registeredAt && formatDate(student.registeredAt)) || ''}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     </Container>
   );
 }

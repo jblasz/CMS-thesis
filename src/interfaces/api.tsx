@@ -1,7 +1,8 @@
 import { ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
-import { ResourceMeta } from './resource';
+import { ResourceMeta, SubmissionMeta } from './resource';
+import { IStudent } from './student';
 
 export interface ApiPostResponse {
   ok: boolean
@@ -50,4 +51,24 @@ export interface PostCodeResponse extends ApiPostResponse {
 
 export interface GetResourcesResponse {
   resources: ResourceMeta[]
+}
+
+export interface GetStudentsResponse {
+  students: IStudent[]
+}
+
+export interface GetStudentResponse {
+  student: IStudent
+}
+
+export interface GetSubmissionsResponse {
+  submissions: SubmissionMeta[]
+}
+
+export interface GetSubmissionResponse {
+  submission: SubmissionMeta
+}
+
+export interface PatchSubmissionResponse extends ApiPostResponse {
+  submission: SubmissionMeta
 }

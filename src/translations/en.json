@@ -19,7 +19,9 @@
       "DESCR": "Admin",
       "DASHBOARD": "Dashboard",
       "COURSES": "Courses",
-      "STUDENTS": "Students"
+      "STUDENTS": "Students",
+      "RESOURCES": "Resources",
+      "SUBMISSIONS": "Submissions"
     }
   },
   "FOOTER": {
@@ -140,6 +142,11 @@
       "PERMISSIONS_LOGGEDIN": "Logged in users",
       "PERMISSIONS_TASKGROUP": "Lab task",
       "PERMISSIONS_NONE": "Nobody"
+    },
+    "STUDENTS": {
+      "NAME": "Name",
+      "USOSID": "USOS id",
+      "REGISTEREDAT": "Registered at"
     }
   }
 }

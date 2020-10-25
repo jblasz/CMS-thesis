@@ -1,11 +1,11 @@
 import { loremIpsum } from 'lorem-ipsum';
 import { v4 } from 'uuid';
-import { Permission, Resource, Submission } from '../../interfaces/resource';
+import { Permission, ResourceMeta, SubmissionMeta } from '../../interfaces/resource';
 import { generateList } from '../../utils';
 
-const inMemoryResourceMocks: Resource[] = [];
+const inMemoryResourceMocks: ResourceMeta[] = [];
 
-const inMemorySubmissionMocks: Submission[] = [];
+const inMemorySubmissionMocks: SubmissionMeta[] = [];
 
 export function getResourceMocks() {
   return [...inMemoryResourceMocks];
@@ -20,8 +20,8 @@ export function grabRandomResource() {
     inMemoryResourceMocks.push({
       _id: v4(),
       name: loremIpsum().split(' ').slice(0, 3).join(' '),
-      resource: new ArrayBuffer(0),
       permission: Permission.ALL,
+      usedBy: [],
     });
   }
   return inMemoryResourceMocks[roll(0, inMemoryResourceMocks.length)];
@@ -32,7 +32,7 @@ export function generateResourceMocks(count = 10) {
     {
       _id: v4(),
       name: loremIpsum().split(' ').slice(0, 3).join(' '),
-      resource: new ArrayBuffer(0),
+      usedBy: [],
       permission: Permission.ALL,
     },
   ));
@@ -46,7 +46,7 @@ export async function getResourceMockResponse(id: string) {
   return Promise.reject(new Error('Resource of given id not found'));
 }
 
-export async function putResourceMockResponse(resource: Resource) {
+export async function putResourceMockResponse(resource: ResourceMeta) {
   if (resource._id) {
     const f = inMemoryResourceMocks.findIndex((x) => x._id === resource._id);
     if (f > -1) {
@@ -54,11 +54,11 @@ export async function putResourceMockResponse(resource: Resource) {
       return Promise.resolve(await getResourceMockResponse(resource._id));
     }
   } else {
-    const topush = {
+    const topush: ResourceMeta = {
       _id: v4(),
-      resource: resource.resource,
       name: resource.name,
       permission: Permission.ALL,
+      usedBy: [],
     };
     inMemoryResourceMocks.push(topush);
     return Promise.resolve(await getResourceMockResponse(topush._id));
@@ -67,7 +67,7 @@ export async function putResourceMockResponse(resource: Resource) {
   return Promise.reject(new Error('Resource has id, but isnt in memory'));
 }
 
-export async function postSubmissionMockResponse(submission: Submission) {
+export async function postSubmissionMockResponse(submission: SubmissionMeta) {
   inMemorySubmissionMocks.push(submission);
   return Promise.resolve({ ok: true });
 }

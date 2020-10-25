@@ -33,3 +33,16 @@ export function getStudentMockResponse(id: string) {
   const student = inMemoryStudentMocks.find((x) => x._id === id);
   return student ? Promise.resolve({ student }) : Promise.reject();
 }
+
+export function getStudentsMockResponse() {
+  return Promise.resolve({ students: inMemoryStudentMocks.map((x) => new Student(x)) });
+}
+
+export function deleteStudentMockResponse(id: string) {
+  const f = inMemoryStudentMocks.findIndex((x) => x._id === id);
+  if (f > -1) {
+    inMemoryStudentMocks.splice(f, 1);
+    return Promise.resolve({ ok: true });
+  }
+  return Promise.reject(new Error('Student of this id not found'));
+}

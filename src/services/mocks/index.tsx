@@ -1,14 +1,23 @@
 import { GetResourcesResponse } from '../../interfaces/api';
 import { generateList } from '../../utils';
-import { generateCourseMock, getLabsReferencingResourceId } from './in-memory-course-mocks';
+import { generateCourseMock, getCoursesListMockResponse, getLabsReferencingResourceId } from './in-memory-course-mocks';
 import { generateResourceMocks, getResourceMocks } from './in-memory-resource-mocks';
-import { generateStudentMocks } from './in-memory-student-mocks';
+import { generateStudentMocks, getStudentsMockResponse } from './in-memory-student-mocks';
+import { generateSubmissionMock } from './in-memory-submissions-mocks';
 
-export function populateInMemoryDBWithSomeMocks(count = 5) {
+export async function populateInMemoryDBWithSomeMocks(count = 5) {
   generateStudentMocks(100);
   generateResourceMocks(10);
   generateCourseMock('staticCourseID');
   generateList(count).forEach(() => generateCourseMock());
+  const { students } = await getStudentsMockResponse();
+  const tasks = (await getCoursesListMockResponse())
+    .courses
+    .map((x) => Object.values(x.laboratories[0].tasks)[0]);
+  generateList(5).forEach(() => generateSubmissionMock(
+    tasks[Math.floor(Math.random() * tasks.length)],
+    students[Math.floor(Math.random() * students.length)],
+  ));
   console.log('generated some mocks for in-memory');
 }
 

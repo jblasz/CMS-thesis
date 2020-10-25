@@ -223,7 +223,7 @@ function AdminResourcesComponent(): JSX.Element {
                         onClick={async () => {
                           try {
                             setLoading(true);
-                            await putResource({ ...newResource, resource: new ArrayBuffer(0) });
+                            await putResource({ ...newResource }, new ArrayBuffer(0));
                             await getAndSetResources();
                           } catch (e) {
                             console.error(e);

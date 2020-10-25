@@ -19,7 +19,6 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
   const [t] = useTranslation();
   const { isAuthenticated } = useAuth0();
 
-  console.log(useAuth0());
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top" collapseOnSelect>
       <Link to="/">
@@ -92,6 +91,11 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               <NavDropdown.Item key="nav-admin-dropdown-resources" as="button">
                 <Link className="nav-link" to="/admin/resources">
                   {`${t('NAVBAR.ADMIN.RESOURCES')}`}
+                </Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item key="nav-admin-dropdown-submissions" as="button">
+                <Link className="nav-link" to="/admin/submissions">
+                  {t('NAVBAR.ADMIN.SUBMISSIONS')}
                 </Link>
               </NavDropdown.Item>
             </NavDropdown>

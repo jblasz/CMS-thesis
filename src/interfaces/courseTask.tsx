@@ -8,6 +8,8 @@ export interface ICourseTask {
   dateTo?: Date
   gracePeriod: number
   resourceId?: string
+  forLabName?: string
+  forLabId?: string
 }
 
 export class CourseTask implements ICourseTask, Validable {
@@ -23,11 +25,17 @@ export class CourseTask implements ICourseTask, Validable {
 
   resourceId?: string
 
+  forLabName?: string
+
+  forLabId?: string
+
   constructor(o?: ICourseTask) {
     if (o) {
       this._id = o._id || '';
       this.description = o.description || '';
       this.resourceId = o.resourceId || '';
+      this.forLabId = o.forLabId || '';
+      this.forLabName = o.forLabName || '';
       if (o.dateFrom) { this.dateFrom = new Date(o.dateFrom); }
       if (o.dateTo) { this.dateTo = new Date(o.dateTo); }
     }

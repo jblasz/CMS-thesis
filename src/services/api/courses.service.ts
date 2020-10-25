@@ -23,7 +23,7 @@ import {
   ApiPostResponse,
   PatchCourseGroupStudentResponse,
 } from '../../interfaces/api';
-import { Submission } from '../../interfaces/resource';
+import { SubmissionMeta } from '../../interfaces/resource';
 import { postSubmissionMockResponse } from '../mocks/in-memory-resource-mocks';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 
@@ -118,7 +118,7 @@ export async function deleteCourseLaboratory(
 /**
  * /course/:id/laboratory/:id2/submission POST
  */
-export async function postSubmission(submission: Submission) {
+export async function postSubmission(submission: SubmissionMeta) {
   return postSubmissionMockResponse(submission);
 }
 
