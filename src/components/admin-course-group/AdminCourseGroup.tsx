@@ -1,14 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Container, Form, Button, Table, Col,
+  Container, Form, Button, Table, InputGroup,
 } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { faSort } from '@fortawesome/free-solid-svg-icons';
+import { faSort, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { deleteCourseGroup, getCourseGroup, patchCourseGroupStudent } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
+import { getStudents } from '../../services/api/students.service';
+
+interface BaseStudent {
+  id: string
+  name?: string
+}
 
 function AdminCourseGroupComponent(): JSX.Element {
   const { groupID, courseID } = useParams<{groupID: string, courseID: string}>();
@@ -17,29 +23,42 @@ function AdminCourseGroupComponent(): JSX.Element {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [group, setGroup] = useState(new CourseGroup());
   const [sortDirection, setSortDirection] = useState(1);
-  const [newStudentName, setNewStudentName] = useState('');
+  const [newStudent, setNewStudent] = useState<BaseStudent>();
   const [readonly, setReadonly] = useState(true);
+  const [
+    { students, group },
+    setGroupAndStudents,
+  ] = useState<{
+    students: BaseStudent[],
+    group: CourseGroup}>({ students: [], group: new CourseGroup() });
 
   const toggleEditState = async () => {
-    await getAndSetCourseGroup();
+    await getAndSetBoth();
     setReadonly(!readonly);
   };
 
-  const validateAndSetCourseGroup = useCallback((cgroup: CourseGroup) => {
-    const res = cgroup.validate();
+  const validateAndSetCourseGroup = useCallback((_group: CourseGroup, _students: BaseStudent[]) => {
+    const res = _group.validate();
     if (res.error) {
       setError(res.error);
     }
-    setGroup(cgroup);
+    setGroupAndStudents({ group: _group, students: _students });
   }, []);
 
-  const getAndSetCourseGroup = useCallback(async () => {
+  const getAndSetBoth = useCallback(async () => {
     try {
       setLoading(true);
-      const c = await getCourseGroup(courseID, groupID);
-      validateAndSetCourseGroup(new CourseGroup(c.group));
+      const [{ group: _group }, { students: _students }] = await Promise.all(
+        [getCourseGroup(courseID, groupID), getStudents()],
+      );
+      const filtered = _students
+        .map((x) => ({ id: x._id, name: x.name }))
+        .filter((x) => !_group.students.find((y) => y._id === x.id));
+      validateAndSetCourseGroup(
+        new CourseGroup(_group), filtered,
+      );
+      setNewStudent(filtered[0]);
     } catch (e) {
       console.error(e);
       setError(e);
@@ -49,8 +68,8 @@ function AdminCourseGroupComponent(): JSX.Element {
   }, [groupID, courseID, validateAndSetCourseGroup]);
 
   useEffect(() => {
-    getAndSetCourseGroup();
-  }, [groupID, getAndSetCourseGroup]);
+    getAndSetBoth();
+  }, [groupID, getAndSetBoth]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -58,18 +77,15 @@ function AdminCourseGroupComponent(): JSX.Element {
 
   return (
     <Container>
-      <Form className="my-2">
+      <Form>
         {error ? (
           <Form.Row className="error-strip">
             {`${t('COMMON.ERROR')}: ${error}`}
           </Form.Row>
         ) : ''}
-        <Form.Row>
-          <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
-        </Form.Row>
-        <Form.Row>
+        <Form.Row className="justify-content-between my-2">
+          <Button onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
           <Button
-            className="mx-1"
             variant="danger"
             disabled={readonly}
             onClick={async () => {
@@ -77,7 +93,7 @@ function AdminCourseGroupComponent(): JSX.Element {
                 setLoading(true);
                 await deleteCourseGroup(group._id);
                 alert('course deleted succesfully');
-                await getAndSetCourseGroup();
+                await getAndSetBoth();
               } catch (e) {
                 console.error(e);
                 setError(e);
@@ -87,41 +103,53 @@ function AdminCourseGroupComponent(): JSX.Element {
               }
             }}
           >
-            {t('ADMIN.COURSE.DELETE')}
+            <FontAwesomeIcon icon={faTrash} />
           </Button>
         </Form.Row>
-        <Form.Row>
-          <Col>
+        <Form.Row className="my-2">
+          <InputGroup>
             <Form.Control
-              type="text"
-              value={newStudentName}
+              style={{ maxWidth: '500px' }}
+              as="select"
+              value={newStudent?.id}
               disabled={readonly}
               onChange={
-                (e) => setNewStudentName(e.target.value)
+                (e) => setNewStudent(students.find((x) => x.id === e.target.value))
               }
-            />
-          </Col>
-          <Col>
-            <Button
-              variant="primary"
-              disabled={readonly}
-              onClick={async () => {
-                try {
-                  setLoading(true);
-                  await patchCourseGroupStudent(courseID, groupID, newStudentName);
-                  await getAndSetCourseGroup();
-                } catch (e) {
-                  alert('failed to add student');
-                  console.error(e);
-                  setError(e);
-                } finally {
-                  setLoading(false);
-                }
-              }}
             >
-              {t('ADMIN.COURSE.ADD_STUDENT')}
-            </Button>
-          </Col>
+              {students.map(
+                (student) => (
+                  <option key={student.id} value={student.id}>
+                    {student.name || student.id}
+                  </option>
+                ),
+              )}
+            </Form.Control>
+            <InputGroup.Append>
+              <Button
+                variant="primary"
+                disabled={readonly}
+                onClick={async () => {
+                  try {
+                    if (!newStudent) {
+                      return;
+                    }
+                    setLoading(true);
+                    await patchCourseGroupStudent(courseID, groupID, newStudent?.id);
+                    await getAndSetBoth();
+                  } catch (e) {
+                    alert('failed to add student');
+                    console.error(e);
+                    setError(e);
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+              >
+                {t('ADMIN.COURSE.ADD_STUDENT')}
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
         </Form.Row>
       </Form>
       <Table responsive>

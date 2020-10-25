@@ -46,22 +46,12 @@ export async function getResourceMockResponse(id: string) {
   return Promise.reject(new Error('Resource of given id not found'));
 }
 
-export async function putResourceMockResponse(resource: ResourceMeta) {
-  if (resource._id) {
-    const f = inMemoryResourceMocks.findIndex((x) => x._id === resource._id);
+export async function putResourceMockResponse(id: string) {
+  if (id) {
+    const f = inMemoryResourceMocks.findIndex((x) => x._id === id);
     if (f > -1) {
-      inMemoryResourceMocks[f] = resource;
-      return Promise.resolve(await getResourceMockResponse(resource._id));
+      return Promise.resolve(await getResourceMockResponse(id));
     }
-  } else {
-    const topush: ResourceMeta = {
-      _id: v4(),
-      name: resource.name,
-      permission: Permission.ALL,
-      usedBy: [],
-    };
-    inMemoryResourceMocks.push(topush);
-    return Promise.resolve(await getResourceMockResponse(topush._id));
   }
 
   return Promise.reject(new Error('Resource has id, but isnt in memory'));
@@ -73,13 +63,23 @@ export async function postSubmissionMockResponse(submission: SubmissionMeta) {
 }
 
 export async function patchResourceMockResponse(_id: string, name: string, permission: Permission) {
-  const f = inMemoryResourceMocks.find((x) => x._id === _id);
-  if (f) {
-    f.name = name;
-    f.permission = permission;
-    return Promise.resolve({ ok: true });
+  if (_id) {
+    const f = inMemoryResourceMocks.find((x) => x._id === _id);
+    if (f) {
+      f.name = name;
+      f.permission = permission;
+      return Promise.resolve({ ok: true, resource: await getResourceMockResponse(f._id) });
+    }
+    return Promise.reject(new Error('Resource of id not found'));
   }
-  return Promise.reject(new Error('Resource of id not found'));
+  const topush: ResourceMeta = {
+    _id: v4(),
+    name: '',
+    permission: Permission.ALL,
+    usedBy: [],
+  };
+  inMemoryResourceMocks.push(topush);
+  return Promise.resolve({ ok: true, resource: await getResourceMockResponse(topush._id) });
 }
 
 export async function deleteResourceMockResponse(_id: string) {

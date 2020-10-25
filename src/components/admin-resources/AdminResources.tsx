@@ -13,7 +13,7 @@ import {
 import { LoadingSpinner } from '../loading-spinner';
 import { Permission, ResourceMeta } from '../../interfaces/resource';
 import {
-  getResources, putResource, patchResource, deleteResource,
+  getResources, patchResource, deleteResource,
 } from '../../services/api/resources.service';
 import './AdminResources.css';
 
@@ -223,7 +223,7 @@ function AdminResourcesComponent(): JSX.Element {
                         onClick={async () => {
                           try {
                             setLoading(true);
-                            await putResource({ ...newResource }, new ArrayBuffer(0));
+                            await patchResource('', newResource.name, newResource.permission);
                             await getAndSetResources();
                           } catch (e) {
                             console.error(e);

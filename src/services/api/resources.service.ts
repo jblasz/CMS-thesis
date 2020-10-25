@@ -1,5 +1,5 @@
 import { GetResourcesResponse } from '../../interfaces/api';
-import { Permission, ResourceMeta } from '../../interfaces/resource';
+import { Permission } from '../../interfaces/resource';
 import { getResourcesMockResponse } from '../mocks';
 import {
   deleteResourceMockResponse,
@@ -7,6 +7,13 @@ import {
   patchResourceMockResponse,
   putResourceMockResponse,
 } from '../mocks/in-memory-resource-mocks';
+
+/**
+ * /resource GET
+ */
+export async function getResources(): Promise<GetResourcesResponse> {
+  return getResourcesMockResponse();
+}
 
 /**
  * /resource/:id GET
@@ -19,15 +26,8 @@ export async function getResource(_id: string) {
  * /resource/:id PUT
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function putResource(resource: ResourceMeta, bytes: ArrayBuffer) {
-  return putResourceMockResponse(resource);
-}
-
-/**
- * /resource GET
- */
-export async function getResources(): Promise<GetResourcesResponse> {
-  return getResourcesMockResponse();
+export async function putResource(id: string, bytes: ArrayBuffer) {
+  return putResourceMockResponse(id);
 }
 
 /**
