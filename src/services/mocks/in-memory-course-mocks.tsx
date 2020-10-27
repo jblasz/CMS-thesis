@@ -133,8 +133,10 @@ export async function getCourseGroupMockResponse(
 ): Promise<GetCourseGroupResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   const group = course && course.groups.find((x) => x._id === groupID);
-  if (group) {
-    return Promise.resolve({ group: new CourseGroup(group) });
+  if (course && group) {
+    return Promise.resolve(
+      { group: new CourseGroup(group), courseId: course?._id, courseName: course?.name },
+    );
   }
   return Promise.reject(new Error('404 not found'));
 }
@@ -224,7 +226,9 @@ export async function getLaboratoryMockResponse(
         lab.tasks[group._id] = new CourseTask();
       }
     });
-    return Promise.resolve({ laboratory: new CourseLaboratory(lab) });
+    return Promise.resolve(
+      { laboratory: new CourseLaboratory(lab), courseName: course.name, courseId: course._id },
+    );
   }
   return Promise.reject(new Error('404 not found'));
 }
@@ -333,6 +337,7 @@ Promise<GetDashboardLaboratoriesResponse> {
         groupId: v4(),
         groupName: 'some group',
         labName: 'some lab name',
+        active: true,
       },
       {
         startsAt: d1,
@@ -343,6 +348,7 @@ Promise<GetDashboardLaboratoriesResponse> {
         groupId: v4(),
         groupName: 'some group',
         labName: 'some lab name',
+        active: false,
       },
       {
         startsAt: d2,
@@ -353,6 +359,7 @@ Promise<GetDashboardLaboratoriesResponse> {
         groupId: v4(),
         groupName: 'some group',
         labName: 'some lab name',
+        active: true,
       },
     ],
   });

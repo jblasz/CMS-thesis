@@ -5,5 +5,5 @@
 }
 
 .clickable-row, .clickable-row > * {
-  cursor: grab;
+  cursor: grab !important;
 }

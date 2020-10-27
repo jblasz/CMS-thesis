@@ -22,6 +22,7 @@ import {
   GetLaboratoryResponse,
   ApiPostResponse,
   PatchCourseGroupStudentResponse,
+  PutCourseLaboratoryResponse,
 } from '../../interfaces/api';
 import { SubmissionMeta } from '../../interfaces/resource';
 import { postSubmissionMockResponse } from '../mocks/in-memory-resource-mocks';
@@ -31,7 +32,8 @@ import { CourseLaboratory } from '../../interfaces/courseLaboratory';
  * /courses GET
  */
 export async function getCourses(): Promise<GetCoursesResponse> {
-  return getCoursesListMockResponse();
+  const { courses } = await getCoursesListMockResponse();
+  return { courses: courses.map((x) => new Course(x)) };
 }
 
 /**
@@ -96,7 +98,7 @@ export async function getCourseLaboratory(
 export async function putLaboratory(
   courseID: string,
   lab: CourseLaboratory,
-): Promise<GetLaboratoryResponse> {
+): Promise<PutCourseLaboratoryResponse> {
   const { error } = lab.validate();
   if (error) {
     console.error(error);

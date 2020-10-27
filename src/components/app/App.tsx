@@ -45,7 +45,7 @@ function App():JSX.Element {
       <header>
         <NavigationBarComponent courses={courses} />
       </header>
-      <Container fluid>
+      <Container className="content-wrap">
         <main>
           <Switch>
             <Route exact path="/" component={HomeComponent} />
@@ -71,10 +71,8 @@ function App():JSX.Element {
             <Route exact path="/404" component={Component404} />
           </Switch>
         </main>
-      </Container>
-      <footer>
         <FooterComponent />
-      </footer>
+      </Container>
     </div>
   );
 }

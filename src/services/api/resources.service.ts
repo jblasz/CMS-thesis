@@ -1,4 +1,4 @@
-import { GetResourcesResponse } from '../../interfaces/api';
+import { GetResourcesResponse, PatchResourceResponse } from '../../interfaces/api';
 import { Permission } from '../../interfaces/resource';
 import { getResourcesMockResponse } from '../mocks';
 import {
@@ -33,7 +33,9 @@ export async function putResource(id: string, bytes: ArrayBuffer) {
 /**
  * /resource/:id PATCH
  */
-export async function patchResource(_id: string, name: string, permission: Permission) {
+export async function patchResource(
+  _id: string, name: string, permission: Permission,
+): Promise<PatchResourceResponse> {
   return patchResourceMockResponse(_id, name, permission);
 }
 

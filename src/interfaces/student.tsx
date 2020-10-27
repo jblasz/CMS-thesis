@@ -1,7 +1,7 @@
 export interface IStudent {
   _id: string
   registeredAt?: Date
-  name?: string
+  name: string
   email?: string
   usosId?: string
 }
@@ -9,7 +9,7 @@ export interface IStudent {
 export class Student implements IStudent {
   _id = ''
 
-  name?: string
+  name = ''
 
   email?: string
 

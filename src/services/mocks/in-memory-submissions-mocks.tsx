@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import { CourseTask } from '../../interfaces/courseTask';
-import { SubmissionMeta } from '../../interfaces/resource';
+import { SubmissionGrade, SubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 
 const inMemorySubmissions: SubmissionMeta[] = [];
@@ -8,15 +8,26 @@ const inMemorySubmissions: SubmissionMeta[] = [];
 export function generateSubmissionMock(task: CourseTask, student: Student) {
   inMemorySubmissions.push({
     _id: v4(),
-    forLabID: task.forLabId,
-    forLabName: task.forLabName,
-    note: '',
+    forLabID: task.forLabId || v4(),
+    forLabName: task.forLabName || 'lab name',
+    note: 'submission note',
     submittedAt: new Date(0),
     submittedBy: student,
+    final: Math.random() > 0.5,
+    forCourseID: v4(),
+    forCourseName: 'course name',
+    forGroupID: v4(),
+    forGroupName: 'group name',
+    grade: Math.random() > 0.5
+      ? SubmissionGrade.A
+      : Math.random() > 0.5 ? SubmissionGrade.F : undefined,
   });
 }
 
-export function getSubmissionsMockResponse() {
+export function getSubmissionsMockResponse(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  courseFilter: string, studentFilter: string, statusFilter: number,
+) {
   return Promise.resolve({ submissions: inMemorySubmissions.map((x) => ({ ...x })) });
 }
 

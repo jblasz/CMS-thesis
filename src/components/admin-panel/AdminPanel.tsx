@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  CardDeck, Container, Jumbotron, Row,
+  CardDeck, Container, Row,
 } from 'react-bootstrap';
+import { AdminSummaryCard } from '../info-cards/AdminSummaryCard';
 import { PendingCoursesCard } from '../info-cards/PendingCoursesCard';
 
 export function AdminPanelComponent(): JSX.Element {
@@ -10,11 +11,9 @@ export function AdminPanelComponent(): JSX.Element {
       <Row>
         <CardDeck>
           <PendingCoursesCard />
+          <AdminSummaryCard />
         </CardDeck>
       </Row>
-      <Jumbotron>
-        Admin panel component.
-      </Jumbotron>
     </Container>
   );
 }

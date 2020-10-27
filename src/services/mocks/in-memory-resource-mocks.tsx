@@ -41,7 +41,7 @@ export function generateResourceMocks(count = 10) {
 export async function getResourceMockResponse(id: string) {
   const f = inMemoryResourceMocks.find((x) => x._id === id);
   if (f) {
-    return Promise.resolve(f);
+    return Promise.resolve({ resource: f });
   }
   return Promise.reject(new Error('Resource of given id not found'));
 }
@@ -50,7 +50,7 @@ export async function putResourceMockResponse(id: string) {
   if (id) {
     const f = inMemoryResourceMocks.findIndex((x) => x._id === id);
     if (f > -1) {
-      return Promise.resolve(await getResourceMockResponse(id));
+      return Promise.resolve({ ok: true, ...await getResourceMockResponse(id) });
     }
   }
 
@@ -68,7 +68,7 @@ export async function patchResourceMockResponse(_id: string, name: string, permi
     if (f) {
       f.name = name;
       f.permission = permission;
-      return Promise.resolve({ ok: true, resource: await getResourceMockResponse(f._id) });
+      return Promise.resolve({ ok: true, ...await getResourceMockResponse(f._id) });
     }
     return Promise.reject(new Error('Resource of id not found'));
   }
@@ -79,7 +79,7 @@ export async function patchResourceMockResponse(_id: string, name: string, permi
     usedBy: [],
   };
   inMemoryResourceMocks.push(topush);
-  return Promise.resolve({ ok: true, resource: await getResourceMockResponse(topush._id) });
+  return Promise.resolve({ ok: true, ...await getResourceMockResponse(topush._id) });
 }
 
 export async function deleteResourceMockResponse(_id: string) {

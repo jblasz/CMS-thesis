@@ -8,6 +8,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faClipboard,
   faDownload, faSave, faTrash, faUpload,
 } from '@fortawesome/free-solid-svg-icons';
 import { LoadingSpinner } from '../loading-spinner';
@@ -99,6 +100,14 @@ function AdminResourcesComponent(): JSX.Element {
                             <Col md="auto" className="m-2 text-center">
                               <Button className="mx-2"><FontAwesomeIcon icon={faDownload} /></Button>
                               <Button className="mx-2"><FontAwesomeIcon icon={faUpload} /></Button>
+                              <Button className="mx-2" title={t('ADMIN.RESOURCES.COPY_LINK_TO_CLIPBOARD')}>
+                                <FontAwesomeIcon
+                                  icon={faClipboard}
+                                  onClick={() => {
+                                    navigator.clipboard.writeText('a link will exist here');
+                                  }}
+                                />
+                              </Button>
                             </Col>
                             <Col className="m-2 text-center">
                               <InputGroup className="mx-2">

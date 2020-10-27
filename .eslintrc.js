@@ -29,6 +29,7 @@ module.exports = {
     'no-plusplus': 'off',
     'no-underscore-dangle': ["error", { "allow": ["_id"] }],
     'no-restricted-syntax': 'off',
-    'no-alert': 'off'
+    'no-alert': 'off',
+    'no-nested-ternary': 'off'
   },
 };

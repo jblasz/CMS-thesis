@@ -1,4 +1,5 @@
-import { GetDashboardLaboratoriesResponse } from '../../interfaces/api';
+import { GetAdminDashboardResponse, GetDashboardLaboratoriesResponse } from '../../interfaces/api';
+import { getAdminDashboardMockResponse } from '../mocks';
 import { getDashboardLaboratoriesMockResponse } from '../mocks/in-memory-course-mocks';
 
 /**
@@ -13,4 +14,11 @@ export async function getDashboardLaboratories(
     x.endsAt = new Date(x.endsAt);
   });
   return res;
+}
+
+/**
+ * /dashboard/summary GET
+ */
+export async function getAdminDashboard(): Promise<GetAdminDashboardResponse> {
+  return getAdminDashboardMockResponse();
 }

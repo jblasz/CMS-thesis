@@ -1,15 +1,28 @@
-import { ICourse } from './course';
+import { Course, ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
 import { ResourceMeta, SubmissionMeta } from './resource';
-import { IStudent } from './student';
+import { Student } from './student';
+
+export interface CourseGroupMeta {
+  groupId: string
+  groupName: string
+  courseId: string
+  courseName: string
+  active: boolean
+}
+
+export interface CourseLabGroupMeta extends CourseGroupMeta {
+  labId: string
+  labName: string
+}
 
 export interface ApiPostResponse {
   ok: boolean
 }
 
 export interface GetCoursesResponse {
-  courses: ICourse[]
+  courses: Course[]
 }
 
 export interface GetCourseResponse {
@@ -17,10 +30,14 @@ export interface GetCourseResponse {
 }
 
 export interface GetCourseGroupResponse {
+  courseId: string
+  courseName: string
   group: ICourseGroup
 }
 
 export interface GetLaboratoryResponse {
+  courseId: string
+  courseName: string
   laboratory: ICourseLaboratory
 }
 
@@ -54,11 +71,13 @@ export interface GetResourcesResponse {
 }
 
 export interface GetStudentsResponse {
-  students: IStudent[]
+  students: Student[]
 }
 
 export interface GetStudentResponse {
-  student: IStudent
+  student: Student
+  attendedCourseGroupLabs: CourseGroupMeta[]
+  submissions: SubmissionMeta[]
 }
 
 export interface GetSubmissionsResponse {
@@ -73,17 +92,19 @@ export interface PatchSubmissionResponse extends ApiPostResponse {
   submission: SubmissionMeta
 }
 
-export interface PendingLaboratory {
-  courseId: string
-  courseName: string
-  labId: string
-  labName: string
-  groupId: string
-  groupName: string
+export interface PendingLaboratory extends CourseLabGroupMeta {
   startsAt: Date
   endsAt: Date
 }
 
 export interface GetDashboardLaboratoriesResponse {
   laboratories: PendingLaboratory[]
+}
+
+export interface PatchResourceResponse extends ApiPostResponse {
+  resource: ResourceMeta
+}
+
+export interface GetAdminDashboardResponse {
+  unmarkedSolutionsCount: number
 }

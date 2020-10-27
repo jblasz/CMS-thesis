@@ -1,7 +1,7 @@
 export function formatDate(date: Date, withHourMinute = false) {
   return new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
-    month: 'long',
+    month: 'numeric',
     day: '2-digit',
     ...(withHourMinute ? {
       hour: '2-digit',

@@ -1,4 +1,4 @@
-import { GetResourcesResponse } from '../../interfaces/api';
+import { GetAdminDashboardResponse, GetResourcesResponse } from '../../interfaces/api';
 import { generateList } from '../../utils';
 import { generateCourseMock, getCoursesListMockResponse, getLabsReferencingResourceId } from './in-memory-course-mocks';
 import { generateResourceMocks, getResourceMocks } from './in-memory-resource-mocks';
@@ -32,4 +32,10 @@ export async function getResourcesMockResponse(): Promise<GetResourcesResponse> 
       })),
     },
   );
+}
+
+export async function getAdminDashboardMockResponse(): Promise<GetAdminDashboardResponse> {
+  return Promise.resolve({
+    unmarkedSolutionsCount: 3,
+  });
 }

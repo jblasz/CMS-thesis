@@ -85,7 +85,8 @@
       "LANGUAGE": "Lan",
       "GROUPS_COUNT": "Grps",
       "STUDENTS_COUNT": "Students",
-      "LAB_COUNT": "Labs"
+      "LAB_COUNT": "Labs",
+      "CREATE_COURSE": "New course"
     },
     "COURSE": {
       "NAME": "Name",
@@ -141,12 +142,42 @@
       "PERMISSIONS_ALL": "Anyone",
       "PERMISSIONS_LOGGEDIN": "Logged in users",
       "PERMISSIONS_TASKGROUP": "Lab task",
-      "PERMISSIONS_NONE": "Nobody"
+      "PERMISSIONS_NONE": "Nobody",
+      "COPY_LINK_TO_CLIPBOARD": "Copy resource link to clipboard"
     },
     "STUDENTS": {
       "NAME": "Name",
       "USOSID": "USOS id",
       "REGISTEREDAT": "Registered at"
+    },
+    "STUDENT": {
+      "RENAME": "Rename",
+      "PARTOOK_IN_COURSES": "Participated in courses",
+      "NAME": "Name",
+      "EMAIL": "Email",
+      "USOSID": "Usos id",
+      "COURSE_ACTIVE": "Course active",
+      "COURSE_CLOSED": "Course closed",
+      "SAVE_CHANGES": "Upload changes"
+    },
+    "SUMMARY": {
+      "SUMMARY": "Summary",
+      "UNMARKED_COUNT": "Ungraded final solutions"
+    },
+    "SUBMISSIONS": {
+      "COURSE_FILTER": "Course",
+      "STUDENT_FILTER": "Student",
+      "STATUS_FILTER": "Status",
+      "STATUS_FILTER_UNGRADED": "Ungraded",
+      "STATUS_FILTER_GRADED": "Graded",
+      "STATUS_FILTER_ALL": "Any",
+      "ANY_COURSE": "Any course",
+      "ANY_STUDENT": "Any student",
+      "FINAL_FILTER_TRUE": "Final solutions",
+      "FINAL_FILTER_FALSE": "Old solutions",
+      "GRADE": "Grade",
+      "HEADER": "Laboratory submissions",
+      "NOT_FINAL": "This is not the final submission that the student made"
     }
   },
   "PENDING": {

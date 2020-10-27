@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Card, Row, Table,
+  Card, Col, Row, Table,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -32,16 +32,16 @@ export function PendingCoursesCard(): JSX.Element {
     return <LoadingSpinner />;
   }
   return (
-    <Card>
+    <Card style={{ minWidth: 400 }}>
+      <Card.Header>
+        {t('PENDING.LABS.TITLE')}
+      </Card.Header>
       <Card.Body>
         {error ? (
           <Row className="error-strip">
             {`${t('COMMON.ERROR')}: ${error}`}
           </Row>
         ) : ''}
-        <Card.Title>
-          {t('PENDING.LABS.TITLE')}
-        </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
           {t('PENDING.LABS.TIMERANGE')}
         </Card.Subtitle>
@@ -52,16 +52,7 @@ export function PendingCoursesCard(): JSX.Element {
                 {t('PENDING.LABS.COURSENAME')}
               </th>
               <th>
-                {t('PENDING.LABS.LABNAME')}
-              </th>
-              <th>
-                {t('PENDING.LABS.GROUPNAME')}
-              </th>
-              <th>
                 {t('PENDING.LABS.STARTSAT')}
-              </th>
-              <th>
-                {t('PENDING.LABS.ENDSAT')}
               </th>
             </tr>
           </thead>
@@ -69,25 +60,34 @@ export function PendingCoursesCard(): JSX.Element {
             {pLabs.map((lab) => (
               <tr key={`${lab.labId} ${lab.groupId}`}>
                 <td>
-                  <Link className="nav-link" to={`/admin/courses/${lab.courseId}`}>
-                    {lab.courseName}
-                  </Link>
+                  <Col>
+                    <Row>
+                      <Link className="nav-link py-0" to={`/admin/courses/${lab.courseId}`}>
+                        {lab.courseName}
+                      </Link>
+                    </Row>
+                    <Row>
+                      <Link className="nav-link py-0" to={`/admin/courses/${lab.courseId}/laboratory/${lab.labId}`}>
+                        {lab.labName}
+                      </Link>
+                    </Row>
+                    <Row>
+                      <Link className="nav-link py-0" to={`/admin/courses/${lab.courseId}/group/${lab.groupId}`}>
+                        {lab.groupName}
+                      </Link>
+                    </Row>
+
+                  </Col>
                 </td>
                 <td>
-                  <Link className="nav-link" to={`/admin/courses/${lab.courseId}/laboratory/${lab.labId}`}>
-                    {lab.labName}
-                  </Link>
-                </td>
-                <td>
-                  <Link className="nav-link" to={`/admin/courses/${lab.courseId}/group/${lab.groupId}`}>
-                    {lab.groupName}
-                  </Link>
-                </td>
-                <td>
-                  {formatDate(lab.startsAt)}
-                </td>
-                <td>
-                  {formatDate(lab.endsAt)}
+                  <Col>
+                    <Row>
+                      {formatDate(lab.startsAt, true)}
+                    </Row>
+                    <Row>
+                      {formatDate(lab.endsAt, true)}
+                    </Row>
+                  </Col>
                 </td>
               </tr>
             ))}

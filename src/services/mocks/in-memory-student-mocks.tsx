@@ -1,4 +1,6 @@
 import { v4 } from 'uuid';
+import { GetStudentResponse } from '../../interfaces/api';
+import { SubmissionGrade } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 import { shuffleList } from '../../utils';
 
@@ -29,12 +31,62 @@ export function generateStudentMocks(count = 100) {
   }
 }
 
-export function getStudentMockResponse(id: string) {
+export function getStudentMockResponse(id: string): Promise<GetStudentResponse> {
   const student = inMemoryStudentMocks.find((x) => x._id === id);
-  return student ? Promise.resolve({ student }) : Promise.reject();
+  return student
+    ? Promise.resolve({
+      student,
+      attendedCourseGroupLabs: [
+        {
+          courseId: v4(),
+          courseName: 'course name',
+          groupId: v4(),
+          groupName: 'group name',
+          active: true,
+        },
+        {
+          courseId: v4(),
+          courseName: 'course name',
+          groupId: v4(),
+          groupName: 'group name',
+          active: false,
+        },
+      ],
+      submissions: [
+        {
+          _id: v4(),
+          final: true,
+          forCourseID: v4(),
+          forCourseName: 'course name',
+          forGroupID: v4(),
+          forGroupName: 'group name',
+          forLabID: v4(),
+          forLabName: 'lab name',
+          note: 'students optional note',
+          submittedAt: new Date(Date.UTC(2020, 3, 1)),
+          submittedBy: new Student(),
+          grade: SubmissionGrade.A,
+        },
+        {
+          _id: v4(),
+          final: true,
+          forCourseID: v4(),
+          forCourseName: 'course name 2',
+          forGroupID: v4(),
+          forGroupName: 'group name 2',
+          forLabID: v4(),
+          forLabName: 'lab name 2',
+          note: 'students optional note',
+          submittedAt: new Date(Date.UTC(2020, 3, 1)),
+          submittedBy: new Student(),
+          grade: SubmissionGrade.B_PLUS,
+        },
+      ],
+    }) : Promise.reject();
 }
 
-export function getStudentsMockResponse() {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function getStudentsMockResponse(byCourseId?: string) {
   return Promise.resolve({ students: inMemoryStudentMocks.map((x) => new Student(x)) });
 }
 

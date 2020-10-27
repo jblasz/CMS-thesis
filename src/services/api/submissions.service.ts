@@ -12,8 +12,10 @@ import {
 /**
  * /submissions GET
  */
-export function getSubmissions(): Promise<GetSubmissionsResponse> {
-  return getSubmissionsMockResponse();
+export function getSubmissions(
+  courseFilter: string, studentFilter: string, statusFilter: number,
+): Promise<GetSubmissionsResponse> {
+  return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter);
 }
 
 /**

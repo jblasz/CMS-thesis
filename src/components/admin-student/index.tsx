@@ -1,1 +1,1 @@
-export { default as AdminStudentComponent } from './AdminStudents';
+export { default as AdminStudentComponent } from './AdminStudent';
