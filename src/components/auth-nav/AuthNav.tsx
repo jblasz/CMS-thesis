@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Navbar, Button } from 'react-bootstrap';
-import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { LogoutButton } from '../logout-button';
-import { LoginButton } from '../login-button';
 import polishFlag from '../../images/poland.svg';
 import britishFlag from '../../images/uk.svg';
 import './AuthNav.css';
+import { AppContext } from '../../services/contexts/app-context';
+import { GoogleButton } from '../google-login/google-login';
 
 function AuthNav() {
-  const { isAuthenticated, user } = useAuth0();
+  // const { isAuthenticated, user } = useAuth0();
   const [t, i18n] = useTranslation();
+  const { loggedIn } = useContext(AppContext);
+
   return (
     <Navbar className="justify-content-end">
       {
-        isAuthenticated ? (
+        loggedIn ? (
           <Navbar.Text className="mr-2">
             {`${t('LOGIN.LOGGED_IN_AS')}:`}
             {' '}
-            <Link to="/profile">{user.email}</Link>
+            <Link to="/profile">{}</Link>
           </Navbar.Text>
         ) : (
           <Navbar.Text className="mr-2">
@@ -27,7 +28,7 @@ function AuthNav() {
           </Navbar.Text>
         )
       }
-      {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+      <GoogleButton />
       <Button variant="light" className="flag-wrapper" onClick={() => { i18n.changeLanguage(i18n.language === 'en' ? 'pl' : 'en'); }}>
         {
           i18n.language === 'en'

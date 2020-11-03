@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Navbar, Nav, NavDropdown,
 } from 'react-bootstrap';
@@ -6,9 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { faHome, faSitemap } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { AuthNav } from '../auth-nav';
+import { AppContext } from '../../services/contexts/app-context';
 
 interface NavigationBarComponentProps {
   courses: Course[]
@@ -17,7 +17,7 @@ interface NavigationBarComponentProps {
 function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element {
   const { courses } = props;
   const [t] = useTranslation();
-  const { isAuthenticated } = useAuth0();
+  const { loggedIn } = useContext(AppContext);
 
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top" collapseOnSelect>
@@ -63,14 +63,14 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
           </NavDropdown>
           <Link className="nav-link" to="/articles">{t('NAVBAR.ARTICLES')}</Link>
           <Link className="nav-link" to="/research">{t('NAVBAR.RESEARCH')}</Link>
-          {isAuthenticated ? (
+          {loggedIn ? (
             <Link className="nav-link" to="/dashboard">
               <FontAwesomeIcon icon={faSitemap} />
               {` ${t('NAVBAR.DASHBOARD')}`}
             </Link>
           ) : ''}
           <Link className="nav-link" to="/code">{t('NAVBAR.CODE')}</Link>
-          {isAuthenticated ? (
+          {loggedIn ? (
             <NavDropdown title={t('NAVBAR.ADMIN.DESCR')} id="nav-admin-dropdown">
               <NavDropdown.Item key="nav-admin-dropdown-dashboard" as="button">
                 <Link className="nav-link" to="/admin">

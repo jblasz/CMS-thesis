@@ -110,7 +110,8 @@
       "LAB_NAME_NOT_DEFINED": "As yet unnamed",
       "GROUP_NAME_NOT_DEFINED": "As yet unnamed",
       "DELETE": "Remove course",
-      "ADD_STUDENT": "Add student"
+      "ADD_STUDENT": "Add student",
+      "SEMESTER": "Semester"
     },
     "GROUP": {
       "STUDENTS_ID": "ID",

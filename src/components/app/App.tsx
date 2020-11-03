@@ -29,9 +29,11 @@ import { AdminCourseLaboratoryComponent } from '../admin-course-laboratory';
 import { AdminResourcesComponent } from '../admin-resources';
 import { AdminSubmissionsComponent } from '../admin-submissions';
 import { AdminSubmissionComponent } from '../admin-submission';
+import { AppContext } from '../../services/contexts/app-context';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const getAndSetCourses = async () => {
     const loadedCourses = await getCourses();
@@ -42,37 +44,39 @@ function App():JSX.Element {
 
   return (
     <div className="App">
-      <header>
-        <NavigationBarComponent courses={courses} />
-      </header>
-      <Container className="content-wrap">
-        <main>
-          <Switch>
-            <Route exact path="/" component={HomeComponent} />
-            <Route exact path="/login" component={LoginComponent} />
-            <Route exact path="/register" component={RegisterComponent} />
-            <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
-            <Route exact path="/courses/:id" component={CourseComponent} />
-            <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
-            <Route exact path="/research" component={ResearchComponent} />
-            <Route exact path="/articles" component={ArticlesComponent} />
-            <Route exact path="/code" component={CodeValidationComponent} />
-            <PrivateRoute exact path="/profile" component={ProfileComponent} />
-            <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
-            <PrivateRoute exact path="/admin/resources" component={AdminResourcesComponent} />
-            <PrivateRoute exact path="/admin/students" component={AdminStudentsComponent} />
-            <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
-            <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
-            <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
-            <PrivateRoute exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
-            <PrivateRoute exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
-            <PrivateRoute exact path="/admin/submissions" component={AdminSubmissionsComponent} />
-            <PrivateRoute exact path="/admin/submissions/:id" component={AdminSubmissionComponent} />
-            <Route exact path="/404" component={Component404} />
-          </Switch>
-        </main>
-        <FooterComponent />
-      </Container>
+      <AppContext.Provider value={{ loggedIn, setLoggedIn }}>
+        <header>
+          <NavigationBarComponent courses={courses} />
+        </header>
+        <Container className="content-wrap">
+          <main>
+            <Switch>
+              <Route exact path="/" component={HomeComponent} />
+              <Route exact path="/login" component={LoginComponent} />
+              <Route exact path="/register" component={RegisterComponent} />
+              <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
+              <Route exact path="/courses/:id" component={CourseComponent} />
+              <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
+              <Route exact path="/research" component={ResearchComponent} />
+              <Route exact path="/articles" component={ArticlesComponent} />
+              <Route exact path="/code" component={CodeValidationComponent} />
+              <PrivateRoute exact path="/profile" component={ProfileComponent} />
+              <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
+              <PrivateRoute exact path="/admin/resources" component={AdminResourcesComponent} />
+              <PrivateRoute exact path="/admin/students" component={AdminStudentsComponent} />
+              <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
+              <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
+              <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
+              <PrivateRoute exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
+              <PrivateRoute exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
+              <PrivateRoute exact path="/admin/submissions" component={AdminSubmissionsComponent} />
+              <PrivateRoute exact path="/admin/submissions/:id" component={AdminSubmissionComponent} />
+              <Route exact path="/404" component={Component404} />
+            </Switch>
+          </main>
+          <FooterComponent />
+        </Container>
+      </AppContext.Provider>
     </div>
   );
 }

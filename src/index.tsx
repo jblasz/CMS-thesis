@@ -8,7 +8,6 @@ import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './components/app';
 import * as serviceWorker from './serviceWorker';
-import { Auth0ProviderWithHistory } from './components/auth0-provider-with-history';
 import i18n from './services/i18n/i18n';
 import { populateInMemoryDBWithSomeMocks } from './services/mocks';
 
@@ -21,9 +20,7 @@ populateInMemoryDBWithSomeMocks();
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <BrowserRouter>
-      <Auth0ProviderWithHistory>
-        <App />
-      </Auth0ProviderWithHistory>
+      <App />
     </BrowserRouter>
   </I18nextProvider>,
   document.getElementById('root'),
