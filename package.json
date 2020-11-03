@@ -19,6 +19,7 @@
     "lorem-ipsum": "^2.0.3",
     "react": "^16.13.1",
     "react-bootstrap": "^1.2.1",
+    "react-cookie": "^4.0.3",
     "react-datepicker": "^3.2.2",
     "react-dom": "^16.13.1",
     "react-google-login": "^5.1.22",

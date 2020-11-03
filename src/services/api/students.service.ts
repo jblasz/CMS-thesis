@@ -19,7 +19,7 @@ export async function getStudent(id: string): Promise<GetStudentResponse> {
 }
 
 /**
- * /students/:id GET
+ * /students/:id DELETE
  */
 export async function deleteStudent(id: string): Promise<ApiPostResponse> {
   return deleteStudentMockResponse(id);

@@ -74,9 +74,15 @@ export interface GetStudentsResponse {
   students: Student[]
 }
 
+export interface PostUserResponse {
+  student: Student
+  attends: CourseGroupMeta[]
+  submissions: SubmissionMeta[]
+}
+
 export interface GetStudentResponse {
   student: Student
-  attendedCourseGroupLabs: CourseGroupMeta[]
+  attends: CourseGroupMeta[]
   submissions: SubmissionMeta[]
 }
 

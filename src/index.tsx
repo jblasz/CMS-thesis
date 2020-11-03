@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
+import { CookiesProvider } from 'react-cookie/es6';
 import { App } from './components/app';
 import * as serviceWorker from './serviceWorker';
 import i18n from './services/i18n/i18n';
@@ -20,7 +21,9 @@ populateInMemoryDBWithSomeMocks();
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <BrowserRouter>
-      <App />
+      <CookiesProvider>
+        <App />
+      </CookiesProvider>
     </BrowserRouter>
   </I18nextProvider>,
   document.getElementById('root'),

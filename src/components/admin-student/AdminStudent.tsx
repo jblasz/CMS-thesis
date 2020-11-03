@@ -27,7 +27,7 @@ function AdminStudentComponent(): JSX.Element {
       setLoading(true);
       const {
         student: _student,
-        attendedCourseGroupLabs: _attendedCourseGroupLabs,
+        attends: _attendedCourseGroupLabs,
         submissions: _submissions,
       } = await getStudent(id);
       setStudent(_student);
