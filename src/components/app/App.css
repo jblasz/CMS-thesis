@@ -12,3 +12,7 @@ body {
   margin: 5px;
   background-color: red;
 }
+
+.chunky-width {
+  min-width: 400px;
+}

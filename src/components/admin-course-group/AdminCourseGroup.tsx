@@ -10,6 +10,10 @@ import { deleteCourseGroup, getCourseGroup, patchCourseGroupStudent } from '../.
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { getStudents } from '../../services/api/students.service';
+import { getCodes, postCodeNew } from '../../services/api/codes.service';
+import { formatDate } from '../../utils';
+import { Code } from '../../interfaces/code';
+import { AdminCodesListComponent } from '../admin-codes/AdminCodesList';
 
 interface BaseStudent {
   id: string
@@ -27,11 +31,17 @@ function AdminCourseGroupComponent(): JSX.Element {
   const [newStudent, setNewStudent] = useState<BaseStudent>();
   const [readonly, setReadonly] = useState(true);
   const [
+    validThrough,
+    // setValidThrough,
+  ] = useState(new Date(new Date().valueOf() + 31 * 24 * 60 * 60 * 1000));
+  const [newCode, setNewCode] = useState({ _id: '', validThrough: new Date(0) });
+  const [
     { students, group },
     setGroupAndStudents,
   ] = useState<{
     students: BaseStudent[],
     group: CourseGroup}>({ students: [], group: new CourseGroup() });
+  const [codes, setCodes] = useState<Code[]>([]);
 
   const toggleEditState = async () => {
     await getAndSetBoth();
@@ -49,8 +59,8 @@ function AdminCourseGroupComponent(): JSX.Element {
   const getAndSetBoth = useCallback(async () => {
     try {
       setLoading(true);
-      const [{ group: _group }, { students: _students }] = await Promise.all(
-        [getCourseGroup(courseID, groupID), getStudents()],
+      const [{ group: _group }, { students: _students }, { codes: _codes }] = await Promise.all(
+        [getCourseGroup(courseID, groupID), getStudents(), getCodes(true, courseID)],
       );
       const filtered = _students
         .map((x) => ({ id: x._id, name: x.name }))
@@ -59,8 +69,8 @@ function AdminCourseGroupComponent(): JSX.Element {
         new CourseGroup(_group), filtered,
       );
       setNewStudent(filtered[0]);
+      setCodes(_codes);
     } catch (e) {
-      console.error(e);
       setError(e);
     } finally {
       setLoading(false);
@@ -151,6 +161,43 @@ function AdminCourseGroupComponent(): JSX.Element {
             </InputGroup.Append>
           </InputGroup>
         </Form.Row>
+        <Form.Row className="my-2">
+          <InputGroup>
+            <InputGroup.Append>
+              <Button
+                variant="primary"
+                disabled={readonly}
+                onClick={async () => {
+                  try {
+                    setLoading(true);
+                    const { code } = await postCodeNew(courseID, validThrough);
+                    setNewCode({ _id: code._id, validThrough: code.validThrough });
+                  } catch (e) {
+                    console.error(e);
+                    setError(e);
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+              >
+                {t('ADMIN.COURSE.GENERATE_CODE')}
+              </Button>
+            </InputGroup.Append>
+            {
+              newCode._id ? (
+                <>
+                  <InputGroup.Text>
+                    {newCode._id}
+                  </InputGroup.Text>
+                  <InputGroup.Text>
+                    {formatDate(newCode.validThrough)}
+                  </InputGroup.Text>
+                </>
+              ) : null
+            }
+          </InputGroup>
+        </Form.Row>
+        <AdminCodesListComponent codes={codes} />
       </Form>
       <Table responsive>
         <thead>
@@ -202,7 +249,7 @@ function AdminCourseGroupComponent(): JSX.Element {
         <tbody>
           {group.students.map((student) => (
             <tr key={student._id}>
-              <td><Link to={`/admin/student/${student._id}`}>{student._id}</Link></td>
+              <td><Link to={`/admin/students/${student._id}`}>{student._id}</Link></td>
               <td>{student.name || t('ADMIN.GROUP.STUDENT_NA')}</td>
               <td>{student.email || t('ADMIN.GROUP.STUDENT_NA')}</td>
             </tr>

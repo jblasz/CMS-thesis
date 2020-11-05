@@ -103,6 +103,7 @@ export function getStudentMockResponse(id: string): Promise<GetStudentResponse> 
           groupId: v4(),
           groupName: 'group name',
           active: false,
+          grade: SubmissionGrade.B,
         },
       ],
       submissions: [

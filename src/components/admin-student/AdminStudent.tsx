@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
-import { CourseGroupMeta } from '../../interfaces/api';
+import { CourseGroupMetaWithGrade } from '../../interfaces/api';
 import { SubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 import { getStudent } from '../../services/api/students.service';
@@ -19,7 +19,10 @@ function AdminStudentComponent(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [student, setStudent] = useState<Student>(new Student());
-  const [attendedCourseGroupLabs, setAttendedCourseGroupLabs] = useState<CourseGroupMeta[]>([]);
+  const [
+    attendedCourseGroupLabs,
+    setAttendedCourseGroupLabs,
+  ] = useState<CourseGroupMetaWithGrade[]>([]);
   const [submissions, setSubmissions] = useState<SubmissionMeta[]>([]);
 
   const getAndSetAll = useCallback(async () => {
@@ -114,7 +117,6 @@ function AdminStudentComponent(): JSX.Element {
                   </Button>
                 </InputGroup>
               </Form>
-
             </Col>
             <Col>
               <ListGroup>
@@ -128,7 +130,6 @@ function AdminStudentComponent(): JSX.Element {
                         <Link className="nav-link" to={`/admin/courses/${x.courseId}`}>
                           {x.courseName}
                         </Link>
-
                       </Col>
                       <Col>
                         <Link className="nav-link" to={`/admin/courses/${x.groupId}`}>
@@ -139,6 +140,9 @@ function AdminStudentComponent(): JSX.Element {
                         <p className="nav-link">
                           {x.active ? t('ADMIN.STUDENT.COURSE_ACTIVE') : t('ADMIN.STUDENT.COURSE_CLOSED')}
                         </p>
+                      </Col>
+                      <Col>
+                        <p className="nav-link">{x.grade || t('ADMIN.STUDENT.NOT_YET_GRADED')}</p>
                       </Col>
                     </Row>
                   </ListGroup.Item>

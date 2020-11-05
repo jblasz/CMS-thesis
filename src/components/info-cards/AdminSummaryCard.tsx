@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { getAdminDashboard } from '../../services/api/dashboard.service';
+import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 
 export function AdminSummaryCard(): JSX.Element {
@@ -29,16 +30,12 @@ export function AdminSummaryCard(): JSX.Element {
     return <LoadingSpinner />;
   }
   return (
-    <Card>
+    <Card className="chunky-width my-2">
       <Card.Header>
         {t('ADMIN.SUMMARY.SUMMARY')}
       </Card.Header>
       <Card.Body>
-        {error ? (
-          <Row className="error-strip">
-            {`${t('COMMON.ERROR')}: ${error}`}
-          </Row>
-        ) : ''}
+        <WarningStripComponent error={error} />
         <Col>
           {`${t('ADMIN.SUMMARY.UNMARKED_COUNT')}: ${unmarkedCount}`}
         </Col>

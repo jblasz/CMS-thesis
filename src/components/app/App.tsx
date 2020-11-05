@@ -33,7 +33,7 @@ import { AppContext } from '../../services/contexts/app-context';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
 
   const getAndSetCourses = async () => {
     const loadedCourses = await getCourses();

@@ -32,7 +32,7 @@ export function PendingCoursesCard(): JSX.Element {
     return <LoadingSpinner />;
   }
   return (
-    <Card style={{ minWidth: 400 }}>
+    <Card className="chunky-width my-2">
       <Card.Header>
         {t('PENDING.LABS.TITLE')}
       </Card.Header>

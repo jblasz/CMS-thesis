@@ -159,7 +159,8 @@
       "USOSID": "Usos id",
       "COURSE_ACTIVE": "Course active",
       "COURSE_CLOSED": "Course closed",
-      "SAVE_CHANGES": "Upload changes"
+      "SAVE_CHANGES": "Upload changes",
+      "NOT_YET_GRADED": "No grade yet"
     },
     "SUMMARY": {
       "SUMMARY": "Summary",
@@ -179,6 +180,14 @@
       "GRADE": "Grade",
       "HEADER": "Laboratory submissions",
       "NOT_FINAL": "This is not the final submission that the student made"
+    },
+    "CODES": {
+      "DESCR": "Codes",
+      "VALID_THROUGH": "Valid till",
+      "USED_BY": "Used#",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "SHOW_INACTIVE": "Show inactive codes"
     }
   },
   "PENDING": {

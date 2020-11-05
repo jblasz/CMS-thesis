@@ -6,15 +6,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LoadingSpinner } from '../loading-spinner';
 import { postCode } from '../../services/api/codes.service';
-import { PostCodeResponseType } from '../../interfaces/api';
-import { ICourse } from '../../interfaces/course';
+import { CourseGroupMeta, PostCodeResponseType } from '../../interfaces/api';
 
 interface CodeValidationComponentState {
   loading: boolean,
   code: string
   error: string
   type?: PostCodeResponseType
-  courseSignup?: ICourse
+  courseSignup?: CourseGroupMeta
 }
 
 function CodeValidationComponent(): JSX.Element {
@@ -60,7 +59,7 @@ function CodeValidationComponent(): JSX.Element {
           <Container className="justify-content-center">
             <h1>{t('CODE_VALIDATION.SUCCESS')}</h1>
             <p>{t('CODE_VALIDATION.COURSE_SIGNUP_SUCCESS')}</p>
-            <Link className="nav-link" to={`/courses/${courseSignup._id}`}>{courseSignup.name || t('CODE_VALIDATION.GOTO_COURSE')}</Link>
+            <Link className="nav-link" to={`/courses/${courseSignup.courseId}`}>{courseSignup.courseName || t('CODE_VALIDATION.GOTO_COURSE')}</Link>
           </Container>
         </Jumbotron>
       );

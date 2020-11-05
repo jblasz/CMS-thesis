@@ -1,7 +1,8 @@
+import { Code } from './code';
 import { Course, ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
-import { ResourceMeta, SubmissionMeta } from './resource';
+import { ResourceMeta, SubmissionGrade, SubmissionMeta } from './resource';
 import { Student } from './student';
 
 export interface CourseGroupMeta {
@@ -10,6 +11,10 @@ export interface CourseGroupMeta {
   courseId: string
   courseName: string
   active: boolean
+}
+
+export interface CourseGroupMetaWithGrade extends CourseGroupMeta {
+  grade?: SubmissionGrade
 }
 
 export interface CourseLabGroupMeta extends CourseGroupMeta {
@@ -63,7 +68,15 @@ export enum PostCodeResponseType {
 
 export interface PostCodeResponse extends ApiPostResponse {
   type: PostCodeResponseType
-  courseSignup?: ICourse
+  courseSignup?: CourseGroupMeta
+}
+
+export interface GetCodesResponse {
+  codes: Code[]
+}
+
+export interface PostCodeNewResponse {
+  code: Code
 }
 
 export interface GetResourcesResponse {
@@ -82,7 +95,7 @@ export interface PostUserResponse {
 
 export interface GetStudentResponse {
   student: Student
-  attends: CourseGroupMeta[]
+  attends: CourseGroupMetaWithGrade[]
   submissions: SubmissionMeta[]
 }
 
