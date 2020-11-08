@@ -111,7 +111,12 @@
       "GROUP_NAME_NOT_DEFINED": "As yet unnamed",
       "DELETE": "Remove course",
       "ADD_STUDENT": "Add student",
-      "SEMESTER": "Semester"
+      "SEMESTER": "Semester",
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "SHOWN": "Shown",
+      "HIDDEN": "Hidden",
+      "GENERATE_CODE": "Generate a code"
     },
     "GROUP": {
       "STUDENTS_ID": "ID",

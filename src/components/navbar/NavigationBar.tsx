@@ -98,6 +98,11 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
                   {t('NAVBAR.ADMIN.SUBMISSIONS')}
                 </Link>
               </NavDropdown.Item>
+              <NavDropdown.Item key="nav-admin-dropdown-articles" as="button">
+                <Link className="nav-link" to="/admin/articles">
+                  {t('NAVBAR.ADMIN.ARTICLES')}
+                </Link>
+              </NavDropdown.Item>
             </NavDropdown>
           ) : ''}
         </Nav>

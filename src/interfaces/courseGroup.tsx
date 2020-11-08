@@ -1,11 +1,11 @@
 import joi from 'joi';
+import { CourseGroupStudent, ICourseGroupStudent } from './courseGroupStudent';
 import { Validable, ValResult } from './misc';
-import { IStudent, Student } from './student';
 
 export interface ICourseGroup {
   _id: string
   name: string
-  students: IStudent[]
+  students: ICourseGroupStudent[]
 }
 
 export class CourseGroup implements ICourseGroup, Validable {
@@ -13,7 +13,7 @@ export class CourseGroup implements ICourseGroup, Validable {
 
   name = ''
 
-  students: Student[] = []
+  students: CourseGroupStudent[] = []
 
   constructor(o?:ICourseGroup | string) {
     if (typeof o === 'string') {
@@ -22,7 +22,7 @@ export class CourseGroup implements ICourseGroup, Validable {
       this._id = o._id || '';
       this.name = o.name || '';
       if (o.students && o.students.length) {
-        this.students = o.students.map((student) => new Student(student));
+        this.students = o.students.map((student) => new CourseGroupStudent(student));
       }
     }
   }

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { deleteCourse, getCourse, putCourse } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
@@ -28,15 +29,12 @@ function AdminCourseComponent(): JSX.Element {
       links: [],
       name: '',
       semester: '',
+      active: true,
+      shown: true,
     }),
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [readonly, setReadonly] = useState(true);
-  const toggleEditState = async () => {
-    await getAndSetCourse();
-    setReadonly(!readonly);
-  };
 
   const validateAndSetCourse = useCallback((crs: Course) => {
     const res = crs.validate();
@@ -74,24 +72,20 @@ function AdminCourseComponent(): JSX.Element {
         ) : ''}
         <Form.Row className="justify-content-between">
           <Col>
-            <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
             <Button
               className="mx-1"
               variant="primary"
               type="submit"
-              disabled={readonly}
               onClick={async (event) => {
                 event.preventDefault();
                 await putCourse(course);
                 await getAndSetCourse();
-                await toggleEditState();
               }}
             >
               {t('ADMIN.COURSE.SAVE_CHANGES')}
             </Button>
           </Col>
           <Button
-            disabled={readonly}
             className="mx-2"
             variant="danger"
             onClick={async () => {
@@ -113,7 +107,6 @@ function AdminCourseComponent(): JSX.Element {
           <Form.Group as={Col} key="name">
             <Form.Label>{t('ADMIN.COURSE.NAME')}</Form.Label>
             <Form.Control
-              disabled={readonly}
               type="string"
               value={course.name}
               onChange={(event) => {
@@ -127,7 +120,6 @@ function AdminCourseComponent(): JSX.Element {
             <Form.Control
               as="select"
               value={course.language}
-              disabled={readonly}
               onChange={(event) => {
                 course.language = event.target.value as CourseLanguage;
                 validateAndSetCourse(course);
@@ -142,19 +134,47 @@ function AdminCourseComponent(): JSX.Element {
             <Form.Control
               type="string"
               value={course.semester}
-              disabled={readonly}
               onChange={(event) => {
                 course.semester = event.target.value;
                 validateAndSetCourse(course);
               }}
             />
           </Form.Group>
+          <Form.Group as={Col} key="active">
+            <Form.Label>{t('ADMIN.COURSE.ACTIVE')}</Form.Label>
+            <div>
+              <BootstrapSwitchButton
+                width={100}
+                checked={course.active}
+                onlabel={t('ADMIN.COURSE.ACTIVE')}
+                offlabel={t('ADMIN.COURSE.INACTIVE')}
+                onChange={() => {
+                  course.active = !course.active;
+                  validateAndSetCourse(course);
+                }}
+              />
+            </div>
+          </Form.Group>
+          <Form.Group as={Col} key="shown">
+            <Form.Label>{t('ADMIN.COURSE.SHOWN')}</Form.Label>
+            <div>
+              <BootstrapSwitchButton
+                width={100}
+                checked={course.shown}
+                onlabel={t('ADMIN.COURSE.SHOWN')}
+                offlabel={t('ADMIN.COURSE.HIDDEN')}
+                onChange={() => {
+                  course.shown = !course.shown;
+                  validateAndSetCourse(course);
+                }}
+              />
+            </div>
+          </Form.Group>
         </Form.Row>
         <Form.Row className="mb-2">
           <Form.Label>{t('ADMIN.COURSE.DESCRIPTION')}</Form.Label>
           <Form.Control
             as="textarea"
-            disabled={readonly}
             rows={10}
             value={course.description}
             onChange={(event) => {
@@ -187,7 +207,6 @@ function AdminCourseComponent(): JSX.Element {
                     className="mx-1"
                     variant="primary"
                     type="submit"
-                    disabled={readonly}
                     onClick={(event) => {
                       event.preventDefault();
                       if (course.laboratories.find((x) => x.name === '')) { return; }
@@ -230,7 +249,6 @@ function AdminCourseComponent(): JSX.Element {
                     className="mx-1"
                     variant="primary"
                     type="submit"
-                    disabled={readonly}
                     onClick={(event) => {
                       event.preventDefault();
                       if (course.groups.find((x) => x.name === '')) { return; }

@@ -56,6 +56,8 @@ export function generateCourseMock(id = v4()) {
     groups,
     laboratories: generateList(3, 5).map(() => generateLaboratoryMock(groups)),
     links: [],
+    active: true,
+    shown: true,
   });
   if (id === 'staticCourseID') {
     topush.laboratories[0]._id = 'staticLabID';
@@ -67,7 +69,7 @@ export function generateCourseGroupMock(id = v4()): CourseGroup {
   return new CourseGroup({
     _id: id,
     name: loremIpsum().split(' ')[0],
-    students: getRandomStudents(10 + Math.ceil(Math.random() * 5)),
+    students: getRandomStudents(10 + Math.ceil(Math.random() * 5)).map((s) => ({ ...s })),
   });
 }
 

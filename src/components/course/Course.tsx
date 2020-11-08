@@ -24,6 +24,8 @@ function CourseComponent(): JSX.Element {
       links: [],
       name: '',
       semester: '',
+      active: true,
+      shown: true,
     }),
   });
 

@@ -18,6 +18,8 @@ export interface ICourse {
   links: IResourceLink[]
   laboratories: ICourseLaboratory[]
   groups: ICourseGroup[]
+  active: boolean
+  shown: boolean
 }
 
 export class Course implements ICourse, Validable {
@@ -37,6 +39,10 @@ export class Course implements ICourse, Validable {
 
   groups: CourseGroup[] = []
 
+  active = true
+
+  shown = true
+
   constructor(o?: ICourse) {
     if (o) {
       this._id = o._id || '';
@@ -45,6 +51,8 @@ export class Course implements ICourse, Validable {
       this.language = o.language || 'en';
       this.semester = o.semester || '';
       this.links = o.links || [];
+      this.active = !!o.active;
+      this.shown = !!o.shown;
       if (o.laboratories && o.laboratories.length) {
         this.laboratories = o.laboratories.map((lab) => new CourseLaboratory(lab));
       }

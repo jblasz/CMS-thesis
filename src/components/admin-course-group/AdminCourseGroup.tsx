@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  Container, Form, Button, Table, InputGroup,
+  Container, Form, Button, Table, InputGroup, FormControl,
 } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -14,21 +14,20 @@ import { getCodes, postCodeNew } from '../../services/api/codes.service';
 import { formatDate } from '../../utils';
 import { Code } from '../../interfaces/code';
 import { AdminCodesListComponent } from '../admin-codes/AdminCodesList';
+import { SubmissionGrade } from '../../interfaces/resource';
 
 interface BaseStudent {
-  id: string
-  name?: string
+  _id: string
+  name: string
 }
 
 function AdminCourseGroupComponent(): JSX.Element {
   const { groupID, courseID } = useParams<{groupID: string, courseID: string}>();
-
   const [t] = useTranslation();
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [sortDirection, setSortDirection] = useState(1);
-  const [newStudent, setNewStudent] = useState<BaseStudent>();
+  const [newStudent, setNewStudent] = useState<BaseStudent>({ _id: '', name: '' });
   const [readonly, setReadonly] = useState(true);
   const [
     validThrough,
@@ -48,13 +47,15 @@ function AdminCourseGroupComponent(): JSX.Element {
     setReadonly(!readonly);
   };
 
-  const validateAndSetCourseGroup = useCallback((_group: CourseGroup, _students: BaseStudent[]) => {
-    const res = _group.validate();
-    if (res.error) {
-      setError(res.error);
-    }
-    setGroupAndStudents({ group: _group, students: _students });
-  }, []);
+  const validateAndSetCourseGroup = useCallback(
+    (_group: CourseGroup, _students: BaseStudent[]) => {
+      const res = _group.validate();
+      if (res.error) {
+        setError(res.error);
+      }
+      setGroupAndStudents({ group: _group, students: _students });
+    }, [],
+  );
 
   const getAndSetBoth = useCallback(async () => {
     try {
@@ -63,8 +64,8 @@ function AdminCourseGroupComponent(): JSX.Element {
         [getCourseGroup(courseID, groupID), getStudents(), getCodes(true, courseID)],
       );
       const filtered = _students
-        .map((x) => ({ id: x._id, name: x.name }))
-        .filter((x) => !_group.students.find((y) => y._id === x.id));
+        .filter((x) => !_group.students.find((y) => y._id === x._id))
+        .map((x) => ({ _id: x._id, name: x.name }));
       validateAndSetCourseGroup(
         new CourseGroup(_group), filtered,
       );
@@ -121,16 +122,18 @@ function AdminCourseGroupComponent(): JSX.Element {
             <Form.Control
               style={{ maxWidth: '500px' }}
               as="select"
-              value={newStudent?.id}
+              value={newStudent._id}
               disabled={readonly}
               onChange={
-                (e) => setNewStudent(students.find((x) => x.id === e.target.value))
+                (e) => setNewStudent(
+                  students.find((x) => x._id === e.target.value) as BaseStudent,
+                )
               }
             >
               {students.map(
                 (student) => (
-                  <option key={student.id} value={student.id}>
-                    {student.name || student.id}
+                  <option key={student._id} value={student._id}>
+                    {student.name || student._id}
                   </option>
                 ),
               )}
@@ -145,7 +148,7 @@ function AdminCourseGroupComponent(): JSX.Element {
                       return;
                     }
                     setLoading(true);
-                    await patchCourseGroupStudent(courseID, groupID, newStudent?.id);
+                    await patchCourseGroupStudent(courseID, groupID, newStudent._id);
                     await getAndSetBoth();
                   } catch (e) {
                     alert('failed to add student');
@@ -252,6 +255,59 @@ function AdminCourseGroupComponent(): JSX.Element {
               <td><Link to={`/admin/students/${student._id}`}>{student._id}</Link></td>
               <td>{student.name || t('ADMIN.GROUP.STUDENT_NA')}</td>
               <td>{student.email || t('ADMIN.GROUP.STUDENT_NA')}</td>
+              <td>
+                <Form>
+                  <FormControl
+                    as="select"
+                    placeholder={t('ADMIN.GROUP.STUDENT_GRADE')}
+                    onChange={(e) => {
+                      student.grade = e.target.value as SubmissionGrade;
+                      setGroupAndStudents({ group, students });
+                    }}
+                    value={student.grade}
+                  >
+                    {[
+                      <option key="" value={undefined}>{' '}</option>,
+                      <option
+                        key={SubmissionGrade.A}
+                        value={SubmissionGrade.A}
+                      >
+                        {SubmissionGrade.A}
+                      </option>,
+                      <option
+                        key={SubmissionGrade.B_PLUS}
+                        value={SubmissionGrade.B_PLUS}
+                      >
+                        {SubmissionGrade.B_PLUS}
+                      </option>,
+                      <option
+                        key={SubmissionGrade.B}
+                        value={SubmissionGrade.B}
+                      >
+                        {SubmissionGrade.B}
+                      </option>,
+                      <option
+                        key={SubmissionGrade.C_PLUS}
+                        value={SubmissionGrade.C_PLUS}
+                      >
+                        {SubmissionGrade.C_PLUS}
+                      </option>,
+                      <option
+                        key={SubmissionGrade.C}
+                        value={SubmissionGrade.C}
+                      >
+                        {SubmissionGrade.C}
+                      </option>,
+                      <option
+                        key={SubmissionGrade.F}
+                        value={SubmissionGrade.F}
+                      >
+                        {SubmissionGrade.F}
+                      </option>,
+                    ]}
+                  </FormControl>
+                </Form>
+              </td>
             </tr>
           ))}
         </tbody>

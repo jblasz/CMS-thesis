@@ -30,6 +30,8 @@ import { AdminResourcesComponent } from '../admin-resources';
 import { AdminSubmissionsComponent } from '../admin-submissions';
 import { AdminSubmissionComponent } from '../admin-submission';
 import { AppContext } from '../../services/contexts/app-context';
+import { AdminArticlesComponent } from '../admin-articles/AdminArticles';
+import { AdminArticleComponent } from '../admin-articles/AdminArticle';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -71,6 +73,8 @@ function App():JSX.Element {
               <PrivateRoute exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
               <PrivateRoute exact path="/admin/submissions" component={AdminSubmissionsComponent} />
               <PrivateRoute exact path="/admin/submissions/:id" component={AdminSubmissionComponent} />
+              <PrivateRoute exact path="/admin/articles" component={AdminArticlesComponent} />
+              <PrivateRoute exact path="/admin/articles/:id" component={AdminArticleComponent} />
               <Route exact path="/404" component={Component404} />
             </Switch>
           </main>

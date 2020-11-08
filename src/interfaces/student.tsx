@@ -1,9 +1,9 @@
 export interface IStudent {
   _id: string
-  registeredAt?: Date
   name: string
-  email?: string
-  usosId?: string
+  email: string
+  usosId: string
+  registeredAt?: Date
 }
 
 export class Student implements IStudent {
@@ -11,9 +11,9 @@ export class Student implements IStudent {
 
   name = ''
 
-  email?: string
+  email = ''
 
-  usosId?: string
+  usosId = ''
 
   registeredAt?: Date
 
