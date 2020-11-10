@@ -1,3 +1,4 @@
+import { ArticleMeta, Article } from './article';
 import { Code } from './code';
 import { Course, ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
@@ -126,27 +127,6 @@ export interface PatchResourceResponse extends ApiPostResponse {
 
 export interface GetAdminDashboardResponse {
   unmarkedSolutionsCount: number
-}
-
-export interface ArticleLocale {
-  categoryMajor: string
-  categoryMinor: string
-}
-
-export interface ArticleLocaleWithContents extends ArticleLocale {
-  contents: string
-}
-
-export interface ArticleMeta {
-  _id: string
-  availableFrom?: Date
-  pl: ArticleLocale
-  en: ArticleLocale
-}
-
-export interface Article extends ArticleMeta {
-  pl: ArticleLocaleWithContents
-  en: ArticleLocaleWithContents
 }
 
 export interface GetArticlesResponse {

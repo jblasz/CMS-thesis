@@ -1,6 +1,7 @@
 import {
-  ApiPostResponse, Article, GetArticleResponse, GetArticlesResponse, PutArticleResponse,
+  ApiPostResponse, GetArticleResponse, GetArticlesResponse, PutArticleResponse,
 } from '../../interfaces/api';
+import { Article } from '../../interfaces/article';
 import {
   deleteArticleMockResponse,
   getArticleMockResponse,

@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ArticleMeta } from '../../interfaces/api';
+import { ArticleMeta } from '../../interfaces/article';
 import { deleteArticle, getArticles, putArticle } from '../../services/api/articles.service';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';

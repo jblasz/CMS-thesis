@@ -27,7 +27,6 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
           {t('WEBSITE_NAME')}
         </Navbar.Brand>
       </Link>
-
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
@@ -35,7 +34,6 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
             <FontAwesomeIcon icon={faHome} className="mr-1" />
             {` ${t('NAVBAR.HOMEPAGE')}`}
           </Link>
-
           <NavDropdown title={t('NAVBAR.COURSES')} id="basic-nav-dropdown">
             <NavDropdown.Item key="all-courses" as="button">
               <Link className="nav-link" to="/courses">
