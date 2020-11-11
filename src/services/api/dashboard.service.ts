@@ -1,5 +1,16 @@
-import { GetAdminDashboardResponse, GetDashboardLaboratoriesResponse } from '../../interfaces/api';
-import { getAdminDashboardMockResponse } from '../mocks';
+import {
+  GetAdminDashboardResponse,
+  GetDashboardLaboratoriesResponse,
+  GetStudentCourseResponse,
+  GetStudentCoursesResponse,
+  GetStudentDashboardResponse,
+} from '../../interfaces/api';
+import {
+  getAdminDashboardMockResponse,
+  getStudentCourseMockResponse,
+  getStudentCoursesMockResponse,
+  getStudentDashboardMockResponse,
+} from '../mocks';
 import { getDashboardLaboratoriesMockResponse } from '../mocks/in-memory-course-mocks';
 
 /**
@@ -21,4 +32,25 @@ export async function getDashboardLaboratories(
  */
 export async function getAdminDashboard(): Promise<GetAdminDashboardResponse> {
   return getAdminDashboardMockResponse();
+}
+
+/**
+ * /dashboard/studentSummary
+ */
+export async function getStudentDashboard(): Promise<GetStudentDashboardResponse> {
+  return getStudentDashboardMockResponse();
+}
+
+/**
+ * /student/courses GET
+ */
+export async function getStudentCourses(): Promise<GetStudentCoursesResponse> {
+  return getStudentCoursesMockResponse();
+}
+
+/**
+ * /student/courses/:id GET
+ */
+export async function getStudentCourse(id: string): Promise<GetStudentCourseResponse> {
+  return getStudentCourseMockResponse(id);
 }

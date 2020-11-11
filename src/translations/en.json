@@ -21,7 +21,8 @@
       "COURSES": "Courses",
       "STUDENTS": "Students",
       "RESOURCES": "Resources",
-      "SUBMISSIONS": "Submissions"
+      "SUBMISSIONS": "Submissions",
+      "ARTICLES": "Articles"
     }
   },
   "FOOTER": {
@@ -205,6 +206,9 @@
       "NO_LIMITED_AVAILABILITY": "Unlimited",
       "CONTENTS_EN": "English contents",
       "CONTENTS_PL": "Polish contents"
+    },
+    "ARTICLES": {
+      "CREATE_ARTICLE": "Create an article"
     }
   },
   "PENDING": {
@@ -216,6 +220,15 @@
       "GROUPNAME": "Group",
       "STARTSAT": "Starts",
       "ENDSAT": "Ends"
+    }
+  },
+  "STUDENT": {
+    "DASHBOARD": {
+      "COURSES": "Courses you attend(or attended)",
+      "COURSE_DETAILS": "Course details",
+      "SELECT_COURSE_TO_VIEW": "Click on one of the courses to the left to view more",
+      "ACTIVE_EVENTS": "A lab is currently taking place",
+      "UPCOMING_EVENTS": "Following labs will soon take place"
     }
   }
 }

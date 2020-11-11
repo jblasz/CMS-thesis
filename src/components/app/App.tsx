@@ -32,6 +32,8 @@ import { AdminSubmissionComponent } from '../admin-submission';
 import { AppContext } from '../../services/contexts/app-context';
 import { AdminArticlesComponent } from '../admin-articles/AdminArticles';
 import { AdminArticleComponent } from '../admin-articles/AdminArticle';
+import { EventsStripComponent } from '../events-strip/events-strip';
+import { StudentDashboardComponent } from '../student-dashboard/StudentDashboard';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -52,6 +54,7 @@ function App():JSX.Element {
         </header>
         <Container className="content-wrap">
           <main>
+            <EventsStripComponent />
             <Switch>
               <Route exact path="/" component={HomeComponent} />
               <Route exact path="/login" component={LoginComponent} />
@@ -62,6 +65,7 @@ function App():JSX.Element {
               <Route exact path="/research" component={ResearchComponent} />
               <Route exact path="/articles" component={ArticlesComponent} />
               <Route exact path="/code" component={CodeValidationComponent} />
+              <PrivateRoute exact path="/dashboard" component={StudentDashboardComponent} />
               <PrivateRoute exact path="/profile" component={ProfileComponent} />
               <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
               <PrivateRoute exact path="/admin/resources" component={AdminResourcesComponent} />

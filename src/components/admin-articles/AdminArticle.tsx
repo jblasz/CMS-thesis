@@ -84,6 +84,7 @@ export function AdminArticleComponent(): JSX.Element {
               value={article.en.categoryMajor}
               onChange={(event) => {
                 article.en.categoryMajor = event.target.value;
+                setArticle(new Article(article));
               }}
             />
           </Form.Group>
@@ -93,6 +94,7 @@ export function AdminArticleComponent(): JSX.Element {
               value={article.en.categoryMinor}
               onChange={(event) => {
                 article.en.categoryMinor = event.target.value;
+                setArticle(new Article(article));
               }}
             />
           </Form.Group>
@@ -101,9 +103,10 @@ export function AdminArticleComponent(): JSX.Element {
           <Form.Group controlId="major pl">
             <Form.Label>{t('ADMIN.ARTICLE.MAJOR_PL')}</Form.Label>
             <Form.Control
-              value={article.en.categoryMajor}
+              value={article.pl.categoryMajor}
               onChange={(event) => {
-                article.en.categoryMajor = event.target.value;
+                article.pl.categoryMajor = event.target.value;
+                setArticle(new Article(article));
               }}
             />
           </Form.Group>
@@ -113,6 +116,7 @@ export function AdminArticleComponent(): JSX.Element {
               value={article.pl.categoryMinor}
               onChange={(event) => {
                 article.pl.categoryMinor = event.target.value;
+                setArticle(new Article(article));
               }}
             />
           </Form.Group>

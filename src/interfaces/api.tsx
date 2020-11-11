@@ -5,6 +5,7 @@ import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
 import { ResourceMeta, SubmissionGrade, SubmissionMeta } from './resource';
 import { Student } from './student';
+import { StudentCourse } from './studentCourse';
 
 export interface CourseGroupMeta {
   groupId: string
@@ -21,6 +22,11 @@ export interface CourseGroupMetaWithGrade extends CourseGroupMeta {
 export interface CourseLabGroupMeta extends CourseGroupMeta {
   labId: string
   labName: string
+}
+
+export interface CourseLabGroupMetaWithDates extends CourseLabGroupMeta {
+  startsAt: Date
+  endsAt: Date
 }
 
 export interface ApiPostResponse {
@@ -139,4 +145,16 @@ export interface GetArticleResponse {
 
 export interface PutArticleResponse extends ApiPostResponse {
   article: Article
+}
+
+export interface GetStudentDashboardResponse {
+  upcoming: CourseLabGroupMetaWithDates[]
+}
+
+export interface GetStudentCoursesResponse {
+  courses: CourseGroupMetaWithGrade[]
+}
+
+export interface GetStudentCourseResponse {
+  course: StudentCourse
 }
