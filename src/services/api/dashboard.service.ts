@@ -45,7 +45,8 @@ export async function getStudentDashboard(): Promise<GetStudentDashboardResponse
  * /student/courses GET
  */
 export async function getStudentCourses(): Promise<GetStudentCoursesResponse> {
-  return getStudentCoursesMockResponse();
+  const { courses } = await getStudentCoursesMockResponse();
+  return { courses };
 }
 
 /**

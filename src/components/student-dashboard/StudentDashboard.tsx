@@ -1,11 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Card, CardDeck, ListGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { CourseGroupMetaWithGrade } from '../../interfaces/api';
+import { SubmissionMeta } from '../../interfaces/resource';
 import { StudentCourse } from '../../interfaces/studentCourse';
 import { getStudentCourse, getStudentCourses } from '../../services/api/dashboard.service';
+import { getSubmissions } from '../../services/api/submissions.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
+import { StudentSubmissionListComponent } from '../submission-list/StudentSubmissionList';
 
 export function StudentDashboardComponent(): JSX.Element {
   const [t] = useTranslation();
@@ -15,10 +19,15 @@ export function StudentDashboardComponent(): JSX.Element {
   const [courses, setCourses] = useState<CourseGroupMetaWithGrade[]>([]);
   const [course, setCourse] = useState<StudentCourse>();
   const [index, setIndex] = useState(-1);
+  const [submissions, setSubmissions] = useState<SubmissionMeta[]>([]);
   const getAndSetCourses = useCallback(async () => {
     try {
       setLoading(true);
-      const { courses: _courses } = await getStudentCourses();
+      const [
+        { courses: _courses },
+        { submissions: _submissions },
+      ] = await Promise.all([getStudentCourses(), getSubmissions('', '', 0)]);
+      setSubmissions(_submissions);
       setCourses(_courses);
     } catch (e) {
       setError(e);
@@ -51,7 +60,7 @@ export function StudentDashboardComponent(): JSX.Element {
     <div>
       <WarningStripComponent error={error} />
       <CardDeck>
-        <Card>
+        <Card className="chunky-width my-2">
           <Card.Header>
             {t('STUDENT.DASHBOARD.COURSES')}
           </Card.Header>
@@ -73,7 +82,7 @@ export function StudentDashboardComponent(): JSX.Element {
             </ListGroup>
           </Card.Body>
         </Card>
-        <Card>
+        <Card className="chunky-width my-2">
           {
             secondaryLoading
               ? <LoadingSpinner />
@@ -85,21 +94,36 @@ export function StudentDashboardComponent(): JSX.Element {
                   <Card.Body>
                     {course
                       ? (
-
-                        <Card.Title>
-                          {course.name}
-                        </Card.Title>
+                        <>
+                          <Card.Title>
+                            <Link to={`courses/${course._id}`}>
+                              {course.name}
+                            </Link>
+                          </Card.Title>
+                          <Card.Subtitle>
+                            {`${t('STUDENT.DASHBOARD.GROUP_NAME')}: ${course.groupName}`}
+                          </Card.Subtitle>
+                        </>
                       )
                       : (
                         <Card.Title>
                           {t('STUDENT.DASHBOARD.SELECT_COURSE_TO_VIEW')}
                         </Card.Title>
-
                       )}
                   </Card.Body>
                 </>
               )
           }
+        </Card>
+        <Card className="chunky-width my-2">
+          <Card.Header>
+            {t('STUDENT.DASHBOARD.SUBMISSIONS')}
+          </Card.Header>
+          <Card.Body>
+            <StudentSubmissionListComponent
+              submissions={submissions}
+            />
+          </Card.Body>
         </Card>
       </CardDeck>
     </div>

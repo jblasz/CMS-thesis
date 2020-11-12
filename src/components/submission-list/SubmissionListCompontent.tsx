@@ -13,16 +13,17 @@ import { patchSubmission, deleteSubmission } from '../../services/api/submission
 import { formatDate } from '../../utils';
 import { LoadingSpinner } from '../loading-spinner';
 
-interface SubmissionListComponentsProps {
+interface SubmissionListComponentProps {
   submissions: SubmissionMeta[]
   onSubmit: (submissions: SubmissionMeta[]) => void
   onUpload: () => void
   skipStudentColumn: boolean
+  admin: boolean
 }
 
-export function SubmissionListComponents(props: SubmissionListComponentsProps): JSX.Element {
+export function SubmissionListComponent(props: SubmissionListComponentProps): JSX.Element {
   const {
-    submissions, skipStudentColumn, onSubmit, onUpload,
+    submissions, skipStudentColumn, onSubmit, onUpload, admin,
   } = props;
   const [t] = useTranslation();
   const [uncollapsedIndex, setUncollapsedIndex] = useState(-1);
@@ -31,6 +32,14 @@ export function SubmissionListComponents(props: SubmissionListComponentsProps): 
 
   if (loading) {
     return <LoadingSpinner />;
+  }
+
+  if (!submissions.length) {
+    return (
+      <Container>
+        <h6>{t('ADMIN.SUBMISSIONS.NO_SUBMISSIONS')}</h6>
+      </Container>
+    );
   }
 
   return (
@@ -122,7 +131,7 @@ export function SubmissionListComponents(props: SubmissionListComponentsProps): 
                                 : ''
                             }
                             <Button className="mx-2"><FontAwesomeIcon icon={faDownload} /></Button>
-                            <Button className="mx-2"><FontAwesomeIcon icon={faUpload} /></Button>
+                            {admin ? <Button className="mx-2"><FontAwesomeIcon icon={faUpload} /></Button> : ''}
                             <Button className="mx-2" title={t('ADMIN.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
                               <FontAwesomeIcon
                                 icon={faClipboard}
@@ -142,6 +151,7 @@ export function SubmissionListComponents(props: SubmissionListComponentsProps): 
                               <Form.Control
                                 value={submission.grade}
                                 as="select"
+                                disabled={!admin}
                                 onChange={(event) => {
                                   submission.grade = event.target.value as SubmissionGrade;
                                   onSubmit([...submissions]);

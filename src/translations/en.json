@@ -185,7 +185,8 @@
       "FINAL_FILTER_FALSE": "Old solutions",
       "GRADE": "Grade",
       "HEADER": "Laboratory submissions",
-      "NOT_FINAL": "This is not the final submission that the student made"
+      "NOT_FINAL": "This is not the final submission that the student made",
+      "NO_SUBMISSIONS": "You have not made any submissions yet"
     },
     "CODES": {
       "DESCR": "Codes",
@@ -228,7 +229,16 @@
       "COURSE_DETAILS": "Course details",
       "SELECT_COURSE_TO_VIEW": "Click on one of the courses to the left to view more",
       "ACTIVE_EVENTS": "A lab is currently taking place",
-      "UPCOMING_EVENTS": "Following labs will soon take place"
+      "UPCOMING_EVENTS": "Following labs will soon take place",
+      "SUBMISSIONS": "Your submissions",
+      "GROUP_NAME": "Your group"
+    },
+    "SUBMISSIONS": {
+      "COURSE": "Course",
+      "LAB": "Lab",
+      "GRADE": "Grade",
+      "NO_GRADE_YET": "Not graded",
+      "SUBMITTED_AT": "Submitted"
     }
   }
 }

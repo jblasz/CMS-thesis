@@ -26,7 +26,7 @@ export async function populateInMemoryDBWithSomeMocks(count = 5) {
   const tasks = (await getCoursesListMockResponse())
     .courses
     .map((x) => Object.values(x.laboratories[0].tasks)[0]);
-  generateList(5).forEach(() => generateSubmissionMock(
+  generateList(20).forEach(() => generateSubmissionMock(
     tasks[Math.floor(Math.random() * tasks.length)],
     students[Math.floor(Math.random() * students.length)],
   ));

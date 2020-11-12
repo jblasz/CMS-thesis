@@ -11,7 +11,7 @@ import { SubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 import { getStudent } from '../../services/api/students.service';
 import { LoadingSpinner } from '../loading-spinner';
-import { SubmissionListComponents } from '../submission-list/SubmissionListCompontent';
+import { SubmissionListComponent } from '../submission-list/SubmissionListCompontent';
 
 function AdminStudentComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
@@ -152,11 +152,12 @@ function AdminStudentComponent(): JSX.Element {
           </Row>
         </Card.Body>
       </Card>
-      <SubmissionListComponents
+      <SubmissionListComponent
         submissions={submissions}
         onSubmit={(_submissions) => setSubmissions(_submissions)}
         onUpload={() => getAndSetAll()}
         skipStudentColumn
+        admin
       />
     </Container>
   );

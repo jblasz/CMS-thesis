@@ -11,7 +11,7 @@ import { getCourses } from '../../services/api/courses.service';
 import { getStudents } from '../../services/api/students.service';
 import { getSubmissions } from '../../services/api/submissions.service';
 import { LoadingSpinner } from '../loading-spinner';
-import { SubmissionListComponents } from '../submission-list/SubmissionListCompontent';
+import { SubmissionListComponent } from '../submission-list/SubmissionListCompontent';
 
 interface BareData {
   id: string;
@@ -163,11 +163,12 @@ function AdminSubmissionsComponent(): JSX.Element {
           </InputGroup.Prepend>
         </InputGroup>
         <Form.Row>
-          <SubmissionListComponents
+          <SubmissionListComponent
             submissions={submissions}
             onSubmit={(_submissions) => setSubmissions(_submissions)}
             onUpload={() => getSubmissionsByFilters()}
             skipStudentColumn={false}
+            admin
           />
         </Form.Row>
       </Form>
