@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ArticleMeta } from '../../interfaces/article';
+import { IArticleMeta } from '../../interfaces/article';
 import { deleteArticle, getArticles, putArticle } from '../../services/api/articles.service';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
@@ -18,7 +18,7 @@ export function AdminArticlesComponent(): JSX.Element {
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [articles, setArticles] = useState<ArticleMeta[]>([]);
+  const [articles, setArticles] = useState<IArticleMeta[]>([]);
 
   const getAndSetHeaders = useCallback(async () => {
     try {

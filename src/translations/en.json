@@ -231,14 +231,20 @@
       "ACTIVE_EVENTS": "A lab is currently taking place",
       "UPCOMING_EVENTS": "Following labs will soon take place",
       "SUBMISSIONS": "Your submissions",
-      "GROUP_NAME": "Your group"
+      "GROUP_NAME": "Your group",
+      "NO_GRADE_YET": "Not graded",
+      "GRADE": "Grade",
+      "DOWNLOAD_TASK": "Download task",
+      "UPLOAD_SUBMISSION": "Upload submission",
+      "DOWNLOAD_SUBMISSION": "Download submission"
     },
     "SUBMISSIONS": {
       "COURSE": "Course",
       "LAB": "Lab",
       "GRADE": "Grade",
       "NO_GRADE_YET": "Not graded",
-      "SUBMITTED_AT": "Submitted"
+      "SUBMITTED_AT": "Submitted",
+      "NO_SUBMISSIONS": "You have not made any submissions yet"
     }
   }
 }

@@ -8,7 +8,6 @@ import {
   GetStudentDashboardResponse,
 } from '../../interfaces/api';
 import { CourseLanguage } from '../../interfaces/course';
-import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { SubmissionGrade } from '../../interfaces/resource';
 import { StudentCourse } from '../../interfaces/studentCourse';
 import { generateList } from '../../utils';
@@ -108,28 +107,28 @@ export async function getStudentCoursesMockResponse(): Promise<GetStudentCourses
 
 export async function getStudentCourseMockResponse(id: string): Promise<GetStudentCourseResponse> {
   return Promise.resolve({
-    course: new StudentCourse({
+    course: StudentCourse({
       _id: id,
       active: true,
       description: loremIpsum(),
       groupId: v4(),
       groupName: 'group name',
-      laboratories: [new CourseLaboratory({
+      laboratories: [{
         _id: v4(),
-        description: loremIpsum(),
         name: 'name1',
-        tasks: {},
-      }),
-      new CourseLaboratory({
+        dateFrom: new Date(),
+        dateTo: new Date(new Date().valueOf() + 60 * 60 * 1000),
+      },
+      {
         _id: v4(),
-        description: loremIpsum(),
         name: 'name2',
-        tasks: {},
-      })],
+        dateFrom: new Date(new Date().valueOf() + 60 * 60 * 1000),
+      }],
       language: CourseLanguage.EN,
       links: [],
       name: 'course name',
       semester: '2020Z',
+      grade: SubmissionGrade.B_PLUS,
     }),
   });
 }

@@ -1,7 +1,7 @@
 import {
   ApiPostResponse, GetArticleResponse, GetArticlesResponse, PutArticleResponse,
 } from '../../interfaces/api';
-import { Article } from '../../interfaces/article';
+import { Article, ArticleMeta, IArticle } from '../../interfaces/article';
 import {
   deleteArticleMockResponse,
   getArticleMockResponse,
@@ -13,20 +13,22 @@ import {
  * /articles GET
  */
 export async function getArticles(): Promise<GetArticlesResponse> {
-  return getArticlesMockResponse();
+  const { articles } = await getArticlesMockResponse();
+  return { articles: articles.map((x) => ArticleMeta(x)) };
 }
 
 /**
  * /articles/:id GET
  */
 export async function getArticle(id: string): Promise<GetArticleResponse> {
-  return getArticleMockResponse(id);
+  const { article } = await getArticleMockResponse(id);
+  return { article: Article(article) };
 }
 
 /**
  * /articles/:id PUT
  */
-export async function putArticle(id: string, article: Article): Promise<PutArticleResponse> {
+export async function putArticle(id: string, article: IArticle): Promise<PutArticleResponse> {
   return putArticleMockResponse(id, article);
 }
 

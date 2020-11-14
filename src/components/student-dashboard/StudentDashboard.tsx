@@ -1,10 +1,16 @@
+import { faDownload, faTasks, faUpload } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Card, CardDeck, ListGroup } from 'react-bootstrap';
+import {
+  Button,
+  ButtonGroup,
+  Card, CardDeck, Col, ListGroup, Row,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { CourseGroupMetaWithGrade } from '../../interfaces/api';
 import { SubmissionMeta } from '../../interfaces/resource';
-import { StudentCourse } from '../../interfaces/studentCourse';
+import { IStudentCourse, StudentCourse } from '../../interfaces/studentCourse';
 import { getStudentCourse, getStudentCourses } from '../../services/api/dashboard.service';
 import { getSubmissions } from '../../services/api/submissions.service';
 import { WarningStripComponent } from '../info/WarningStrip';
@@ -17,7 +23,7 @@ export function StudentDashboardComponent(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [secondaryLoading, setSecondaryLoading] = useState(false);
   const [courses, setCourses] = useState<CourseGroupMetaWithGrade[]>([]);
-  const [course, setCourse] = useState<StudentCourse>();
+  const [course, setCourse] = useState<IStudentCourse>();
   const [index, setIndex] = useState(-1);
   const [submissions, setSubmissions] = useState<SubmissionMeta[]>([]);
   const getAndSetCourses = useCallback(async () => {
@@ -40,7 +46,7 @@ export function StudentDashboardComponent(): JSX.Element {
     try {
       setSecondaryLoading(true);
       const { course: _course } = await getStudentCourse(courses[i].courseId);
-      setCourse(new StudentCourse(_course));
+      setCourse(StudentCourse(_course));
     } catch (e) {
       setError(e);
     } finally {
@@ -101,8 +107,61 @@ export function StudentDashboardComponent(): JSX.Element {
                             </Link>
                           </Card.Title>
                           <Card.Subtitle>
-                            {`${t('STUDENT.DASHBOARD.GROUP_NAME')}: ${course.groupName}`}
+                            {course.groupName}
                           </Card.Subtitle>
+                          <Card.Body>
+                            {course.grade ? (
+                              <h6>
+                                {`${t('STUDENT.DASHBOARD.GRADE')}: ${course.grade}`}
+                              </h6>
+                            ) : <></>}
+                            <ListGroup>
+                              {course.laboratories.map((lab) => (
+                                <ListGroup.Item key={lab._id}>
+                                  <Row>
+                                    <Col>
+                                      <Link to={`courses/${course._id}/lab/${lab._id}`}>
+                                        {lab.name}
+                                      </Link>
+                                    </Col>
+                                    <Col>
+                                      {lab.grade || t('STUDENT.DASHBOARD.NO_GRADE_YET')}
+                                    </Col>
+                                    <Col>
+                                      <ButtonGroup>
+                                        <Button
+                                          title={t('STUDENT.DASHBOARD.DOWNLOAD_TASK')}
+                                          disabled={
+                                            lab.dateFrom
+                                            && lab.dateFrom.valueOf() < new Date().valueOf()
+                                          }
+                                        >
+                                          <FontAwesomeIcon icon={faTasks} />
+                                        </Button>
+                                        <Button
+                                          title={t('STUDENT.DASHBOARD.UPLOAD_SUBMISSION')}
+                                          disabled={
+                                            (lab.dateTo && lab.dateFrom)
+                                            && (lab.dateFrom.valueOf() > new Date().valueOf()
+                                            || lab.dateTo.valueOf() < new Date().valueOf()
+                                            )
+                                          }
+                                        >
+                                          <FontAwesomeIcon icon={faUpload} />
+                                        </Button>
+                                        <Button
+                                          disabled={!lab.latestSubmissionId}
+                                          title={t('STUDENT.DASHBOARD.DOWNLOAD_SUBMISSION')}
+                                        >
+                                          <FontAwesomeIcon icon={faDownload} />
+                                        </Button>
+                                      </ButtonGroup>
+                                    </Col>
+                                  </Row>
+                                </ListGroup.Item>
+                              ))}
+                            </ListGroup>
+                          </Card.Body>
                         </>
                       )
                       : (

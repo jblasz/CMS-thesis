@@ -2,7 +2,7 @@ import { loremIpsum } from 'lorem-ipsum';
 import {
   ApiPostResponse, GetArticleResponse, GetArticlesResponse, PutArticleResponse,
 } from '../../interfaces/api';
-import { Article } from '../../interfaces/article';
+import { IArticle } from '../../interfaces/article';
 
 export function getArticlesMockResponse(): Promise<GetArticlesResponse> {
   return Promise.resolve({
@@ -11,10 +11,10 @@ export function getArticlesMockResponse(): Promise<GetArticlesResponse> {
         _id: 'id1',
         en: {
           categoryMajor: 'majorCat1en',
-          categoryMinor: 'minorCat1pl',
+          categoryMinor: 'minorCat1en',
         },
         pl: {
-          categoryMajor: 'majorCat1en',
+          categoryMajor: 'majorCat1pl',
           categoryMinor: 'minorCat1pl',
         },
       },
@@ -22,10 +22,10 @@ export function getArticlesMockResponse(): Promise<GetArticlesResponse> {
         _id: 'id2',
         en: {
           categoryMajor: 'majorCat1en',
-          categoryMinor: 'minorCat2pl',
+          categoryMinor: 'minorCat2en',
         },
         pl: {
-          categoryMajor: 'majorCat1en',
+          categoryMajor: 'majorCat1pl',
           categoryMinor: 'minorCat2pl',
         },
       },
@@ -33,10 +33,10 @@ export function getArticlesMockResponse(): Promise<GetArticlesResponse> {
         _id: 'id3',
         en: {
           categoryMajor: 'majorCat2en',
-          categoryMinor: 'minorCat3pl',
+          categoryMinor: 'minorCat3en',
         },
         pl: {
-          categoryMajor: 'majorCat2en',
+          categoryMajor: 'majorCat2pl',
           categoryMinor: 'minorCat3pl',
         },
       },
@@ -63,7 +63,7 @@ export function getArticleMockResponse(id: string): Promise<GetArticleResponse> 
 }
 
 export async function putArticleMockResponse(
-  id: string, article: Article,
+  id: string, article: IArticle,
 ): Promise<PutArticleResponse> {
   return Promise.resolve({
     ok: true,

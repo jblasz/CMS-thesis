@@ -4,7 +4,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import {
-  Table, Button, InputGroup, Container,
+  Table, Button, Container, ButtonGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -87,21 +87,17 @@ export function StudentSubmissionListComponent(
                   </p>
                 </td>
                 <td>
-                  <InputGroup>
-                    <InputGroup.Prepend>
-                      <Button className="mx-2"><FontAwesomeIcon icon={faDownload} /></Button>
-                    </InputGroup.Prepend>
-                    <InputGroup.Append>
-                      <Button className="mx-2" title={t('STUDENT.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
-                        <FontAwesomeIcon
-                          icon={faClipboard}
-                          onClick={() => {
-                            navigator.clipboard.writeText('a link will exist here');
-                          }}
-                        />
-                      </Button>
-                    </InputGroup.Append>
-                  </InputGroup>
+                  <ButtonGroup>
+                    <Button title={t('STUDENT.SUBMISSIONS.DOWNLOAD_SUBMISSION')}><FontAwesomeIcon icon={faDownload} /></Button>
+                    <Button title={t('STUDENT.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
+                      <FontAwesomeIcon
+                        icon={faClipboard}
+                        onClick={() => {
+                          navigator.clipboard.writeText('a link will exist here');
+                        }}
+                      />
+                    </Button>
+                  </ButtonGroup>
                 </td>
               </tr>
             );

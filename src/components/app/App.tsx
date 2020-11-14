@@ -33,14 +33,21 @@ import { AdminArticlesComponent } from '../admin-articles/AdminArticles';
 import { AdminArticleComponent } from '../admin-articles/AdminArticle';
 import { EventsStripComponent } from '../events-strip/events-strip';
 import { StudentDashboardComponent } from '../student-dashboard/StudentDashboard';
+import { getArticles } from '../../services/api/articles.service';
+import { IArticleMeta } from '../../interfaces/article';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loggedIn, setLoggedIn] = useState(true);
+  const [articles, setArticles] = useState<IArticleMeta[]>([]);
 
   const getAndSetCourses = async () => {
-    const loadedCourses = await getCourses();
-    setCourses(loadedCourses.courses.map((x) => new Course(x)));
+    const [
+      { courses: _courses }, { articles: _articles },
+    ] = await Promise.all([getCourses(), getArticles()]);
+
+    setCourses(_courses.map((x) => new Course(x)));
+    setArticles(_articles);
   };
 
   useEffect(() => { getAndSetCourses(); }, []);
@@ -49,7 +56,7 @@ function App():JSX.Element {
     <div className="App">
       <AppContext.Provider value={{ loggedIn, setLoggedIn }}>
         <header>
-          <NavigationBarComponent courses={courses} />
+          <NavigationBarComponent courses={courses} articles={articles} />
         </header>
         <Container className="content-wrap">
           <main>

@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Article } from '../../interfaces/article';
+import { Article, IArticle } from '../../interfaces/article';
 import { deleteArticle, getArticle, putArticle } from '../../services/api/articles.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
@@ -18,14 +18,18 @@ export function AdminArticleComponent(): JSX.Element {
   const [t] = useTranslation();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [article, setArticle] = useState<Article>(new Article());
+  const [article, setArticle] = useState<IArticle>(Article({
+    _id: '',
+    en: { categoryMajor: '', categoryMinor: '', contents: '' },
+    pl: { categoryMinor: '', contents: '', categoryMajor: '' },
+  }));
   const [availableFrom, setAvailableFrom] = useState(false);
 
   const getAndSetArticle = useCallback(async () => {
     try {
       setLoading(true);
       const { article: _article } = await getArticle(id);
-      setArticle(new Article(_article));
+      setArticle(Article(_article));
     } catch (e) {
       setError(e);
     } finally {
@@ -84,7 +88,7 @@ export function AdminArticleComponent(): JSX.Element {
               value={article.en.categoryMajor}
               onChange={(event) => {
                 article.en.categoryMajor = event.target.value;
-                setArticle(new Article(article));
+                setArticle(Article(article));
               }}
             />
           </Form.Group>
@@ -94,7 +98,7 @@ export function AdminArticleComponent(): JSX.Element {
               value={article.en.categoryMinor}
               onChange={(event) => {
                 article.en.categoryMinor = event.target.value;
-                setArticle(new Article(article));
+                setArticle(Article(article));
               }}
             />
           </Form.Group>
@@ -106,7 +110,7 @@ export function AdminArticleComponent(): JSX.Element {
               value={article.pl.categoryMajor}
               onChange={(event) => {
                 article.pl.categoryMajor = event.target.value;
-                setArticle(new Article(article));
+                setArticle(Article(article));
               }}
             />
           </Form.Group>
@@ -116,7 +120,7 @@ export function AdminArticleComponent(): JSX.Element {
               value={article.pl.categoryMinor}
               onChange={(event) => {
                 article.pl.categoryMinor = event.target.value;
-                setArticle(new Article(article));
+                setArticle(Article(article));
               }}
             />
           </Form.Group>
@@ -134,7 +138,7 @@ export function AdminArticleComponent(): JSX.Element {
                   setAvailableFrom(!availableFrom);
                   if (!availableFrom) {
                     delete article.availableFrom;
-                    setArticle(new Article(article));
+                    setArticle(Article(article));
                   }
                 }}
               />
@@ -149,7 +153,7 @@ export function AdminArticleComponent(): JSX.Element {
                 onChange={(date) => {
                   if (date instanceof Date) {
                     article.availableFrom = new Date(date);
-                    setArticle(new Article(article));
+                    setArticle(Article(article));
                   }
                 }}
               />
@@ -165,7 +169,7 @@ export function AdminArticleComponent(): JSX.Element {
           value={article.en.contents}
           onChange={(event) => {
             article.en.contents = event.target.value;
-            setArticle(new Article(article));
+            setArticle(Article(article));
           }}
         />
       </Form.Group>
@@ -177,7 +181,7 @@ export function AdminArticleComponent(): JSX.Element {
           value={article.pl.contents}
           onChange={(event) => {
             article.pl.contents = event.target.value;
-            setArticle(new Article(article));
+            setArticle(Article(article));
           }}
         />
       </Form.Group>

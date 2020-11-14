@@ -9,52 +9,45 @@ export interface IStudentCourse {
   language: CourseLanguage
   semester: string
   links: IResourceLink[]
-  laboratories: StudentCourseLaboratory[]
+  laboratories: IStudentCourseLaboratory[]
   groupId: string
   groupName: string
   active: boolean
+  grade?: SubmissionGrade
 }
 
-export interface StudentCourseLaboratory {
+export interface IStudentCourseLaboratory {
   _id: string
   name: string
   grade?: SubmissionGrade
   latestSubmissionId?: string
+  dateFrom?: Date
+  dateTo?: Date
 }
 
-export class StudentCourse implements IStudentCourse {
-  _id = ''
+export function StudentCourseLaboratory(o: IStudentCourseLaboratory): IStudentCourseLaboratory {
+  return {
+    _id: o._id || '',
+    name: o.name || '',
+    ...(o.dateFrom ? { dateFrom: new Date(o.dateFrom) } : {}),
+    ...(o.dateTo ? { dateTo: new Date(o.dateTo) } : {}),
+    ...(o.grade ? { grade: o.grade } : {}),
+    ...(o.latestSubmissionId ? { latestSubmissionId: o.latestSubmissionId } : {}),
+  };
+}
 
-  name = ''
-
-  description = ''
-
-  language: CourseLanguage = CourseLanguage.EN
-
-  semester = ''
-
-  links: IResourceLink[] = []
-
-  laboratories: StudentCourseLaboratory[] = []
-
-  active = true
-
-  groupId = ''
-
-  groupName = ''
-
-  constructor(o?: IStudentCourse) {
-    if (o) {
-      this._id = o._id || '';
-      this.name = o.name || '';
-      this.description = o.description || '';
-      this.language = o.language || CourseLanguage.EN;
-      this.semester = o.semester || '';
-      this.links = o.links || [];
-      this.laboratories = o.laboratories || [];
-      this.active = o.active || true;
-      this.groupId = o.groupId || '';
-      this.groupName = o.groupName || '';
-    }
-  }
+export function StudentCourse(o: IStudentCourse): IStudentCourse {
+  return {
+    _id: o._id || '',
+    name: o.name || '',
+    description: o.description || '',
+    language: o.language || CourseLanguage.EN,
+    semester: o.semester || '',
+    links: o.links || [],
+    laboratories: (o.laboratories && o.laboratories.map((x) => StudentCourseLaboratory(x))) || [],
+    active: o.active || true,
+    groupId: o.groupId || '',
+    groupName: o.groupName || '',
+    ...(o.grade ? { grade: o.grade } : {}),
+  };
 }

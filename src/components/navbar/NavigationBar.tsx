@@ -9,20 +9,32 @@ import { Link } from 'react-router-dom';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { AuthNav } from '../auth-nav';
 import { AppContext } from '../../services/contexts/app-context';
+import { IArticleMeta } from '../../interfaces/article';
 
 interface NavigationBarComponentProps {
   courses: Course[]
+  articles: IArticleMeta[]
 }
 
 function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element {
-  const { courses } = props;
-  const [t] = useTranslation();
+  const { courses, articles } = props;
+  const [t, { language }] = useTranslation();
   const { loggedIn } = useContext(AppContext);
+
+  const articleGroupings = articles.reduce(
+    (agg: {[key:string]:{_id: string, categoryMinor: string}[]}, curr) => {
+      const l = language === 'en' ? curr.en : curr.pl;
+      if (!agg[l.categoryMajor]) {
+        agg[l.categoryMajor] = [];
+      }
+      agg[l.categoryMajor].push({ _id: curr._id, categoryMinor: l.categoryMinor });
+      return agg;
+    }, {},
+  );
 
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top" collapseOnSelect>
       <Link to="/">
-        {' '}
         <Navbar.Brand>
           {t('WEBSITE_NAME')}
         </Navbar.Brand>
@@ -59,6 +71,19 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               </NavDropdown.Item>
             ))}
           </NavDropdown>
+          <>
+            {Object.keys(articleGroupings).map((categoryMajor) => (
+              <NavDropdown title={categoryMajor} key={categoryMajor} id={categoryMajor}>
+                {articleGroupings[categoryMajor].map((x) => (
+                  <NavDropdown.Item key={x._id}>
+                    <Link className="nav-link" to={`/articles/${x._id}`}>
+                      {x.categoryMinor}
+                    </Link>
+                  </NavDropdown.Item>
+                ))}
+              </NavDropdown>
+            ))}
+          </>
           <Link className="nav-link" to="/articles">{t('NAVBAR.ARTICLES')}</Link>
           <Link className="nav-link" to="/research">{t('NAVBAR.RESEARCH')}</Link>
           {loggedIn ? (

@@ -1,11 +1,11 @@
-import { ArticleMeta, Article } from './article';
+import { IArticleMeta, IArticle } from './article';
 import { Code } from './code';
 import { Course, ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
 import { ResourceMeta, SubmissionGrade, SubmissionMeta } from './resource';
 import { Student } from './student';
-import { StudentCourse } from './studentCourse';
+import { IStudentCourse } from './studentCourse';
 
 export interface CourseGroupMeta {
   groupId: string
@@ -136,15 +136,15 @@ export interface GetAdminDashboardResponse {
 }
 
 export interface GetArticlesResponse {
-  articles: ArticleMeta[]
+  articles: IArticleMeta[]
 }
 
 export interface GetArticleResponse {
-  article: Article
+  article: IArticle
 }
 
 export interface PutArticleResponse extends ApiPostResponse {
-  article: Article
+  article: IArticle
 }
 
 export interface GetStudentDashboardResponse {
@@ -156,5 +156,5 @@ export interface GetStudentCoursesResponse {
 }
 
 export interface GetStudentCourseResponse {
-  course: StudentCourse
+  course: IStudentCourse
 }
