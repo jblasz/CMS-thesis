@@ -55,9 +55,8 @@ function App():JSX.Element {
   return (
     <div className="App">
       <AppContext.Provider value={{ loggedIn, setLoggedIn }}>
-        <header>
-          <NavigationBarComponent courses={courses} articles={articles} />
-        </header>
+        <header />
+        <NavigationBarComponent courses={courses} articles={articles} />
         <Container className="content-wrap">
           <main>
             <EventsStripComponent />

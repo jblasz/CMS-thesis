@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import {
-  Navbar, Nav, NavDropdown,
+  Nav,
+  Navbar,
+  NavDropdown,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { faHome, faSitemap } from '@fortawesome/free-solid-svg-icons';
+import { faSitemap } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { Course, CourseLanguage } from '../../interfaces/course';
@@ -33,26 +35,21 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
   );
 
   return (
-    <Navbar bg="light" variant="light" expand="lg" fixed="top" collapseOnSelect>
-      <Link to="/">
-        <Navbar.Brand>
+    <Navbar className="nav" expand="lg" fixed="top">
+      <Navbar.Brand className="nav-brand">
+        <Link to="/" className="nav-link text-gray">
           {t('WEBSITE_NAME')}
-        </Navbar.Brand>
-      </Link>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="mr-auto">
-          <Link className="nav-link" to="/">
-            <FontAwesomeIcon icon={faHome} className="mr-1" />
-            {` ${t('NAVBAR.HOMEPAGE')}`}
-          </Link>
+        </Link>
+      </Navbar.Brand>
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto nav-items">
           <NavDropdown title={t('NAVBAR.COURSES')} id="basic-nav-dropdown">
             <NavDropdown.Item key="all-courses" as="button">
               <Link className="nav-link" to="/courses">
                 {t('NAVBAR.ALL_COURSES')}
               </Link>
             </NavDropdown.Item>
-            <NavDropdown.Item disabled>{t('NAVBAR.COURSES_PL')}</NavDropdown.Item>
+            <NavDropdown.Item className="category" disabled>{t('NAVBAR.COURSES_PL')}</NavDropdown.Item>
             <NavDropdown.Divider />
             {courses.filter((course) => course.language === CourseLanguage.PL).map((course) => (
               <NavDropdown.Item key={course._id} as="button">
@@ -61,7 +58,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
                 </Link>
               </NavDropdown.Item>
             ))}
-            <NavDropdown.Item disabled>{t('NAVBAR.COURSES_EN')}</NavDropdown.Item>
+            <NavDropdown.Item className="category" disabled>{t('NAVBAR.COURSES_EN')}</NavDropdown.Item>
             <NavDropdown.Divider />
             {courses.filter((course) => course.language === CourseLanguage.EN).map((course) => (
               <NavDropdown.Item key={course._id} as="button">
@@ -73,9 +70,9 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
           </NavDropdown>
           <>
             {Object.keys(articleGroupings).map((categoryMajor) => (
-              <NavDropdown title={categoryMajor} key={categoryMajor} id={categoryMajor}>
+              <NavDropdown key={categoryMajor} title={categoryMajor} id={categoryMajor}>
                 {articleGroupings[categoryMajor].map((x) => (
-                  <NavDropdown.Item key={x._id}>
+                  <NavDropdown.Item key={x._id} as="button">
                     <Link className="nav-link" to={`/articles/${x._id}`}>
                       {x.categoryMinor}
                     </Link>
@@ -84,14 +81,12 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               </NavDropdown>
             ))}
           </>
-          <Link className="nav-link" to="/articles">{t('NAVBAR.ARTICLES')}</Link>
-          <Link className="nav-link" to="/research">{t('NAVBAR.RESEARCH')}</Link>
           {loggedIn ? (
             <Link className="nav-link" to="/dashboard">
               <FontAwesomeIcon icon={faSitemap} />
               {` ${t('NAVBAR.DASHBOARD')}`}
             </Link>
-          ) : ''}
+          ) : <></>}
           <Link className="nav-link" to="/code">{t('NAVBAR.CODE')}</Link>
           {loggedIn ? (
             <NavDropdown title={t('NAVBAR.ADMIN.DESCR')} id="nav-admin-dropdown">
@@ -127,10 +122,11 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
                 </Link>
               </NavDropdown.Item>
             </NavDropdown>
-          ) : ''}
+          ) : <></>}
         </Nav>
         <AuthNav />
       </Navbar.Collapse>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
     </Navbar>
   );
 }

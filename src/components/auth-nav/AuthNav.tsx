@@ -9,12 +9,16 @@ import { AppContext } from '../../services/contexts/app-context';
 import { GoogleButton } from '../google-login/google-login';
 
 function AuthNav() {
-  // const { isAuthenticated, user } = useAuth0();
   const [t, i18n] = useTranslation();
   const { loggedIn } = useContext(AppContext);
 
   return (
-    <Navbar className="justify-content-end">
+    <div
+      className="social text-gray"
+      // style={{
+      //   width: '100%', padding: 0, margin: 0, display: 'flex', maxWidth: 300,
+      // }}
+    >
       {
         loggedIn ? (
           <Navbar.Text className="mr-2">
@@ -36,7 +40,7 @@ function AuthNav() {
             : <img src={polishFlag} className="img-responsive flag" alt="polishFlag" />
         }
       </Button>
-    </Navbar>
+    </div>
   );
 }
 

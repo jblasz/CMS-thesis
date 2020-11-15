@@ -1,11 +1,78 @@
-body {
-  padding-top: 80px;
-  padding-bottom: 80px;
+:root {
+  /* Theme colours */
+  --text-gray: #3f4954;
+  --text-light: #686666da;
+  --bg-color: #0f0f0f;
+  --white: #ffffff;
+  --midnight: #104f55;
+
+  /* gradient color */
+  --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+
+  /* theme font-family */
+  --Abel: 'Abel', cursive;
+  --Anton: 'Anton', cursive;
+  --Josefin: 'Josefin', cursive;
+  --Lexend: 'Lexend', cursive;
+  --Livvic: 'Livvic', cursive;
 }
 
-.carousel-caption {
-  color: black
+a {
+  text-decoration: none;
+  color: var(--text-gray)
 }
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+html,body {
+  margin: 0%;
+  box-sizing: border-box;
+  padding-top: 40px;
+}
+
+/* navbar */
+
+.nav {
+  background: white;
+}
+
+/* navbar icons icons */
+.nav .toggle-collapse .toggle-icons i {
+  font-size: 1.4rem;
+  color: var(--text-gray);
+}
+
+.nav .nav-link {
+  font-size: 1.1rem;
+  font-family: var(--Abel);
+}
+
+.nav .category {
+  font-size: 1.0rem;
+  color: black;
+  font-family: var(--Abel)
+}
+
+.nav .nav-items .nav-link:hover {
+  background-color: var(--midnight)
+}
+
+.nav .nav-items .nav-link:hover {
+  color: var(--white);
+}
+
+.nav .nav-brand a{
+  font-size: 1.6rem;
+  font-family: var(--Abel);
+}
+
+/* !navbar */
+
+/* viewport <= 750px */
 
 .error-strip {
   padding: 5px;
