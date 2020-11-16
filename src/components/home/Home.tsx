@@ -1,12 +1,16 @@
 import React from 'react';
 import './Home.css';
-import { Container } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 function HomeComponent(): JSX.Element {
   return (
-    <Container fluid>
-      <div>Home</div>
-    </Container>
+    <section className="site-title">
+      <div className="site-background">
+        <h3>Big site header title</h3>
+        <h1>Smaller site header subtitle</h1>
+        <Button>Button that goes somewhere</Button>
+      </div>
+    </section>
   );
 }
 

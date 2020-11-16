@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import Switch from 'react-bootstrap/esm/Switch';
-import { Container } from 'react-bootstrap';
 import { NavigationBarComponent } from '../navbar';
 import { HomeComponent } from '../home';
 import { LoginComponent } from '../login';
@@ -57,37 +56,44 @@ function App():JSX.Element {
       <AppContext.Provider value={{ loggedIn, setLoggedIn }}>
         <header />
         <NavigationBarComponent courses={courses} articles={articles} />
-        <Container className="content-wrap">
-          <main>
-            <EventsStripComponent />
-            <Switch>
-              <Route exact path="/" component={HomeComponent} />
-              <Route exact path="/login" component={LoginComponent} />
-              <Route exact path="/register" component={RegisterComponent} />
-              <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
-              <Route exact path="/courses/:id" component={CourseComponent} />
-              <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
-              <Route exact path="/research" component={ResearchComponent} />
-              <Route exact path="/articles" component={ArticlesComponent} />
-              <Route exact path="/code" component={CodeValidationComponent} />
-              <PrivateRoute exact path="/dashboard" component={StudentDashboardComponent} />
-              <PrivateRoute exact path="/profile" component={ProfileComponent} />
-              <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
-              <PrivateRoute exact path="/admin/resources" component={AdminResourcesComponent} />
-              <PrivateRoute exact path="/admin/students" component={AdminStudentsComponent} />
-              <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
-              <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
-              <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
-              <PrivateRoute exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
-              <PrivateRoute exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
-              <PrivateRoute exact path="/admin/submissions" component={AdminSubmissionsComponent} />
-              <PrivateRoute exact path="/admin/articles" component={AdminArticlesComponent} />
-              <PrivateRoute exact path="/admin/articles/:id" component={AdminArticleComponent} />
-              <Route exact path="/404" component={Component404} />
-            </Switch>
-          </main>
-          <FooterComponent />
-        </Container>
+        <main>
+          <EventsStripComponent />
+          <Switch>
+            <Route
+              exact
+              path="/"
+              component={() => (
+                <>
+                  <HomeComponent />
+                  <CourseListComponent courses={courses} />
+                </>
+              )}
+            />
+            <Route exact path="/login" component={LoginComponent} />
+            <Route exact path="/register" component={RegisterComponent} />
+            <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
+            <Route exact path="/courses/:id" component={CourseComponent} />
+            <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
+            <Route exact path="/research" component={ResearchComponent} />
+            <Route exact path="/articles" component={ArticlesComponent} />
+            <Route exact path="/code" component={CodeValidationComponent} />
+            <PrivateRoute exact path="/dashboard" component={StudentDashboardComponent} />
+            <PrivateRoute exact path="/profile" component={ProfileComponent} />
+            <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
+            <PrivateRoute exact path="/admin/resources" component={AdminResourcesComponent} />
+            <PrivateRoute exact path="/admin/students" component={AdminStudentsComponent} />
+            <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
+            <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
+            <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
+            <PrivateRoute exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
+            <PrivateRoute exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
+            <PrivateRoute exact path="/admin/submissions" component={AdminSubmissionsComponent} />
+            <PrivateRoute exact path="/admin/articles" component={AdminArticlesComponent} />
+            <PrivateRoute exact path="/admin/articles/:id" component={AdminArticleComponent} />
+            <Route exact path="/404" component={Component404} />
+          </Switch>
+        </main>
+        <FooterComponent />
       </AppContext.Provider>
     </div>
   );

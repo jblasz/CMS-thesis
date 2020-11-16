@@ -41,6 +41,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
           {t('WEBSITE_NAME')}
         </Link>
       </Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto nav-items">
           <NavDropdown title={t('NAVBAR.COURSES')} id="basic-nav-dropdown">
@@ -126,7 +127,6 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
         </Nav>
         <AuthNav />
       </Navbar.Collapse>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
     </Navbar>
   );
 }

@@ -5,6 +5,11 @@
   --bg-color: #0f0f0f;
   --white: #ffffff;
   --midnight: #104f55;
+  --ochre: #ffa69e;
+  --citrus: #faf3dd;
+  --teal: #b8f2e6;
+  --grayteal: #aed9e0;
+  --granite: #5e6472;
 
   /* gradient color */
   --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
@@ -12,14 +17,60 @@
   /* theme font-family */
   --Abel: 'Abel', cursive;
   --Anton: 'Anton', cursive;
-  --Josefin: 'Josefin', cursive;
-  --Lexend: 'Lexend', cursive;
+  --Josefin: 'Josefin Sans', cursive;
+  --Lexend: 'Lexend Deca', cursive;
   --Livvic: 'Livvic', cursive;
 }
 
 a {
   text-decoration: none;
   color: var(--text-gray)
+}
+
+h1 {
+  font-family: var(--Lexend);
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-family: var(--Lexend);
+}
+
+h3 {
+  font-family: var(--Abel);
+  font-size: 1.3rem;
+}
+
+button.btn {
+  color: var(--granite);
+  text-transform: uppercase;
+  text-decoration: none;
+  background: var(--grayteal);
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+}
+
+button.btn:hover {
+  background: var(--granite);
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.4s ease 0s;
+}
+
+button.btn:active,
+button.btn:focus   {
+  color: #ffffff; 
+  background-color: var(--granite) !important; 
+  border-color: var(--granite);
+  box-shadow: none;
+}
+.btn-group button.btn {
+  padding: 10px 10px;
 }
 
 .flex-row {
@@ -32,6 +83,7 @@ html,body {
   margin: 0%;
   box-sizing: border-box;
   padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 /* navbar */
@@ -72,7 +124,32 @@ html,body {
 
 /* !navbar */
 
-/* viewport <= 750px */
+/* site content */
+
+main .site-content {
+  display: grid;
+  grid-template-columns: 70% 30%; 
+}
+
+.site-content > .sidebar .category-list {
+  font-family: var(--Livvic);
+}
+
+.site-content > .sidebar .category-list .list-items {
+  background: var(--sky);
+  padding: .4rem 1rem;
+  margin: .8rem 0;
+  border-radius: 3rem;
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.site-content > .sidebar .category-list .list-items a {
+  color: black;
+}
+
+/* !site content */
 
 .error-strip {
   padding: 5px;
@@ -82,4 +159,29 @@ html,body {
 
 .chunky-width {
   min-width: 400px;
+}
+
+main .site-title .btn {
+  margin: 1.8rem;
+  background: var(--sky)
+}
+
+.site-title {
+  background: url('../../images/mini.png');
+  background-size: cover;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.site-title .site-background {
+  padding-top: 10rem;
+  text-align: center;
+  color: black;
+}
+
+.site-title h1,h3 {
+  margin: .3rem;
 }
