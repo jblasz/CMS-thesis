@@ -94,6 +94,10 @@ export interface GetStudentsResponse {
   students: Student[]
 }
 
+export interface GetUserResponse {
+  user: Student
+}
+
 export interface PostUserResponse {
   student: Student
   attends: CourseGroupMeta[]

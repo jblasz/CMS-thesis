@@ -45,7 +45,7 @@ export function EventsStripComponent(): JSX.Element {
     return <></>;
   }
   return (
-    <div className="alert alert-warning">
+    <div className="alert alert-warning warning-strip">
       <div className="float-right">
         <Button
           variant="outline-danger"

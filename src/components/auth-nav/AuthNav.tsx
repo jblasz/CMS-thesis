@@ -23,8 +23,8 @@ function AuthNav() {
         loggedIn ? (
           <Navbar.Text className="mr-2">
             {`${t('LOGIN.LOGGED_IN_AS')}:`}
+            <Link to="/profile">username</Link>
             {' '}
-            <Link to="/profile">{}</Link>
           </Navbar.Text>
         ) : (
           <Navbar.Text className="mr-2">
