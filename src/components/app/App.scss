@@ -1,0 +1,97 @@
+@import '../../master';
+
+html,
+body {
+  margin: 0%;
+  box-sizing: border-box;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  font-family: $font-small;
+}
+
+a {
+  text-decoration: none;
+  color: $text-regular;
+}
+
+h1 h2 {
+  font-family: $font-large;
+}
+
+h3 {
+  font-family: $font-medium;
+}
+
+button.btn.btn-primary {
+  color: $btn-colour;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: $btn-background;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle,
+.btn-primary:not(:disabled):not(.disabled):hover,
+.btn-primary:not(:disabled):not(.disabled).hover {
+  color: $btn-hover-colour;
+  background-color: $btn-hover-background;
+  border-color: $btn-hover-background;
+  box-shadow: none;
+  transition: all 0.4s ease 0s;
+}
+
+.btn-primary:not(:disabled):not(.disabled) {
+  color: $btn-colour;
+  background-color: $btn-background;
+  border-color: $btn-background;
+  box-shadow: none;
+}
+.btn-group button.btn.btn-primary {
+  padding: 10px 10px;
+}
+
+.chunky-width {
+  min-width: 400px;
+}
+
+.site-title {
+  background: url("../../images/mini.png");
+  background-size: cover;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.site-title .site-background {
+  padding-top: 10rem;
+  text-align: center;
+  color: black;
+}
+
+.site-title h1,
+h3 {
+  margin: 0.3rem;
+}
+
+/* ----------- !CARDS ----------- */
+
+.error-strip {
+  padding: 5px;
+  margin: 5px;
+  background-color: red;
+}
+
+.warning-strip {
+  position: fixed;
+  top: 120px;
+  width: 100%;
+  z-index: 100;
+}

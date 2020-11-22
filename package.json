@@ -18,6 +18,7 @@
     "i18next": "^19.6.0",
     "joi": "^17.2.1",
     "lorem-ipsum": "^2.0.3",
+    "node-sass": "4.14.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.2.1",
     "react-cookie": "^4.0.3",

@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 // load bootstrap styles
 import 'bootstrap/dist/css/bootstrap.css';
 
-import './index.css';
 import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
 import { CookiesProvider } from 'react-cookie/es6';

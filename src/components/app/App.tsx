@@ -14,7 +14,7 @@ import { Component404 } from '../404';
 import { CourseListComponent } from '../courseList';
 import { CourseComponent } from '../course';
 import { LaboratoryComponent } from '../laboratory';
-import './App.css';
+import './App.scss';
 import { PrivateRoute } from '../private-route';
 import { ProfileComponent } from '../profile';
 import { AdminPanelComponent } from '../admin-panel/AdminPanel';

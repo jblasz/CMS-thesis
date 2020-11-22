@@ -1,0 +1,46 @@
+@import '../../master';
+
+/* site content */
+
+.sidebar {
+  position: sticky;
+  top: 80px;
+  border-radius: 5px;
+  border: 2px solid $outline;
+  padding: 20px;
+  min-width: 300px;
+}
+
+ul.category-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    font: $font-medium;
+    border-bottom: 1px solid #ccc;
+
+    &:last-child {
+      border: none;
+    }
+  
+    span {
+      text-decoration: none;
+      color: #000;
+
+      -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+      -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+      transition: font-size 0.3s ease, background-color 0.3s ease;
+      display: block;
+      // width: 200px;
+
+      &:hover {
+        font-size: 25px;
+        background: #f6f6f6;
+        cursor: pointer;
+      }
+    }
+  }
+}

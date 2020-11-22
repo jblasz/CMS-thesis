@@ -1,5 +1,4 @@
 import React from 'react';
-import './Home.css';
 import { Button } from 'react-bootstrap';
 
 function HomeComponent(): JSX.Element {

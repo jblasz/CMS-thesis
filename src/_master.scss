@@ -1,0 +1,36 @@
+:root {
+  /* Theme colours */
+  --text-gray: #3f4954;
+  --text-light: #686666da;
+  --bg-color: #0f0f0f;
+  --white: #ffffff;
+  --midnight: #104f55;
+  --ochre: #ffa69e;
+  --citrus: #faf3dd;
+  --teal: #b8f2e6;
+  --grayteal: #aed9e0;
+  --granite: #5e6472;
+
+  /* gradient color */
+  --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+
+  /* theme font-family */
+  --Abel: "Abel", cursive;
+  --Anton: "Anton", cursive;
+  --Josefin: "Josefin Sans", cursive;
+  --Lexend: "Lexend Deca", cursive;
+  --Livvic: "Livvic", cursive;
+}
+
+$outline: var(--granite);
+
+$btn-background: var(--white);
+$btn-colour: var(--text-gray);
+$btn-hover-background: var(--midnight);
+$btn-hover-colour: var(--white);
+
+$text-regular: var(--text-gray);
+
+$font-large: var(--Lexend);
+$font-medium: var(--Abel);
+$font-small: var(--Abel);

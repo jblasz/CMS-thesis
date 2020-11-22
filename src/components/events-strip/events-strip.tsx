@@ -16,7 +16,7 @@ export function EventsStripComponent(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [t] = useTranslation();
-  const [hide, setHidden] = useState(false);
+  const [hide, setHidden] = useState(true);
   const getAndSetEvents = useCallback(async () => {
     try {
       setLoading(true);
