@@ -37,7 +37,7 @@ import { IArticleMeta } from '../../interfaces/article';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [articles, setArticles] = useState<IArticleMeta[]>([]);
 
   const getAndSetCourses = async () => {

@@ -1,7 +1,16 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import './Home.scss';
+
+const onScroll = () => {
+  const v = window.scrollY;
+  document.documentElement.dataset.scroll = v.toString();
+};
 
 function HomeComponent(): JSX.Element {
+  document.documentElement.dataset.scroll = '0';
+  document.addEventListener('scroll', onScroll);
+
   return (
     <section className="site-title">
       <div className="site-background">
