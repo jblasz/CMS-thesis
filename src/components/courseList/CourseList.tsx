@@ -1,10 +1,8 @@
 import React, { RefObject, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import 'react-dropdown/style.css';
 import './CourseList.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRobot } from '@fortawesome/free-solid-svg-icons';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { CourseListSidebarComponent, Status, Language } from './CourseListSidebar';
 
@@ -13,7 +11,7 @@ export interface CourseListComponentProps {
 }
 
 function CourseListComponent(props: CourseListComponentProps): JSX.Element {
-  const [t] = useTranslation();
+  // const [t] = useTranslation();
   const { courses } = props;
 
   const [languageFilter, setLanguageFilter] = useState(Language.ANY);
@@ -53,29 +51,18 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
           statusFilter={statusFilter}
         />
         <div className="col">
-          <section className="details-card">
-            <div className="row justify-content-center">
-              <section className="courses-container row">
-                {courses.map((course) => (
-                  <div className="card-container col-5" key={course._id}>
-                    <div className="card">
-                      <Link to={`/courses/${course._id}`}>
-                        <div className="card--display">
-                          <FontAwesomeIcon icon={faRobot} size="2x" />
-                          <h2>{course.name}</h2>
-                        </div>
-                        <div className="card--hover">
-                          <h4>{course.name}</h4>
-                          <p>{course.description}</p>
-                          <p className="link">{t('COURSE.LABORATORY.GOTO')}</p>
-                        </div>
-                      </Link>
-                      <div className="card--border" />
-                    </div>
-                  </div>
-                ))}
-              </section>
-            </div>
+          <section className="justify-content-center tiles-wrap row">
+            {courses.map((course) => (
+              <Link to={`/courses/${course._id}`} className="card-container col-5 m-3" key={course._id}>
+                <div className="row title justify-content-between">
+                  <h5>{course.name}</h5>
+                  <div className="nav-link">{course.semester}</div>
+                </div>
+                <div className="row description">
+                  <p>{course.description}</p>
+                </div>
+              </Link>
+            ))}
           </section>
         </div>
       </div>

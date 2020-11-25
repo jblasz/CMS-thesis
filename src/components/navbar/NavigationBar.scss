@@ -1,0 +1,27 @@
+@import "../../master";
+
+/* navbar */
+
+.nav {
+  background: $background;
+}
+
+.nav .nav-link {
+  font-size: 1.1rem;
+}
+
+.nav .category {
+  font-size: 1rem;
+  color: black;
+}
+
+.nav .nav-items .nav-link:hover {
+  background-color: $background-2;
+  color: $background;
+}
+
+.nav .nav-brand a {
+  font-size: 1.6rem;
+}
+
+/* !navbar */

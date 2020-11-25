@@ -30,7 +30,8 @@ button.btn.btn-primary {
   padding: 20px;
   border-radius: 5px;
   display: inline-block;
-  border: none;
+  border: 1px solid black;
+  border-color: $outline;
   transition: all 0.4s ease 0s;
 }
 
@@ -44,14 +45,9 @@ button.btn.btn-primary {
   border-color: $btn-hover-background;
   box-shadow: none;
   transition: all 0.4s ease 0s;
+  border-color: $outline;
 }
 
-.btn-primary:not(:disabled):not(.disabled) {
-  color: $btn-colour;
-  background-color: $btn-background;
-  border-color: $btn-background;
-  box-shadow: none;
-}
 .btn-group button.btn.btn-primary {
   padding: 10px 10px;
 }

@@ -7,12 +7,10 @@
   height: 85vh;
   max-height: 85vh;
   transition: max-height 1s ease-out;
-  // display: flex;
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
-  // position: relative;
 
   .site-background {
     margin-top: 35vh;
@@ -24,16 +22,5 @@
   h1,
   h3 {
     margin: 0.3rem;
-  }
-}
-
-html:not([data-scroll='0']) {
-  .site-title {
-    max-height: 200px;
-    transition: max-height 1s ease-out;
-  }
-  .site-background {
-    margin-top: -35vh;
-    transition: margin-top 1s ease-out;
   }
 }

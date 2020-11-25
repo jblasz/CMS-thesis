@@ -1,14 +1,16 @@
 :root {
   /* Theme colours */
-  --text-gray: #3f4954;
-  --text-light: #686666da;
-  --bg-color: #0f0f0f;
-  --white: #ffffff;
-  --midnight: #104f55;
-  --ochre: #ffa69e;
-  --citrus: #faf3dd;
-  --teal: #b8f2e6;
-  --grayteal: #aed9e0;
+  --text-dark: black;
+  --text-light: white;
+  --white: white;
+  --black: black;
+
+  --ming: #006D77;
+  --middle-blue-green: #83C5BE;
+  --alice-blue: #83C5BE;
+  --unbleached-silk: #FFDDD2;
+  --dark-salmon: #E29578;
+
   --granite: #5e6472;
 
   /* gradient color */
@@ -22,14 +24,29 @@
   --Livvic: "Livvic", cursive;
 }
 
-$outline: var(--granite);
+// for text over col-0
+$col-0: var(--white);
+// start scale
+$col-1: var(--ming);
+$col-2: var(--middle-blue-green);
+$col-3: var(--alice-blue);
+$col-4: var(--unbleached-silk);
+$col-5: var(--dark-salmon);
+// for text over white
+$col-6: var(--granite);
 
-$btn-background: var(--white);
-$btn-colour: var(--text-gray);
-$btn-hover-background: var(--midnight);
-$btn-hover-colour: var(--white);
+$background: var(--white);
+$background-2: $col-1;
 
-$text-regular: var(--text-gray);
+$outline: $col-1;
+
+$btn-background: $col-0;
+$btn-colour: $col-6;
+$btn-hover-background: $col-1;
+$btn-hover-colour: $col-0;
+
+$text-regular: var(--black);
+$text-regular-2: var(--white);
 
 $font-large: var(--Lexend);
 $font-medium: var(--Abel);
