@@ -1,0 +1,12 @@
+@import './macros';
+
+$text-bright: var(--white);
+$text-dark: var(--granite);
+
+$col-1: var(--forest-green-traditional);
+$col-2: var(--pink);
+$col-3: var(--light-goldenrod-yellow);
+$col-4-contrast: $text-dark;
+$col-4: var(--honeydew);
+$col-5-contrast: $text-bright;
+$col-5: var(--old-lavender);

@@ -4,7 +4,14 @@ You need `node` and `yarn`, and a `.env` environment file with two variables (ne
 
 ## Development setup
 
-You *have to* have environment variables set pertaining to Auth0 set to use authentication features locally. Contact an admin to get what is needed to be put in a `.env` file.
+Google authentication currently uses hardcoded public project id and needs nothing additional to work.
+
+If you want the app to "pretend" it is logged in from the start, set `REACT_APP_START_LOGGED_IN=true`.
+If you want to not show the warning strip on every reload, set `REACT_APP_HIDE_WARNING_STRIP=true`
+
+Any changes to .env require full recompilation, as they are grabbed only once.
+
+To switch between styles go to `src/_master.css` and change the first line to point to whichever macro file you want (out of the ones found in `src/styles/_style1-....scss`)
 
 Run `yarn`.
 
@@ -63,12 +70,6 @@ Run a production build at /build, and rebuild each time file changes detected. S
 ### `yarn serve`
 
 Serve whatever is in /build.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.
-
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 

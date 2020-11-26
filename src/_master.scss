@@ -1,16 +1,16 @@
-@import "./styles/style1";
+@import "./styles/style4";
 
 $background: var(--white);
 $background-2: $col-1;
 
 $outline: $col-1;
 
-$btn-background: $col-0;
-$btn-colour: $col-6;
+$btn-background: $text-bright;
+$btn-colour: $text-dark;
 $btn-hover-background: $col-2;
-$btn-hover-colour: $col-0;
+$btn-hover-colour: $text-bright;
 $btn-active-background: $col-1;
-$btn-active-colour: $col-0;
+$btn-active-colour: $text-bright;
 
 $text-regular: var(--black);
 $text-regular-2: var(--white);

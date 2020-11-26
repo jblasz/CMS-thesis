@@ -39,10 +39,20 @@
 
     .title {
       padding: 10px;
+      color: $col-5-contrast;
       background-color: $col-5;
       border-bottom: solid 1px $col-3;
+      transition: all 0.3s ease-in-out;
+
       h5 {
         margin: 0;
+      }
+    }
+
+    &:hover {
+      .title {
+        color: $col-4-contrast;
+        background-color: $col-4;
       }
     }
 

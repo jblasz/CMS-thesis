@@ -1,36 +1,12 @@
-:root {
-  /* Theme colours */
-  --text-dark: black;
-  --text-light: white;
-  --white: white;
-  --black: black;
+@import './macros';
 
-  --ming: #006D77;
-  --middle-blue-green: #83C5BE;
-  --alice-blue: #83C5BE;
-  --unbleached-silk: #FFDDD2;
-  --dark-salmon: #E29578;
+$text-bright: var(--white);
+$text-dark: var(--granite);
 
-  --granite: #5e6472;
-
-  /* gradient color */
-  --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-
-  /* theme font-family */
-  --Abel: "Abel", cursive;
-  --Anton: "Anton", cursive;
-  --Josefin: "Josefin Sans", cursive;
-  --Lexend: "Lexend Deca", cursive;
-  --Livvic: "Livvic", cursive;
-}
-
-// for text over col-0
-$col-0: var(--white);
-// start scale
 $col-1: var(--ming);
 $col-2: var(--middle-blue-green);
 $col-3: var(--alice-blue);
 $col-4: var(--unbleached-silk);
+$col-4-contrast: $text-dark;
 $col-5: var(--dark-salmon);
-// for text over white
-$col-6: var(--granite);
+$col-5-contrast: $text-bright;

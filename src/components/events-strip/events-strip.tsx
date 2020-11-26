@@ -16,7 +16,8 @@ export function EventsStripComponent(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [t] = useTranslation();
-  const [hide, setHidden] = useState(true);
+  console.log(process.env.REACT_APP_HIDE_WARNING_STRIP);
+  const [hide, setHidden] = useState(!!process.env.REACT_APP_HIDE_WARNING_STRIP);
   const getAndSetEvents = useCallback(async () => {
     try {
       setLoading(true);
