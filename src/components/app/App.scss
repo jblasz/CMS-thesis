@@ -1,57 +1,5 @@
 @import '../../master';
 
-html,
-body {
-  margin: 0%;
-  box-sizing: border-box;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  font-family: $font-small;
-}
-
-a {
-  text-decoration: none;
-  color: $text-regular;
-}
-
-h1 h2 {
-  font-family: $font-large;
-}
-
-h3 {
-  font-family: $font-medium;
-}
-
-button.btn.btn-primary {
-  color: $btn-colour;
-  text-transform: uppercase;
-  text-decoration: none;
-  background: $btn-background;
-  padding: 20px;
-  border-radius: 5px;
-  display: inline-block;
-  border: 1px solid black;
-  border-color: $outline;
-  transition: all 0.4s ease 0s;
-}
-
-.btn-primary:not(:disabled):not(.disabled):active,
-.btn-primary:not(:disabled):not(.disabled).active,
-.show > .btn-primary.dropdown-toggle,
-.btn-primary:not(:disabled):not(.disabled):hover,
-.btn-primary:not(:disabled):not(.disabled).hover {
-  color: $btn-hover-colour;
-  background-color: $btn-hover-background;
-  border-color: $btn-hover-background;
-  box-shadow: none;
-  transition: all 0.4s ease 0s;
-  border-color: $outline;
-}
-
-.btn-group button.btn.btn-primary {
-  padding: 10px 10px;
-}
-
 .chunky-width {
   min-width: 400px;
 }

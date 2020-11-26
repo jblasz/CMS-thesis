@@ -3,8 +3,11 @@ import React, { RefObject, useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'react-dropdown/style.css';
 import './CourseList.scss';
+import { Parallax } from 'react-parallax';
+import { Button } from 'react-bootstrap';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { CourseListSidebarComponent, Status, Language } from './CourseListSidebar';
+import bgImg from '../../images/main_2.jpeg';
 
 export interface CourseListComponentProps {
   courses: Course[];
@@ -13,6 +16,8 @@ export interface CourseListComponentProps {
 function CourseListComponent(props: CourseListComponentProps): JSX.Element {
   // const [t] = useTranslation();
   const { courses } = props;
+  courses.push(new Course(), new Course(), new Course(), new Course(),
+    new Course(), new Course(), new Course(), new Course(), new Course());
 
   const [languageFilter, setLanguageFilter] = useState(Language.ANY);
   const [statusFilter, setStatusFilter] = useState(Status.OPEN);
@@ -37,8 +42,17 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
   const semesters = [...new Set(courses.map((c) => c.semester).sort().reverse())];
 
   return (
-    <section className="">
-      <div className="row site-content">
+    <div className="col">
+      <Parallax blur={0} bgImage={bgImg} bgImageAlt="mini" strength={-200}>
+        <div className="site-title">
+          <div className="site-background">
+            <h3>Big site header title</h3>
+            <h1>Smaller site header subtitle</h1>
+            <Button>Button that goes somewhere</Button>
+          </div>
+        </div>
+      </Parallax>
+      <div className="row section static site-content">
         <CourseListSidebarComponent
           filteredCourses={filteredCourses}
           languageFilter={languageFilter}
@@ -53,7 +67,8 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
         <div className="col">
           <section className="justify-content-center tiles-wrap row">
             {courses.map((course) => (
-              <Link to={`/courses/${course._id}`} className="card-container col-5 m-3" key={course._id}>
+              <Link to={`/courses/${course._id}`} className="card-container col-5 m-3" key={course._id} id={`li-course-${course._id}`}>
+                <div style={{ position: 'absolute', top: -80, left: 0 }} ref={scrollRefs[course._id]} />
                 <div className="row title justify-content-between">
                   <h5>{course.name}</h5>
                   <div className="nav-link">{course.semester}</div>
@@ -66,7 +81,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
           </section>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

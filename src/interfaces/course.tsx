@@ -1,4 +1,5 @@
 import joi from 'joi';
+import { v4 } from 'uuid';
 import { IResourceLink } from './resourceLink';
 import { CourseLaboratory, ICourseLaboratory } from './courseLaboratory';
 import { ICourseGroup, CourseGroup } from './courseGroup';
@@ -23,15 +24,15 @@ export interface ICourse {
 }
 
 export class Course implements ICourse, Validable {
-  _id = ''
+  _id = v4();
 
-  name = ''
+  name = v4();
 
   description = ''
 
   language: CourseLanguage = CourseLanguage.EN
 
-  semester = ''
+  semester = 'F'
 
   links: IResourceLink[] = []
 

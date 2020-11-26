@@ -1,39 +1,4 @@
-:root {
-  /* Theme colours */
-  --text-dark: black;
-  --text-light: white;
-  --white: white;
-  --black: black;
-
-  --ming: #006D77;
-  --middle-blue-green: #83C5BE;
-  --alice-blue: #83C5BE;
-  --unbleached-silk: #FFDDD2;
-  --dark-salmon: #E29578;
-
-  --granite: #5e6472;
-
-  /* gradient color */
-  --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
-
-  /* theme font-family */
-  --Abel: "Abel", cursive;
-  --Anton: "Anton", cursive;
-  --Josefin: "Josefin Sans", cursive;
-  --Lexend: "Lexend Deca", cursive;
-  --Livvic: "Livvic", cursive;
-}
-
-// for text over col-0
-$col-0: var(--white);
-// start scale
-$col-1: var(--ming);
-$col-2: var(--middle-blue-green);
-$col-3: var(--alice-blue);
-$col-4: var(--unbleached-silk);
-$col-5: var(--dark-salmon);
-// for text over white
-$col-6: var(--granite);
+@import "./styles/style1";
 
 $background: var(--white);
 $background-2: $col-1;
@@ -42,8 +7,10 @@ $outline: $col-1;
 
 $btn-background: $col-0;
 $btn-colour: $col-6;
-$btn-hover-background: $col-1;
+$btn-hover-background: $col-2;
 $btn-hover-colour: $col-0;
+$btn-active-background: $col-1;
+$btn-active-colour: $col-0;
 
 $text-regular: var(--black);
 $text-regular-2: var(--white);
@@ -51,3 +18,73 @@ $text-regular-2: var(--white);
 $font-large: var(--Lexend);
 $font-medium: var(--Abel);
 $font-small: var(--Abel);
+
+html,
+body {
+  margin: 0%;
+  box-sizing: border-box;
+  padding-top: 41px;
+  padding-bottom: 41px;
+  font-family: $font-small;
+}
+
+a {
+  text-decoration: none;
+  color: $text-regular;
+}
+
+h1 h2 {
+  font-family: $font-large;
+}
+
+h3 {
+  font-family: $font-medium;
+}
+
+button.btn.btn-primary {
+  color: $btn-colour;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: $btn-background;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: 1px solid black;
+  border-color: $outline;
+  transition: all 0.4s ease 0s;
+}
+
+.show > .btn-primary.dropdown-toggle,
+.btn-primary:not(:disabled):not(.disabled):hover,
+.btn-primary:not(:disabled):not(.disabled).hover {
+  color: $btn-hover-colour;
+  background-color: $btn-hover-background;
+  border-color: $btn-hover-background;
+  box-shadow: none;
+  transition: all 0.4s ease 0s;
+  border-color: $outline;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active {
+  color: $btn-active-colour;
+  background-color: $btn-active-background;
+  border-color: $btn-active-background;
+  box-shadow: none;
+  transition: all 0.4s ease 0s;
+  border-color: $outline; 
+}
+
+.btn-group button.btn.btn-primary {
+  padding: 10px 10px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+
+  }
+}

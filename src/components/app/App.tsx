@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import Switch from 'react-bootstrap/esm/Switch';
 import { NavigationBarComponent } from '../navbar';
-import { HomeComponent } from '../home';
 import { LoginComponent } from '../login';
 import { RegisterComponent } from '../register';
 import { ResearchComponent } from '../research';
@@ -37,7 +36,7 @@ import { IArticleMeta } from '../../interfaces/article';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(!!process.env.REACT_APP_START_LOGGED_IN);
   const [articles, setArticles] = useState<IArticleMeta[]>([]);
 
   const getAndSetCourses = async () => {
@@ -55,8 +54,8 @@ function App():JSX.Element {
     <div className="App">
       <AppContext.Provider value={{ loggedIn, setLoggedIn }}>
         <header />
-        <NavigationBarComponent courses={courses} articles={articles} />
         <main>
+          <NavigationBarComponent courses={courses} articles={articles} />
           <EventsStripComponent />
           <Switch>
             <Route
@@ -64,7 +63,6 @@ function App():JSX.Element {
               path="/"
               component={() => (
                 <>
-                  <HomeComponent />
                   <CourseListComponent courses={courses} />
                 </>
               )}

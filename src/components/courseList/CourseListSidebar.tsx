@@ -122,7 +122,8 @@ export function CourseListSidebarComponent(props: CourseListSidebarComponentProp
                   <span
                     onClick={() => {
                       if (scrollRefs[course._id] && scrollRefs[course._id].current) {
-                        (scrollRefs[course._id].current as HTMLDivElement).scrollIntoView({ behavior: 'smooth' });
+                        (scrollRefs[course._id].current as HTMLDivElement)
+                          .scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
                   >
