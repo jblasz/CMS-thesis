@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Redirect, Link } from 'react-router-dom';
 import {
-  Container, Jumbotron, ListGroup,
+  Col,
+  Container, Jumbotron, Row,
 } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { LoadingSpinner } from '../loading-spinner';
 import { getCourse } from '../../services/api/courses.service';
+import './Course.scss';
+import { CourseLaboratory } from '../../interfaces/courseLaboratory';
+import { formatDate } from '../../utils';
+
+function computeDate(lab: CourseLaboratory) {
+  const dates = new Set<string>();
+  Object.values(lab.tasks).forEach((task) => {
+    if (task.dateFrom) {
+      dates.add(formatDate(task.dateFrom));
+    }
+  });
+  return [...dates].reduce((agg, curr) => `${agg}, ${curr}`);
+}
 
 function CourseComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
-  const [t] = useTranslation();
 
   const [courseState, setCourseState] = useState({
     loading: true,
@@ -62,30 +74,37 @@ function CourseComponent(): JSX.Element {
 
   return (
     <Container>
-      <Container fluid>
-        <Jumbotron>
-          <h1>{course.name}</h1>
-          <small>{`${t('COURSE.ID')}: ${id}`}</small>
-          <p>{course.description}</p>
-        </Jumbotron>
-      </Container>
-      <ListGroup>
-        {course.laboratories.map((lab) => (
-          <ListGroup.Item key={lab._id}>
-            <h1>{lab.name}</h1>
-            <small>{lab._id}</small>
-            <p>{lab.description}</p>
-            <Link
-              className="mt-2 btn btn-primary btn-lg active"
-              role="button"
-              aria-pressed="true"
-              to={`/courses/${course._id}/laboratory/${lab._id}`}
-            >
-              {t('COURSE.LABORATORY.GOTO')}
-            </Link>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
+      <Col>
+        <Row>
+          <Col>
+            <Jumbotron>
+              <h1>{course.name}</h1>
+              <p>{course.description}</p>
+            </Jumbotron>
+          </Col>
+        </Row>
+        <Row>
+          <div className="col-md-10 offset-md-1">
+            <ul className="timeline">
+              {course.laboratories.map((lab) => (
+                <li key={lab._id}>
+                  <h6 className="float-right">{computeDate(lab)}</h6>
+                  <Link
+                    className="nav-link"
+                    role="button"
+                    aria-pressed="true"
+                    to={`/courses/${course._id}/laboratory/${lab._id}`}
+                  >
+                    <h3>{lab.name}</h3>
+                  </Link>
+                  <p>{lab.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Row>
+
+      </Col>
     </Container>
   );
 }

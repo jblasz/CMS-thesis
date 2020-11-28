@@ -9,12 +9,24 @@
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
+  cursor: pointer;
 
   .site-background {
     margin-top: 35vh;
     text-align: center;
-    color: black;
+    color: $text-regular-2;
     transition: margin-top 1s ease-out;
+
+    h1,h3 {
+      text-shadow: 0 1px 5px black;
+    }
+
+    h1 {
+      font-size: 6rem;
+    }
+    h3 {
+      font-size: 2rem;
+    }
   }
 }
 
@@ -43,9 +55,18 @@
       background-color: $col-5;
       border-bottom: solid 1px $col-3;
       transition: all 0.3s ease-in-out;
+      &.inactive {
+        background: repeating-linear-gradient(
+          -45deg,
+          $col-5,
+          $col-5 20px,
+          $col-4 20px,
+          $col-4 40px
+        );
+      }
 
-      h5 {
-        margin: 0;
+      p {
+        color: $col-5-contrast;
       }
     }
 
@@ -67,14 +88,19 @@
       background: #fff;
     }
 
-    &:nth-child(2n):before {
-      transform: skew(2deg, 2deg);
-      background: $col-3
-    }
-
-    &:nth-child(2n+1):before {
+    &:before {
       transform: skew(-2deg, -2deg);
       background: $col-3;
     }
+
+    // &:nth-child(2n):before {
+    //   transform: skew(2deg, 2deg);
+    //   background: $col-3
+    // }
+
+    // &:nth-child(2n+1):before {
+    //   transform: skew(-2deg, -2deg);
+    //   background: $col-3;
+    // }
   }
 }

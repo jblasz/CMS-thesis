@@ -20,9 +20,11 @@ interface NavigationBarComponentProps {
 }
 
 function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element {
-  const { courses, articles } = props;
+  const { courses: _courses, articles } = props;
   const [t, { language }] = useTranslation();
   const { loggedIn } = useContext(AppContext);
+
+  const courses = _courses.filter((course) => course.active);
 
   const articleGroupings = articles.reduce(
     (agg: {[key:string]:{_id: string, categoryMinor: string}[]}, curr) => {
@@ -46,11 +48,6 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto nav-items">
           <NavDropdown title={t('NAVBAR.COURSES')} id="basic-nav-dropdown">
-            <NavDropdown.Item key="all-courses" as="button">
-              <Link className="nav-link" to="/courses">
-                {t('NAVBAR.ALL_COURSES')}
-              </Link>
-            </NavDropdown.Item>
             <NavDropdown.Item className="category" disabled>{t('NAVBAR.COURSES_PL')}</NavDropdown.Item>
             <NavDropdown.Divider />
             {courses.filter((course) => course.language === CourseLanguage.PL).map((course) => (

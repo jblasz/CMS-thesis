@@ -56,7 +56,7 @@ export function generateCourseMock(id = v4()) {
     groups,
     laboratories: generateList(3, 5).map(() => generateLaboratoryMock(groups)),
     links: [],
-    active: true,
+    active: Math.random() > 0.5,
     shown: true,
   });
   if (id === 'staticCourseID') {

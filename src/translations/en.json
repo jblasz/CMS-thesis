@@ -2,7 +2,7 @@
   "COMMON": {
     "ERROR": "Error"
   },
-  "WEBSITE_NAME": "A wondrous website",
+  "WEBSITE_NAME": "Home",
   "NAVBAR": {
     "HOMEPAGE": "Home",
     "DASHBOARD": "Dashboard",
@@ -37,6 +37,11 @@
     "LOGOUT": "Logout",
     "SIGNUP": "Signup",
     "WELCOME": "Welcome"
+  },
+  "MAIN": {
+    "TEACHING": "Teaching",
+    "OWNER": "Henry Jekyll",
+    "OWNER_TITLES": "Doctor of medicine, Canon Law, Legum Doctor, Fellowship of the Royal Society"
   },
   "COURSE": {
     "CONDUCTED_IN_LANGUAGE": "Conducted in",

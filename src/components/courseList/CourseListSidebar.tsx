@@ -46,7 +46,7 @@ export function CourseListSidebarComponent(props: CourseListSidebarComponentProp
   return (
     <div className="sidebar-container my-4 col-auto">
       <aside className="sidebar">
-        <div className=" justify-content-center">
+        <div className="justify-content-center">
           <div className="my-2 cat justify-content-center">
             <ButtonGroup>
               <Button

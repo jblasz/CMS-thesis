@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { RefObject, useState } from 'react';
-// import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import 'react-dropdown/style.css';
 import './CourseList.scss';
 import { Parallax } from 'react-parallax';
-import { Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { CourseListSidebarComponent, Status, Language } from './CourseListSidebar';
 import bgImg from '../../images/main_2.jpeg';
@@ -14,11 +15,17 @@ export interface CourseListComponentProps {
 }
 
 function CourseListComponent(props: CourseListComponentProps): JSX.Element {
-  // const [t] = useTranslation();
-  const { courses } = props;
-  courses.push(new Course(), new Course(), new Course(), new Course(),
-    new Course(), new Course(), new Course(), new Course(), new Course());
+  const { courses: _courses } = props;
+  const courses = [..._courses].sort((a, b) => (a.active !== b.active
+    ? +b.active - +a.active
+    : a.semester > b.semester
+      ? 1
+      : a.semester < b.semester
+        ? -1
+        : 0
+  ));
 
+  const [t] = useTranslation();
   const [languageFilter, setLanguageFilter] = useState(Language.ANY);
   const [statusFilter, setStatusFilter] = useState(Status.OPEN);
   const [semesterFilter, setSemesterFilter] = useState('');
@@ -44,11 +51,20 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
   return (
     <div className="col">
       <Parallax blur={0} bgImage={bgImg} bgImageAlt="mini" strength={-200}>
-        <div className="site-title">
+        <div
+          className="site-title"
+          onClick={() => {
+            const ref = Object.values(scrollRefs)
+              && Object.values(scrollRefs)[0]
+              && Object.values(scrollRefs)[0].current;
+            if (ref) {
+              ref.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+        >
           <div className="site-background">
-            <h3>Big site header title</h3>
-            <h1>Smaller site header subtitle</h1>
-            <Button>Button that goes somewhere</Button>
+            <h1>{t('MAIN.OWNER')}</h1>
+            <h3>{t('MAIN.OWNER_TITLES')}</h3>
           </div>
         </div>
       </Parallax>
@@ -68,10 +84,14 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
           <section className="justify-content-center tiles-wrap row">
             {courses.map((course) => (
               <Link to={`/courses/${course._id}`} className="card-container col-5 m-3" key={course._id} id={`li-course-${course._id}`}>
+                {/*
+                  below is a hack to scroll taking into account 80px navbar offset.
+                  cleanest solution I could find, sadly.
+                */}
                 <div style={{ position: 'absolute', top: -80, left: 0 }} ref={scrollRefs[course._id]} />
-                <div className="row title justify-content-between">
-                  <h5>{course.name}</h5>
-                  <div className="nav-link">{course.semester}</div>
+                <div className={`row title justify-content-between ${course.active ? '' : 'inactive'}`}>
+                  <h4>{course.name}</h4>
+                  <p className="float-right">{course.semester}</p>
                 </div>
                 <div className="row description">
                   <p>{course.description}</p>
