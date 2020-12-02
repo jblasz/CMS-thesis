@@ -8,8 +8,8 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { CourseGroupMetaWithGrade } from '../../interfaces/api';
-import { SubmissionMeta } from '../../interfaces/resource';
+import { ICourseGroupMetaWithGrade } from '../../interfaces/api';
+import { ISubmissionMeta } from '../../interfaces/resource';
 import { IStudentCourse, StudentCourse } from '../../interfaces/studentCourse';
 import { getStudentCourse, getStudentCourses } from '../../services/api/dashboard.service';
 import { getSubmissions } from '../../services/api/submissions.service';
@@ -22,10 +22,10 @@ export function StudentDashboardComponent(): JSX.Element {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [secondaryLoading, setSecondaryLoading] = useState(false);
-  const [courses, setCourses] = useState<CourseGroupMetaWithGrade[]>([]);
+  const [courses, setCourses] = useState<ICourseGroupMetaWithGrade[]>([]);
   const [course, setCourse] = useState<IStudentCourse>();
   const [index, setIndex] = useState(-1);
-  const [submissions, setSubmissions] = useState<SubmissionMeta[]>([]);
+  const [submissions, setSubmissions] = useState<ISubmissionMeta[]>([]);
   const getAndSetCourses = useCallback(async () => {
     try {
       setLoading(true);

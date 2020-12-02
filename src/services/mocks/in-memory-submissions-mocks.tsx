@@ -1,9 +1,9 @@
 import { v4 } from 'uuid';
 import { CourseTask } from '../../interfaces/courseTask';
-import { SubmissionGrade, SubmissionMeta } from '../../interfaces/resource';
+import { SubmissionGrade, ISubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 
-const inMemorySubmissions: SubmissionMeta[] = [];
+const inMemorySubmissions: ISubmissionMeta[] = [];
 
 export function generateSubmissionMock(task: CourseTask, student: Student) {
   inMemorySubmissions.push({
@@ -48,7 +48,7 @@ export function deleteSubmissionMockResponse(id: string) {
   return Promise.reject(new Error('Submission of this id not found'));
 }
 
-export function patchSubmissionMockResponse(submission: SubmissionMeta) {
+export function patchSubmissionMockResponse(submission: ISubmissionMeta) {
   const f = inMemorySubmissions.findIndex((x) => x._id === submission._id);
   if (f > -1) {
     inMemorySubmissions[f] = submission;

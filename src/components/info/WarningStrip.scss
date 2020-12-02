@@ -1,0 +1,26 @@
+@import '../../master';
+
+.error-strip {
+  background-color: red;
+  button.btn.close-button {
+    padding: 0;
+    margin-top: -20px;
+    margin-right: -3px;
+    background-color: transparent;
+    border: none ;
+    color: white;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+}
+
+.wrapper {
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  max-height: 50px;
+  &.hide {
+    max-height: 0;
+  }
+}

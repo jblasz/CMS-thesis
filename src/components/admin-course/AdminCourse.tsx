@@ -14,6 +14,7 @@ import { deleteCourse, getCourse, putCourse } from '../../services/api/courses.s
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
+import { WarningStripComponent } from '../info/WarningStrip';
 
 function AdminCourseComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
@@ -65,11 +66,7 @@ function AdminCourseComponent(): JSX.Element {
   return (
     <Container>
       <Form>
-        {error ? (
-          <Form.Row className="error-strip">
-            {`${t('COMMON.ERROR')}: ${error}`}
-          </Form.Row>
-        ) : ''}
+        <WarningStripComponent error={error} />
         <Form.Row className="justify-content-between">
           <Col>
             <Button

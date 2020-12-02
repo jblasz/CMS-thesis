@@ -17,7 +17,7 @@ function ProfileComponent() {
   const getAndSetAll = useCallback(async () => {
     try {
       setLoading(true);
-      const { user: _student } = await getUser();
+      const { student: _student } = await getUser();
       setStudent(_student);
     } catch (e) {
       setError(e);

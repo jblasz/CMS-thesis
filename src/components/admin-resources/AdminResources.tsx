@@ -12,19 +12,20 @@ import {
   faDownload, faSave, faTrash, faUpload,
 } from '@fortawesome/free-solid-svg-icons';
 import { LoadingSpinner } from '../loading-spinner';
-import { Permission, ResourceMeta } from '../../interfaces/resource';
+import { Permission, IResourceMeta } from '../../interfaces/resource';
 import {
   getResources, patchResource, deleteResource,
 } from '../../services/api/resources.service';
 import './AdminResources.css';
+import { WarningStripComponent } from '../info/WarningStrip';
 
 function AdminResourcesComponent(): JSX.Element {
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [resources, setResources] = useState<ResourceMeta[]>([]);
+  const [resources, setResources] = useState<IResourceMeta[]>([]);
   const [uncollapsedIndex, setUncollapsedIndex] = useState(0);
-  const [newResource, setNewResource] = useState<ResourceMeta>({
+  const [newResource, setNewResource] = useState<IResourceMeta>({
     _id: '', name: '', usedBy: [], permission: Permission.ALL,
   });
   const [rename, setRename] = useState('');
@@ -54,11 +55,7 @@ function AdminResourcesComponent(): JSX.Element {
   return (
     <Container>
       <Form>
-        {error ? (
-          <Form.Row className="error-strip">
-            {`${t('COMMON.ERROR')}: ${error}`}
-          </Form.Row>
-        ) : ''}
+        <WarningStripComponent error={error} />
         <Form.Row>
           <Table responsive>
             <thead>

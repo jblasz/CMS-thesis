@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { GetStudentResponse, GetUserResponse, PostUserResponse } from '../../interfaces/api';
+import { GetStudentResponse, IGetUserResponse, IPostUserResponse } from '../../interfaces/api';
 import { SubmissionGrade } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 import { shuffleList } from '../../utils';
@@ -8,14 +8,16 @@ const inMemoryStudentMocks: Student[] = [];
 
 let generatorCount = 0;
 
-export async function getUserMockResponse(): Promise<GetUserResponse> {
+export async function getUserMockResponse(): Promise<IGetUserResponse> {
   return Promise.resolve({
-    user: inMemoryStudentMocks[0],
+    student: inMemoryStudentMocks[0],
+    attends: [],
+    submissions: [],
   });
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function postUserMockResponse(jwt: string): Promise<PostUserResponse> {
+export function postUserMockResponse(jwt: string): Promise<IPostUserResponse> {
   return Promise.resolve({
     student: inMemoryStudentMocks[0],
     attends: [

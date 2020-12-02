@@ -15,6 +15,7 @@ import { formatDate } from '../../utils';
 import { Code } from '../../interfaces/code';
 import { AdminCodesListComponent } from '../admin-codes/AdminCodesList';
 import { SubmissionGrade } from '../../interfaces/resource';
+import { WarningStripComponent } from '../info/WarningStrip';
 
 interface BaseStudent {
   _id: string
@@ -89,11 +90,7 @@ function AdminCourseGroupComponent(): JSX.Element {
   return (
     <Container>
       <Form>
-        {error ? (
-          <Form.Row className="error-strip">
-            {`${t('COMMON.ERROR')}: ${error}`}
-          </Form.Row>
-        ) : ''}
+        <WarningStripComponent error={error} />
         <Form.Row className="justify-content-between my-2">
           <Button onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
           <Button
@@ -102,7 +99,7 @@ function AdminCourseGroupComponent(): JSX.Element {
             onClick={async () => {
               try {
                 setLoading(true);
-                await deleteCourseGroup(group._id);
+                await deleteCourseGroup(courseID, group._id);
                 alert('course deleted succesfully');
                 await getAndSetBoth();
               } catch (e) {

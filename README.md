@@ -1,13 +1,14 @@
 ## Necessities
 
-You need `node` and `yarn`, and a `.env` environment file with two variables (newlie-separated) defined, `REACT_APP_AUTH0_CLIENT_ID=` and `REACT_APP_AUTH0_DOMAIN=`, where the equality sign is followed by top secret strings. Ask me to get them. Those variables are required for Auth0 to work.
+You need `node` and `yarn`, and a `.env` environment file with at least `REACT_APP_CLIENT_ID`, which is the public google application id used for authentication.
 
 ## Development setup
 
-Google authentication currently uses hardcoded public project id and needs nothing additional to work.
-
-If you want the app to "pretend" it is logged in from the start, set `REACT_APP_START_LOGGED_IN=true`.
-If you want to not show the warning strip on every reload, set `REACT_APP_HIDE_WARNING_STRIP=true`
+If you want the app to "pretend" it is logged in from the start, set `REACT_APP_START_LOGGED_IN=` to any value.
+If you want to not show the warning strip on every reload, set `REACT_APP_HIDE_WARNING_STRIP=` to any value.
+If you want to use local mocks instead of making requests to backend, set `REACT_APP_USE_MOCKS=` to any value.
+Public google client id required and stored under `REACT_APP_CLIENT_ID=`.
+Backend address is stored under `REACT_APP_BACKEND_ADDRESS=`.
 
 Any changes to .env require full recompilation, as they are grabbed only once.
 

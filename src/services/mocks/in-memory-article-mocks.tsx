@@ -1,10 +1,10 @@
 import { loremIpsum } from 'lorem-ipsum';
 import {
-  ApiPostResponse, GetArticleResponse, GetArticlesResponse, PutArticleResponse,
+  IApiPostResponse, IGetArticleResponse, IGetArticlesResponse, IPutArticleResponse,
 } from '../../interfaces/api';
 import { IArticle } from '../../interfaces/article';
 
-export function getArticlesMockResponse(): Promise<GetArticlesResponse> {
+export function getArticlesMockResponse(): Promise<IGetArticlesResponse> {
   return Promise.resolve({
     articles: [
       {
@@ -44,7 +44,7 @@ export function getArticlesMockResponse(): Promise<GetArticlesResponse> {
   });
 }
 
-export function getArticleMockResponse(id: string): Promise<GetArticleResponse> {
+export function getArticleMockResponse(id: string): Promise<IGetArticleResponse> {
   return Promise.resolve({
     article: {
       _id: id,
@@ -64,7 +64,7 @@ export function getArticleMockResponse(id: string): Promise<GetArticleResponse> 
 
 export async function putArticleMockResponse(
   id: string, article: IArticle,
-): Promise<PutArticleResponse> {
+): Promise<IPutArticleResponse> {
   return Promise.resolve({
     ok: true,
     article,
@@ -74,7 +74,7 @@ export async function putArticleMockResponse(
 export async function deleteArticleMockResponse(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   id: string,
-): Promise<ApiPostResponse> {
+): Promise<IApiPostResponse> {
   return Promise.resolve({
     ok: true,
   });

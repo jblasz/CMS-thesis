@@ -4,13 +4,14 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { PendingLaboratory } from '../../interfaces/api';
+import { IPendingLaboratory } from '../../interfaces/api';
 import { getDashboardLaboratories } from '../../services/api/dashboard.service';
 import { formatDate } from '../../utils';
+import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 
 export function PendingCoursesCard(): JSX.Element {
-  const [pLabs, setPLabs] = useState<PendingLaboratory[]>([]);
+  const [pLabs, setPLabs] = useState<IPendingLaboratory[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [t] = useTranslation();
@@ -28,6 +29,7 @@ export function PendingCoursesCard(): JSX.Element {
   useEffect(() => {
     getAndSetPCourses();
   }, []);
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -37,11 +39,7 @@ export function PendingCoursesCard(): JSX.Element {
         {t('PENDING.LABS.TITLE')}
       </Card.Header>
       <Card.Body>
-        {error ? (
-          <Row className="error-strip">
-            {`${t('COMMON.ERROR')}: ${error}`}
-          </Row>
-        ) : ''}
+        <WarningStripComponent error={error} />
         <Card.Subtitle className="mb-2 text-muted">
           {t('PENDING.LABS.TIMERANGE')}
         </Card.Subtitle>

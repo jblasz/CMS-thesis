@@ -1,22 +1,42 @@
+import { config } from '../../config';
 import {
-  ApiPostResponse, GetCodesResponse, PostCodeNewResponse, PostCodeResponse,
+  IApiPostResponse, IGetCodesResponse, IPostCodeNewResponse, IPostCodeResponse,
 } from '../../interfaces/api';
 import {
   deleteCodeMockResponse, getCodesMockResponse, postCodeMockResponse, postCodeNewMockResponse,
 } from '../mocks/in-memory-code-mocks';
+import { axiosInstance } from './request.service';
 
 /**
  * /code POST
  */
-export async function postCode(code: string): Promise<PostCodeResponse> {
-  return postCodeMockResponse(code);
+export async function postCode(code: string): Promise<IPostCodeResponse> {
+  if (config.useMocks) {
+    return postCodeMockResponse(code);
+  }
+  const { data } = await axiosInstance.post('/code', null, {
+    headers: {
+      code,
+    },
+  });
+  const { ok, type, courseSignup } = data as IPostCodeResponse;
+  return { ok, type, courseSignup };
 }
 
 /**
  * /code GET
  */
-export async function getCodes(grabInactive = false, courseId?:string): Promise<GetCodesResponse> {
-  return getCodesMockResponse(grabInactive, courseId);
+export async function getCodes(grabInactive = false, courseId?:string): Promise<IGetCodesResponse> {
+  if (config.useMocks) {
+    return getCodesMockResponse(grabInactive, courseId);
+  }
+  const { data } = await axiosInstance.get('/code', {
+    params: {
+      ...(courseId ? { courseId } : {}),
+    },
+  });
+  const { codes } = data as IGetCodesResponse;
+  return { codes };
 }
 
 /**
@@ -24,14 +44,24 @@ export async function getCodes(grabInactive = false, courseId?:string): Promise<
  */
 export async function postCodeNew(
   courseId: string, validThrough: Date,
-): Promise<PostCodeNewResponse> {
-  return postCodeNewMockResponse(courseId, validThrough);
+): Promise<IPostCodeNewResponse> {
+  if (config.useMocks) {
+    return postCodeNewMockResponse(courseId, validThrough);
+  }
+  const { data } = await axiosInstance.post(`/code/${courseId}`, { validThrough });
+  const { code } = data as IPostCodeNewResponse;
+  return { code };
 }
 
 /**
  * /code/:id DELETE
  */
 
-export async function deleteCode(code: string): Promise<ApiPostResponse> {
-  return deleteCodeMockResponse(code);
+export async function deleteCode(code: string): Promise<IApiPostResponse> {
+  if (config.useMocks) {
+    return deleteCodeMockResponse(code);
+  }
+  const { data } = await axiosInstance.delete(`/code/${code}`);
+  const { ok } = data as IApiPostResponse;
+  return { ok };
 }

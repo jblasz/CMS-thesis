@@ -1,13 +1,13 @@
 import { IArticleMeta, IArticle } from './article';
 import { Code } from './code';
-import { Course, ICourse } from './course';
+import { ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
-import { ResourceMeta, SubmissionGrade, SubmissionMeta } from './resource';
-import { Student } from './student';
+import { IResourceMeta, SubmissionGrade, ISubmissionMeta } from './resource';
+import { IStudent } from './student';
 import { IStudentCourse } from './studentCourse';
 
-export interface CourseGroupMeta {
+export interface ICourseGroupMeta {
   groupId: string
   groupName: string
   courseId: string
@@ -15,57 +15,67 @@ export interface CourseGroupMeta {
   active: boolean
 }
 
-export interface CourseGroupMetaWithGrade extends CourseGroupMeta {
+export interface ICourseGroupMetaWithGrade extends ICourseGroupMeta {
   grade?: SubmissionGrade
 }
 
-export interface CourseLabGroupMeta extends CourseGroupMeta {
+export interface ICourseLabGroupMeta extends ICourseGroupMeta {
   labId: string
   labName: string
 }
 
-export interface CourseLabGroupMetaWithDates extends CourseLabGroupMeta {
+export interface ICourseLabGroupMetaWithDates extends ICourseLabGroupMeta {
   startsAt: Date
   endsAt: Date
 }
 
-export interface ApiPostResponse {
+export function CourseLabGroupMetaWithDates(
+  g: ICourseLabGroupMetaWithDates,
+): ICourseLabGroupMetaWithDates {
+  return {
+    ...g,
+    startsAt: new Date(g.startsAt),
+    endsAt: new Date(g.endsAt),
+  };
+}
+
+export interface IApiPostResponse {
   ok: boolean
 }
 
-export interface GetCoursesResponse {
-  courses: Course[]
+export interface IGetCoursesResponse {
+  courses: ICourse[]
 }
 
-export interface GetCourseResponse {
+export interface IGetCourseResponse {
   course: ICourse
 }
 
-export interface GetCourseGroupResponse {
+export interface IGetCourseGroupResponse {
   courseId: string
   courseName: string
   group: ICourseGroup
 }
 
-export interface GetLaboratoryResponse {
+export interface IGetLaboratoryResponse {
   courseId: string
   courseName: string
   laboratory: ICourseLaboratory
 }
 
-export interface PostCourseResponse extends ApiPostResponse {
+export interface IPostCourseResponse extends IApiPostResponse {
   course: ICourse
 }
 
-export interface PostCourseGroupResponse extends ApiPostResponse {
+export interface IPostCourseGroupResponse extends IApiPostResponse {
   group: ICourseGroup
 }
 
-export interface PutCourseLaboratoryResponse extends ApiPostResponse {
+export interface IPutCourseLaboratoryResponse extends IApiPostResponse {
   laboratory: ICourseLaboratory
 }
 
-export interface PatchCourseGroupStudentResponse extends ApiPostResponse {
+export interface IPatchCourseGroupStudentResponse extends IApiPostResponse {
   group: ICourseGroup
 }
 
@@ -73,92 +83,109 @@ export enum PostCodeResponseType {
   COURSE_SIGNUP = 'courseSignup',
 }
 
-export interface PostCodeResponse extends ApiPostResponse {
+export interface IPostCodeResponse extends IApiPostResponse {
   type: PostCodeResponseType
-  courseSignup?: CourseGroupMeta
+  courseSignup?: ICourseGroupMeta
 }
 
-export interface GetCodesResponse {
+export interface IGetCodesResponse {
   codes: Code[]
 }
 
-export interface PostCodeNewResponse {
+export interface IPostCodeNewResponse {
   code: Code
 }
 
-export interface GetResourcesResponse {
-  resources: ResourceMeta[]
+export interface IGetResourcesResponse {
+  resources: IResourceMeta[]
 }
 
-export interface GetStudentsResponse {
-  students: Student[]
+export interface IGetResourceResponse {
+  resource: IResourceMeta
 }
 
-export interface GetUserResponse {
-  user: Student
+export interface IPutResourceResponse extends IGetResourceResponse, IApiPostResponse {
 }
 
-export interface PostUserResponse {
-  student: Student
-  attends: CourseGroupMeta[]
-  submissions: SubmissionMeta[]
+export interface IGetStudentsResponse {
+  students: IStudent[]
+}
+
+export interface IGetUserResponse {
+  student: IStudent
+  attends: ICourseGroupMeta[]
+  submissions: ISubmissionMeta[]
+}
+
+export interface IPostUserResponse {
+  student: IStudent
+  attends: ICourseGroupMeta[]
+  submissions: ISubmissionMeta[]
 }
 
 export interface GetStudentResponse {
-  student: Student
-  attends: CourseGroupMetaWithGrade[]
-  submissions: SubmissionMeta[]
+  student: IStudent
+  attends: ICourseGroupMetaWithGrade[]
+  submissions: ISubmissionMeta[]
 }
 
-export interface GetSubmissionsResponse {
-  submissions: SubmissionMeta[]
+export interface IGetSubmissionsResponse {
+  submissions: ISubmissionMeta[]
 }
 
-export interface GetSubmissionResponse {
-  submission: SubmissionMeta
+export interface IGetSubmissionResponse {
+  submission: ISubmissionMeta
 }
 
-export interface PatchSubmissionResponse extends ApiPostResponse {
-  submission: SubmissionMeta
+export interface IPatchSubmissionResponse extends IApiPostResponse {
+  submission: ISubmissionMeta
 }
 
-export interface PendingLaboratory extends CourseLabGroupMeta {
+export interface IPendingLaboratory extends ICourseLabGroupMeta {
   startsAt: Date
   endsAt: Date
 }
 
-export interface GetDashboardLaboratoriesResponse {
-  laboratories: PendingLaboratory[]
+export interface IGetDashboardLaboratoriesResponse {
+  laboratories: IPendingLaboratory[]
 }
 
-export interface PatchResourceResponse extends ApiPostResponse {
-  resource: ResourceMeta
+export function PendingLaboratory(lab: IPendingLaboratory): IPendingLaboratory {
+  return {
+    ...lab,
+    startsAt: new Date(lab.startsAt),
+    endsAt: new Date(lab.endsAt),
+  };
 }
 
-export interface GetAdminDashboardResponse {
+export interface IPatchResourceResponse extends IApiPostResponse {
+  resource: IResourceMeta
+}
+
+export interface IGetAdminDashboardResponse {
   unmarkedSolutionsCount: number
 }
 
-export interface GetArticlesResponse {
+export interface IGetArticlesResponse {
   articles: IArticleMeta[]
 }
 
-export interface GetArticleResponse {
+export interface IGetArticleResponse {
   article: IArticle
 }
 
-export interface PutArticleResponse extends ApiPostResponse {
+export interface IPutArticleResponse extends IApiPostResponse {
   article: IArticle
 }
 
-export interface GetStudentDashboardResponse {
-  upcoming: CourseLabGroupMetaWithDates[]
+export interface IGetStudentDashboardResponse {
+  upcoming: ICourseLabGroupMetaWithDates[]
 }
 
-export interface GetStudentCoursesResponse {
-  courses: CourseGroupMetaWithGrade[]
+export interface IGetStudentCoursesResponse {
+  courses: ICourseGroupMetaWithGrade[]
 }
 
-export interface GetStudentCourseResponse {
+export interface IGetStudentCourseResponse {
   course: IStudentCourse
 }

@@ -6,10 +6,11 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
-import { CourseGroupMetaWithGrade } from '../../interfaces/api';
-import { SubmissionMeta } from '../../interfaces/resource';
+import { ICourseGroupMetaWithGrade } from '../../interfaces/api';
+import { ISubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 import { getStudent } from '../../services/api/students.service';
+import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { SubmissionListComponent } from '../submission-list/SubmissionListCompontent';
 
@@ -17,13 +18,13 @@ function AdminStudentComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
   const [student, setStudent] = useState<Student>(new Student());
   const [
     attendedCourseGroupLabs,
     setAttendedCourseGroupLabs,
-  ] = useState<CourseGroupMetaWithGrade[]>([]);
-  const [submissions, setSubmissions] = useState<SubmissionMeta[]>([]);
+  ] = useState<ICourseGroupMetaWithGrade[]>([]);
+  const [submissions, setSubmissions] = useState<ISubmissionMeta[]>([]);
 
   const getAndSetAll = useCallback(async () => {
     try {
@@ -35,7 +36,6 @@ function AdminStudentComponent(): JSX.Element {
       } = await getStudent(id);
       setStudent(_student);
       setAttendedCourseGroupLabs(_attendedCourseGroupLabs);
-      console.log(_submissions);
       setSubmissions(_submissions);
     } catch (e) {
       setError(e);
@@ -53,11 +53,7 @@ function AdminStudentComponent(): JSX.Element {
   }
   return (
     <Container>
-      {error ? (
-        <Row className="error-strip">{`${t('COMMON.ERROR')}: ${error}`}</Row>
-      ) : (
-        ''
-      )}
+      <WarningStripComponent error={error} />
       <Card>
         <Card.Header>
           <small>{student._id || id}</small>

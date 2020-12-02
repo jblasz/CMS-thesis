@@ -1,11 +1,11 @@
 import { loremIpsum } from 'lorem-ipsum';
 import { v4 } from 'uuid';
-import { Permission, ResourceMeta, SubmissionMeta } from '../../interfaces/resource';
+import { Permission, IResourceMeta, ISubmissionMeta } from '../../interfaces/resource';
 import { generateList } from '../../utils';
 
-const inMemoryResourceMocks: ResourceMeta[] = [];
+const inMemoryResourceMocks: IResourceMeta[] = [];
 
-const inMemorySubmissionMocks: SubmissionMeta[] = [];
+const inMemorySubmissionMocks: ISubmissionMeta[] = [];
 
 export function getResourceMocks() {
   return [...inMemoryResourceMocks];
@@ -57,7 +57,7 @@ export async function putResourceMockResponse(id: string) {
   return Promise.reject(new Error('Resource has id, but isnt in memory'));
 }
 
-export async function postSubmissionMockResponse(submission: SubmissionMeta) {
+export async function postSubmissionMockResponse(submission: ISubmissionMeta) {
   inMemorySubmissionMocks.push(submission);
   return Promise.resolve({ ok: true });
 }
@@ -72,7 +72,7 @@ export async function patchResourceMockResponse(_id: string, name: string, permi
     }
     return Promise.reject(new Error('Resource of id not found'));
   }
-  const topush: ResourceMeta = {
+  const topush: IResourceMeta = {
     _id: v4(),
     name: '',
     permission: Permission.ALL,

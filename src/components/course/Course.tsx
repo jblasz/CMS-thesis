@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Redirect, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {
   Col,
   Container, Jumbotron, Row,
@@ -10,6 +10,7 @@ import { getCourse } from '../../services/api/courses.service';
 import './Course.scss';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { formatDate } from '../../utils';
+import { WarningStripComponent } from '../info/WarningStrip';
 
 function computeDate(lab: CourseLaboratory) {
   const dates = new Set<string>();
@@ -24,39 +25,31 @@ function computeDate(lab: CourseLaboratory) {
 function CourseComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
 
-  const [courseState, setCourseState] = useState({
-    loading: true,
-    error: false,
-    course: new Course({
-      _id: id,
-      description: '',
-      groups: [],
-      laboratories: [],
-      language: CourseLanguage.EN,
-      links: [],
-      name: '',
-      semester: '',
-      active: true,
-      shown: true,
-    }),
-  });
-
-  const { course, loading, error } = courseState;
+  const [course, setCourse] = useState(new Course({
+    _id: id,
+    description: '',
+    groups: [],
+    laboratories: [],
+    language: CourseLanguage.EN,
+    links: [],
+    name: '',
+    semester: '',
+    active: true,
+    shown: true,
+  }));
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const getAndSetCourse = async (courseID: string) => {
     try {
-      const c = await getCourse(courseID);
-      setCourseState({
-        loading: false,
-        course: new Course(c.course),
-        error: false,
-      });
+      setLoading(true);
+      const { course: _course } = await getCourse(courseID);
+      setCourse(new Course(_course));
     } catch (e) {
-      setCourseState({
-        loading: false,
-        course: new Course(),
-        error: true,
-      });
+      console.error(e);
+      setError(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,12 +61,9 @@ function CourseComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
-  if (error) {
-    return <Redirect to="/404" />;
-  }
-
   return (
     <Container>
+      <WarningStripComponent error={error} />
       <Col>
         <Row>
           <Col>

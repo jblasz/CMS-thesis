@@ -1,10 +1,13 @@
+import { config } from '../../config';
 import {
-  GetAdminDashboardResponse,
-  GetDashboardLaboratoriesResponse,
-  GetStudentCourseResponse,
-  GetStudentCoursesResponse,
-  GetStudentDashboardResponse,
+  IGetAdminDashboardResponse,
+  IGetDashboardLaboratoriesResponse,
+  IGetStudentCourseResponse,
+  IGetStudentCoursesResponse,
+  IGetStudentDashboardResponse,
+  PendingLaboratory,
 } from '../../interfaces/api';
+import { StudentCourse } from '../../interfaces/studentCourse';
 import {
   getAdminDashboardMockResponse,
   getStudentCourseMockResponse,
@@ -12,46 +15,68 @@ import {
   getStudentDashboardMockResponse,
 } from '../mocks';
 import { getDashboardLaboratoriesMockResponse } from '../mocks/in-memory-course-mocks';
+import { axiosInstance } from './request.service';
 
 /**
  * /dashboard/laboratory GET
  */
 export async function getDashboardLaboratories(
   timespan: number,
-): Promise<GetDashboardLaboratoriesResponse> {
-  const res = await getDashboardLaboratoriesMockResponse(timespan);
-  res.laboratories.forEach((x) => {
-    x.startsAt = new Date(x.startsAt);
-    x.endsAt = new Date(x.endsAt);
-  });
-  return res;
+): Promise<IGetDashboardLaboratoriesResponse> {
+  if (config.useMocks) {
+    const { laboratories } = await getDashboardLaboratoriesMockResponse(timespan);
+    return { laboratories: laboratories.map((x) => PendingLaboratory(x)) };
+  }
+  const { data } = await axiosInstance.get('/dashboard/laboratory');
+  const { laboratories } = data as IGetDashboardLaboratoriesResponse;
+  return { laboratories: laboratories.map((x) => PendingLaboratory(x)) };
 }
 
 /**
  * /dashboard/summary GET
  */
-export async function getAdminDashboard(): Promise<GetAdminDashboardResponse> {
-  return getAdminDashboardMockResponse();
+export async function getAdminDashboard(): Promise<IGetAdminDashboardResponse> {
+  if (config.useMocks) {
+    return getAdminDashboardMockResponse();
+  }
+  const { data } = await axiosInstance.get('/dashboard/summary');
+  const { unmarkedSolutionsCount } = data as IGetAdminDashboardResponse;
+  return { unmarkedSolutionsCount };
 }
 
 /**
  * /dashboard/studentSummary
  */
-export async function getStudentDashboard(): Promise<GetStudentDashboardResponse> {
-  return getStudentDashboardMockResponse();
+export async function getStudentDashboard(): Promise<IGetStudentDashboardResponse> {
+  if (config.useMocks) {
+    return Promise.resolve(getStudentDashboardMockResponse());
+  }
+  const { data } = await axiosInstance.get('/dashboard/studentSummary');
+  const { upcoming } = data as IGetStudentDashboardResponse;
+  return { upcoming };
 }
 
 /**
  * /student/courses GET
  */
-export async function getStudentCourses(): Promise<GetStudentCoursesResponse> {
-  const { courses } = await getStudentCoursesMockResponse();
+export async function getStudentCourses(): Promise<IGetStudentCoursesResponse> {
+  if (config.useMocks) {
+    const { courses } = await getStudentCoursesMockResponse();
+    return { courses };
+  }
+  const { data } = await axiosInstance.get('/student/courses');
+  const { courses } = data as IGetStudentCoursesResponse;
   return { courses };
 }
 
 /**
  * /student/courses/:id GET
  */
-export async function getStudentCourse(id: string): Promise<GetStudentCourseResponse> {
-  return getStudentCourseMockResponse(id);
+export async function getStudentCourse(id: string): Promise<IGetStudentCourseResponse> {
+  if (config.useMocks) {
+    return getStudentCourseMockResponse(id);
+  }
+  const { data } = await axiosInstance.get(`/student/courses/${id}`);
+  const { course } = data as IGetStudentCourseResponse;
+  return { course: StudentCourse(course) };
 }

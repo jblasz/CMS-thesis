@@ -1,6 +1,6 @@
 import { IStudent } from './student';
 
-export interface UsedBy {
+export interface IUsedBy {
   courseId: string
   courseName: string
   labId: string
@@ -15,11 +15,11 @@ export enum Permission {
   NONE = 'none'
 }
 
-export interface ResourceMeta {
+export interface IResourceMeta {
   _id: string
   name: string
   permission: Permission
-  usedBy: UsedBy[]
+  usedBy: IUsedBy[]
 }
 
 export enum SubmissionGrade {
@@ -31,7 +31,7 @@ export enum SubmissionGrade {
   F = '2.0'
 }
 
-export interface SubmissionMeta {
+export interface ISubmissionMeta {
   _id: string
   submittedBy: IStudent
   forCourseID: string
@@ -44,4 +44,11 @@ export interface SubmissionMeta {
   note: string
   final: boolean
   grade?: SubmissionGrade
+}
+
+export function SubmissionMeta(s: ISubmissionMeta): ISubmissionMeta {
+  return {
+    ...s,
+    submittedAt: new Date(s.submittedAt),
+  };
 }

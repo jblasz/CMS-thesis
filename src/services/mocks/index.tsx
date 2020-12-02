@@ -1,11 +1,11 @@
 import { loremIpsum } from 'lorem-ipsum';
 import { v4 } from 'uuid';
 import {
-  GetAdminDashboardResponse,
-  GetResourcesResponse,
-  GetStudentCourseResponse,
-  GetStudentCoursesResponse,
-  GetStudentDashboardResponse,
+  IGetAdminDashboardResponse,
+  IGetResourcesResponse,
+  IGetStudentCourseResponse,
+  IGetStudentCoursesResponse,
+  IGetStudentDashboardResponse,
 } from '../../interfaces/api';
 import { CourseLanguage } from '../../interfaces/course';
 import { SubmissionGrade } from '../../interfaces/resource';
@@ -32,7 +32,7 @@ export async function populateInMemoryDBWithSomeMocks(count = 5) {
   console.log('generated some mocks for in-memory');
 }
 
-export async function getResourcesMockResponse(): Promise<GetResourcesResponse> {
+export async function getResourcesMockResponse(): Promise<IGetResourcesResponse> {
   return Promise.resolve(
     {
       resources: ((await getResourceMocks())).map((x) => ({
@@ -45,13 +45,13 @@ export async function getResourcesMockResponse(): Promise<GetResourcesResponse> 
   );
 }
 
-export async function getAdminDashboardMockResponse(): Promise<GetAdminDashboardResponse> {
+export async function getAdminDashboardMockResponse(): Promise<IGetAdminDashboardResponse> {
   return Promise.resolve({
     unmarkedSolutionsCount: 3,
   });
 }
 
-export async function getStudentDashboardMockResponse(): Promise<GetStudentDashboardResponse> {
+export async function getStudentDashboardMockResponse(): Promise<IGetStudentDashboardResponse> {
   return Promise.resolve({
     upcoming: [
       {
@@ -80,7 +80,7 @@ export async function getStudentDashboardMockResponse(): Promise<GetStudentDashb
   });
 }
 
-export async function getStudentCoursesMockResponse(): Promise<GetStudentCoursesResponse> {
+export async function getStudentCoursesMockResponse(): Promise<IGetStudentCoursesResponse> {
   return Promise.resolve({
     courses: [
       {
@@ -105,7 +105,7 @@ export async function getStudentCoursesMockResponse(): Promise<GetStudentCourses
   });
 }
 
-export async function getStudentCourseMockResponse(id: string): Promise<GetStudentCourseResponse> {
+export async function getStudentCourseMockResponse(id: string): Promise<IGetStudentCourseResponse> {
   return Promise.resolve({
     course: StudentCourse({
       _id: id,

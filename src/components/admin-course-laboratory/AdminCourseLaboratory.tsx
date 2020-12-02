@@ -13,8 +13,9 @@ import {
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { getResources } from '../../services/api/resources.service';
-import { ResourceMeta } from '../../interfaces/resource';
+import { IResourceMeta } from '../../interfaces/resource';
 import { CourseTask } from '../../interfaces/courseTask';
+import { WarningStripComponent } from '../info/WarningStrip';
 
 function AdminCourseLaboratoryComponent(): JSX.Element {
   const { courseID, labID } = useParams<{labID: string, courseID: string}>();
@@ -25,7 +26,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   const [error, setError] = useState('');
   const [readonly, setReadonly] = useState(true);
   const [chosenGroupID, setChosenGroup] = useState('');
-  const [resourceNames, setResourceNames] = useState<ResourceMeta[]>([]);
+  const [resourceNames, setResourceNames] = useState<IResourceMeta[]>([]);
 
   const toggleEditState = async () => {
     await getAndSetCourseLaboratory();
@@ -72,11 +73,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   return (
     <Container>
       <Form className="my-2">
-        {error ? (
-          <Form.Row className="error-strip">
-            {`${t('COMMON.ERROR')}: ${error}`}
-          </Form.Row>
-        ) : ''}
+        <WarningStripComponent error={error} />
         <Form.Row className="justify-content-between">
           <Col>
             <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.LABORATORY.SET_EDIT_MODE') : t('ADMIN.LABORATORY.SET_READONLY_MODE')}</Button>

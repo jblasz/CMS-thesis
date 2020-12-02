@@ -14,7 +14,7 @@
     "COURSES_EN": "In English",
     "COURSES_PL": "In Polish",
     "ALL_COURSES": "Overview",
-    "CODE": "Validate a code",
+    "CODE": "Sign up for a course",
     "ADMIN": {
       "DESCR": "Admin",
       "DASHBOARD": "Dashboard",
@@ -71,12 +71,16 @@
   },
   "CODE_VALIDATION": {
     "CODE_VALIDATION": "Validate a code",
-    "CAN_INPUT_ANY_KIND": "Any valid code can be input here. If you already have an account, log in to have the code bind to it rather than having to create a new one.",
-    "SUBMIT": "Submit",
+    "CAN_INPUT_ANY_KIND": "Any valid code can be input here. You can sign up for multiple courses with the same google account.",
+    "SUBMIT": "Submit", 
     "ERROR": "Failed to validate the code",
     "SUCCESS": "Code validated successfully",
     "COURSE_SIGNUP_SUCCESS": "You have successfully signed up for a course. Click below to view the details.",
-    "GOTO_COURSE": "Course"
+    "GOTO_COURSE": "Course",
+    "NOT_LOGGED_IN_0": "In order to sign up for one of my courses you must fullfil my wishes three:",
+    "NOT_LOGGED_IN_1": "Have the multiple-use limited-time token I share with everyone at the start of the semester. If you have not received one contact me.",
+    "NOT_LOGGED_IN_2": "Register and login using any google account. Nothing except the email address itself will be used - it is simply for authentication purposes. You can use an empty dummie account if you wish. In the future you will be using it to access the site, though I will not be contacting you through it in any way. You can remove it at any time, which is equivalent to revoking your access from this website.",
+    "NOT_LOGGED_IN_3": "Once logged in, an input field will be visible below where you can input the token mentioned before."
   },
   "404": {
     "404": "404",

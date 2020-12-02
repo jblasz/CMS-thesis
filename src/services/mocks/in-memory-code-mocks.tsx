@@ -1,10 +1,10 @@
 import { v4 } from 'uuid';
 import {
-  ApiPostResponse,
-  GetCodesResponse, PostCodeNewResponse, PostCodeResponse, PostCodeResponseType,
+  IApiPostResponse,
+  IGetCodesResponse, IPostCodeNewResponse, IPostCodeResponse, PostCodeResponseType,
 } from '../../interfaces/api';
 
-export async function postCodeMockResponse(code: string): Promise<PostCodeResponse> {
+export async function postCodeMockResponse(code: string): Promise<IPostCodeResponse> {
   if (code === 'course-signup-mock-code') {
     return Promise.resolve({
       ok: true,
@@ -24,7 +24,7 @@ export async function postCodeMockResponse(code: string): Promise<PostCodeRespon
 export async function getCodesMockResponse(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   grabInactive = false, courseId?: string,
-): Promise<GetCodesResponse> {
+): Promise<IGetCodesResponse> {
   return Promise.resolve({
     codes: [
       {
@@ -84,7 +84,7 @@ export async function getCodesMockResponse(
 export async function postCodeNewMockResponse(
   courseid: string,
   validThrough: Date,
-): Promise<PostCodeNewResponse> {
+): Promise<IPostCodeNewResponse> {
   return Promise.resolve({
     code: {
       _id: v4(),
@@ -96,7 +96,7 @@ export async function postCodeNewMockResponse(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function deleteCodeMockResponse(code: string): Promise<ApiPostResponse> {
+export async function deleteCodeMockResponse(code: string): Promise<IApiPostResponse> {
   return {
     ok: true,
   };

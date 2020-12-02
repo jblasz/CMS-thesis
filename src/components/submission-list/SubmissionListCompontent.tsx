@@ -8,14 +8,15 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { SubmissionGrade, SubmissionMeta } from '../../interfaces/resource';
+import { SubmissionGrade, ISubmissionMeta } from '../../interfaces/resource';
 import { patchSubmission, deleteSubmission } from '../../services/api/submissions.service';
 import { formatDate } from '../../utils';
+import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 
 interface SubmissionListComponentProps {
-  submissions: SubmissionMeta[]
-  onSubmit: (submissions: SubmissionMeta[]) => void
+  submissions: ISubmissionMeta[]
+  onSubmit: (submissions: ISubmissionMeta[]) => void
   onUpload: () => void
   skipStudentColumn: boolean
   admin: boolean
@@ -28,7 +29,7 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
   const [t] = useTranslation();
   const [uncollapsedIndex, setUncollapsedIndex] = useState(-1);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
 
   if (loading) {
     return <LoadingSpinner />;
@@ -44,13 +45,7 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
 
   return (
     <Container>
-      <Row>
-        {error ? (
-          <Row className="error-strip">{`${t('COMMON.ERROR')}: ${error}`}</Row>
-        ) : (
-          ''
-        )}
-      </Row>
+      <WarningStripComponent error={error} />
       <Table className="table-sm">
         <thead>
           <tr>

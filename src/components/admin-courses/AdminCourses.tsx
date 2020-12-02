@@ -4,20 +4,36 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Course } from '../../interfaces/course';
 import { getCourses, putCourse } from '../../services/api/courses.service';
+import { WarningStripComponent } from '../info/WarningStrip';
+import { LoadingSpinner } from '../loading-spinner';
 
 function AdminCoursesComponent(): JSX.Element {
   const [t] = useTranslation();
 
   const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const getAndSetCourses = async () => {
-    setCourses((await getCourses()).courses.map((x) => new Course(x)));
+    try {
+      setLoading(true);
+      setCourses((await getCourses()).courses.map((x) => new Course(x)));
+    } catch (e) {
+      setError('');
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { getAndSetCourses(); }, []);
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <Container>
+      <WarningStripComponent error={error} />
       <Table responsive>
         <thead>
           <tr>

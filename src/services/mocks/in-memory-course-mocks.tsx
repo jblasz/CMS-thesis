@@ -5,27 +5,27 @@ import { CourseLaboratory, TaskToGroupMapping } from '../../interfaces/courseLab
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { CourseTask } from '../../interfaces/courseTask';
 import {
-  ApiPostResponse,
-  GetCourseGroupResponse,
-  GetCourseResponse,
-  GetDashboardLaboratoriesResponse,
-  GetLaboratoryResponse,
-  PatchCourseGroupStudentResponse,
-  PostCourseGroupResponse,
-  PostCourseResponse,
-  PutCourseLaboratoryResponse,
+  IApiPostResponse,
+  IGetCourseGroupResponse,
+  IGetCourseResponse,
+  IGetDashboardLaboratoriesResponse,
+  IGetLaboratoryResponse,
+  IPatchCourseGroupStudentResponse,
+  IPostCourseGroupResponse,
+  IPostCourseResponse,
+  IPutCourseLaboratoryResponse,
 } from '../../interfaces/api';
 import { getRandomStudents, getStudentMockResponse } from './in-memory-student-mocks';
 import { generateList } from '../../utils';
 import { grabRandomResource } from './in-memory-resource-mocks';
-import { UsedBy } from '../../interfaces/resource';
+import { IUsedBy } from '../../interfaces/resource';
 
 const inMemoryCourseMocks: Course[] = [];
 
 let generatorCount = 0;
 
-export function getLabsReferencingResourceId(id: string): UsedBy[] {
-  const matches: UsedBy[] = [];
+export function getLabsReferencingResourceId(id: string): IUsedBy[] {
+  const matches: IUsedBy[] = [];
   for (const course of inMemoryCourseMocks) {
     for (const lab of course.laboratories) {
       const groupId = Object.keys(lab.tasks).find((gid) => lab.tasks[gid].resourceId === id);
@@ -122,7 +122,7 @@ export async function getCoursesListMockResponse() {
   return Promise.resolve({ courses: inMemoryCourseMocks.map((x) => new Course(x)) });
 }
 
-export async function getCourseMockResponse(_id: string): Promise<GetCourseResponse> {
+export async function getCourseMockResponse(_id: string): Promise<IGetCourseResponse> {
   const f = inMemoryCourseMocks.find((x) => x._id === _id);
   if (f) {
     return Promise.resolve({ course: new Course(f) });
@@ -132,7 +132,7 @@ export async function getCourseMockResponse(_id: string): Promise<GetCourseRespo
 
 export async function getCourseGroupMockResponse(
   courseID: string, groupID: string,
-): Promise<GetCourseGroupResponse> {
+): Promise<IGetCourseGroupResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   const group = course && course.groups.find((x) => x._id === groupID);
   if (course && group) {
@@ -143,7 +143,7 @@ export async function getCourseGroupMockResponse(
   return Promise.reject(new Error('404 not found'));
 }
 
-export async function putCourseMockResponse(course: Course): Promise<PostCourseResponse> {
+export async function putCourseMockResponse(course: Course): Promise<IPostCourseResponse> {
   course.groups.forEach((group) => {
     if (!group._id) {
       group._id = v4();
@@ -188,7 +188,7 @@ export async function deleteCourseMockResponse(_id: string) {
 export async function setCourseGroupResponse(
   courseID: string,
   group: CourseGroup,
-): Promise<PostCourseGroupResponse> {
+): Promise<IPostCourseGroupResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   if (!course) {
     return Promise.reject();
@@ -218,7 +218,7 @@ export async function setCourseGroupResponse(
 export async function getLaboratoryMockResponse(
   courseID: string,
   labID: string,
-): Promise<GetLaboratoryResponse> {
+): Promise<IGetLaboratoryResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   const lab = course && course.laboratories.find((x) => x._id === labID);
 
@@ -238,7 +238,7 @@ export async function getLaboratoryMockResponse(
 export async function setCourseLabMockResponse(
   courseID: string,
   lab: CourseLaboratory,
-): Promise<PutCourseLaboratoryResponse> {
+): Promise<IPutCourseLaboratoryResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   if (!course) {
     return Promise.reject(new Error('404 not found'));
@@ -276,7 +276,7 @@ export async function patchCourseGroupStudentMockResponse(
   courseID: string,
   groupID: string,
   studentID: string,
-): Promise<PatchCourseGroupStudentResponse> {
+): Promise<IPatchCourseGroupStudentResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   const group = course && course.groups.find((x) => x._id === groupID);
   const { student } = await getStudentMockResponse(studentID);
@@ -289,7 +289,7 @@ export async function patchCourseGroupStudentMockResponse(
   return Promise.reject(new Error('404 not found'));
 }
 
-export async function deleteGroupMockResponse(_id: string): Promise<ApiPostResponse> {
+export async function deleteGroupMockResponse(_id: string): Promise<IApiPostResponse> {
   let found = false;
   for (const course of inMemoryCourseMocks) {
     const f = course.groups.findIndex((x) => x._id === _id);
@@ -308,7 +308,7 @@ export async function deleteGroupMockResponse(_id: string): Promise<ApiPostRespo
 export async function deleteLaboratoryMockResponse(
   courseID: string,
   labID: string,
-): Promise<ApiPostResponse> {
+): Promise<IApiPostResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   if (!course) {
     return Promise.reject(new Error('No course of this id'));
@@ -323,7 +323,7 @@ export async function deleteLaboratoryMockResponse(
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function getDashboardLaboratoriesMockResponse(days: number):
-Promise<GetDashboardLaboratoriesResponse> {
+Promise<IGetDashboardLaboratoriesResponse> {
   const d1 = new Date();
   d1.setDate(d1.getDate() + 1);
   const d2 = new Date();

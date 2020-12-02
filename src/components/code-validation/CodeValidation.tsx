@@ -2,21 +2,23 @@ import {
   Jumbotron, Container, Button, Form,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LoadingSpinner } from '../loading-spinner';
 import { postCode } from '../../services/api/codes.service';
-import { CourseGroupMeta, PostCodeResponseType } from '../../interfaces/api';
+import { ICourseGroupMeta, PostCodeResponseType } from '../../interfaces/api';
+import { AppContext } from '../../services/contexts/app-context';
 
 interface CodeValidationComponentState {
   loading: boolean,
   code: string
   error: string
   type?: PostCodeResponseType
-  courseSignup?: CourseGroupMeta
+  courseSignup?: ICourseGroupMeta
 }
 
 function CodeValidationComponent(): JSX.Element {
+  const { loggedIn } = useContext(AppContext);
   const [t] = useTranslation();
   const [state, setState] = useState<CodeValidationComponentState>({
     loading: false,
@@ -52,6 +54,22 @@ function CodeValidationComponent(): JSX.Element {
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  if (!loggedIn) {
+    return (
+      <Jumbotron>
+        <Container className="justify-content-center">
+          <p>{t('CODE_VALIDATION.NOT_LOGGED_IN_0')}</p>
+          <ul>
+            <li>{t('CODE_VALIDATION.NOT_LOGGED_IN_1')}</li>
+            <li>{t('CODE_VALIDATION.NOT_LOGGED_IN_2')}</li>
+            <li>{t('CODE_VALIDATION.NOT_LOGGED_IN_3')}</li>
+          </ul>
+        </Container>
+      </Jumbotron>
+    );
+  }
+
   if (type) {
     if (type === PostCodeResponseType.COURSE_SIGNUP && courseSignup) {
       return (

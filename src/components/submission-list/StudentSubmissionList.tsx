@@ -8,13 +8,13 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { SubmissionGrade, SubmissionMeta } from '../../interfaces/resource';
+import { SubmissionGrade, ISubmissionMeta } from '../../interfaces/resource';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 
 interface StudentSubmissionListComponentProps {
-  submissions: SubmissionMeta[]
+  submissions: ISubmissionMeta[]
 }
 
 export function StudentSubmissionListComponent(

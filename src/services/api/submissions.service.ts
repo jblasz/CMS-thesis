@@ -1,41 +1,65 @@
+import { config } from '../../config';
 import {
-  ApiPostResponse, GetSubmissionResponse, GetSubmissionsResponse, PatchSubmissionResponse,
+  IApiPostResponse, IGetSubmissionResponse, IGetSubmissionsResponse, IPatchSubmissionResponse,
 } from '../../interfaces/api';
-import { SubmissionMeta } from '../../interfaces/resource';
+import { ISubmissionMeta, SubmissionMeta } from '../../interfaces/resource';
 import {
   deleteSubmissionMockResponse,
   getSubmissionMockResponse,
   getSubmissionsMockResponse,
   patchSubmissionMockResponse,
 } from '../mocks/in-memory-submissions-mocks';
+import { axiosInstance } from './request.service';
 
 /**
  * /submissions GET
  */
-export function getSubmissions(
+export async function getSubmissions(
   courseFilter: string, studentFilter: string, statusFilter: number,
-): Promise<GetSubmissionsResponse> {
-  return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter);
+): Promise<IGetSubmissionsResponse> {
+  if (config.useMocks) {
+    return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter);
+  }
+  const { data } = await axiosInstance.get('/submissions');
+  const { submissions } = data as IGetSubmissionsResponse;
+  return { submissions: submissions.map((x) => SubmissionMeta(x)) };
 }
 
 /**
  * /submissions/:id GET
  */
-export function getSubmission(id: string): Promise<GetSubmissionResponse> {
-  return getSubmissionMockResponse(id);
+export async function getSubmission(id: string): Promise<IGetSubmissionResponse> {
+  if (config.useMocks) {
+    return getSubmissionMockResponse(id);
+  }
+  const { data } = await axiosInstance.get(`/submissions/${id}`);
+  const { submission } = data as IGetSubmissionResponse;
+  return { submission: SubmissionMeta(submission) };
 }
 
 /**
- * /submissions DELETE
+ * /submissions/:id DELETE
  */
-export function deleteSubmission(id: string): Promise<ApiPostResponse> {
-  return deleteSubmissionMockResponse(id);
+export async function deleteSubmission(id: string): Promise<IApiPostResponse> {
+  if (config.useMocks) {
+    return deleteSubmissionMockResponse(id);
+  }
+  const { data } = await axiosInstance.delete(`/submissions/${id}`);
+  const { ok } = data as IApiPostResponse;
+  return { ok };
 }
 
 /**
- * /submissions PATCH
+ * /submissions/:id PATCH
  */
 
-export function patchSubmission(submission: SubmissionMeta): Promise<PatchSubmissionResponse> {
-  return patchSubmissionMockResponse(submission);
+export async function patchSubmission(
+  submission: ISubmissionMeta,
+): Promise<IPatchSubmissionResponse> {
+  if (config.useMocks) {
+    return patchSubmissionMockResponse(submission);
+  }
+  const { data } = await axiosInstance.patch(`/submissions/${submission._id}`);
+  const { ok, submission: _submission } = data as IPatchSubmissionResponse;
+  return { ok, submission: SubmissionMeta(_submission) };
 }

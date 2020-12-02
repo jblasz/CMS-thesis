@@ -3,13 +3,14 @@ import React,
   useCallback, useEffect, useState,
 } from 'react';
 import {
-  Container, Form, FormControl, InputGroup, Row,
+  Container, Form, FormControl, InputGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { SubmissionMeta } from '../../interfaces/resource';
+import { ISubmissionMeta } from '../../interfaces/resource';
 import { getCourses } from '../../services/api/courses.service';
 import { getStudents } from '../../services/api/students.service';
 import { getSubmissions } from '../../services/api/submissions.service';
+import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { SubmissionListComponent } from '../submission-list/SubmissionListCompontent';
 
@@ -37,10 +38,10 @@ function AdminSubmissionsComponent(): JSX.Element {
   );
   const [finalFilter, setFinalFilter] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
   const [courses, setCourses] = useState<BareCourse[]>([]);
   const [students, setStudents] = useState<BareData[]>([]);
-  const [submissions, setSubmissions] = useState<SubmissionMeta[]>([]);
+  const [submissions, setSubmissions] = useState<ISubmissionMeta[]>([]);
   const getSubmissionsByFilters = useCallback(async () => {
     const { submissions: _submissions } = await getSubmissions(
       courseFilter, studentFilter, statusFilter,
@@ -88,11 +89,7 @@ function AdminSubmissionsComponent(): JSX.Element {
 
   return (
     <Container>
-      {error ? (
-        <Row className="error-strip">{`${t('COMMON.ERROR')}: ${error}`}</Row>
-      ) : (
-        ''
-      )}
+      <WarningStripComponent error={error} />
       <Form>
         <InputGroup className="mb-3">
           <InputGroup.Prepend>

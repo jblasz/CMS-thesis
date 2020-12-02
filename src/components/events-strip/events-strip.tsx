@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -6,36 +7,64 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { CourseLabGroupMetaWithDates } from '../../interfaces/api';
+import { ICourseLabGroupMetaWithDates } from '../../interfaces/api';
 import { getStudentDashboard } from '../../services/api/dashboard.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
+import { config } from '../../config';
 
 export function EventsStripComponent(): JSX.Element {
-  const [events, setEvents] = useState<CourseLabGroupMetaWithDates[]>([]);
+  const [{ events, activeEvents, upcomingEvents }, setEvents] = useState<{
+    events: ICourseLabGroupMetaWithDates[],
+    activeEvents: ICourseLabGroupMetaWithDates[],
+    upcomingEvents: ICourseLabGroupMetaWithDates[]
+  }>({
+    events: [],
+    activeEvents: [],
+    upcomingEvents: [],
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [t] = useTranslation();
-  console.log(process.env.REACT_APP_HIDE_WARNING_STRIP);
-  const [hide, setHidden] = useState(!!process.env.REACT_APP_HIDE_WARNING_STRIP);
+  const [hide, setHidden] = useState(config.hideWarningStrip);
+  let isMounted = true;
+
   const getAndSetEvents = useCallback(async () => {
     try {
       setLoading(true);
       const { upcoming: _events } = await getStudentDashboard();
-      setEvents(_events);
+      const _activeEvents = _events.filter(
+        (event) => event.startsAt.valueOf() >= new Date().valueOf(),
+      );
+      const _upcomingEvents = _events.filter(
+        (event) => event.startsAt.valueOf() < new Date().valueOf(),
+      );
+      if (isMounted) {
+        setEvents({
+          events: _events,
+          activeEvents: _activeEvents,
+          upcomingEvents: _upcomingEvents,
+        });
+      }
     } catch (e) {
-      setError(e);
+      if (isMounted) {
+        setError(`Events strip: ${e}`);
+      }
     } finally {
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     }
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
     getAndSetEvents();
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      isMounted = false;
+    };
   }, [getAndSetEvents]);
 
-  const activeEvents = events.filter((event) => event.startsAt.valueOf() >= new Date().valueOf());
-  const upcomingEvents = events.filter((event) => event.startsAt.valueOf() < new Date().valueOf());
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -43,7 +72,7 @@ export function EventsStripComponent(): JSX.Element {
     return <WarningStripComponent error={error} />;
   }
   if (hide || !events.length) {
-    return <></>;
+    return <div />;
   }
   return (
     <div className="alert alert-warning warning-strip">

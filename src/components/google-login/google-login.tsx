@@ -8,24 +8,25 @@ export function GoogleButton(): JSX.Element {
   return (
     !loggedIn ? (
       <GoogleLogin
-        clientId="593522798742-q10ne2vss3meepaca30vd6lrffkfkauh.apps.googleusercontent.com"
+        clientId={process.env.REACT_APP_CLIENT_ID as string}
         buttonText="login"
-        onSuccess={(args) => {
-          console.log(args);
+        onSuccess={() => {
           setLoggedIn(true);
         }}
         onFailure={(args) => {
-          console.log('error', args);
+          console.error('error', args);
+          setLoggedIn(false);
         }}
         isSignedIn
         cookiePolicy="single_host_origin"
       />
     ) : (
       <GoogleLogout
-        clientId="593522798742-q10ne2vss3meepaca30vd6lrffkfkauh.apps.googleusercontent.com"
+        clientId={process.env.REACT_APP_CLIENT_ID as string}
         buttonText="logout"
         onLogoutSuccess={() => {
           console.log('logout');
+          setLoggedIn(false);
         }}
       />
     )

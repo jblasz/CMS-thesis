@@ -33,22 +33,40 @@ import { EventsStripComponent } from '../events-strip/events-strip';
 import { StudentDashboardComponent } from '../student-dashboard/StudentDashboard';
 import { getArticles } from '../../services/api/articles.service';
 import { IArticleMeta } from '../../interfaces/article';
+import { LoadingSpinner } from '../loading-spinner';
+import { IGetArticlesResponse } from '../../interfaces/api';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loggedIn, setLoggedIn] = useState(!!process.env.REACT_APP_START_LOGGED_IN);
   const [articles, setArticles] = useState<IArticleMeta[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [, setError] = useState('');
 
   const getAndSetCourses = async () => {
-    const [
-      { courses: _courses }, { articles: _articles },
-    ] = await Promise.all([getCourses(), getArticles()]);
-
-    setCourses(_courses.map((x) => new Course(x)));
-    setArticles(_articles);
+    try {
+      setLoading(true);
+      const [
+        { courses: _courses }, { articles: _articles },
+      ] = await Promise.all([
+        getCourses(),
+        getArticles().catch(() => ({ articles: [] } as IGetArticlesResponse)),
+      ]);
+      setCourses(_courses.map((x) => new Course(x)));
+      setArticles(_articles);
+    } catch (e) {
+      console.error(e);
+      setError(`GetAndSetCourse() ${e}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { getAndSetCourses(); }, []);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="App">
@@ -62,9 +80,7 @@ function App():JSX.Element {
               exact
               path="/"
               component={() => (
-                <>
-                  <CourseListComponent courses={courses} />
-                </>
+                <CourseListComponent courses={courses} />
               )}
             />
             <Route exact path="/login" component={LoginComponent} />
