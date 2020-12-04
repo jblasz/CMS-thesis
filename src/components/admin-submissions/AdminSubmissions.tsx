@@ -87,9 +87,12 @@ function AdminSubmissionsComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container>
-      <WarningStripComponent error={error} />
       <Form>
         <InputGroup className="mb-3">
           <InputGroup.Prepend>
@@ -108,6 +111,8 @@ function AdminSubmissionsComponent(): JSX.Element {
                 ...courses.map((x) => <option key={x.id} value={x.id}>{x.name}</option>),
               ]}
             </FormControl>
+          </InputGroup.Prepend>
+          <InputGroup.Prepend>
             <FormControl
               as="select"
               placeholder={t('ADMIN.SUBMISSIONS.STUDENT_FILTER')}
@@ -130,6 +135,8 @@ function AdminSubmissionsComponent(): JSX.Element {
                 })()
               }
             </FormControl>
+          </InputGroup.Prepend>
+          <InputGroup.Prepend>
             <FormControl
               as="select"
               placeholder={t('ADMIN.SUBMISSIONS.STATUS_FILTER')}
@@ -144,6 +151,8 @@ function AdminSubmissionsComponent(): JSX.Element {
               <option value={StatusFilter.GRADED}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_GRADED')}</option>
               <option value={StatusFilter.ALL}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_ALL')}</option>
             </FormControl>
+          </InputGroup.Prepend>
+          <InputGroup.Append>
             <FormControl
               as="select"
               placeholder={t('ADMIN.SUBMISSIONS.STATUS_FILTER')}
@@ -157,7 +166,7 @@ function AdminSubmissionsComponent(): JSX.Element {
               <option value="true">{t('ADMIN.SUBMISSIONS.FINAL_FILTER_TRUE')}</option>
               <option value="false">{t('ADMIN.SUBMISSIONS.FINAL_FILTER_FALSE')}</option>
             </FormControl>
-          </InputGroup.Prepend>
+          </InputGroup.Append>
         </InputGroup>
         <Form.Row>
           <SubmissionListComponent
@@ -165,7 +174,6 @@ function AdminSubmissionsComponent(): JSX.Element {
             onSubmit={(_submissions) => setSubmissions(_submissions)}
             onUpload={() => getSubmissionsByFilters()}
             skipStudentColumn={false}
-            admin
           />
         </Form.Row>
       </Form>

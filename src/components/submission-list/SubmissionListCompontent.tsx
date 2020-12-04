@@ -1,10 +1,10 @@
 import {
-  faDownload, faUpload, faClipboard, faSave, faTrash, faExclamation,
+  faDownload, faUpload, faClipboard, faSave, faTrash, faExclamation, faSort,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Fragment, useState } from 'react';
 import {
-  Table, Row, Col, Collapse, Form, Button, InputGroup, Container,
+  Table, Row, Col, Collapse, Form, Button, InputGroup, Container, ButtonGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -19,12 +19,11 @@ interface SubmissionListComponentProps {
   onSubmit: (submissions: ISubmissionMeta[]) => void
   onUpload: () => void
   skipStudentColumn: boolean
-  admin: boolean
 }
 
 export function SubmissionListComponent(props: SubmissionListComponentProps): JSX.Element {
   const {
-    submissions, skipStudentColumn, onSubmit, onUpload, admin,
+    submissions, skipStudentColumn, onSubmit, onUpload,
   } = props;
   const [t] = useTranslation();
   const [uncollapsedIndex, setUncollapsedIndex] = useState(-1);
@@ -43,9 +42,12 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
     );
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container>
-      <WarningStripComponent error={error} />
       <Table className="table-sm">
         <thead>
           <tr>
@@ -64,17 +66,31 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
             return (
               <Fragment key={submission._id}>
                 <tr
-                  className={`clickable-row ${style}`}
-                  onClick={() => {
-                    if (index !== uncollapsedIndex) {
-                      setUncollapsedIndex(index);
-                    } else {
-                      setUncollapsedIndex(-1);
-                    }
-                  }}
+                  className={style}
+                  // onClick={() => {
+                  //   if (index !== uncollapsedIndex) {
+                  //     setUncollapsedIndex(index);
+                  //   } else {
+                  //     setUncollapsedIndex(-1);
+                  //   }
+                  // }}
                 >
                   <td>
                     <Row>
+                      <Col>
+                        <Button
+                          variant="light"
+                          onClick={() => {
+                            if (index !== uncollapsedIndex) {
+                              setUncollapsedIndex(index);
+                            } else {
+                              setUncollapsedIndex(-1);
+                            }
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faSort} />
+                        </Button>
+                      </Col>
                       {skipStudentColumn ? '' : (
                         <Col>
                           <Link className="nav-link" to={`/admin/students/${submission.submittedBy._id}`}>
@@ -107,34 +123,36 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                 </tr>
                 <tr
                   className="hide-row"
-                  onClick={() => {
-                    setUncollapsedIndex(index);
-                  }}
+                  // onClick={() => {
+                  //   setUncollapsedIndex(index);
+                  // }}
                 >
                   <td>
                     <Collapse in={uncollapsedIndex === index}>
                       <div>
                         <Form.Row>
                           <Col md="auto" className="m-2 text-center">
-                            {
-                              !submission.final
-                                ? (
-                                  <Button className="mx-2" title={t('ADMIN.SUBMISSIONS.NOT_FINAL')} disabled>
-                                    <FontAwesomeIcon icon={faExclamation} />
-                                  </Button>
-                                )
-                                : ''
-                            }
-                            <Button className="mx-2"><FontAwesomeIcon icon={faDownload} /></Button>
-                            {admin ? <Button className="mx-2"><FontAwesomeIcon icon={faUpload} /></Button> : ''}
-                            <Button className="mx-2" title={t('ADMIN.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
-                              <FontAwesomeIcon
-                                icon={faClipboard}
-                                onClick={() => {
-                                  navigator.clipboard.writeText('a link will exist here');
-                                }}
-                              />
-                            </Button>
+                            <ButtonGroup>
+                              {
+                                !submission.final
+                                  ? (
+                                    <Button title={t('ADMIN.SUBMISSIONS.NOT_FINAL')} disabled>
+                                      <FontAwesomeIcon icon={faExclamation} />
+                                    </Button>
+                                  )
+                                  : <></>
+                              }
+                              <Button><FontAwesomeIcon icon={faDownload} /></Button>
+                              <Button><FontAwesomeIcon icon={faUpload} /></Button>
+                              <Button title={t('ADMIN.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
+                                <FontAwesomeIcon
+                                  icon={faClipboard}
+                                  onClick={() => {
+                                    navigator.clipboard.writeText('a link will exist here');
+                                  }}
+                                />
+                              </Button>
+                            </ButtonGroup>
                           </Col>
                           <Col md="auto" className="m-2 text-center" style={{ maxWidth: 400 }}>
                             <InputGroup className="mx-2">
@@ -146,7 +164,6 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                               <Form.Control
                                 value={submission.grade}
                                 as="select"
-                                disabled={!admin}
                                 onChange={(event) => {
                                   submission.grade = event.target.value as SubmissionGrade;
                                   onSubmit([...submissions]);
@@ -165,28 +182,30 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                                 <option value={SubmissionGrade.F}>{SubmissionGrade.F}</option>
                               </Form.Control>
                               <InputGroup.Append>
-                                <Button onClick={async () => {
-                                  try {
-                                    setLoading(true);
-                                    await patchSubmission(
-                                      submission,
-                                    );
-                                    onUpload();
-                                  } catch (e) {
-                                    setError(e);
-                                  } finally {
-                                    setLoading(false);
-                                  }
-                                }}
+                                <Button
+                                  className="px-2 py-0"
+                                  onClick={async () => {
+                                    try {
+                                      setLoading(true);
+                                      await patchSubmission(
+                                        submission,
+                                      );
+                                      onUpload();
+                                    } catch (e) {
+                                      setError(e);
+                                    } finally {
+                                      setLoading(false);
+                                    }
+                                  }}
                                 >
                                   <FontAwesomeIcon icon={faSave} />
                                 </Button>
                               </InputGroup.Append>
                             </InputGroup>
                           </Col>
-                          <Col md="auto" className="m-2 center-block">
+                          <Col md="auto" className="m-2 center-block float-right">
                             <Button
-                              className="mx-2"
+                              className="float-right"
                               variant="danger"
                               onClick={async () => {
                                 try {

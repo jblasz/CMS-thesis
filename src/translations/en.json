@@ -39,9 +39,21 @@
     "WELCOME": "Welcome"
   },
   "MAIN": {
+    "COURSES": "Matching courses",
     "TEACHING": "Teaching",
     "OWNER": "Henry Jekyll",
-    "OWNER_TITLES": "Doctor of medicine, Canon Law, Legum Doctor, Fellowship of the Royal Society"
+    "OWNER_TITLES": "Doctor of medicine, Canon Law, Legum Doctor, Fellowship of the Royal Society",
+    "FILTER": {
+      "LANGUAGE": "Conducted in language",
+      "LANGUAGE_ANY": "Any",
+      "LANGUAGE_PL": "Polish",
+      "LANGUAGE_EN": "English",
+      "STATUS": "Status",
+      "STATUS_ANY": "Any",
+      "STATUS_OPEN": "Active",
+      "STATUS_CLOSED": "Closed",
+      "SEMESTER_ANY": "Any semester"
+    }
   },
   "COURSE": {
     "CONDUCTED_IN_LANGUAGE": "Conducted in",
@@ -102,6 +114,7 @@
       "NAME": "Name",
       "LANGUAGE": "Language",
       "DESCRIPTION": "Description",
+      "DESCRIPTION_SHORT": "Short description",
       "CREATE_GROUP": "Create group",
       "CREATE_LAB": "Create lab",
       "GROUP_NAME": "Group name",
@@ -120,7 +133,6 @@
       "LAB_NAME_NOT_DEFINED": "As yet unnamed",
       "GROUP_NAME_NOT_DEFINED": "As yet unnamed",
       "DELETE": "Remove course",
-      "ADD_STUDENT": "Add student",
       "SEMESTER": "Semester",
       "ACTIVE": "Active",
       "INACTIVE": "Inactive",
@@ -129,10 +141,13 @@
       "GENERATE_CODE": "Generate a code"
     },
     "GROUP": {
+      "ADD_STUDENT": "Add student",
+      "UPLOAD_CHANGES": "Upload changes",
       "STUDENTS_ID": "ID",
       "STUDENTS_NAME": "Name",
       "STUDENTS_EMAIL": "Email",
-      "STUDENTS_NA": "N/A"
+      "STUDENTS_NA": "N/A",
+      "STUDENTS_FINAL_GRADE": "Final grade"
     },
     "LABORATORY": {
       "SET_EDIT_MODE": "Enable editing mode",
@@ -144,7 +159,7 @@
       "END": "Laboratory ends at",
       "GRACE": "Laboratory has a grace period of",
       "TASK": "Task resource",
-      "PUBLIC_DESCRIPTION": "Public course description",
+      "PUBLIC_DESCRIPTION": "Laboratory description",
       "UPLOAD": "Upload changes"
     },
     "RESOURCES": {

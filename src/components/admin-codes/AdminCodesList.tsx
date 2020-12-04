@@ -52,7 +52,7 @@ export function AdminCodesListComponent(props: AdminCodesListComponentProps): JS
               </td>
               <td>
                 <Row>
-                  <Button className="mx-2" title={t('ADMIN.CODES.COPY_LINK_TO_CLIPBOARD')}>
+                  <Button variant="secondary" className="mx-2" title={t('ADMIN.CODES.COPY_LINK_TO_CLIPBOARD')}>
                     <FontAwesomeIcon
                       icon={faClipboard}
                       onClick={() => {
@@ -61,7 +61,6 @@ export function AdminCodesListComponent(props: AdminCodesListComponentProps): JS
                     />
                   </Button>
                   <Button
-                    className="mx-2"
                     variant="danger"
                     onClick={async () => {
                       try {

@@ -49,8 +49,9 @@ export function generateCourseMock(id = v4()) {
   labCount = 0;
   const topush = new Course({
     _id: id,
-    name: `Course Name Mk ${generatorCount++}`,
-    description: loremIpsum(),
+    name: `Course Name Mk${generatorCount++}`,
+    description: `<h1>tag!</h1><br/> ${loremIpsum()}`,
+    descriptionShort: `<h1>tag!</h1><br/> ${loremIpsum()}`,
     language: Math.random() > 0.5 ? CourseLanguage.EN : CourseLanguage.PL,
     semester: `20${Math.random() > 0.5 ? '20' : '21'}${Math.random() > 0.5 ? 'Z' : 'L'}`,
     groups,
@@ -90,7 +91,8 @@ export function generateLaboratoryMock(groups: CourseGroup[] = [], id = v4()): C
   return new CourseLaboratory({
     _id: id,
     name: loremIpsum().split(' ').slice(0, 3).join(' '),
-    description: loremIpsum(),
+    description: `<h1>tag!</h1>${loremIpsum()}`,
+    descriptionShort: `<h1>tag!</h1>${loremIpsum()}`,
     tasks,
   });
 }

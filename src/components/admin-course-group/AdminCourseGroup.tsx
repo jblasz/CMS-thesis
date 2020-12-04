@@ -4,9 +4,11 @@ import {
 } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { faSort, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faSort, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { deleteCourseGroup, getCourseGroup, patchCourseGroupStudent } from '../../services/api/courses.service';
+import {
+  deleteCourseGroup, deleteCourseGroupStudent, getCourseGroup, patchCourseGroupStudent,
+} from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { getStudents } from '../../services/api/students.service';
@@ -29,7 +31,6 @@ function AdminCourseGroupComponent(): JSX.Element {
   const [error, setError] = useState('');
   const [sortDirection, setSortDirection] = useState(1);
   const [newStudent, setNewStudent] = useState<BaseStudent>({ _id: '', name: '' });
-  const [readonly, setReadonly] = useState(true);
   const [
     validThrough,
     // setValidThrough,
@@ -42,11 +43,6 @@ function AdminCourseGroupComponent(): JSX.Element {
     students: BaseStudent[],
     group: CourseGroup}>({ students: [], group: new CourseGroup() });
   const [codes, setCodes] = useState<Code[]>([]);
-
-  const toggleEditState = async () => {
-    await getAndSetBoth();
-    setReadonly(!readonly);
-  };
 
   const validateAndSetCourseGroup = useCallback(
     (_group: CourseGroup, _students: BaseStudent[]) => {
@@ -91,36 +87,32 @@ function AdminCourseGroupComponent(): JSX.Element {
     <Container>
       <Form>
         <WarningStripComponent error={error} />
-        <Form.Row className="justify-content-between my-2">
-          <Button onClick={() => toggleEditState()}>{readonly ? t('ADMIN.COURSE.SET_EDIT_MODE') : t('ADMIN.COURSE.SET_READONLY_MODE')}</Button>
-          <Button
-            variant="danger"
-            disabled={readonly}
-            onClick={async () => {
-              try {
-                setLoading(true);
-                await deleteCourseGroup(courseID, group._id);
-                alert('course deleted succesfully');
-                await getAndSetBoth();
-              } catch (e) {
-                console.error(e);
-                setError(e);
-                alert('failed to delete course, details in console');
-              } finally {
-                setLoading(false);
-              }
-            }}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </Button>
-        </Form.Row>
+        <Button
+          className="float-right"
+          variant="danger"
+          onClick={async () => {
+            try {
+              setLoading(true);
+              await deleteCourseGroup(courseID, group._id);
+              alert('course deleted succesfully');
+              await getAndSetBoth();
+            } catch (e) {
+              console.error(e);
+              setError(e);
+              alert('failed to delete course, details in console');
+            } finally {
+              setLoading(false);
+            }
+          }}
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
         <Form.Row className="my-2">
           <InputGroup>
             <Form.Control
               style={{ maxWidth: '500px' }}
               as="select"
               value={newStudent._id}
-              disabled={readonly}
               onChange={
                 (e) => setNewStudent(
                   students.find((x) => x._id === e.target.value) as BaseStudent,
@@ -138,7 +130,7 @@ function AdminCourseGroupComponent(): JSX.Element {
             <InputGroup.Append>
               <Button
                 variant="primary"
-                disabled={readonly}
+                className="py-0"
                 onClick={async () => {
                   try {
                     if (!newStudent) {
@@ -156,17 +148,17 @@ function AdminCourseGroupComponent(): JSX.Element {
                   }
                 }}
               >
-                {t('ADMIN.COURSE.ADD_STUDENT')}
+                {t('ADMIN.GROUP.ADD_STUDENT')}
               </Button>
             </InputGroup.Append>
           </InputGroup>
         </Form.Row>
         <Form.Row className="my-2">
           <InputGroup>
-            <InputGroup.Append>
+            <InputGroup.Prepend>
               <Button
+                className="p-2"
                 variant="primary"
-                disabled={readonly}
                 onClick={async () => {
                   try {
                     setLoading(true);
@@ -182,7 +174,7 @@ function AdminCourseGroupComponent(): JSX.Element {
               >
                 {t('ADMIN.COURSE.GENERATE_CODE')}
               </Button>
-            </InputGroup.Append>
+            </InputGroup.Prepend>
             {
               newCode._id ? (
                 <>
@@ -244,6 +236,8 @@ function AdminCourseGroupComponent(): JSX.Element {
                 />
               </Button>
             </th>
+            <th>{t('ADMIN.GROUP.STUDENTS_FINAL_GRADE')}</th>
+            <th> </th>
           </tr>
         </thead>
         <tbody>
@@ -254,56 +248,96 @@ function AdminCourseGroupComponent(): JSX.Element {
               <td>{student.email || t('ADMIN.GROUP.STUDENT_NA')}</td>
               <td>
                 <Form>
-                  <FormControl
-                    as="select"
-                    placeholder={t('ADMIN.GROUP.STUDENT_GRADE')}
-                    onChange={(e) => {
-                      student.grade = e.target.value as SubmissionGrade;
-                      setGroupAndStudents({ group, students });
-                    }}
-                    value={student.grade}
-                  >
-                    {[
-                      <option key="" value={undefined}>{' '}</option>,
-                      <option
-                        key={SubmissionGrade.A}
-                        value={SubmissionGrade.A}
+                  <InputGroup>
+                    <FormControl
+                      as="select"
+                      placeholder={t('ADMIN.GROUP.STUDENT_GRADE')}
+                      onChange={(e) => {
+                        student.grade = e.target.value as SubmissionGrade;
+                        setGroupAndStudents({ group, students });
+                      }}
+                      value={student.grade}
+                    >
+                      {[
+                        <option key="" value={undefined}>{' '}</option>,
+                        <option
+                          key={SubmissionGrade.A}
+                          value={SubmissionGrade.A}
+                        >
+                          {SubmissionGrade.A}
+                        </option>,
+                        <option
+                          key={SubmissionGrade.B_PLUS}
+                          value={SubmissionGrade.B_PLUS}
+                        >
+                          {SubmissionGrade.B_PLUS}
+                        </option>,
+                        <option
+                          key={SubmissionGrade.B}
+                          value={SubmissionGrade.B}
+                        >
+                          {SubmissionGrade.B}
+                        </option>,
+                        <option
+                          key={SubmissionGrade.C_PLUS}
+                          value={SubmissionGrade.C_PLUS}
+                        >
+                          {SubmissionGrade.C_PLUS}
+                        </option>,
+                        <option
+                          key={SubmissionGrade.C}
+                          value={SubmissionGrade.C}
+                        >
+                          {SubmissionGrade.C}
+                        </option>,
+                        <option
+                          key={SubmissionGrade.F}
+                          value={SubmissionGrade.F}
+                        >
+                          {SubmissionGrade.F}
+                        </option>,
+                      ]}
+                    </FormControl>
+                    <InputGroup.Append>
+                      <Button
+                        className="py-0"
+                        onClick={async () => {
+                          try {
+                            setLoading(true);
+                            await patchCourseGroupStudent(
+                              courseID, groupID, student._id, student.grade || null,
+                            );
+                            await getAndSetBoth();
+                          } catch (e) {
+                            setError(e);
+                          } finally {
+                            setLoading(false);
+                          }
+                        }}
                       >
-                        {SubmissionGrade.A}
-                      </option>,
-                      <option
-                        key={SubmissionGrade.B_PLUS}
-                        value={SubmissionGrade.B_PLUS}
-                      >
-                        {SubmissionGrade.B_PLUS}
-                      </option>,
-                      <option
-                        key={SubmissionGrade.B}
-                        value={SubmissionGrade.B}
-                      >
-                        {SubmissionGrade.B}
-                      </option>,
-                      <option
-                        key={SubmissionGrade.C_PLUS}
-                        value={SubmissionGrade.C_PLUS}
-                      >
-                        {SubmissionGrade.C_PLUS}
-                      </option>,
-                      <option
-                        key={SubmissionGrade.C}
-                        value={SubmissionGrade.C}
-                      >
-                        {SubmissionGrade.C}
-                      </option>,
-                      <option
-                        key={SubmissionGrade.F}
-                        value={SubmissionGrade.F}
-                      >
-                        {SubmissionGrade.F}
-                      </option>,
-                    ]}
-                  </FormControl>
+                        <FontAwesomeIcon icon={faFile} />
+                      </Button>
+                    </InputGroup.Append>
+                  </InputGroup>
                 </Form>
+              </td>
+              <td>
+                <Button
+                  variant="danger"
+                  onClick={async () => {
+                    try {
+                      setLoading(true);
+                      await deleteCourseGroupStudent(courseID, groupID, student._id);
+                      await getAndSetBoth();
+                    } catch (e) {
+                      setError(e);
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
               </td>
             </tr>
           ))}

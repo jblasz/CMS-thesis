@@ -153,7 +153,6 @@ function AdminStudentComponent(): JSX.Element {
         onSubmit={(_submissions) => setSubmissions(_submissions)}
         onUpload={() => getAndSetAll()}
         skipStudentColumn
-        admin
       />
     </Container>
   );

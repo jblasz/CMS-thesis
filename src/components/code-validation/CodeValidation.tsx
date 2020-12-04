@@ -8,6 +8,7 @@ import { LoadingSpinner } from '../loading-spinner';
 import { postCode } from '../../services/api/codes.service';
 import { ICourseGroupMeta, PostCodeResponseType } from '../../interfaces/api';
 import { AppContext } from '../../services/contexts/app-context';
+import { WarningStripComponent } from '../info/WarningStrip';
 
 interface CodeValidationComponentState {
   loading: boolean,
@@ -47,7 +48,7 @@ function CodeValidationComponent(): JSX.Element {
     } catch (err) {
       setState({
         ...state,
-        error: err.toString(),
+        error: err,
       });
     }
   };
@@ -86,6 +87,7 @@ function CodeValidationComponent(): JSX.Element {
   }
   return (
     <Jumbotron>
+      <WarningStripComponent error={error} />
       <Container className="justify-content-center">
         <Form>
           <Form.Label>{t('CODE_VALIDATION.CODE_VALIDATION')}</Form.Label>

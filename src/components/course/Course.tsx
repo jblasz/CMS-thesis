@@ -1,10 +1,11 @@
+/* eslint-disable react/no-danger */
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
   Col,
-  Container, Jumbotron, Row,
+  Container, Row,
 } from 'react-bootstrap';
-import { Course, CourseLanguage } from '../../interfaces/course';
+import { Course } from '../../interfaces/course';
 import { LoadingSpinner } from '../loading-spinner';
 import { getCourse } from '../../services/api/courses.service';
 import './Course.scss';
@@ -25,18 +26,7 @@ function computeDate(lab: CourseLaboratory) {
 function CourseComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
 
-  const [course, setCourse] = useState(new Course({
-    _id: id,
-    description: '',
-    groups: [],
-    laboratories: [],
-    language: CourseLanguage.EN,
-    links: [],
-    name: '',
-    semester: '',
-    active: true,
-    shown: true,
-  }));
+  const [course, setCourse] = useState(new Course(id));
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -66,11 +56,13 @@ function CourseComponent(): JSX.Element {
       <WarningStripComponent error={error} />
       <Col>
         <Row>
-          <Col>
-            <Jumbotron>
-              <h1>{course.name}</h1>
-              <p>{course.description}</p>
-            </Jumbotron>
+          <Col className="box-wrapper">
+            <div className="box">
+              <div className="box-inner">
+                <h1>{course.name}</h1>
+                <p dangerouslySetInnerHTML={{ __html: course.description }} />
+              </div>
+            </div>
           </Col>
         </Row>
         <Row>
@@ -87,7 +79,7 @@ function CourseComponent(): JSX.Element {
                   >
                     <h3>{lab.name}</h3>
                   </Link>
-                  <p>{lab.description}</p>
+                  <p dangerouslySetInnerHTML={{ __html: lab.descriptionShort }} />
                 </li>
               ))}
             </ul>

@@ -24,7 +24,7 @@ import {
   IPatchCourseGroupStudentResponse,
   IPutCourseLaboratoryResponse,
 } from '../../interfaces/api';
-import { ISubmissionMeta } from '../../interfaces/resource';
+import { ISubmissionMeta, SubmissionGrade } from '../../interfaces/resource';
 import { postSubmissionMockResponse } from '../mocks/in-memory-resource-mocks';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { axiosInstance } from './request.service';
@@ -167,11 +167,29 @@ export async function postSubmission(submission: ISubmissionMeta): Promise<IApiP
  * @param studentID
  */
 export async function patchCourseGroupStudent(
-  courseID: string, groupID: string, studentID: string,
+  courseID: string, groupID: string, studentID: string, grade?: SubmissionGrade | null,
 ): Promise<IPatchCourseGroupStudentResponse> {
   if (config.useMocks) {
     return patchCourseGroupStudentMockResponse(courseID, groupID, studentID);
   }
-  const { group, ok } = (await axiosInstance.patch(`/course/${courseID}/group/${groupID}/student/${studentID}`)).data as IPatchCourseGroupStudentResponse;
+  const { group, ok } = (await axiosInstance.patch(`/course/${courseID}/group/${groupID}/student/${studentID}`, {
+    ...(grade || grade === null ? { grade } : {}),
+  })).data as IPatchCourseGroupStudentResponse;
   return { ok, group: new CourseGroup(group) };
+}
+
+/**
+ * /course/:id/group/:id2/student/:id3 DELETE
+ * @param courseID
+ * @param groupID
+ * @param studentID
+ */
+export async function deleteCourseGroupStudent(
+  courseID: string, groupID: string, studentID: string,
+): Promise<IApiPostResponse> {
+  if (config.useMocks) {
+    return { ok: true };
+  }
+  const { ok } = (await axiosInstance.delete(`/course/${courseID}/group/${groupID}/student/${studentID}`)).data as IPatchCourseGroupStudentResponse;
+  return { ok };
 }

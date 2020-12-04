@@ -19,6 +19,8 @@ $font-large: var(--Lexend);
 $font-medium: var(--Abel);
 $font-small: var(--Abel);
 
+$radial-grad: radial-gradient($col-2, $col-1);
+
 html,
 body {
   margin: 0%;
@@ -41,7 +43,8 @@ h3 {
   font-family: $font-medium;
 }
 
-button.btn.btn-primary {
+button.btn.btn-primary,
+a.btn.btn-primary {
   color: $btn-colour;
   text-transform: uppercase;
   text-decoration: none;
@@ -52,6 +55,20 @@ button.btn.btn-primary {
   border: 1px solid black;
   border-color: $outline;
   transition: all 0.4s ease 0s;
+  box-shadow: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled):focus,
+.btn-primary:not(:disabled):not(.disabled).focus {
+  color: inherit;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: inherit;
+  border-radius: 0;
+  display: inline-block;
+  border: 1px solid black;
+  border-color: inherit;
+  box-shadow: none;
 }
 
 .show > .btn-primary.dropdown-toggle,
@@ -72,10 +89,11 @@ button.btn.btn-primary {
   border-color: $btn-active-background;
   box-shadow: none;
   transition: all 0.4s ease 0s;
-  border-color: $outline; 
+  border-color: $outline;
 }
 
-.btn-group button.btn.btn-primary {
+.btn-group button.btn.btn-primary,
+.btn-group a.btn.btn-primary {
   padding: 10px 10px;
 }
 
@@ -87,3 +105,116 @@ a {
     color: inherit;
   }
 }
+
+.box-wrapper {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  &:before, &:after {
+    box-sizing: border-box;
+  }
+
+  .box {
+    background: $radial-grad;
+    color: $text-regular-2;
+    width: 100%;
+    padding: 5px;
+    border: 2px solid $col-4;
+    &:before {
+      left: 5px;
+    }
+    &:after {
+      right: 5px;
+    }
+    .box-inner {
+      position: relative;
+      border: 2px solid $col-4;
+      padding: 40px;
+      &:before, &:after {
+        content: "•";
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        color: $col-5;
+        border: 2px solid $col-4;
+        line-height: 12px;
+        bottom: -2px;
+        text-align: center;
+      }
+      &:before {
+        left: -2px;
+      }
+      &:after {
+        right: -2px;
+      }
+    }
+  }
+}
+
+/* navbar */
+
+.nav {
+  background: $background;
+  .nav-link {
+    font-size: 1.1rem;
+  }
+
+  .category {
+    font-size: 1rem;
+    color: black;
+  }
+
+  .nav-items .nav-link:hover,
+  .navbar-text:hover {
+    background-color: $background-2;
+    color: $background;
+    a {
+      color: $background;
+    }
+  }
+
+  .dropdown-item {
+    &:active {
+      background-color: inherit;
+    }
+  }
+
+  .nav-brand a {
+    font-size: 1.6rem;
+  }
+
+  button.btn.btn-primary,
+  a.btn.btn-primary,
+  .btn-primary:not(:disabled):not(.disabled):focus,
+  .btn-primary:not(:disabled):not(.disabled).focus {
+    color: $background-2;
+    background: $background;
+    border-color: $background-2;
+    box-shadow: none;
+    border: none;
+    transition: none;
+    border-radius: 0;
+  }
+
+  .show > .btn-primary.dropdown-toggle,
+  .btn-primary:not(:disabled):not(.disabled):hover,
+  .btn-primary:not(:disabled):not(.disabled).hover,
+  .btn-primary:not(:disabled):not(.disabled):active,
+  .btn-primary:not(:disabled):not(.disabled).active {
+    color: $background;
+    background: $background-2;
+    border-color: $background;
+    box-shadow: none;
+    border: none;
+    transition: none;
+  }
+
+  .btn-group button.btn.btn-primary,
+  .btn-group a.btn.btn-primary {
+    padding: 10px 10px;
+  }
+}
+
+/* !navbar */

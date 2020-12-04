@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import {
+  Button,
   Nav,
   Navbar,
   NavDropdown,
@@ -13,6 +14,7 @@ import { AuthNav } from '../auth-nav';
 import { AppContext } from '../../services/contexts/app-context';
 import { IArticleMeta } from '../../interfaces/article';
 import './NavigationBar.scss';
+import { Role } from '../../interfaces/user';
 
 interface NavigationBarComponentProps {
   courses: Course[]
@@ -22,25 +24,31 @@ interface NavigationBarComponentProps {
 function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element {
   const { courses: _courses, articles } = props;
   const [t, { language }] = useTranslation();
-  const { loggedIn } = useContext(AppContext);
+  const { loggedIn, user, setUser } = useContext(AppContext);
 
   const courses = _courses.filter((course) => course.active);
 
   const articleGroupings = articles.reduce(
-    (agg: {[key:string]:{_id: string, categoryMinor: string}[]}, curr) => {
+    (agg: {
+      singletons: {[key:string]:{_id: string}},
+      compound: {[key:string]:{_id: string, categoryMinor: string}[]}}, curr) => {
       const l = language === 'en' ? curr.en : curr.pl;
-      if (!agg[l.categoryMajor]) {
-        agg[l.categoryMajor] = [];
+      if (!l.categoryMinor) {
+        agg.singletons[l.categoryMajor] = { _id: curr._id };
+      } else {
+        if (!agg.compound[l.categoryMajor]) {
+          agg.compound[l.categoryMajor] = [];
+        }
+        agg.compound[l.categoryMajor].push({ _id: curr._id, categoryMinor: l.categoryMinor });
       }
-      agg[l.categoryMajor].push({ _id: curr._id, categoryMinor: l.categoryMinor });
       return agg;
-    }, {},
+    }, { singletons: {}, compound: {} },
   );
 
   return (
     <Navbar className="nav" expand="lg" fixed="top">
       <Navbar.Brand className="nav-brand">
-        <Link to="/" className="nav-link text-gray">
+        <Link to="/" className="nav-link">
           {t('WEBSITE_NAME')}
         </Link>
       </Navbar.Brand>
@@ -68,9 +76,12 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
             ))}
           </NavDropdown>
           <>
-            {Object.keys(articleGroupings).map((categoryMajor) => (
+            {Object.keys(articleGroupings.singletons).map((categoryMajor) => (
+              <Link className="nav-link" to={`/articles/${articleGroupings.singletons[categoryMajor]._id}`}>{categoryMajor}</Link>
+            ))}
+            {Object.keys(articleGroupings.compound).map((categoryMajor) => (
               <NavDropdown key={categoryMajor} title={categoryMajor} id={categoryMajor}>
-                {articleGroupings[categoryMajor].map((x) => (
+                {articleGroupings.compound[categoryMajor].map((x) => (
                   <NavDropdown.Item key={x._id} as="button">
                     <Link className="nav-link" to={`/articles/${x._id}`}>
                       {x.categoryMinor}
@@ -80,14 +91,14 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               </NavDropdown>
             ))}
           </>
-          {loggedIn ? (
+          <Link className="nav-link" to="/code">{t('NAVBAR.CODE')}</Link>
+          {loggedIn && user && user.role === Role.STUDENT ? (
             <Link className="nav-link" to="/dashboard">
               <FontAwesomeIcon icon={faSitemap} />
               {` ${t('NAVBAR.DASHBOARD')}`}
             </Link>
           ) : <></>}
-          <Link className="nav-link" to="/code">{t('NAVBAR.CODE')}</Link>
-          {loggedIn ? (
+          {loggedIn && user && user.role === Role.ADMIN ? (
             <NavDropdown title={t('NAVBAR.ADMIN.DESCR')} id="nav-admin-dropdown">
               <NavDropdown.Item key="nav-admin-dropdown-dashboard" as="button">
                 <Link className="nav-link" to="/admin">
@@ -122,6 +133,18 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               </NavDropdown.Item>
             </NavDropdown>
           ) : <></>}
+          <Button
+            className="p-0 m-0"
+            style={{ opacity: 0 }}
+            onClick={() => {
+              if (user) {
+                user.role = user.role === Role.ADMIN ? Role.STUDENT : Role.ADMIN;
+                setUser({ ...user });
+              }
+            }}
+          >
+            SECRET BUTTON
+          </Button>
         </Nav>
         <AuthNav />
       </Navbar.Collapse>

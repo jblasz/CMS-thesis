@@ -1,0 +1,17 @@
+@import '../../master';
+
+button.nav-items.btn.login-btn.btn-primary {
+  box-shadow: none !important;
+  background: $background !important;
+  border-radius: 0px !important;
+  transition: none !important;
+
+  div, svg {
+    background: inherit !important;
+  }
+
+  &:hover {
+    background-color: $col-1 !important;
+    color: $background !important;
+  }
+}

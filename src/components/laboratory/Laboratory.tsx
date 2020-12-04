@@ -1,47 +1,38 @@
+/* eslint-disable react/no-danger */
 import React, { useState, useEffect } from 'react';
 import {
   Container, ListGroup, Col, Row,
 } from 'react-bootstrap';
-import { useParams, Redirect, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { Course } from '../../interfaces/course';
 import { getCourse, getCourseLaboratory } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { formatDate } from '../../utils';
+import { WarningStripComponent } from '../info/WarningStrip';
 
 function LaboratoryComponent(): JSX.Element {
   const { id, labID } = useParams<{ id: string, labID: string }>();
   const [t] = useTranslation();
-
-  const [courseState, setCourseState] = useState({
-    loading: true,
-    error: false,
-    course: new Course(),
-    laboratory: new CourseLaboratory(),
-  });
-
-  const {
-    laboratory, course, loading, error,
-  } = courseState;
+  const [course, setCourse] = useState<Course>(new Course());
+  const [laboratory, setLaboratory] = useState<CourseLaboratory>(new CourseLaboratory());
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAndSetLaboratoryAndCourse = async () => {
       try {
-        const [crs, lab] = await Promise.all([getCourse(id), getCourseLaboratory(id, labID)]);
-        setCourseState({
-          loading: false,
-          course: new Course(crs.course),
-          laboratory: new CourseLaboratory(lab.laboratory),
-          error: false,
-        });
+        setLoading(true);
+        const [{ course: _course }, { laboratory: _laboratory }] = await Promise.all([
+          getCourse(id), getCourseLaboratory(id, labID),
+        ]);
+        setCourse(new Course(_course));
+        setLaboratory(new CourseLaboratory(_laboratory));
       } catch (e) {
-        setCourseState({
-          loading: false,
-          course: new Course(),
-          laboratory: new CourseLaboratory(),
-          error: true,
-        });
+        setError(e);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -53,21 +44,30 @@ function LaboratoryComponent(): JSX.Element {
   }
 
   if (error) {
-    return <Redirect to="/404" />;
+    return <WarningStripComponent error={error} />;
   }
+
   return (
     <Container>
-      <h1>{laboratory.name}</h1>
-      <small>{laboratory._id}</small>
-      <p>{laboratory.description}</p>
-      <Link
-        className="mt-2 btn btn-primary btn-lg active"
-        role="button"
-        aria-pressed="true"
-        to={`/courses/${course._id}`}
-      >
-        {t('COURSE.LABORATORY.BACK_TO_COURSE')}
-      </Link>
+      <div className="box-wrapper">
+        <div className="box">
+          <div className="box-inner">
+            <h1>{laboratory.name}</h1>
+            <small>{laboratory._id}</small>
+            <div dangerouslySetInnerHTML={{ __html: laboratory.description }} />
+            <div className="float-right">
+              <Link
+                className="btn btn-primary p-2"
+                role="button"
+                aria-pressed="true"
+                to={`/courses/${course._id}`}
+              >
+                {t('COURSE.LABORATORY.BACK_TO_COURSE')}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
       <h4>{t('COURSE.LABORATORY.PER_GROUP_TASKS')}</h4>
       <ListGroup variant="flush">
         {Object.keys(laboratory.tasks).map((groupID) => {

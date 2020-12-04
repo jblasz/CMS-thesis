@@ -1,7 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useContext, useEffect, useState,
+} from 'react';
 import {
   Button,
 } from 'react-bootstrap';
@@ -12,6 +14,8 @@ import { getStudentDashboard } from '../../services/api/dashboard.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { config } from '../../config';
+import { AppContext } from '../../services/contexts/app-context';
+import { Role } from '../../interfaces/user';
 
 export function EventsStripComponent(): JSX.Element {
   const [{ events, activeEvents, upcomingEvents }, setEvents] = useState<{
@@ -23,6 +27,7 @@ export function EventsStripComponent(): JSX.Element {
     activeEvents: [],
     upcomingEvents: [],
   });
+  const { user } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [t] = useTranslation();
@@ -65,6 +70,9 @@ export function EventsStripComponent(): JSX.Element {
     };
   }, [getAndSetEvents]);
 
+  if (!user || user.role === Role.ADMIN) {
+    return <div />;
+  }
   if (loading) {
     return <LoadingSpinner />;
   }

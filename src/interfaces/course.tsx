@@ -13,6 +13,7 @@ export enum CourseLanguage {
 export interface ICourse {
   _id: string
   name: string
+  descriptionShort: string
   description: string
   language: CourseLanguage
   semester: string
@@ -30,6 +31,8 @@ export class Course implements ICourse, Validable {
 
   description = ''
 
+  descriptionShort = ''
+
   language: CourseLanguage = CourseLanguage.EN
 
   semester = 'F'
@@ -44,11 +47,14 @@ export class Course implements ICourse, Validable {
 
   shown = true
 
-  constructor(o?: ICourse) {
-    if (o) {
+  constructor(o?: ICourse | string) {
+    if (typeof o === 'string') {
+      this._id = o;
+    } else if (o) {
       this._id = o._id || '';
       this.name = o.name || '';
       this.description = o.description || '';
+      this.descriptionShort = o.descriptionShort || '';
       this.language = o.language || 'en';
       this.semester = o.semester || '';
       this.links = o.links || [];

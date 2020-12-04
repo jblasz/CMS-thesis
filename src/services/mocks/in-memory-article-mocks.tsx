@@ -1,4 +1,3 @@
-import { loremIpsum } from 'lorem-ipsum';
 import {
   IApiPostResponse, IGetArticleResponse, IGetArticlesResponse, IPutArticleResponse,
 } from '../../interfaces/api';
@@ -7,6 +6,17 @@ import { IArticle } from '../../interfaces/article';
 export function getArticlesMockResponse(): Promise<IGetArticlesResponse> {
   return Promise.resolve({
     articles: [
+      {
+        _id: 'id0',
+        en: {
+          categoryMajor: 'majorCat0en',
+          categoryMinor: '',
+        },
+        pl: {
+          categoryMajor: 'majorCat0pl',
+          categoryMinor: '',
+        },
+      },
       {
         _id: 'id1',
         en: {
@@ -51,12 +61,12 @@ export function getArticleMockResponse(id: string): Promise<IGetArticleResponse>
       en: {
         categoryMajor: 'catMajor',
         categoryMinor: 'catMinor',
-        contents: loremIpsum({ count: 5 }),
+        contents: 'An <h3>article!</h3> <br/> With <b>html</b>! English version! A <a href="http://www.google.com">link</a>!',
       },
       pl: {
         categoryMajor: 'catMajor',
         categoryMinor: 'catMinor',
-        contents: loremIpsum({ count: 5 }),
+        contents: 'An <h3>article!</h3> <br/> With <b>html</b>! Polish version! A <a href="http://www.google.com">link</a>!',
       },
     },
   });

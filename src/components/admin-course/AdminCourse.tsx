@@ -21,18 +21,7 @@ function AdminCourseComponent(): JSX.Element {
   const [t] = useTranslation();
 
   const [course, setCourseState] = useState<Course>(
-    new Course({
-      _id: id,
-      description: '',
-      groups: [],
-      laboratories: [],
-      language: CourseLanguage.EN,
-      links: [],
-      name: '',
-      semester: '',
-      active: true,
-      shown: true,
-    }),
+    new Course(id),
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -48,10 +37,10 @@ function AdminCourseComponent(): JSX.Element {
       setLoading(true);
       const c = await getCourse(id);
       validateAndSetCourse(new Course(c.course));
-      setLoading(false);
     } catch (e) {
-      setLoading(false);
       setError(e);
+    } finally {
+      setLoading(false);
     }
   }, [id, validateAndSetCourse]);
 
@@ -63,18 +52,20 @@ function AdminCourseComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container>
       <Form>
-        <WarningStripComponent error={error} />
         <Form.Row className="justify-content-between">
           <Col>
             <Button
               className="mx-1"
               variant="primary"
               type="submit"
-              onClick={async (event) => {
-                event.preventDefault();
+              onClick={async () => {
                 await putCourse(course);
                 await getAndSetCourse();
               }}
@@ -167,6 +158,18 @@ function AdminCourseComponent(): JSX.Element {
               />
             </div>
           </Form.Group>
+        </Form.Row>
+        <Form.Row className="mb-2">
+          <Form.Label>{t('ADMIN.COURSE.DESCRIPTION_SHORT')}</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={3}
+            value={course.descriptionShort}
+            onChange={(event) => {
+              course.descriptionShort = event.target.value;
+              validateAndSetCourse(course);
+            }}
+          />
         </Form.Row>
         <Form.Row className="mb-2">
           <Form.Label>{t('ADMIN.COURSE.DESCRIPTION')}</Form.Label>

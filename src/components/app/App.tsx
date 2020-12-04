@@ -35,12 +35,19 @@ import { getArticles } from '../../services/api/articles.service';
 import { IArticleMeta } from '../../interfaces/article';
 import { LoadingSpinner } from '../loading-spinner';
 import { IGetArticlesResponse } from '../../interfaces/api';
+import { IUser, Role } from '../../interfaces/user';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loggedIn, setLoggedIn] = useState(!!process.env.REACT_APP_START_LOGGED_IN);
   const [articles, setArticles] = useState<IArticleMeta[]>([]);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<IUser | undefined>(loggedIn ? {
+    role: Role.ADMIN,
+    student: {
+      _id: '', email: '', name: '', usosId: '', registeredAt: new Date(),
+    },
+  } : undefined);
   const [, setError] = useState('');
 
   const getAndSetCourses = async () => {
@@ -70,7 +77,10 @@ function App():JSX.Element {
 
   return (
     <div className="App">
-      <AppContext.Provider value={{ loggedIn, setLoggedIn }}>
+      <AppContext.Provider value={{
+        loggedIn, setLoggedIn, user, setUser,
+      }}
+      >
         <header />
         <main>
           <NavigationBarComponent courses={courses} articles={articles} />
@@ -89,7 +99,7 @@ function App():JSX.Element {
             <Route exact path="/courses/:id" component={CourseComponent} />
             <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
             <Route exact path="/research" component={ResearchComponent} />
-            <Route exact path="/articles" component={ArticlesComponent} />
+            <Route exact path="/articles/:id" component={ArticlesComponent} />
             <Route exact path="/code" component={CodeValidationComponent} />
             <PrivateRoute exact path="/dashboard" component={StudentDashboardComponent} />
             <PrivateRoute exact path="/profile" component={ProfileComponent} />

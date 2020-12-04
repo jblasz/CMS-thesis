@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { RefObject, useState } from 'react';
@@ -27,7 +28,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
 
   const [t] = useTranslation();
   const [languageFilter, setLanguageFilter] = useState(Language.ANY);
-  const [statusFilter, setStatusFilter] = useState(Status.OPEN);
+  const [statusFilter, setStatusFilter] = useState(Status.ANY);
   const [semesterFilter, setSemesterFilter] = useState('');
   const [scrollRefs] = useState<{[key: string]: RefObject<HTMLDivElement>}>({});
 
@@ -40,7 +41,8 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
     .filter((course) => (statusFilter
       ? (course.active && statusFilter === Status.OPEN)
       || (!course.active && statusFilter === Status.CLOSED)
-      : true));
+      : true))
+    .sort((a, b) => b.name.localeCompare(a.name));
 
   filteredCourses.forEach((course) => {
     scrollRefs[course._id] = React.createRef<HTMLDivElement>();
@@ -83,7 +85,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
         <div className="col">
           <section className="justify-content-center tiles-wrap row">
             {courses.map((course) => (
-              <Link to={`/courses/${course._id}`} className="card-container col-5 m-3" key={course._id} id={`li-course-${course._id}`}>
+              <Link to={`/courses/${course._id}`} className={`card-container col-3 m-3 ${course.active ? '' : 'inactive'}`} key={course._id} id={`li-course-${course._id}`}>
                 {/*
                   below is a hack to scroll taking into account 80px navbar offset.
                   cleanest solution I could find, sadly.
@@ -94,7 +96,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
                   <p className="float-right">{course.semester}</p>
                 </div>
                 <div className="row description">
-                  <p>{course.description}</p>
+                  <p dangerouslySetInnerHTML={{ __html: course.descriptionShort }} />
                 </div>
               </Link>
             ))}

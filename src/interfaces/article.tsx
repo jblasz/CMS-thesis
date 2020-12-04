@@ -17,7 +17,7 @@ export interface IArticleMeta {
 export function ArticleLocale(o: IArticleLocale): IArticleLocale {
   return {
     categoryMajor: o.categoryMajor || 'no_category_major',
-    categoryMinor: o.categoryMinor || 'no_category_minor',
+    categoryMinor: o.categoryMinor || '',
   };
 }
 

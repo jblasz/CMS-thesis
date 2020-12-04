@@ -4,46 +4,48 @@
 
 .sidebar {
   position: sticky;
-  top: 80px;
-  border-radius: 5px;
-  border: 2px solid $outline;
-  padding: 20px;
   min-width: 250px;
   max-width: 300px;
-}
 
-ul.category-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  max-height: 45vh;
-  overflow-y: scroll;
+  .Dropdown-control {
+    background-color: $col-5;
+    color: $col-5-contrast;
+  }
 
-  li {
-    font: $font-medium;
-    border-bottom: 1px solid #ccc;
-
-    &:last-child {
-      border: none;
-    }
+  ul.category-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 45vh;
+    overflow-y: scroll;
   
-    span {
-      text-decoration: none;
-      color: #000;
-
-      -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
-      -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
-      -o-transition: font-size 0.3s ease, background-color 0.3s ease;
-      -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
-      transition: font-size 0.3s ease, background-color 0.3s ease;
-      display: block;
-      // width: 200px;
-
-      &:hover {
-        font-size: 25px;
-        background: #f6f6f6;
-        cursor: pointer;
+    li {
+      font: $font-medium;
+      border-bottom: 1px solid $col-4;
+      max-width: 10rem;
+  
+      &:last-child {
+        border: none;
+      }
+    
+      span {
+        text-decoration: none;
+        color: $text-regular-2;
+  
+        -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+        -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+        -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+        -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+        transition: font-size 0.3s ease, background-color 0.3s ease;
+        display: block;
+  
+        &:hover {
+          font-size: 1.15rem;
+          cursor: pointer;
+        }
       }
     }
   }
 }
+
+

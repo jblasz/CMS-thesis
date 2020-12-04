@@ -14,6 +14,7 @@ export interface ICourseLaboratory {
   _id: string
   name: string
   description: string
+  descriptionShort: string
   tasks: ITaskToGroupMapping
 }
 
@@ -21,6 +22,8 @@ export class CourseLaboratory implements ICourseLaboratory, Validable {
   _id = ''
 
   description = ''
+
+  descriptionShort = ''
 
   tasks: TaskToGroupMapping = {}
 
@@ -32,6 +35,7 @@ export class CourseLaboratory implements ICourseLaboratory, Validable {
     } else if (o) {
       this._id = o._id || '';
       this.description = o.description || '';
+      this.descriptionShort = o.descriptionShort || '';
       this.name = o.name || '';
       if (o.tasks) {
         this.tasks = Object.keys(o.tasks).reduce(
