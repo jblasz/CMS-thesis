@@ -48,7 +48,7 @@ export function CourseListSidebarComponent(props: CourseListSidebarComponentProp
 
   return (
     <div className="sidebar-container my-4 col-auto box-wrapper">
-      <aside className="sidebar box">
+      <aside className="box sidebar">
         <div className="box-inner">
           <Form>
             <Form.Group className="my-2 ">

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Navbar, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import polishFlag from '../../images/poland.svg';
 import britishFlag from '../../images/uk.svg';
 import './AuthNav.scss';
@@ -12,6 +13,7 @@ import { Role } from '../../interfaces/user';
 function AuthNav() {
   const [t, i18n] = useTranslation();
   const { loggedIn, user } = useContext(AppContext);
+  const [{ CookieConsent }] = useCookies();
 
   return (
     <div>
@@ -23,6 +25,7 @@ function AuthNav() {
         ) : (
           <Navbar.Text className="p-2">
             {t('LOGIN.NOT_LOGGED_IN')}
+            {CookieConsent !== 'true' ? (<small>{t('LOGIN.COOKIES_REQUIRED')}</small>) : <></>}
           </Navbar.Text>
         )
       }

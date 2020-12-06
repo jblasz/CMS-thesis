@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import { I18nextProvider } from 'react-i18next';
 import { BrowserRouter } from 'react-router-dom';
-import { CookiesProvider } from 'react-cookie/es6';
+import { CookiesProvider } from 'react-cookie';
 import { App } from './components/app';
 import * as serviceWorker from './serviceWorker';
 import i18n from './services/i18n/i18n';

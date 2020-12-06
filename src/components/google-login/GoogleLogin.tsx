@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useCookies } from 'react-cookie';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { v4 } from 'uuid';
 import { Student } from '../../interfaces/student';
@@ -10,12 +11,14 @@ export function GoogleButton(): JSX.Element {
   const {
     loggedIn, setLoggedIn, setUser,
   } = useContext(AppContext);
+  const [{ CookieConsent }] = useCookies(['CookieConsent']);
   return (
     !loggedIn ? (
       <GoogleLogin
         clientId={process.env.REACT_APP_CLIENT_ID as string}
         buttonText="login"
         className="btn nav-items login-btn"
+        disabled={CookieConsent !== 'true'}
         onSuccess={() => {
           setLoggedIn(true);
           setUser({

@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import CookieConsent from 'react-cookie-consent';
+import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next';
 import { Route } from 'react-router-dom';
 import Switch from 'react-bootstrap/esm/Switch';
 import { NavigationBarComponent } from '../navbar';
@@ -13,7 +16,6 @@ import { Component404 } from '../404';
 import { CourseListComponent } from '../courseList';
 import { CourseComponent } from '../course';
 import { LaboratoryComponent } from '../laboratory';
-import './App.scss';
 import { PrivateRoute } from '../private-route';
 import { ProfileComponent } from '../profile';
 import { AdminPanelComponent } from '../admin-panel/AdminPanel';
@@ -49,6 +51,8 @@ function App():JSX.Element {
     },
   } : undefined);
   const [, setError] = useState('');
+  const [t] = useTranslation();
+  const [, setCookie] = useCookies();
 
   const getAndSetCourses = async () => {
     try {
@@ -118,6 +122,20 @@ function App():JSX.Element {
           </Switch>
         </main>
         <FooterComponent />
+        <CookieConsent
+          location="bottom"
+          buttonText={t('MAIN.COOKIE_CONSENT_ACCEPT')}
+          setDeclineCookie={false}
+          overlayClasses="cookie-consent-overlay"
+          containerClasses="cookie-consent-container"
+          overlay
+          onAccept={() => {
+            // setting it again by hook to trigger useCookie hook elsewhere in the app
+            setCookie('CookieConsent', 'true');
+          }}
+        >
+          {t('MAIN.COOKIE_CONSENT')}
+        </CookieConsent>
       </AppContext.Provider>
     </div>
   );

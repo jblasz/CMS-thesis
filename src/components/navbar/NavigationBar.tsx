@@ -76,9 +76,12 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
             ))}
           </NavDropdown>
           <>
-            {Object.keys(articleGroupings.singletons).map((categoryMajor) => (
-              <Link className="nav-link" to={`/articles/${articleGroupings.singletons[categoryMajor]._id}`}>{categoryMajor}</Link>
-            ))}
+            {Object.keys(articleGroupings.singletons).map((categoryMajor) => {
+              const article = articleGroupings.singletons[categoryMajor];
+              return (
+                <Link key={article._id} className="nav-link" to={`/articles/${article._id}`}>{categoryMajor}</Link>
+              );
+            })}
             {Object.keys(articleGroupings.compound).map((categoryMajor) => (
               <NavDropdown key={categoryMajor} title={categoryMajor} id={categoryMajor}>
                 {articleGroupings.compound[categoryMajor].map((x) => (

@@ -3,7 +3,9 @@
 /* site content */
 
 .sidebar {
+  position: -webkit-sticky;
   position: sticky;
+  top: 80px;
   min-width: 250px;
   max-width: 300px;
 
@@ -47,5 +49,3 @@
     }
   }
 }
-
-

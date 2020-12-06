@@ -36,13 +36,16 @@
     "LOGIN": "Login",
     "LOGOUT": "Logout",
     "SIGNUP": "Signup",
-    "WELCOME": "Welcome"
+    "WELCOME": "Welcome",
+    "COOKIES_REQUIRED": "You need to consent to cookies to use google login."
   },
   "MAIN": {
     "COURSES": "Matching courses",
     "TEACHING": "Teaching",
     "OWNER": "Henry Jekyll",
     "OWNER_TITLES": "Doctor of medicine, Canon Law, Legum Doctor, Fellowship of the Royal Society",
+    "COOKIE_CONSENT": "We use google authentication, which means we have to use cookies... Also for remembering the language, and whether you consented to cookies.",
+    "COOKIE_CONSENT_ACCEPT": "I understand and accept cookies",
     "FILTER": {
       "LANGUAGE": "Conducted in language",
       "LANGUAGE_ANY": "Any",

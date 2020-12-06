@@ -218,3 +218,25 @@ a {
 }
 
 /* !navbar */
+
+.chunky-width {
+  min-width: 400px;
+}
+
+/* ----------- !CARDS ----------- */
+
+.warning-strip {
+  position: fixed;
+  top: 120px;
+  width: 100%;
+  z-index: 100;
+}
+
+// 1030 is z-index of bootstrap "fixed" components, so 1031 to overlay it
+.cookie-consent-container {
+  z-index: 1031 !important;
+}
+
+.cookie-consent-overlay {
+  z-index: 1031 !important;
+}
