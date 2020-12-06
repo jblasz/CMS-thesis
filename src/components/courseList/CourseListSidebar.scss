@@ -1,49 +1,58 @@
-@import '../../master';
+@use '../../master' as *;
 
 /* site content */
 
-.sidebar {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 80px;
-  min-width: 250px;
-  max-width: 300px;
-
-  .Dropdown-control {
-    background-color: $col-5;
-    color: $col-5-contrast;
+@media (max-width:600px) {
+  .sidebar-container {
+    min-width: 100%;
   }
+}
 
-  ul.category-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    max-height: 45vh;
-    overflow-y: scroll;
+.sidebar-container {
+  max-width: 280px;
+  .sidebar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 80px;
+    min-width: 250px;
+    max-width: 350px;
   
-    li {
-      font: $font-medium;
-      border-bottom: 1px solid $col-4;
-      max-width: 10rem;
+    .Dropdown-control {
+      background-color: $col-5;
+      color: $col-5-contrast;
+    }
   
-      &:last-child {
-        border: none;
-      }
+    ul.category-list {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      max-height: 45vh;
+      overflow-y: scroll;
     
-      span {
-        text-decoration: none;
-        color: $text-regular-2;
-  
-        -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
-        -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
-        -o-transition: font-size 0.3s ease, background-color 0.3s ease;
-        -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
-        transition: font-size 0.3s ease, background-color 0.3s ease;
-        display: block;
-  
-        &:hover {
-          font-size: 1.15rem;
-          cursor: pointer;
+      li {
+        font: $font-medium;
+        border-bottom: 1px solid $col-4;
+        max-width: 10rem;
+    
+        &:last-child {
+          border: none;
+        }
+      
+        span {
+          text-decoration: none;
+          color: $text-regular-2;
+    
+          -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+          -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+          -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+          -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+          transition: font-size 0.3s ease, background-color 0.3s ease;
+          display: block;
+    
+          &:hover {
+            font-size: 1.15rem;
+            cursor: pointer;
+          }
         }
       }
     }

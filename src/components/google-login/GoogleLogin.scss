@@ -1,4 +1,4 @@
-@import '../../master';
+@use '../../master' as *;
 
 button.nav-items.btn.login-btn.btn-primary {
   box-shadow: none !important;

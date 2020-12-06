@@ -50,8 +50,8 @@ export function generateCourseMock(id = v4()) {
   const topush = new Course({
     _id: id,
     name: `Course Name Mk${generatorCount++}`,
-    description: `<h1>tag!</h1><br/> ${loremIpsum()}`,
-    descriptionShort: `<h1>tag!</h1><br/> ${loremIpsum()}`,
+    description: `<i style="color:red;">inline styling</i> ${loremIpsum()}`,
+    descriptionShort: `<i>inline styling</i><br/> ${loremIpsum()}`,
     language: Math.random() > 0.5 ? CourseLanguage.EN : CourseLanguage.PL,
     semester: `20${Math.random() > 0.5 ? '20' : '21'}${Math.random() > 0.5 ? 'Z' : 'L'}`,
     groups,

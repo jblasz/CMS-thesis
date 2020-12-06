@@ -51,7 +51,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
   const semesters = [...new Set(courses.map((c) => c.semester).sort().reverse())];
 
   return (
-    <div className="col">
+    <div className="col m-0">
       <Parallax blur={0} bgImage={bgImg} bgImageAlt="mini" strength={-200}>
         <div
           className="site-title"

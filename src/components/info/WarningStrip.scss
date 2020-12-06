@@ -1,4 +1,4 @@
-@import '../../master';
+@use '../../master' as *;
 
 .error-strip {
   background-color: red;

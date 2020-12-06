@@ -1,4 +1,4 @@
-@import '../../master';
+@use '../../master' as *;
 
 ul.timeline {
   list-style-type: none;
