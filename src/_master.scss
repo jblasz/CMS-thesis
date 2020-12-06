@@ -3,14 +3,17 @@
 $background: var(--white);
 $background-2: $col-1;
 
-$outline: $col-1;
+$outline: $col-3;
 
-$btn-background: $text-bright;
-$btn-colour: $text-dark;
-$btn-hover-background: $col-2;
-$btn-hover-colour: $text-bright;
-$btn-active-background: $col-1;
-$btn-active-colour: $text-bright;
+$radial-grad: radial-gradient($col-2, $col-1);
+$radial-grad-white: radial-gradient( #FFFFFF, $col-5);
+
+$btn-background: inherit;
+$btn-colour: $text-bright;
+$btn-hover-background: $col-4;
+$btn-hover-colour: $text-dark;
+$btn-active-background: $col-5;
+$btn-active-colour: $text-dark;
 
 $text-regular: var(--black);
 $text-regular-2: var(--white);
@@ -19,10 +22,9 @@ $font-large: var(--Lexend);
 $font-medium: var(--Abel);
 $font-small: var(--Abel);
 
-$radial-grad: radial-gradient($col-2, $col-1);
-
 html,
 body {
+  background: $background;
   margin: 0%;
   box-sizing: border-box;
   padding-top: 41px;
@@ -64,9 +66,9 @@ a.btn.btn-primary {
   text-transform: uppercase;
   text-decoration: none;
   background: inherit;
-  border-radius: 0;
+  // border-radius: 0;
   display: inline-block;
-  border: 1px solid black;
+  // border: 1px solid black;
   border-color: inherit;
   box-shadow: none;
 }
@@ -155,8 +157,14 @@ a {
 
 /* navbar */
 
+$nav-background: $radial-grad;
+$nav-color: $text-bright;
+$nav-background-hover: $col-5;
+$nav-color-hover: $text-dark;
+
 .nav {
-  background: $background;
+  background: $nav-background;
+  // border-bottom: 1px solid $nav-background-hover;
   .nav-link {
     font-size: 1.1rem;
   }
@@ -166,18 +174,38 @@ a {
     color: black;
   }
 
-  .nav-items .nav-link:hover,
-  .navbar-text:hover {
-    background-color: $background-2;
-    color: $background;
+  .nav-items .nav-link,
+  .nav-items .show .navbar-nav,
+  .navbar-light .navbar-nav .show > .nav-link,
+  .nav-items .nav-item .nav-link:focus,
+  .nav-items .nav-item .nav-link:hover,
+  .nav-items .nav-item .nav-link:active,
+  .navbar-text,
+  .nav-brand {
+    background-color: $nav-background;
+    color: $nav-color;
     a {
-      color: $background;
+      color: $nav-color;
+    }
+    &:hover {
+      background-color: $nav-background-hover;
+      color: $nav-color-hover;
+      a {
+        color: $nav-color-hover;
+      }
     }
   }
 
-  .dropdown-item {
-    &:active {
-      background-color: inherit;
+  .dropdown-menu {
+    background: $nav-background;
+    color: $nav-color;
+    .dropdown-item {
+      background: transparent;
+      color: inherit;
+      &:active, :hover {
+        background-color: $nav-background-hover;
+        color: $nav-color-hover;
+      }
     }
   }
 
@@ -189,9 +217,9 @@ a {
   a.btn.btn-primary,
   .btn-primary:not(:disabled):not(.disabled):focus,
   .btn-primary:not(:disabled):not(.disabled).focus {
-    color: $background-2;
-    background: $background;
-    border-color: $background-2;
+    color: $nav-color;
+    background: transparent;
+    border-color: $nav-color;
     box-shadow: none;
     border: none;
     transition: none;
@@ -203,9 +231,9 @@ a {
   .btn-primary:not(:disabled):not(.disabled).hover,
   .btn-primary:not(:disabled):not(.disabled):active,
   .btn-primary:not(:disabled):not(.disabled).active {
-    color: $background;
-    background: $background-2;
-    border-color: $background;
+    color: $nav-color-hover;
+    background: $nav-background-hover;
+    border-color: $nav-color-hover;
     box-shadow: none;
     border: none;
     transition: none;

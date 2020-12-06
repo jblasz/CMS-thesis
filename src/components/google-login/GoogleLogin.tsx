@@ -17,7 +17,7 @@ export function GoogleButton(): JSX.Element {
       <GoogleLogin
         clientId={process.env.REACT_APP_CLIENT_ID as string}
         buttonText="login"
-        className="btn nav-items login-btn"
+        className="btn nav-items login-btn btn-primary"
         disabled={CookieConsent !== 'true'}
         onSuccess={() => {
           setLoggedIn(true);
