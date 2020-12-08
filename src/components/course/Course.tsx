@@ -20,7 +20,7 @@ function computeDate(lab: CourseLaboratory) {
       dates.add(formatDate(task.dateFrom));
     }
   });
-  return [...dates].reduce((agg, curr) => `${agg}, ${curr}`);
+  return [...dates].length ? [...dates].reduce((agg, curr) => `${agg}, ${curr}`) : '';
 }
 
 function CourseComponent(): JSX.Element {

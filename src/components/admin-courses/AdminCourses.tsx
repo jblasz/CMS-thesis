@@ -19,7 +19,7 @@ function AdminCoursesComponent(): JSX.Element {
       setLoading(true);
       setCourses((await getCourses()).courses.map((x) => new Course(x)));
     } catch (e) {
-      setError('');
+      setError(e);
     } finally {
       setLoading(false);
     }

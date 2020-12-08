@@ -66,7 +66,7 @@ function App():JSX.Element {
       setCourses(_courses.map((x) => new Course(x)));
       setArticles(_articles);
     } catch (e) {
-      console.error(e);
+      console.error('error?', e);
       setError(`GetAndSetCourse() ${e}`);
     } finally {
       setLoading(false);
