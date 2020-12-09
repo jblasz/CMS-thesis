@@ -2,15 +2,29 @@
 
 .course-list {
   min-height: 25rem;
-  @include master.border();
+  overflow: hidden;
 
   .course-tabs {
+    width: 100%;
+    .nav {
+      width: 100%;
+    }
+    .btn {
+      border: none;
+    }
     .show > .btn-primary.dropdown-toggle,
     .btn-primary:not(:disabled):not(.disabled):hover,
     .btn-primary:not(:disabled):not(.disabled).hover {
       @include master.nav-colorset-alt();
       @include master.btn-common();
-      background: master.$col-4;
+      // background: master.$col-4;
     }
+  }
+
+  .course-details {
+    width: 100%;
+    @include master.border();
+    border-radius: 5px;
+    min-height: 20rem;
   }
 }

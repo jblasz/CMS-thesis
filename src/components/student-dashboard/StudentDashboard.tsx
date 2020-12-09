@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   Button,
   ButtonGroup,
-  Card, CardDeck, Col, Container, ListGroup, Row,
+  Col, Container, ListGroup, Nav, Navbar, Row,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -16,8 +16,6 @@ import { getSubmissions } from '../../services/api/submissions.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { StudentSubmissionListComponent } from '../submission-list/StudentSubmissionList';
-
-// import './StudentDashboard.scss';
 
 export function StudentDashboardComponent(): JSX.Element {
   const [t] = useTranslation();
@@ -70,119 +68,107 @@ export function StudentDashboardComponent(): JSX.Element {
       <Row className="course-list p-2">
         <Col>
           <Row className="course-tabs">
-            <ul className="nav">
-              {courses.map((x, ind) => (
-                <li
-                  key={x.courseId}
-                  className="nav-item"
-                >
-                  <Button
-                    className={`nav-link ${index === ind ? 'active' : ''}`}
-                    onClick={async () => {
-                      setIndex(ind);
-                      getAndSetCourse(ind);
-                    }}
+            <Navbar className="nav" expand="lg">
+              <Nav className="mr-auto nav-items">
+                {courses.map((x, ind) => (
+                  <li
+                    key={x.courseId}
+                    className="nav-item"
                   >
-                    {x.courseName}
-                  </Button>
-                </li>
-              ))}
-            </ul>
+                    <Button
+                      className={`nav-link ${index === ind ? 'active' : ''}`}
+                      onClick={async () => {
+                        setIndex(ind);
+                        getAndSetCourse(ind);
+                      }}
+                    >
+                      {x.courseName}
+                    </Button>
+                  </li>
+                ))}
+              </Nav>
+            </Navbar>
           </Row>
           <Row className="course-details">
-            {course
-              ? (
-                <div>
-                  <Link to={`courses/${course._id}`}>
-                    {course.name}
-                  </Link>
-                  {course.groupName}
-                  {course.grade ? (
-                    <h6>
-                      {`${t('STUDENT.DASHBOARD.GRADE')}: ${course.grade}`}
-                    </h6>
-                  ) : <></>}
-                  <ListGroup>
-                    {course.laboratories.map((lab) => (
-                      <ListGroup.Item key={lab._id}>
-                        <Row>
-                          <Col>
-                            <Link to={`courses/${course._id}/lab/${lab._id}`}>
-                              {lab.name}
-                            </Link>
-                          </Col>
-                          <Col>
-                            {lab.grade || t('STUDENT.DASHBOARD.NO_GRADE_YET')}
-                          </Col>
-                          <Col>
-                            <ButtonGroup>
-                              <Button
-                                title={t('STUDENT.DASHBOARD.DOWNLOAD_TASK')}
-                                disabled={
-                                  lab.dateFrom
+            {
+              secondaryLoading
+                ? <LoadingSpinner />
+                : course
+                  ? (
+                    <>
+                      <Col md={4}>
+                        <Link to={`courses/${course._id}`}>
+                          <h6>{t('STUDENT.DASHBOARD.GOTO')}</h6>
+                        </Link>
+                        <h6>
+                          {`${t('STUDENT.DASHBOARD.GROUP')}: ${course.groupName}`}
+                        </h6>
+                        <h6>
+                          {course.grade ? `${t('STUDENT.DASHBOARD.GRADE')}: ${course.grade}` : t('STUDENT.DASHBOARD.NO_GRADE_YET')}
+                        </h6>
+
+                      </Col>
+                      <Col md={8}>
+                        <ListGroup>
+                          {course.laboratories.map((lab) => (
+                            <ListGroup.Item key={lab._id}>
+                              <Row>
+                                <Col>
+                                  <Link to={`courses/${course._id}/lab/${lab._id}`}>
+                                    {lab.name}
+                                  </Link>
+                                </Col>
+                                <Col>
+                                  {lab.grade || t('STUDENT.DASHBOARD.NO_GRADE_YET')}
+                                </Col>
+                                <Col>
+                                  <ButtonGroup>
+                                    <Button
+                                      title={t('STUDENT.DASHBOARD.DOWNLOAD_TASK')}
+                                      disabled={
+                                        lab.dateFrom
                                             && lab.dateFrom.valueOf() < new Date().valueOf()
-                                }
-                              >
-                                <FontAwesomeIcon icon={faTasks} />
-                              </Button>
-                              <Button
-                                title={t('STUDENT.DASHBOARD.UPLOAD_SUBMISSION')}
-                                disabled={
-                                  (lab.dateTo && lab.dateFrom)
+                                      }
+                                    >
+                                      <FontAwesomeIcon icon={faTasks} />
+                                    </Button>
+                                    <Button
+                                      title={t('STUDENT.DASHBOARD.UPLOAD_SUBMISSION')}
+                                      disabled={
+                                        (lab.dateTo && lab.dateFrom)
                                             && (lab.dateFrom.valueOf() > new Date().valueOf()
                                             || lab.dateTo.valueOf() < new Date().valueOf()
                                             )
-                                }
-                              >
-                                <FontAwesomeIcon icon={faUpload} />
-                              </Button>
-                              <Button
-                                disabled={!lab.latestSubmissionId}
-                                title={t('STUDENT.DASHBOARD.DOWNLOAD_SUBMISSION')}
-                              >
-                                <FontAwesomeIcon icon={faDownload} />
-                              </Button>
-                            </ButtonGroup>
-                          </Col>
-                        </Row>
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
-                </div>
-              )
-              : (
-                <p>{t('STUDENT.DASHBOARD.SELECT_COURSE_TO_VIEW')}</p>
-              )}
+                                      }
+                                    >
+                                      <FontAwesomeIcon icon={faUpload} />
+                                    </Button>
+                                    <Button
+                                      disabled={!lab.latestSubmissionId}
+                                      title={t('STUDENT.DASHBOARD.DOWNLOAD_SUBMISSION')}
+                                    >
+                                      <FontAwesomeIcon icon={faDownload} />
+                                    </Button>
+                                  </ButtonGroup>
+                                </Col>
+                              </Row>
+                            </ListGroup.Item>
+                          ))}
+                        </ListGroup>
+                      </Col>
+                    </>
+                  )
+                  : (
+                    <p>{t('STUDENT.DASHBOARD.SELECT_COURSE_TO_VIEW')}</p>
+                  )
+            }
           </Row>
         </Col>
       </Row>
       <Row>
-        <CardDeck>
-          <Card className="chunky-width my-2">
-            {
-              secondaryLoading
-                ? <LoadingSpinner />
-                : (
-                  <>
-                    <Card.Header>
-                      {t('STUDENT.DASHBOARD.COURSE_DETAILS')}
-                    </Card.Header>
-                    <Card.Body />
-                  </>
-                )
-            }
-          </Card>
-          <Card className="chunky-width my-2">
-            <Card.Header>
-              {t('STUDENT.DASHBOARD.SUBMISSIONS')}
-            </Card.Header>
-            <Card.Body>
-              <StudentSubmissionListComponent
-                submissions={submissions}
-              />
-            </Card.Body>
-          </Card>
-        </CardDeck>
+        <StudentSubmissionListComponent
+          submissions={submissions}
+        />
       </Row>
     </Container>
   );
