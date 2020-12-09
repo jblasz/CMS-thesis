@@ -11,8 +11,10 @@ import * as serviceWorker from './serviceWorker';
 import i18n from './services/i18n/i18n';
 import { populateInMemoryDBWithSomeMocks } from './services/mocks';
 
+import 'react-dropdown/style.css';
 // datepicker style
 import 'react-datepicker/dist/react-datepicker.css';
+import './styles/bundle.scss';
 
 // load mocks
 populateInMemoryDBWithSomeMocks();

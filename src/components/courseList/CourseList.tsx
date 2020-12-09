@@ -3,8 +3,8 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { RefObject, useState } from 'react';
 import { Link } from 'react-router-dom';
-import 'react-dropdown/style.css';
-import './CourseList.scss';
+// import 'react-dropdown/style.css';
+// import './CourseList.scss';
 import { Parallax } from 'react-parallax';
 import { useTranslation } from 'react-i18next';
 import { Course, CourseLanguage } from '../../interfaces/course';

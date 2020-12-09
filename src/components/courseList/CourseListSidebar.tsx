@@ -5,7 +5,7 @@ import { ButtonGroup, Button, Form } from 'react-bootstrap';
 import Dropdown from 'react-dropdown';
 import { useTranslation } from 'react-i18next';
 import { Course } from '../../interfaces/course';
-import './CourseListSidebar.scss';
+// import './CourseListSidebar.scss';
 
 export enum Language {
   ANY = 0,

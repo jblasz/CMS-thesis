@@ -1,19 +1,18 @@
-@use '../../master' as *;
+@use './master';
 
 button.nav-items.btn.login-btn.btn-primary {
   box-shadow: none !important;
   background: inherit !important;
   border-radius: 0px !important;
   transition: none !important;
-  color: $nav-color !important;
-
+  color: master.$nav-color !important;
 
   div, svg {
     background: inherit !important;
   }
 
   &:hover {
-    background-color: $nav-background-hover !important;
-    color: $nav-color-hover !important;
+    background: master.$nav-background-hover !important;
+    color: master.$nav-color-hover !important;
   }
 }

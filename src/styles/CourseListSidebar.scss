@@ -1,4 +1,4 @@
-@use '../../master' as *;
+@use './master';
 
 /* site content */
 
@@ -18,8 +18,8 @@
     max-width: 350px;
   
     .Dropdown-control {
-      background-color: $col-5;
-      color: $col-5-contrast;
+      background: master.$col-5;
+      color: master.$col-5-contrast;
     }
   
     ul.category-list {
@@ -30,8 +30,8 @@
       overflow-y: scroll;
     
       li {
-        font: $font-medium;
-        border-bottom: 1px solid $col-4;
+        font: master.$font-medium;
+        border-bottom: 1px solid master.$col-4;
         max-width: 10rem;
     
         &:last-child {
@@ -40,7 +40,7 @@
       
         span {
           text-decoration: none;
-          color: $text-regular-2;
+          color: master.$text-regular-2;
     
           -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
           -moz-transition: font-size 0.3s ease, background-color 0.3s ease;

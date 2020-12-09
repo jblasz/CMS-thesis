@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import polishFlag from '../../images/poland.svg';
 import britishFlag from '../../images/uk.svg';
-import './AuthNav.scss';
+// import './AuthNav.scss';
 import { AppContext } from '../../services/contexts/app-context';
 import { GoogleButton } from '../google-login/GoogleLogin';
 import { Role } from '../../interfaces/user';

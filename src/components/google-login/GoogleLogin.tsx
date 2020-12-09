@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useCookies } from 'react-cookie';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import { v4 } from 'uuid';
 import { Student } from '../../interfaces/student';
 import { Role } from '../../interfaces/user';
 import { AppContext } from '../../services/contexts/app-context';
-import './GoogleLogin.scss';
+// import './GoogleLogin.scss';
 
 export function GoogleButton(): JSX.Element {
   const {
     loggedIn, setLoggedIn, setUser,
   } = useContext(AppContext);
   const [{ CookieConsent }] = useCookies(['CookieConsent']);
+  const mounted = useRef(true);
+  useEffect(() => () => { mounted.current = false; });
   return (
     !loggedIn ? (
       <GoogleLogin
@@ -20,6 +22,9 @@ export function GoogleButton(): JSX.Element {
         className="btn nav-items login-btn btn-primary"
         disabled={CookieConsent !== 'true'}
         onSuccess={() => {
+          if (!mounted.current) {
+            return;
+          }
           setLoggedIn(true);
           setUser({
             role: Role.STUDENT,
@@ -34,6 +39,9 @@ export function GoogleButton(): JSX.Element {
         }}
         onFailure={(args) => {
           console.error('error', args);
+          if (!mounted.current) {
+            return;
+          }
           setLoggedIn(false);
           setUser();
         }}
@@ -46,6 +54,9 @@ export function GoogleButton(): JSX.Element {
         className="btn nav-items login-btn btn-primary"
         buttonText="logout"
         onLogoutSuccess={() => {
+          if (!mounted.current) {
+            return;
+          }
           console.log('logout');
           setLoggedIn(false);
           setUser();

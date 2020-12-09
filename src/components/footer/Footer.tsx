@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import './Footer.scss';
+// import './Footer.scss';
 
 function FooterComponent(): JSX.Element {
   const [t] = useTranslation();

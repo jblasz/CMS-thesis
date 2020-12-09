@@ -1,0 +1,248 @@
+@use './master.scss';
+
+:root {
+  /* Theme colours */
+  --text-dark: black;
+  --text-light: white;
+  --white: white;
+  --black: black;
+  --granite: #5e6472;
+
+  --ming: #006D77;
+  --middle-blue-green: #83C5BE;
+  --alice-blue: #83C5BE;
+  --unbleached-silk: #FFDDD2;
+  --dark-salmon: #E29578;
+
+  --rose-ebony: #5a393e;
+  --rose-dust: #aa6373;
+  --linen: #fbebe0;
+  --gold: #a57c00;
+  --forest-green-traditional: #014421;
+  --oxford-blue: #0e1c36;
+
+  --pink: #ffc0cb;
+  --light-goldenrod-yellow: #f2f6d0;
+  --honeydew: #d0e1d4;
+  --old-lavender: #71697a;
+
+  --space-cadet: #22223b;
+  --independence: #4a4e69;
+  --heliotrope-gray: #9a8c98;
+  --silver-pink: #c9ada7;
+  --isabelline: #f2e9e4;
+
+  --desert-sand: #ecc8af;
+  --melon: #e7ad99;
+  --new-york-pink: #ce796b;
+  --persian-orange: #c18c5d;
+  --black-coral: #495867;
+
+  /* gradient color */
+  --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+
+  /* theme font-family */
+  --Abel: "Abel", cursive;
+  --Anton: "Anton", cursive;
+  --Josefin: "Josefin Sans", cursive;
+  --Lexend: "Lexend Deca", cursive;
+  --Livvic: "Livvic", cursive;
+}
+
+html,
+body {
+  background: master.$background;
+  margin: 0%;
+  box-sizing: border-box;
+  padding-top: 41px;
+  padding-bottom: 41px;
+  font-family: master.$font-small;
+}
+
+a {
+  text-decoration: none;
+  color: master.$text-regular;
+}
+
+h1 h2 {
+  font-family: master.$font-large;
+}
+
+h3 {
+  font-family: master.$font-medium;
+}
+
+button.btn.btn-primary,
+a.btn.btn-primary {
+  @include master.border;
+  @include master.colorset;
+  @include master.btn-common;
+}
+
+.btn-primary:not(:disabled):not(.disabled):focus,
+.btn-primary:not(:disabled):not(.disabled).focus {
+  @include master.btn-common;
+  @include master.colorset-inherit;
+}
+
+
+.show > .btn-primary.dropdown-toggle,
+.btn-primary:not(:disabled):not(.disabled):hover,
+.btn-primary:not(:disabled):not(.disabled).hover {
+  @include master.colorset-alt;
+  @include master.btn-common;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active {
+  @include master.colorset-active;
+  @include master.btn-common;
+}
+
+.btn-group button.btn.btn-primary,
+.btn-group a.btn.btn-primary {
+  padding: 10px 10px;
+}
+
+a {
+  text-decoration: none;
+  @include master.colorset-inherit;
+  &:hover {
+    text-decoration: none;
+    @include master.colorset-inherit;
+  }
+}
+
+.box-wrapper {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  &:before, &:after {
+    box-sizing: border-box;
+  }
+
+  .box {
+    background: master.$radial-grad;
+    color: master.$text-regular-2;
+    width: 100%;
+    padding: 5px;
+    border: 2px solid master.$col-4;
+    &:before {
+      left: 5px;
+    }
+    &:after {
+      right: 5px;
+    }
+    .box-inner {
+      position: relative;
+      border: 2px solid master.$col-4;
+      padding: 40px;
+      &:before, &:after {
+        content: "•";
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        color: master.$col-5;
+        border: 2px solid master.$col-4;
+        line-height: 12px;
+        bottom: -2px;
+        text-align: center;
+      }
+      &:before {
+        left: -2px;
+      }
+      &:after {
+        right: -2px;
+      }
+    }
+  }
+}
+
+/* navbar */
+
+.nav {
+  @include master.nav-colorset;
+  .nav-link {
+    font-size: 1.1rem;
+  }
+
+  .category {
+    font-size: 1rem;
+    color: black;
+  }
+
+  .nav-items .nav-link,
+  .nav-items .show .navbar-nav,
+  .navbar-light .navbar-nav .show > .nav-link,
+  .nav-items .nav-item .nav-link:focus,
+  .nav-items .nav-item .nav-link:hover,
+  .nav-items .nav-item .nav-link:active,
+  .navbar-text,
+  .nav-brand {
+    @include master.nav-colorset;
+    background: transparent;
+    a {
+      @include master.colorset-inherit();
+    }
+    &:hover {
+      @include master.nav-colorset-alt;
+    }
+  }
+
+  .dropdown-menu {
+    @include master.nav-colorset;
+    .dropdown-item {
+      @include master.colorset-inherit;
+      background: transparent;
+      &:active, :hover {
+        @include master.nav-colorset-alt;
+      }
+    }
+  }
+
+  .nav-brand a {
+    font-size: 1.6rem;
+  }
+
+  button.btn.btn-primary,
+  a.btn.btn-primary,
+  .btn-primary:not(:disabled):not(.disabled):focus,
+  .btn-primary:not(:disabled):not(.disabled).focus {
+    @include master.colorset-inherit;
+    @include master.btn-common();
+    background: transparent;
+  }
+
+  .show > .btn-primary.dropdown-toggle,
+  .btn-primary:not(:disabled):not(.disabled):hover,
+  .btn-primary:not(:disabled):not(.disabled).hover,
+  .btn-primary:not(:disabled):not(.disabled):active,
+  .btn-primary:not(:disabled):not(.disabled).active {
+    @include master.nav-colorset-alt();
+    @include master.btn-common();
+  }
+
+  .btn-group button.btn.btn-primary,
+  .btn-group a.btn.btn-primary {
+    padding: 10px 10px;
+  }
+}
+
+/* !navbar */
+
+.chunky-width {
+  min-width: 400px;
+}
+
+/* ----------- !CARDS ----------- */
+
+// 1030 is z-index of bootstrap "fixed" components, so 1031 to overlay it
+.cookie-consent-container {
+  z-index: 1032 !important;
+}
+
+.cookie-consent-overlay {
+  z-index: 1032 !important;
+}

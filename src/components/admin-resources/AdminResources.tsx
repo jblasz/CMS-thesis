@@ -16,7 +16,7 @@ import { Permission, IResourceMeta } from '../../interfaces/resource';
 import {
   getResources, patchResource, deleteResource,
 } from '../../services/api/resources.service';
-import './AdminResources.css';
+// import './AdminResources.scss';
 import { WarningStripComponent } from '../info/WarningStrip';
 
 function AdminResourcesComponent(): JSX.Element {

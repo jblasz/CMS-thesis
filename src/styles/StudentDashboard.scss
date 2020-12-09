@@ -1,0 +1,16 @@
+@use './master';
+
+.course-list {
+  min-height: 25rem;
+  @include master.border();
+
+  .course-tabs {
+    .show > .btn-primary.dropdown-toggle,
+    .btn-primary:not(:disabled):not(.disabled):hover,
+    .btn-primary:not(:disabled):not(.disabled).hover {
+      @include master.nav-colorset-alt();
+      @include master.btn-common();
+      background: master.$col-4;
+    }
+  }
+}

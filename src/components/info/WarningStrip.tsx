@@ -2,7 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
-import './WarningStrip.scss';
+// import './WarningStrip.scss';
 
 export function WarningStripComponent(props: {error: string}): JSX.Element {
   const { error } = props;

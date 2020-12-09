@@ -31,7 +31,7 @@ import { AdminSubmissionsComponent } from '../admin-submissions';
 import { AppContext } from '../../services/contexts/app-context';
 import { AdminArticlesComponent } from '../admin-articles/AdminArticles';
 import { AdminArticleComponent } from '../admin-articles/AdminArticle';
-import { EventsStripComponent } from '../events-strip/events-strip';
+import { EventsStripComponent } from '../events-strip/EventsStrip';
 import { StudentDashboardComponent } from '../student-dashboard/StudentDashboard';
 import { getArticles } from '../../services/api/articles.service';
 import { IArticleMeta } from '../../interfaces/article';

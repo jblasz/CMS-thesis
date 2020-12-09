@@ -13,7 +13,7 @@ import { Course, CourseLanguage } from '../../interfaces/course';
 import { AuthNav } from '../auth-nav';
 import { AppContext } from '../../services/contexts/app-context';
 import { IArticleMeta } from '../../interfaces/article';
-import './NavigationBar.scss';
+// import './NavigationBar.scss';
 import { Role } from '../../interfaces/user';
 
 interface NavigationBarComponentProps {

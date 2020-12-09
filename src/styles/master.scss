@@ -1,0 +1,81 @@
+$text-bright: var(--white);
+$text-dark: var(--granite);
+
+$col-1: var(--space-cadet);
+$col-2: var(--independence);
+$col-3: var(--heliotrope-gray);
+$col-4-contrast: $text-dark;
+$col-4: var(--silver-pink);
+$col-5-contrast: $text-dark;
+$col-5: var(--isabelline);
+
+$background: var(--white);
+$background-2: $col-1;
+
+$radial-grad: radial-gradient($col-2, $col-1);
+$radial-grad-white: radial-gradient( #FFFFFF, $col-5);
+
+$btn-hover-background: $col-4;
+$btn-hover-colour: $text-dark;
+$btn-active-background: $col-5;
+$btn-active-colour: $text-dark;
+
+$text-regular: var(--black);
+$text-regular-2: var(--white);
+
+$font-large: var(--Lexend);
+$font-medium: var(--Abel);
+$font-small: var(--Abel);
+
+@mixin border {
+  border-radius: 1px;
+  border-color: $col-3;
+}
+
+@mixin colorset-alt {
+  color: $btn-hover-colour;
+  background: $btn-hover-background;
+  border-color: $col-1;
+}
+
+@mixin colorset {
+  background: $col-1;
+  color: $text-bright;
+  border-color: $col-3;;
+}
+
+@mixin colorset-active {
+  color: $btn-hover-colour;
+  background: $col-5;
+  border-color: $col-1;
+}
+
+@mixin colorset-inherit {
+  color: inherit;
+  background: inherit;
+  border-color: inherit;
+}
+
+@mixin btn-common {
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: none;
+}
+
+$nav-background: $radial-grad;
+$nav-color: $text-bright;
+$nav-background-hover: $col-5;
+$nav-color-hover: $text-dark;
+
+@mixin nav-colorset {
+  background: $nav-background;
+  color: $nav-color;
+  border-color: $col-3;;
+}
+
+@mixin nav-colorset-alt {
+  background: $nav-background-hover;
+  color: $nav-color-hover;
+  border-color: $col-1;
+}

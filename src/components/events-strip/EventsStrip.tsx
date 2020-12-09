@@ -71,7 +71,7 @@ export function EventsStripComponent(): JSX.Element {
   }, [getAndSetEvents]);
 
   if (!user || user.role === Role.ADMIN) {
-    return <div />;
+    return <></>;
   }
   if (loading) {
     return <LoadingSpinner />;
@@ -80,7 +80,7 @@ export function EventsStripComponent(): JSX.Element {
     return <WarningStripComponent error={error} />;
   }
   if (hide || !events.length) {
-    return <div />;
+    return <></>;
   }
   return (
     <div className="alert alert-warning warning-strip">

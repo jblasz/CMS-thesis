@@ -1,4 +1,4 @@
-@use '../../master' as *;
+@use './master';
 
 .error-strip {
   background-color: red;
@@ -17,7 +17,7 @@
 }
 
 .wrapper {
-  transition: all 0.3s ease-in-out;
+  // transition: all 0.3s ease-in-out;
   overflow: hidden;
   max-height: 50px;
   &.hide {

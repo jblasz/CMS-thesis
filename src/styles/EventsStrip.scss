@@ -1,0 +1,11 @@
+@use './master.scss';
+
+.warning-strip {
+  position: fixed;
+  top: 120px;
+  width: 100%;
+  z-index: 1031 !important;
+  // @include master.border();
+  @include master.colorset-active();
+  border: none;
+}

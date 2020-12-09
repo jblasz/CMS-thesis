@@ -1,0 +1,12 @@
+@use './master.scss';
+
+.flag {
+  width: 50px;
+  height: 40px;
+}
+
+.flag-wrapper {
+  padding: 0px;
+  border: none;
+  transition: none;
+}
