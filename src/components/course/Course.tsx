@@ -13,7 +13,7 @@ import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 
-function computeDate(lab: CourseLaboratory) {
+function computeCompoundDate(lab: CourseLaboratory) {
   const dates = new Set<string>();
   Object.values(lab.tasks).forEach((task) => {
     if (task.dateFrom) {
@@ -70,7 +70,7 @@ function CourseComponent(): JSX.Element {
             <ul className="timeline">
               {course.laboratories.map((lab) => (
                 <li key={lab._id}>
-                  <h6 className="float-right">{computeDate(lab)}</h6>
+                  <h6 className="float-right">{computeCompoundDate(lab)}</h6>
                   <Link
                     className="nav-link"
                     role="button"

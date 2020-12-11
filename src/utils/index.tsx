@@ -27,3 +27,15 @@ export function shuffleList(l: unknown[]) {
   }
   return list;
 }
+
+export function stringifyDatePair(dateFrom: Date, dateTo: Date) {
+  if (dateFrom.getUTCFullYear() === dateTo.getUTCFullYear()
+    && dateFrom.getUTCMonth() === dateTo.getUTCMonth()
+    && dateFrom.getUTCDate() === dateTo.getUTCDate()) {
+    return `
+        ${formatDate(dateFrom)}, 
+        ${formatDate(dateFrom, true).split(', ')[1]}-${formatDate(dateTo, true).split(', ')[1]}
+      `;
+  }
+  return `${formatDate(dateFrom)}, ${formatDate(dateTo)}`;
+}

@@ -40,17 +40,17 @@ export function PendingCoursesCard(): JSX.Element {
       </Card.Header>
       <Card.Body>
         <WarningStripComponent error={error} />
-        <Card.Subtitle className="mb-2 text-muted">
-          {t('PENDING.LABS.TIMERANGE')}
+        <Card.Subtitle className="mb-2">
+          <i>{t('PENDING.LABS.TIMERANGE')}</i>
         </Card.Subtitle>
         <Table className="table-sm">
           <thead>
             <tr>
               <th>
-                {t('PENDING.LABS.COURSENAME')}
+                <p>{t('PENDING.LABS.COURSENAME')}</p>
               </th>
               <th>
-                {t('PENDING.LABS.STARTSAT')}
+                <p>{t('PENDING.LABS.STARTSAT')}</p>
               </th>
             </tr>
           </thead>

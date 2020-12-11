@@ -114,6 +114,11 @@ a {
   }
 }
 
+.table {
+  @include master.colorset-inherit();
+  background: transparent;
+}
+
 .box-wrapper {
   margin: 0;
   padding: 0;
@@ -246,4 +251,15 @@ a {
 
 .cookie-consent-overlay {
   z-index: 1032 !important;
+}
+
+.card {
+  @include master.border();
+  .card-header {
+    border-color: master.$col-3;
+    @include master.nav-colorset-alt();
+  }
+  .card-body {
+    @include master.nav-colorset(); 
+  }
 }

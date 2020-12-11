@@ -252,24 +252,33 @@
   },
   "STUDENT": {
     "DASHBOARD": {
-      "COURSES": "Courses you attend(or attended)",
+      "YOUR_COURSES": "Courses you are/were attending",
       "COURSE_DETAILS": "Course details",
       "SELECT_COURSE_TO_VIEW": "Click on one of the courses to the left to view more",
       "ACTIVE_EVENTS": "A lab is currently taking place",
       "UPCOMING_EVENTS": "Following labs will soon take place",
-      "SUBMISSIONS": "Your submissions",
+      "YOUR_SUBMISSIONS": "Your submissions",
       "GROUP_NAME": "Your group",
+      "NO_GROUP": "Not assigned",
       "NO_GRADE_YET": "Not graded",
       "GRADE": "Grade",
       "DOWNLOAD_TASK": "Download task",
       "UPLOAD_SUBMISSION": "Upload submission",
-      "DOWNLOAD_SUBMISSION": "Download submission"
+      "DOWNLOAD_SUBMISSION": "Download submission",
+      "GOTO": "Course page",
+      "GROUP": "Your group",
+      "TABLE_LABORATORY": "Laboratory",
+      "TABLE_GRADE": "Grade",
+      "PICK_COURSE": "Pick a course...",
+      "TABLE_DATES": "Date",
+      "NO_COURSE_SELECTED": "",
+      "NO_COURSES_SIGNED": "You are currently not signed to any courses"
     },
     "SUBMISSIONS": {
       "COURSE": "Course",
       "LAB": "Lab",
       "GRADE": "Grade",
-      "NO_GRADE_YET": "Not graded",
+      "NO_GRADE_YET": "N/A",
       "SUBMITTED_AT": "Submitted",
       "NO_SUBMISSIONS": "You have not made any submissions yet"
     }

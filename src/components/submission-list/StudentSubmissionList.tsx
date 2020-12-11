@@ -2,32 +2,39 @@ import {
   faDownload, faClipboard,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Table, Button, Container, ButtonGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { SubmissionGrade, ISubmissionMeta } from '../../interfaces/resource';
+import { getSubmissions } from '../../services/api/submissions.service';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 
-interface StudentSubmissionListComponentProps {
-  submissions: ISubmissionMeta[]
-}
-
-export function StudentSubmissionListComponent(
-  props: StudentSubmissionListComponentProps,
-): JSX.Element {
-  const {
-    submissions,
-  } = props;
+export function StudentSubmissionListComponent(): JSX.Element {
+  const [submissions, setSubmissions] = useState<ISubmissionMeta[]>([]);
   const [t] = useTranslation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState('');
+
+  const getAndSetSubmissions = useCallback(async () => {
+    try {
+      setLoading(true);
+      const { submissions: _submissions } = await getSubmissions('', '', 0);
+      setSubmissions(_submissions);
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    getAndSetSubmissions();
+  }, [getAndSetSubmissions]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -42,7 +49,7 @@ export function StudentSubmissionListComponent(
   }
 
   return (
-    <Container>
+    <Container className="student-submission-list">
       <WarningStripComponent error={error} />
       <Table className="table-sm">
         <thead>
@@ -79,10 +86,10 @@ export function StudentSubmissionListComponent(
                   </Link>
                 </td>
                 <td>
-                  {submission.grade || t('STUDENT.SUBMISSIONS.NO_GRADE_YET')}
+                  <p>{submission.grade || t('STUDENT.SUBMISSIONS.NO_GRADE_YET')}</p>
                 </td>
                 <td>
-                  <p className="nav-link">
+                  <p>
                     {formatDate(submission.submittedAt, true)}
                   </p>
                 </td>

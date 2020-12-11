@@ -36,7 +36,8 @@
   .card-container {
     min-width: 30vh;
     // min-height: 25vh;
-    background: master.$radial-grad;
+    // background: master.$radial-grad;
+    @include master.nav-colorset();
 
     .description {
       padding: 20px 10px 10px 10px;
@@ -51,9 +52,7 @@
 
     .title {
       padding: 10px;
-      color: master.$col-5-contrast;
-      background: master.$col-5;
-      border-bottom: solid 1px master.$col-3;
+      @include master.nav-colorset-alt();
       transition: all 0.2s ease-in-out;
       &.inactive {
         opacity: 0.8;
