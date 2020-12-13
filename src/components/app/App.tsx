@@ -47,7 +47,7 @@ function App():JSX.Element {
   const [user, setUser] = useState<IUser | undefined>(loggedIn ? {
     role: Role.ADMIN,
     student: {
-      _id: '', email: '', name: '', usosId: '', registeredAt: new Date(),
+      _id: '', email: '', name: '', usosId: '', registeredAt: new Date(), contactEmail: '',
     },
   } : undefined);
   const [, setError] = useState('');

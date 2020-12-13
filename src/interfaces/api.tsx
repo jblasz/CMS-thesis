@@ -129,6 +129,10 @@ export interface GetStudentResponse {
   submissions: ISubmissionMeta[]
 }
 
+export interface PatchStudentResponse extends IApiPostResponse {
+  student: IStudent
+}
+
 export interface IGetSubmissionsResponse {
   submissions: ISubmissionMeta[]
 }

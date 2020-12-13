@@ -3,6 +3,7 @@ import React,
   useCallback, useEffect, useState,
 } from 'react';
 import {
+  Card,
   Container, Form, FormControl, InputGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -93,90 +94,105 @@ function AdminSubmissionsComponent(): JSX.Element {
 
   return (
     <Container>
-      <Form>
-        <InputGroup className="mb-3">
-          <InputGroup.Prepend>
-            <FormControl
-              as="select"
-              placeholder={t('ADMIN.SUBMISSIONS.COURSE_FILTER')}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onChange={(e: any) => {
-                setCourseFilter(e.target.value);
-                getSubmissionsByFilters();
-              }}
-              value={courseFilter}
-            >
-              {[
-                <option key="" value="">{t('ADMIN.SUBMISSIONS.ANY_COURSE')}</option>,
-                ...courses.map((x) => <option key={x.id} value={x.id}>{x.name}</option>),
-              ]}
-            </FormControl>
-          </InputGroup.Prepend>
-          <InputGroup.Prepend>
-            <FormControl
-              as="select"
-              placeholder={t('ADMIN.SUBMISSIONS.STUDENT_FILTER')}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onChange={(e: any) => {
-                setStudentFilter(e.target.value);
-                getSubmissionsByFilters();
-              }}
-              value={studentFilter}
-            >
-              {
-                (() => {
-                  const matchedCourse = courses.find((x) => x.id === courseFilter);
-                  return [
-                    <option key="" value="">{t('ADMIN.SUBMISSIONS.ANY_STUDENT')}</option>,
-                    ...students
-                      .filter((x) => matchedCourse?.students.map((y) => y.id).includes(x.id))
-                      .map((x) => (<option key={x.id} value={x.id}>{x.name}</option>)),
-                  ];
-                })()
-              }
-            </FormControl>
-          </InputGroup.Prepend>
-          <InputGroup.Prepend>
-            <FormControl
-              as="select"
-              placeholder={t('ADMIN.SUBMISSIONS.STATUS_FILTER')}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onChange={(e: any) => {
-                setStatusFilter(e.target.value);
-                getSubmissionsByFilters();
-              }}
-              value={statusFilter}
-            >
-              <option value={StatusFilter.UNGRADED}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_UNGRADED')}</option>
-              <option value={StatusFilter.GRADED}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_GRADED')}</option>
-              <option value={StatusFilter.ALL}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_ALL')}</option>
-            </FormControl>
-          </InputGroup.Prepend>
-          <InputGroup.Append>
-            <FormControl
-              as="select"
-              placeholder={t('ADMIN.SUBMISSIONS.STATUS_FILTER')}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              onChange={(e: any) => {
-                setFinalFilter(e.target.value);
-                getSubmissionsByFilters();
-              }}
-              value={`${finalFilter}`}
-            >
-              <option value="true">{t('ADMIN.SUBMISSIONS.FINAL_FILTER_TRUE')}</option>
-              <option value="false">{t('ADMIN.SUBMISSIONS.FINAL_FILTER_FALSE')}</option>
-            </FormControl>
-          </InputGroup.Append>
-        </InputGroup>
-        <Form.Row>
-          <SubmissionListComponent
-            submissions={submissions}
-            onSubmit={(_submissions) => setSubmissions(_submissions)}
-            onUpload={() => getSubmissionsByFilters()}
-            skipStudentColumn={false}
-          />
-        </Form.Row>
-      </Form>
+      <Card className="my-2">
+        <Card.Header>
+          {t('ADMIN.SUBMISSIONS.SUBMISSIONS')}
+        </Card.Header>
+        <Card.Body>
+          <Container className="box-wrapper">
+            <div className="box">
+              <div className="box-inner">
+                <Form>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Prepend>
+                      <FormControl
+                        as="select"
+                        placeholder={t('ADMIN.SUBMISSIONS.COURSE_FILTER')}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        onChange={(e: any) => {
+                          setCourseFilter(e.target.value);
+                          getSubmissionsByFilters();
+                        }}
+                        value={courseFilter}
+                      >
+                        {[
+                          <option key="" value="">{t('ADMIN.SUBMISSIONS.ANY_COURSE')}</option>,
+                          ...courses.map((x) => <option key={x.id} value={x.id}>{x.name}</option>),
+                        ]}
+                      </FormControl>
+                    </InputGroup.Prepend>
+                    <InputGroup.Prepend>
+                      <FormControl
+                        as="select"
+                        placeholder={t('ADMIN.SUBMISSIONS.STUDENT_FILTER')}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        onChange={(e: any) => {
+                          setStudentFilter(e.target.value);
+                          getSubmissionsByFilters();
+                        }}
+                        value={studentFilter}
+                      >
+                        {
+                          (() => {
+                            const matchedCourse = courses.find((x) => x.id === courseFilter);
+                            return [
+                              <option key="" value="">{t('ADMIN.SUBMISSIONS.ANY_STUDENT')}</option>,
+                              ...students
+                                .filter(
+                                  (x) => matchedCourse?.students.map((y) => y.id).includes(x.id),
+                                )
+                                .map((x) => (<option key={x.id} value={x.id}>{x.name}</option>)),
+                            ];
+                          })()
+                        }
+                      </FormControl>
+                    </InputGroup.Prepend>
+                    <InputGroup.Prepend>
+                      <FormControl
+                        as="select"
+                        placeholder={t('ADMIN.SUBMISSIONS.STATUS_FILTER')}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        onChange={(e: any) => {
+                          setStatusFilter(e.target.value);
+                          getSubmissionsByFilters();
+                        }}
+                        value={statusFilter}
+                      >
+                        <option value={StatusFilter.UNGRADED}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_UNGRADED')}</option>
+                        <option value={StatusFilter.GRADED}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_GRADED')}</option>
+                        <option value={StatusFilter.ALL}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_ALL')}</option>
+                      </FormControl>
+                    </InputGroup.Prepend>
+                    <InputGroup.Append>
+                      <FormControl
+                        as="select"
+                        placeholder={t('ADMIN.SUBMISSIONS.STATUS_FILTER')}
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        onChange={(e: any) => {
+                          setFinalFilter(e.target.value);
+                          getSubmissionsByFilters();
+                        }}
+                        value={`${finalFilter}`}
+                      >
+                        <option value="true">{t('ADMIN.SUBMISSIONS.FINAL_FILTER_TRUE')}</option>
+                        <option value="false">{t('ADMIN.SUBMISSIONS.FINAL_FILTER_FALSE')}</option>
+                      </FormControl>
+                    </InputGroup.Append>
+                  </InputGroup>
+                  <Form.Row>
+                    <SubmissionListComponent
+                      submissions={submissions}
+                      onSubmit={(_submissions) => setSubmissions(_submissions)}
+                      onUpload={() => getSubmissionsByFilters()}
+                      skipStudentColumn={false}
+                    />
+                  </Form.Row>
+                </Form>
+              </div>
+            </div>
+          </Container>
+        </Card.Body>
+      </Card>
     </Container>
   );
 }

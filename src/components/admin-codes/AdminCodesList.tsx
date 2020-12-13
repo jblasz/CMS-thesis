@@ -1,7 +1,9 @@
 import { faClipboard, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
-import { Button, Row, Table } from 'react-bootstrap';
+import {
+  Button, ButtonGroup, Row, Table,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Code } from '../../interfaces/code';
 import { deleteCode } from '../../services/api/codes.service';
@@ -52,30 +54,31 @@ export function AdminCodesListComponent(props: AdminCodesListComponentProps): JS
               </td>
               <td>
                 <Row>
-                  <Button variant="secondary" className="mx-2" title={t('ADMIN.CODES.COPY_LINK_TO_CLIPBOARD')}>
-                    <FontAwesomeIcon
-                      icon={faClipboard}
-                      onClick={() => {
-                        navigator.clipboard.writeText(code._id);
+                  <ButtonGroup>
+                    <Button className="mx-4" title={t('ADMIN.CODES.COPY_LINK_TO_CLIPBOARD')}>
+                      <FontAwesomeIcon
+                        icon={faClipboard}
+                        onClick={() => {
+                          navigator.clipboard.writeText(code._id);
+                        }}
+                      />
+                    </Button>
+                    <Button
+                      onClick={async () => {
+                        try {
+                          setLoading(true);
+                          await deleteCode(code._id);
+                          codes.splice(codes.findIndex((x) => x._id === code._id), 1);
+                        } catch (e) {
+                          setError(e);
+                        } finally {
+                          setLoading(false);
+                        }
                       }}
-                    />
-                  </Button>
-                  <Button
-                    variant="danger"
-                    onClick={async () => {
-                      try {
-                        setLoading(true);
-                        await deleteCode(code._id);
-                        codes.splice(codes.findIndex((x) => x._id === code._id), 1);
-                      } catch (e) {
-                        setError(e);
-                      } finally {
-                        setLoading(false);
-                      }
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </Button>
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Button>
+                  </ButtonGroup>
                 </Row>
               </td>
             </tr>

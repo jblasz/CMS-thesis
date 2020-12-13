@@ -24,7 +24,12 @@ export function StudentSubmissionListComponent(): JSX.Element {
     try {
       setLoading(true);
       const { submissions: _submissions } = await getSubmissions('', '', 0);
-      setSubmissions(_submissions);
+      setSubmissions(_submissions.sort((a, b) => {
+        if (a.final !== b.final) {
+          return a.final ? -1 : 1;
+        }
+        return b.submittedAt.valueOf() - a.submittedAt.valueOf();
+      }));
     } catch (e) {
       setError(e);
     } finally {
@@ -49,68 +54,81 @@ export function StudentSubmissionListComponent(): JSX.Element {
   }
 
   return (
-    <Container className="student-submission-list">
-      <WarningStripComponent error={error} />
-      <Table className="table-sm">
-        <thead>
-          <tr>
-            <th>{t('STUDENT.SUBMISSIONS.COURSE')}</th>
-            <th>{t('STUDENT.SUBMISSIONS.LAB')}</th>
-            <th>{t('STUDENT.SUBMISSIONS.GRADE')}</th>
-            <th>{t('STUDENT.SUBMISSIONS.SUBMITTED_AT')}</th>
-            <th>{' '}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {submissions.map((submission) => {
-            const className = !submission.final
-              ? 'table-secondary'
-              : !submission.grade
-                ? 'table-info'
-                : submission.grade === SubmissionGrade.F
-                  ? 'table-danger'
-                  : 'table-success';
-            return (
-              <tr
-                className={className}
-                key={submission._id}
-              >
-                <td>
-                  <Link className="nav-link" to={`/courses/${submission.forCourseID}`}>
-                    {submission.forCourseName}
-                  </Link>
-                </td>
-                <td>
-                  <Link className="nav-link" to={`/courses/${submission.forCourseID}/laboratory/${submission.forLabID}`}>
-                    {submission.forLabName}
-                  </Link>
-                </td>
-                <td>
-                  <p>{submission.grade || t('STUDENT.SUBMISSIONS.NO_GRADE_YET')}</p>
-                </td>
-                <td>
-                  <p>
-                    {formatDate(submission.submittedAt, true)}
-                  </p>
-                </td>
-                <td>
-                  <ButtonGroup>
-                    <Button title={t('STUDENT.SUBMISSIONS.DOWNLOAD_SUBMISSION')}><FontAwesomeIcon icon={faDownload} /></Button>
-                    <Button title={t('STUDENT.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
-                      <FontAwesomeIcon
-                        icon={faClipboard}
-                        onClick={() => {
-                          navigator.clipboard.writeText('a link will exist here');
-                        }}
-                      />
-                    </Button>
-                  </ButtonGroup>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+    <Container className="box-wrapper">
+      <div className="box">
+        <div className="box-inner">
+          <div className="student-submission-list">
+            <WarningStripComponent error={error} />
+            <Table className="table-sm table-bright">
+              <thead>
+                <tr>
+                  <th>{t('STUDENT.SUBMISSIONS.COURSE')}</th>
+                  <th>{t('STUDENT.SUBMISSIONS.LAB')}</th>
+                  <th>{t('STUDENT.SUBMISSIONS.GRADE')}</th>
+                  <th>{t('STUDENT.SUBMISSIONS.SUBMITTED_AT')}</th>
+                  <th>{t('STUDENT.SUBMISSIONS.NOTE')}</th>
+                  <th>{' '}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {submissions.map((submission) => {
+                  const className = !submission.final
+                    ? 'table-secondary'
+                    : !submission.grade
+                      ? 'table-info'
+                      : submission.grade === SubmissionGrade.F
+                        ? 'table-danger'
+                        : 'table-success';
+                  return (
+                    <tr
+                      className={className}
+                      key={submission._id}
+                    >
+                      <td>
+                        <Link className="nav-link" to={`/courses/${submission.forCourseID}`}>
+                          {submission.forCourseName}
+                        </Link>
+                      </td>
+                      <td>
+                        <Link className="nav-link" to={`/courses/${submission.forCourseID}/laboratory/${submission.forLabID}`}>
+                          {submission.forLabName}
+                        </Link>
+                      </td>
+                      <td>
+                        <p>{submission.grade || t('STUDENT.SUBMISSIONS.NO_GRADE_YET')}</p>
+                      </td>
+                      <td>
+                        <p>
+                          {formatDate(submission.submittedAt, true)}
+                        </p>
+                      </td>
+                      <td>
+                        <p className="submission-note">
+                          {submission.note}
+                        </p>
+                      </td>
+                      <td>
+                        <ButtonGroup>
+                          <Button title={t('STUDENT.SUBMISSIONS.DOWNLOAD_SUBMISSION')}><FontAwesomeIcon icon={faDownload} /></Button>
+                          <Button title={t('STUDENT.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
+                            <FontAwesomeIcon
+                              icon={faClipboard}
+                              onClick={() => {
+                                navigator.clipboard.writeText('a link will exist here');
+                              }}
+                            />
+                          </Button>
+                        </ButtonGroup>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </div>
+
+        </div>
+      </div>
     </Container>
   );
 }

@@ -251,6 +251,15 @@
     }
   },
   "STUDENT": {
+    "PROFILE": {
+      "PROFILE": "Your data",
+      "NAME": "Name",
+      "EMAIL": "Email",
+      "CONTACT_EMAIL": "Contact email",
+      "USOSID": "USOS id",
+      "SAVE_CHANGES": "Save changes",
+      "DISCLAIMER": "You can only manually change your name, contact email and usos id within 7 days of creating the account, or until your first submission is made. To remove or modify your data after that contact the admin. Contact email can be your pw mail. The google mail is non-modifiable, as it is the google account you used for login."
+    },
     "DASHBOARD": {
       "YOUR_COURSES": "Courses you are/were attending",
       "COURSE_DETAILS": "Course details",

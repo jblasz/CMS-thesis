@@ -1,5 +1,7 @@
 import { config } from '../../config';
-import { IApiPostResponse, GetStudentResponse, IGetStudentsResponse } from '../../interfaces/api';
+import {
+  IApiPostResponse, GetStudentResponse, IGetStudentsResponse, PatchStudentResponse,
+} from '../../interfaces/api';
 import { Student } from '../../interfaces/student';
 import { deleteStudentMockResponse, getStudentMockResponse, getStudentsMockResponse } from '../mocks/in-memory-student-mocks';
 import { axiosInstance } from './request.service';
@@ -32,6 +34,24 @@ export async function getStudent(id: string): Promise<GetStudentResponse> {
     student: new Student(student),
     submissions,
   };
+}
+
+/**
+ * /students/:id PATCH
+ */
+export async function patchStudent(id: string, params: {
+  name?: string
+  email?: string
+  contactEmail?: string
+  usosId?: string
+}): Promise<PatchStudentResponse> {
+  if (config.useMocks) {
+    const r = await getStudentMockResponse(id);
+    return { ok: true, student: new Student(r.student) };
+  }
+  const { data } = await axiosInstance.patch(`/students/${id}`, params);
+  const { ok, student } = data as PatchStudentResponse;
+  return { ok, student: new Student(student) };
 }
 
 /**

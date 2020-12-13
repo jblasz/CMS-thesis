@@ -2,14 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {
   Button,
   Card,
-  Col, Container, Form, FormControl, InputGroup, ListGroup, Row,
+  Col, Container, Form, FormControl, InputGroup, Row, Table,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { ICourseGroupMetaWithGrade } from '../../interfaces/api';
 import { ISubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
-import { getStudent } from '../../services/api/students.service';
+import { getStudent, patchStudent } from '../../services/api/students.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { SubmissionListComponent } from '../submission-list/SubmissionListCompontent';
@@ -108,42 +108,64 @@ function AdminStudentComponent(): JSX.Element {
                   </InputGroup.Text>
                 </InputGroup>
                 <InputGroup>
-                  <Button>
+                  <Button onClick={async () => {
+                    try {
+                      setLoading(true);
+                      const { student: _student } = await patchStudent(student._id, {
+                        contactEmail: student.contactEmail || '',
+                        email: student.email,
+                        name: student.name || '',
+                        usosId: student.usosId || '',
+                      });
+                      setStudent(new Student(_student));
+                    } catch (e) {
+                      setError(e);
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                  >
                     {t('ADMIN.STUDENT.SAVE_CHANGES')}
                   </Button>
                 </InputGroup>
               </Form>
             </Col>
             <Col>
-              <ListGroup>
-                <ListGroup.Item>
-                  {t('ADMIN.STUDENT.PARTOOK_IN_COURSES')}
-                </ListGroup.Item>
-                {attendedCourseGroupLabs.map((x) => (
-                  <ListGroup.Item key={`${x.courseId} ${x.groupId}`}>
-                    <Row>
-                      <Col>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>{t('ADMIN.STUDENT.COURSE')}</th>
+                    <th>{t('ADMIN.STUDENT.GROUP')}</th>
+                    <th>{t('ADMIN.STUDENT.STATUS')}</th>
+                    <th>{t('ADMIN.STUDENT.GRADE')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {attendedCourseGroupLabs.map((x) => (
+                    <tr key={`${x.courseId} ${x.groupId}`}>
+                      <td>
                         <Link className="nav-link" to={`/admin/courses/${x.courseId}`}>
                           {x.courseName}
                         </Link>
-                      </Col>
-                      <Col>
+                      </td>
+                      <td>
                         <Link className="nav-link" to={`/admin/courses/${x.groupId}`}>
                           {x.groupName}
                         </Link>
-                      </Col>
-                      <Col>
+                      </td>
+                      <td>
                         <p className="nav-link">
                           {x.active ? t('ADMIN.STUDENT.COURSE_ACTIVE') : t('ADMIN.STUDENT.COURSE_CLOSED')}
                         </p>
-                      </Col>
-                      <Col>
+                      </td>
+                      <td>
                         <p className="nav-link">{x.grade || t('ADMIN.STUDENT.NOT_YET_GRADED')}</p>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
+                      </td>
+
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             </Col>
           </Row>
         </Card.Body>

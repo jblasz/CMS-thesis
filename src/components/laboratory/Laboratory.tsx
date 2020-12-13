@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Container, ListGroup, Col, Row,
 } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { Course } from '../../interfaces/course';
@@ -55,7 +55,7 @@ function LaboratoryComponent(): JSX.Element {
             <h1>{laboratory.name}</h1>
             <small>{laboratory._id}</small>
             <div dangerouslySetInnerHTML={{ __html: laboratory.description }} />
-            <div className="float-right">
+            {/* <div className="float-right">
               <Link
                 className="btn btn-primary p-2"
                 role="button"
@@ -64,7 +64,7 @@ function LaboratoryComponent(): JSX.Element {
               >
                 {t('COURSE.LABORATORY.BACK_TO_COURSE')}
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

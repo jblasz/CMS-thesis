@@ -1,9 +1,15 @@
 @use './master.scss';
 
-.student-submission-list {
-  .table tbody {
-    color: master.$text-dark;
-    td {
+.student-submission-list, .box-inner {
+  .table {
+    &.table-bright tbody{
+      color: master.$text-dark;
+        .collapse, .collapsing {
+          color: master.$text-bright;
+        }
+    }
+    color: inherit;
+    tbody td {
       // padding-top: 0.1rem;
       // padding-bottom: 0.1rem;
       padding: 0;
@@ -21,6 +27,9 @@
         padding-right: 0;
         padding-top: 0.7rem;
         padding-bottom: 0rem;
+        &.submission-note {
+          max-width: 30rem;
+        }
       }
     }
   }

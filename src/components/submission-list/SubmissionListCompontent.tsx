@@ -48,7 +48,7 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
 
   return (
     <Container>
-      <Table className="table-sm">
+      <Table className="table-sm table-bright">
         <thead>
           <tr>
             <th>{t('ADMIN.SUBMISSIONS.HEADER')}</th>
@@ -65,16 +65,7 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                   : 'table-success';
             return (
               <Fragment key={submission._id}>
-                <tr
-                  className={style}
-                  // onClick={() => {
-                  //   if (index !== uncollapsedIndex) {
-                  //     setUncollapsedIndex(index);
-                  //   } else {
-                  //     setUncollapsedIndex(-1);
-                  //   }
-                  // }}
-                >
+                <tr className={style}>
                   <td>
                     <Row>
                       <Col>
@@ -121,12 +112,7 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                     </Row>
                   </td>
                 </tr>
-                <tr
-                  className="hide-row"
-                  // onClick={() => {
-                  //   setUncollapsedIndex(index);
-                  // }}
-                >
+                <tr className="hide-row">
                   <td>
                     <Collapse in={uncollapsedIndex === index}>
                       <div>
@@ -203,24 +189,32 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                               </InputGroup.Append>
                             </InputGroup>
                           </Col>
+                          <Col>
+                            <p>
+                              {submission.note}
+                            </p>
+                          </Col>
                           <Col md="auto" className="m-2 center-block float-right">
-                            <Button
-                              className="float-right"
-                              variant="danger"
-                              onClick={async () => {
-                                try {
-                                  setLoading(true);
-                                  await deleteSubmission(submission._id);
-                                  onUpload();
-                                } catch (e) {
-                                  setError(e);
-                                } finally {
-                                  setLoading(false);
-                                }
-                              }}
-                            >
-                              <FontAwesomeIcon icon={faTrash} />
-                            </Button>
+                            <ButtonGroup>
+                              <Button
+                                className="float-right"
+                                // variant="danger"
+                                onClick={async () => {
+                                  try {
+                                    setLoading(true);
+                                    await deleteSubmission(submission._id);
+                                    onUpload();
+                                  } catch (e) {
+                                    setError(e);
+                                  } finally {
+                                    setLoading(false);
+                                  }
+                                }}
+                              >
+                                <FontAwesomeIcon icon={faTrash} />
+                              </Button>
+
+                            </ButtonGroup>
                           </Col>
                         </Form.Row>
                       </div>

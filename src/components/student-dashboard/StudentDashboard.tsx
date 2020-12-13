@@ -4,6 +4,7 @@ import {
   CardDeck, Container,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { PendingCoursesComponent } from '../info-cards/PendingCoursesComponent';
 import { StudentSubmissionListComponent } from '../submission-list/StudentSubmissionList';
 import { StudentCourseListComponent } from './StudentCourseList';
 
@@ -13,7 +14,15 @@ export function StudentDashboardComponent(): JSX.Element {
   return (
     <Container>
       <CardDeck>
-        <Card>
+        <Card className="chunky-width my-2">
+          <Card.Header>
+            {t('PENDING.LABS.TITLE')}
+          </Card.Header>
+          <Card.Body>
+            <PendingCoursesComponent admin={false} />
+          </Card.Body>
+        </Card>
+        <Card className="chunky-width my-2">
           <Card.Header>
             {t('STUDENT.DASHBOARD.YOUR_COURSES')}
           </Card.Header>
@@ -21,7 +30,7 @@ export function StudentDashboardComponent(): JSX.Element {
             <StudentCourseListComponent />
           </Card.Body>
         </Card>
-        <Card>
+        <Card className="chunky-width my-2">
           <Card.Header>
             {t('STUDENT.DASHBOARD.YOUR_SUBMISSIONS')}
           </Card.Header>

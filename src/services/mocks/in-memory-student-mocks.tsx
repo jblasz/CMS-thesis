@@ -78,6 +78,7 @@ export function generateStudentMock(id = v4()) {
   const s = new Student({
     _id: id,
     email: `mail_${n}@domain.com`,
+    contactEmail: 'contactemail1',
     name: `student Mk ${n}`,
     usosId: '123321',
   });

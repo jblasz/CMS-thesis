@@ -34,6 +34,7 @@ export function GoogleButton(): JSX.Element {
               name: 'Henry Jekyll',
               usosId: '123456',
               registeredAt: new Date(),
+              contactEmail: '',
             }),
           });
         }}

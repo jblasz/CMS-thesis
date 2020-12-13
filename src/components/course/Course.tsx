@@ -8,7 +8,6 @@ import {
 import { Course } from '../../interfaces/course';
 import { LoadingSpinner } from '../loading-spinner';
 import { getCourse } from '../../services/api/courses.service';
-// import './Course.scss';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';

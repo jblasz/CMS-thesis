@@ -1,3 +1,4 @@
+import { loremIpsum } from 'lorem-ipsum';
 import { v4 } from 'uuid';
 import { CourseTask } from '../../interfaces/courseTask';
 import { SubmissionGrade, ISubmissionMeta } from '../../interfaces/resource';
@@ -10,7 +11,7 @@ export function generateSubmissionMock(task: CourseTask, student: Student) {
     _id: v4(),
     forLabID: task.forLabId || v4(),
     forLabName: task.forLabName || 'lab name',
-    note: 'submission note',
+    note: loremIpsum(),
     submittedAt: new Date(0),
     submittedBy: student,
     final: Math.random() > 0.5,
