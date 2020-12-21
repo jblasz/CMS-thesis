@@ -13,7 +13,6 @@ import { Course, CourseLanguage } from '../../interfaces/course';
 import { AuthNav } from '../auth-nav';
 import { AppContext } from '../../services/contexts/app-context';
 import { IArticleMeta } from '../../interfaces/article';
-// import './NavigationBar.scss';
 import { Role } from '../../interfaces/user';
 
 interface NavigationBarComponentProps {
@@ -24,7 +23,7 @@ interface NavigationBarComponentProps {
 function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element {
   const { courses: _courses, articles } = props;
   const [t, { language }] = useTranslation();
-  const { loggedIn, user, setUser } = useContext(AppContext);
+  const { user, setUser } = useContext(AppContext);
 
   const courses = _courses.filter((course) => course.active);
 
@@ -95,13 +94,13 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
             ))}
           </>
           <Link className="nav-link" to="/code">{t('NAVBAR.CODE')}</Link>
-          {loggedIn && user && user.role === Role.STUDENT ? (
+          {user && user.role === Role.STUDENT ? (
             <Link className="nav-link" to="/dashboard">
               <FontAwesomeIcon icon={faSitemap} />
               {` ${t('NAVBAR.DASHBOARD')}`}
             </Link>
           ) : <></>}
-          {loggedIn && user && user.role === Role.ADMIN ? (
+          {user && user.role === Role.ADMIN ? (
             <NavDropdown title={t('NAVBAR.ADMIN.DESCR')} id="nav-admin-dropdown">
               <NavDropdown.Item key="nav-admin-dropdown-dashboard" as="button">
                 <Link className="nav-link" to="/admin">

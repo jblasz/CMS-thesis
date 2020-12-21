@@ -62,7 +62,7 @@ export function StudentCourseListComponent(): JSX.Element {
     return <WarningStripComponent error={error} />;
   }
 
-  if (!courses.length) {
+  if (!courses || !courses.length) {
     return (
       <Container className="course-list">
         <p>{t('STUDENT.DASHBOARD.NO_COURSES_SIGNED')}</p>

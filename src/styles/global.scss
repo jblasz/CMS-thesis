@@ -47,6 +47,8 @@
   --Josefin: "Josefin Sans", cursive;
   --Lexend: "Lexend Deca", cursive;
   --Livvic: "Livvic", cursive;
+
+  --footer-height: 70px;
 }
 
 html,
@@ -54,9 +56,21 @@ body {
   background: master.$background;
   margin: 0%;
   box-sizing: border-box;
-  padding-top: 41px;
-  padding-bottom: 41px;
+  padding-top: 45px;
+  clear: both;
   font-family: master.$font-small;
+}
+
+.footer {
+  clear: 'both';
+  position: 'relative';
+  height: var(--footer-height);
+  margin-top: -var(--footer-height);
+}
+
+.main {
+  min-height: calc(100vh - var(--footer-height));
+  padding-bottom: 100px;
 }
 
 a {
@@ -182,9 +196,15 @@ a {
     color: black;
   }
 
+  // .nav-items {
+  //   .nav-item {
+  //     min-width: 10rem;
+  //   }
+  // }
+
   .nav-items .nav-link,
   .nav-items .show .navbar-nav,
-  .navbar-light .navbar-nav .show > .nav-link,
+  // .navbar-light .navbar-nav .show > .nav-link,
   .nav-items .nav-item .nav-link:focus,
   .nav-items .nav-item .nav-link:hover,
   .nav-items .nav-item .nav-link:active,
@@ -193,7 +213,7 @@ a {
   .nav-brand,
   .nav-items .nav-link:hover, 
   .nav-items .show .navbar-nav:hover, 
-  .navbar-light .navbar-nav .show > .nav-link:hover, 
+  // .navbar-light .navbar-nav .show > .nav-link:hover,
   .nav-items .nav-item .nav-link:focus:hover, 
   .nav-items .nav-item .nav-link:hover:hover, 
   .nav-items .nav-item .nav-link:active:hover, 

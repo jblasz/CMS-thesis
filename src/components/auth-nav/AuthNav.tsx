@@ -12,13 +12,13 @@ import { Role } from '../../interfaces/user';
 
 function AuthNav() {
   const [t, i18n] = useTranslation();
-  const { loggedIn, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const [{ CookieConsent }] = useCookies();
 
   return (
     <div>
       {
-        loggedIn && user ? (
+        user ? (
           <Navbar.Text className="p-2">
             <Link to="/profile">{`${t('LOGIN.LOGGED_IN_AS')}: ${user.student.name}${user.role === Role.ADMIN ? '(ADMIN)' : ''}`}</Link>
           </Navbar.Text>

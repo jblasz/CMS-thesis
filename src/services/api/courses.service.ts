@@ -38,9 +38,7 @@ export async function getCourses(): Promise<IGetCoursesResponse> {
     const { courses } = await getCoursesListMockResponse();
     return { courses: courses.map((x) => new Course(x)) };
   }
-  console.log(axiosInstance);
   const { courses } = (await axiosInstance.get('/course')).data as IGetCoursesResponse;
-  console.log(courses);
   return { courses: courses.map((x) => new Course(x)) };
 }
 

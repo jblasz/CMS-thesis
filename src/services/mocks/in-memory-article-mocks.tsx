@@ -61,12 +61,12 @@ export function getArticleMockResponse(id: string): Promise<IGetArticleResponse>
       en: {
         categoryMajor: 'catMajor',
         categoryMinor: 'catMinor',
-        contents: 'An <h3>article!</h3> <br/> With <b>html</b>! English version! A <a href="http://www.google.com">link</a>!',
+        contents: '<h3>An <strong>article</strong>!<br>With <em>html!</em>&nbsp;</h3> <ul> <li>English version!&nbsp;</li> <li>A <a href="http://www.google.com" target="_self">link</a>!</li> <li>It can even embed stuff!</li> </ul> <p></p> <iframe width="500px" height="150px" src="/dashboard" frameBorder="0"></iframe> <p></p> <p></p> ',
       },
       pl: {
         categoryMajor: 'catMajor',
         categoryMinor: 'catMinor',
-        contents: 'An <h3>article!</h3> <br/> With <b>html</b>! Polish version! A <a href="http://www.google.com">link</a>!',
+        contents: '<h3>An <strong>article</strong>!<br>With <em>html!</em>&nbsp;</h3> <ul> <li>Polish version!&nbsp;</li> <li>A <a href="http://www.google.com" target="_self">link</a>!</li> <li>It can even embed stuff!</li> </ul> <p></p> <iframe width="500px" height="150px" src="/dashboard" frameBorder="0"></iframe> <p></p> <p></p> ',
       },
     },
   });

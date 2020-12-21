@@ -16,6 +16,7 @@ import { getResources } from '../../services/api/resources.service';
 import { IResourceMeta } from '../../interfaces/resource';
 import { CourseTask } from '../../interfaces/courseTask';
 import { WarningStripComponent } from '../info/WarningStrip';
+import { EditorComponent } from '../editor/Editor';
 
 function AdminCourseLaboratoryComponent(): JSX.Element {
   const { courseID, labID } = useParams<{labID: string, courseID: string}>();
@@ -24,14 +25,9 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   const [laboratory, setLaboratory] = useState(new CourseLaboratory(labID));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [readonly, setReadonly] = useState(true);
   const [chosenGroupID, setChosenGroup] = useState('');
   const [resourceNames, setResourceNames] = useState<IResourceMeta[]>([]);
-
-  const toggleEditState = async () => {
-    await getAndSetCourseLaboratory();
-    setReadonly(!readonly);
-  };
+  const [editorText, setEditorText] = useState('');
 
   const validateAndSetLaboratory = useCallback((
     lab: CourseLaboratory, taskID?: string, task?: CourseTask,
@@ -44,6 +40,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
     setLaboratory(lab);
     const choice = taskID || (Object.keys(lab.tasks) && Object.keys(lab.tasks)[0]) || '';
     setChosenGroup(choice || '');
+    setEditorText((lab.tasks[choice] && lab.tasks[choice].description) || '');
   }, []);
 
   const getAndSetCourseLaboratory = useCallback(async () => {
@@ -55,11 +52,13 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
       setResourceNames(r2.resources);
       const firstGroup = Object.keys(lab.tasks) && Object.keys(lab.tasks)[0];
       setChosenGroup(firstGroup || '');
+      setEditorText((lab.tasks[firstGroup] && lab.tasks[firstGroup].description) || '');
       setLoading(false);
     } catch (e) {
       console.error(e);
-      setLoading(false);
       setError(e);
+    } finally {
+      setLoading(false);
     }
   }, [courseID, labID, validateAndSetLaboratory]);
 
@@ -76,13 +75,10 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
         <WarningStripComponent error={error} />
         <Form.Row className="justify-content-between">
           <Col>
-            <Button className="mx-1" onClick={() => toggleEditState()}>{readonly ? t('ADMIN.LABORATORY.SET_EDIT_MODE') : t('ADMIN.LABORATORY.SET_READONLY_MODE')}</Button>
             <Button
               className="mx-1"
-              disabled={readonly}
               onClick={async () => {
                 await putLaboratory(courseID, laboratory);
-                await toggleEditState();
               }}
             >
               {t('ADMIN.LABORATORY.UPLOAD')}
@@ -91,7 +87,6 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
           <Button
             className="mx-1"
             variant="danger"
-            disabled={readonly}
             onClick={async () => {
               try {
                 setLoading(true);
@@ -126,6 +121,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                   setChosenGroup(
                     groupID,
                   );
+                  setEditorText((laboratory.tasks[groupID] && laboratory.tasks[groupID].description) || '');
                 }}
               >
                 {groupID}
@@ -146,7 +142,6 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                   <p>{t('ADMIN.LABORATORY.START')}</p>
                   <DatePicker
                     value={task.dateFrom?.toISOString()}
-                    disabled={readonly}
                     onChange={(date) => {
                       if (date instanceof Date) {
                         task.dateFrom = new Date(date);
@@ -163,7 +158,6 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                   <p>{t('ADMIN.LABORATORY.END')}</p>
                   <DatePicker
                     value={task.dateTo?.toISOString()}
-                    disabled={readonly}
                     onChange={(date) => {
                       if (date instanceof Date) {
                         task.dateTo = new Date(date);
@@ -178,7 +172,6 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                     <Form.Control
                       as="select"
                       value={task.resourceId || ''}
-                      disabled={readonly}
                       onChange={
                         (event) => {
                           task.resourceId = event.target.value;
@@ -197,7 +190,6 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                     type="number"
                     min="0"
                     value={task.gracePeriod}
-                    disabled={readonly}
                     onChange={
                       (event) => {
                         const v = parseFloat(event.target.value);
@@ -213,16 +205,17 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                 <Col>
                   <Form.Group>
                     <Form.Label>{t('ADMIN.LABORATORY.PUBLIC_DESCRIPTION')}</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={10}
-                      value={task.description}
-                      disabled={readonly}
-                      onChange={(event) => {
-                        task.description = event.target.value;
-                        validateAndSetLaboratory(laboratory, chosenGroupID, task);
-                      }}
-                    />
+                    <div>
+                      <EditorComponent
+                        text={editorText}
+                        key={chosenGroupID}
+                        setText={(text) => {
+                          task.description = text;
+                          setEditorText(text);
+                          validateAndSetLaboratory(laboratory, chosenGroupID, task);
+                        }}
+                      />
+                    </div>
                   </Form.Group>
                 </Col>
               </Row>

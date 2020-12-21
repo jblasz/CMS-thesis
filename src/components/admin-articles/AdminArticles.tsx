@@ -4,7 +4,7 @@ import React, {
   useCallback, useEffect, useState,
 } from 'react';
 import {
-  Button, Col, ListGroup, Row,
+  Button, Col, Container, ListGroup, Row,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -41,7 +41,7 @@ export function AdminArticlesComponent(): JSX.Element {
   }
 
   return (
-    <div>
+    <Container>
       <WarningStripComponent error={error} />
       <ListGroup>
         {articles.map((x) => (
@@ -104,6 +104,6 @@ export function AdminArticlesComponent(): JSX.Element {
           </Button>
         </ListGroup.Item>
       </ListGroup>
-    </div>
+    </Container>
   );
 }

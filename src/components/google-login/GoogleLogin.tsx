@@ -1,50 +1,50 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext } from 'react';
 import { useCookies } from 'react-cookie';
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import { v4 } from 'uuid';
+import { GoogleLogin, GoogleLoginResponse, GoogleLogout } from 'react-google-login';
 import { Student } from '../../interfaces/student';
 import { Role } from '../../interfaces/user';
 import { AppContext } from '../../services/contexts/app-context';
-// import './GoogleLogin.scss';
 
 export function GoogleButton(): JSX.Element {
   const {
-    loggedIn, setLoggedIn, setUser,
+    user, setUser,
   } = useContext(AppContext);
-  const [{ CookieConsent }] = useCookies(['CookieConsent']);
-  const mounted = useRef(true);
-  useEffect(() => () => { mounted.current = false; });
+  const [{ CookieConsent }, , removeCookie] = useCookies(['CookieConsent']);
   return (
-    !loggedIn ? (
+    !user ? (
       <GoogleLogin
         clientId={process.env.REACT_APP_CLIENT_ID as string}
         buttonText="login"
         className="btn nav-items login-btn btn-primary"
         disabled={CookieConsent !== 'true'}
-        onSuccess={() => {
-          if (!mounted.current) {
-            return;
+        onSuccess={async (response) => {
+          const onlineResp = response as GoogleLoginResponse;
+          if (onlineResp.profileObj) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { profileObj: { email, name }, accessToken } = onlineResp;
+            try {
+              // await postUser(accessToken);
+              // throw new Error('acb');
+              setUser({
+                role: Role.STUDENT,
+                student: new Student({
+                  _id: '',
+                  email,
+                  name,
+                  usosId: '',
+                  registeredAt: new Date(),
+                  contactEmail: '',
+                }),
+              });
+              // throw new Error('acb');
+            } catch (e) {
+              setUser(null);
+            }
           }
-          setLoggedIn(true);
-          setUser({
-            role: Role.STUDENT,
-            student: new Student({
-              _id: v4(),
-              email: 'mail@domain.com',
-              name: 'Henry Jekyll',
-              usosId: '123456',
-              registeredAt: new Date(),
-              contactEmail: '',
-            }),
-          });
         }}
         onFailure={(args) => {
           console.error('error', args);
-          if (!mounted.current) {
-            return;
-          }
-          setLoggedIn(false);
-          setUser();
+          setUser(null);
         }}
         isSignedIn
         cookiePolicy="single_host_origin"
@@ -55,12 +55,9 @@ export function GoogleButton(): JSX.Element {
         className="btn nav-items login-btn btn-primary"
         buttonText="logout"
         onLogoutSuccess={() => {
-          if (!mounted.current) {
-            return;
-          }
           console.log('logout');
-          setLoggedIn(false);
-          setUser();
+          removeCookie('authorization');
+          setUser(null);
         }}
       />
     )

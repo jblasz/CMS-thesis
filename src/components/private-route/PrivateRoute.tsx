@@ -4,11 +4,11 @@ import { AppContext } from '../../services/contexts/app-context';
 
 function PrivateRoute(props: RouteProps) {
   const { component, ...other } = props;
-  const { loggedIn } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   if (!component) {
     throw new Error('Component missing?');
   }
-  if (!loggedIn) {
+  if (!user) {
     return <Redirect to="/404" />;
   }
   return (

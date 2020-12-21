@@ -15,6 +15,7 @@ import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { WarningStripComponent } from '../info/WarningStrip';
+import { EditorComponent } from '../editor/Editor';
 
 function AdminCourseComponent(): JSX.Element {
   const { id } = useParams<{id: string}>();
@@ -161,24 +162,20 @@ function AdminCourseComponent(): JSX.Element {
         </Form.Row>
         <Form.Row className="mb-2">
           <Form.Label>{t('ADMIN.COURSE.DESCRIPTION_SHORT')}</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={course.descriptionShort}
-            onChange={(event) => {
-              course.descriptionShort = event.target.value;
+          <EditorComponent
+            text={course.descriptionShort}
+            setText={(text) => {
+              course.descriptionShort = text;
               validateAndSetCourse(course);
             }}
           />
         </Form.Row>
         <Form.Row className="mb-2">
           <Form.Label>{t('ADMIN.COURSE.DESCRIPTION')}</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={10}
-            value={course.description}
-            onChange={(event) => {
-              course.description = event.target.value;
+          <EditorComponent
+            text={course.description}
+            setText={(text) => {
+              course.description = text;
               validateAndSetCourse(course);
             }}
           />

@@ -13,9 +13,8 @@ export async function postUser(jwt: string): Promise<IPostUserResponse> {
     return postUserMockResponse(jwt);
   }
   const { data } = await axiosInstance.post('/user', null, {
-    withCredentials: true,
     headers: {
-      Cookie: `jwt=${jwt}`,
+      authorization: jwt,
     },
   });
   const { attends, student, submissions } = data as IPostUserResponse;

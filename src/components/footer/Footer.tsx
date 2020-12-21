@@ -7,7 +7,10 @@ function FooterComponent(): JSX.Element {
   const [t] = useTranslation();
 
   return (
-    <Navbar className="nav" bg="light" expand="lg" fixed="bottom">
+    <Navbar
+      className="nav footer"
+      bg="light"
+    >
       <Navbar.Text>
         <a href="https://ww2.mini.pw.edu.pl/" className="m-2">{t('FOOTER.MINI_URL')}</a>
       </Navbar.Text>

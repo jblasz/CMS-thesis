@@ -19,7 +19,7 @@ interface CodeValidationComponentState {
 }
 
 function CodeValidationComponent(): JSX.Element {
-  const { loggedIn } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const [t] = useTranslation();
   const [state, setState] = useState<CodeValidationComponentState>({
     loading: false,
@@ -56,7 +56,7 @@ function CodeValidationComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
-  if (!loggedIn) {
+  if (!user) {
     return (
       <Jumbotron>
         <Container className="justify-content-center">

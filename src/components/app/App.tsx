@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import CookieConsent from 'react-cookie-consent';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { Route } from 'react-router-dom';
+import { Route, useHistory } from 'react-router-dom';
 import Switch from 'react-bootstrap/esm/Switch';
 import { NavigationBarComponent } from '../navbar';
 import { LoginComponent } from '../login';
@@ -38,21 +39,22 @@ import { IArticleMeta } from '../../interfaces/article';
 import { LoadingSpinner } from '../loading-spinner';
 import { IGetArticlesResponse } from '../../interfaces/api';
 import { IUser, Role } from '../../interfaces/user';
+import { axiosInstance } from '../../services/api/request.service';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [loggedIn, setLoggedIn] = useState(!!process.env.REACT_APP_START_LOGGED_IN);
   const [articles, setArticles] = useState<IArticleMeta[]>([]);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<IUser | undefined>(loggedIn ? {
+  const [user, setUser] = useState<IUser | null>(process.env.REACT_APP_START_LOGGED_IN ? {
     role: Role.ADMIN,
     student: {
       _id: '', email: '', name: '', usosId: '', registeredAt: new Date(), contactEmail: '',
     },
-  } : undefined);
+  } : null);
   const [, setError] = useState('');
   const [t] = useTranslation();
   const [, setCookie] = useCookies();
+  const history = useHistory();
 
   const getAndSetCourses = async () => {
     try {
@@ -73,6 +75,23 @@ function App():JSX.Element {
     }
   };
 
+  axiosInstance.interceptors.request.use((config) => {
+    const cookie = Cookies.get('authorization');
+    if (cookie && !config.headers.authorization) {
+      config.headers.authorization = cookie;
+    }
+    return config;
+  },
+  (error) => error);
+  axiosInstance.interceptors.response.use((response) => response,
+    (error) => {
+      if (error.response.status === 401) {
+        setUser(null);
+        history.push('/');
+      }
+      return Promise.reject(error);
+    });
+
   useEffect(() => { getAndSetCourses(); }, []);
 
   if (loading) {
@@ -82,60 +101,62 @@ function App():JSX.Element {
   return (
     <div className="App">
       <AppContext.Provider value={{
-        loggedIn, setLoggedIn, user, setUser,
+        user, setUser,
       }}
       >
         <header />
         <main>
-          <NavigationBarComponent courses={courses} articles={articles} />
-          <EventsStripComponent />
-          <Switch>
-            <Route
-              exact
-              path="/"
-              component={() => (
-                <CourseListComponent courses={courses} />
-              )}
-            />
-            <Route exact path="/login" component={LoginComponent} />
-            <Route exact path="/register" component={RegisterComponent} />
-            <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
-            <Route exact path="/courses/:id" component={CourseComponent} />
-            <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
-            <Route exact path="/research" component={ResearchComponent} />
-            <Route exact path="/articles/:id" component={ArticlesComponent} />
-            <Route exact path="/code" component={CodeValidationComponent} />
-            <PrivateRoute exact path="/dashboard" component={StudentDashboardComponent} />
-            <PrivateRoute exact path="/profile" component={ProfileComponent} />
-            <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
-            <PrivateRoute exact path="/admin/resources" component={AdminResourcesComponent} />
-            <PrivateRoute exact path="/admin/students" component={AdminStudentsComponent} />
-            <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
-            <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
-            <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
-            <PrivateRoute exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
-            <PrivateRoute exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
-            <PrivateRoute exact path="/admin/submissions" component={AdminSubmissionsComponent} />
-            <PrivateRoute exact path="/admin/articles" component={AdminArticlesComponent} />
-            <PrivateRoute exact path="/admin/articles/:id" component={AdminArticleComponent} />
-            <Route exact path="/404" component={Component404} />
-          </Switch>
-        </main>
-        <FooterComponent />
-        <CookieConsent
-          location="bottom"
-          buttonText={t('MAIN.COOKIE_CONSENT_ACCEPT')}
-          setDeclineCookie={false}
-          overlayClasses="cookie-consent-overlay"
-          containerClasses="cookie-consent-container"
-          overlay
-          onAccept={() => {
+          <div className="main">
+            <NavigationBarComponent courses={courses} articles={articles} />
+            <EventsStripComponent />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                component={() => (
+                  <CourseListComponent courses={courses} />
+                )}
+              />
+              <Route exact path="/login" component={LoginComponent} />
+              <Route exact path="/register" component={RegisterComponent} />
+              <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
+              <Route exact path="/courses/:id" component={CourseComponent} />
+              <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
+              <Route exact path="/research" component={ResearchComponent} />
+              <Route exact path="/articles/:id" component={ArticlesComponent} />
+              <Route exact path="/code" component={CodeValidationComponent} />
+              <PrivateRoute exact path="/dashboard" component={StudentDashboardComponent} />
+              <PrivateRoute exact path="/profile" component={ProfileComponent} />
+              <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
+              <PrivateRoute exact path="/admin/resources" component={AdminResourcesComponent} />
+              <PrivateRoute exact path="/admin/students" component={AdminStudentsComponent} />
+              <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
+              <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
+              <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
+              <PrivateRoute exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
+              <PrivateRoute exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
+              <PrivateRoute exact path="/admin/submissions" component={AdminSubmissionsComponent} />
+              <PrivateRoute exact path="/admin/articles" component={AdminArticlesComponent} />
+              <PrivateRoute exact path="/admin/articles/:id" component={AdminArticleComponent} />
+              <Route exact path="/404" component={Component404} />
+            </Switch>
+          </div>
+          <FooterComponent />
+          <CookieConsent
+            location="bottom"
+            buttonText={t('MAIN.COOKIE_CONSENT_ACCEPT')}
+            setDeclineCookie={false}
+            overlayClasses="cookie-consent-overlay"
+            containerClasses="cookie-consent-container"
+            overlay
+            onAccept={() => {
             // setting it again by hook to trigger useCookie hook elsewhere in the app
-            setCookie('CookieConsent', 'true');
-          }}
-        >
-          {t('MAIN.COOKIE_CONSENT')}
-        </CookieConsent>
+              setCookie('CookieConsent', 'true');
+            }}
+          >
+            {t('MAIN.COOKIE_CONSENT')}
+          </CookieConsent>
+        </main>
       </AppContext.Provider>
     </div>
   );
