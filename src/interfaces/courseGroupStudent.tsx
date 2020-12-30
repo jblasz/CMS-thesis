@@ -6,6 +6,7 @@ export interface ICourseGroupStudent {
   email: string
   usosId: string
   grade?: SubmissionGrade
+  contactEmail: string
 }
 
 export class CourseGroupStudent implements ICourseGroupStudent {
@@ -14,6 +15,8 @@ export class CourseGroupStudent implements ICourseGroupStudent {
   name = ''
 
   email = ''
+
+  contactEmail = ''
 
   usosId = ''
 
@@ -25,6 +28,7 @@ export class CourseGroupStudent implements ICourseGroupStudent {
       this.name = o.name || '';
       this.email = o.email || '';
       this.usosId = o.usosId || '';
+      this.contactEmail = o.contactEmail || '';
       if (o.grade) {
         this.grade = o.grade;
       }

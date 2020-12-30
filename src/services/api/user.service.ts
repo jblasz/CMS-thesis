@@ -69,7 +69,7 @@ export async function getAdminUsers(byCourseId?: string): Promise<IGetStudentsRe
  */
 export async function getAdminUser(id: string): Promise<GetStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse(id);
+    const r = await getStudentMockResponse();
     return { ...r, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.get(`/students/${id}`);
@@ -91,7 +91,7 @@ export async function patchAdminUser(id: string, params: {
   usosId?: string
 }): Promise<PatchStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse(id);
+    const r = await getStudentMockResponse();
     return { ok: true, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.patch(`/students/${id}`, params);

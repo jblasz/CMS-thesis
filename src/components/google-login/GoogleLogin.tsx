@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { useCookies } from 'react-cookie';
 import { GoogleLogin, GoogleLoginResponse, GoogleLogout } from 'react-google-login';
+import { useTranslation } from 'react-i18next';
 import { Student } from '../../interfaces/student';
 import { Role } from '../../interfaces/user';
+import { postUser } from '../../services/api/user.service';
 import { AppContext } from '../../services/contexts/app-context';
 
 export function GoogleButton(): JSX.Element {
@@ -10,11 +12,12 @@ export function GoogleButton(): JSX.Element {
     user, setUser,
   } = useContext(AppContext);
   const [{ CookieConsent }, , removeCookie] = useCookies(['CookieConsent']);
+  const [t] = useTranslation();
   return (
     !user ? (
       <GoogleLogin
         clientId={process.env.REACT_APP_CLIENT_ID as string}
-        buttonText="login"
+        buttonText={t('LOGIN.LOGIN')}
         className="btn nav-items login-btn btn-primary"
         disabled={CookieConsent !== 'true'}
         onSuccess={async (response) => {
@@ -23,7 +26,7 @@ export function GoogleButton(): JSX.Element {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { profileObj: { email, name }, accessToken } = onlineResp;
             try {
-              // await postUser(accessToken);
+              await postUser(accessToken);
               // throw new Error('acb');
               setUser({
                 role: Role.STUDENT,
@@ -53,7 +56,7 @@ export function GoogleButton(): JSX.Element {
       <GoogleLogout
         clientId={process.env.REACT_APP_CLIENT_ID as string}
         className="btn nav-items login-btn btn-primary"
-        buttonText="logout"
+        buttonText={t('LOGIN.LOGOUT')}
         onLogoutSuccess={() => {
           console.log('logout');
           removeCookie('authorization');

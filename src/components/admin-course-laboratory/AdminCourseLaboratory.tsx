@@ -86,7 +86,6 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
           </Col>
           <Button
             className="mx-1"
-            variant="danger"
             onClick={async () => {
               try {
                 setLoading(true);

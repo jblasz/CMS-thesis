@@ -1,3 +1,301 @@
 {
-  "homepage": "Home"
+  "COMMON": {
+    "ERROR": "Error"
+  },
+  "WEBSITE_NAME": "Home",
+  "NAVBAR": {
+    "HOMEPAGE": "Home",
+    "DASHBOARD": "Panel użytkownika",
+    "LOGIN": "Login",
+    "REGISTER": "Rejestracja",
+    "COURSES": "Zajęcia",
+    "ARTICLES": "Artykuły",
+    "RESEARCH": "Research",
+    "COURSES_EN": "W jęz Angielskim",
+    "COURSES_PL": "W jęz Polskim",
+    "ALL_COURSES": "Wszystkie",
+    "CODE": "Zapis na zajęcia",
+    "ADMIN": {
+      "DESCR": "Administrator",
+      "DASHBOARD": "Panel administratora",
+      "COURSES": "Zajęcia",
+      "STUDENTS": "Studenci",
+      "RESOURCES": "Zasoby",
+      "SUBMISSIONS": "Rozwiązania",
+      "ARTICLES": "Artykuły"
+    }
+  },
+  "FOOTER": {
+    "DESCR": "This is the site's footer",
+    "MINI_URL": "MINI pw",
+    "PW_URL": "Politechnika Warszawska"
+  },
+  "LOGIN": {
+    "LOGGED_IN_AS": "Zalogowano jako",
+    "NOT_LOGGED_IN": "Nie zalogowano",
+    "LOGIN": "Login",
+    "LOGOUT": "Wyloguj",
+    "WELCOME": "Witamy",
+    "COOKIES_REQUIRED": "Akceptacja ciasteczek wymagana do użycia pełnej funkcjonalności strony."
+  },
+  "MAIN": {
+    "COURSES": "Pasujące zajęcia",
+    "TEACHING": "Nauczanie",
+    "OWNER": "Henry Jekyll",
+    "OWNER_TITLES": "Doctor of medicine, Canon Law, Legum Doctor, Fellowship of the Royal Society",
+    "COOKIE_CONSENT": "Musimy użyć ciasteczek aby użyć rejestracji google - a także aby pamiętać że zaakceptowano ciasteczka.",
+    "COOKIE_CONSENT_ACCEPT": "Rozumiem i akceptuję ciasteczka",
+    "FILTER": {
+      "LANGUAGE": "Język zajęć",
+      "LANGUAGE_ANY": "Dowolny",
+      "LANGUAGE_PL": "Polski",
+      "LANGUAGE_EN": "Angielski",
+      "STATUS": "Status",
+      "STATUS_ANY": "Dowolny",
+      "STATUS_OPEN": "Aktywne",
+      "STATUS_CLOSED": "Zamknięte",
+      "SEMESTER_ANY": "Dowolny semestr"
+    }
+  },
+  "COURSE": {
+    "CONDUCTED_IN_LANGUAGE": "Wykładane w",
+    "GOTO": "Więcej informacji",
+    "LABORATORIES_DEFINED": "Zdefiniowane labolatoria",
+    "SEMESTER": "Semestr",
+    "ID": "ID",
+    "GROUP_ID": "Studenci zapisani do tej grupy",
+    "LABORATORY": {
+      "NUMBER": "Laboratoria",
+      "PER_GROUP_TASKS": "Zadania dla każdej grupy",
+      "GOTO": "Szczegóły",
+      "BACK_TO_COURSE": "Z powrotem",
+      "TASK": {
+        "GROUP_ID": "ID",
+        "GROUP_NAME": "Grupa",
+        "STARTS_AT": "Zadanie dostępne i rozwiązania akceptowane",
+        "START_NOT_DEFINED": "Czas na zadanie jeszcze nie zdefiniowany",
+        "ENDS_AT": "Rozwiązania nie są akceptowane po",
+        "END_NOT_DEFINED": "Data zakończenia zadania jeszcze nie zdefiniowana"
+      }
+    },
+    "FILTER": {
+      "LANGUAGE": "Język",
+      "SEMESTER": "Semestr"
+    }
+  },
+  "CODE_VALIDATION": {
+    "CODE_VALIDATION": "Użyj kodu",
+    "CAN_INPUT_ANY_KIND": "Możesz zapisać się na wiele zajęć pod jednym kontem google.",
+    "SUBMIT": "Zatwierdź", 
+    "ERROR": "Błąd zatwierdzania kodu",
+    "SUCCESS": "Kod zatwierdzony pomyślnie",
+    "COURSE_SIGNUP_SUCCESS": "Zapis na zajęcia zakończony. Kliknij poniżej po więcej informacji..",
+    "GOTO_COURSE": "Zajęcia",
+    "NOT_LOGGED_IN_0": "Aby zapisać się na zajęcia:",
+    "NOT_LOGGED_IN_1": "Musisz mieć kod wielokrotnego użytku, który udostępniam wszystkim na początku zajęć. Skontaktuj się ze mną po więcej informacji.",
+    "NOT_LOGGED_IN_2": "Dokonaj rejestracji używając dowolnego konta google. Nie ma potrzeby użycia prywatnego konta - potrzebujemy tego tylko dla celów autentykacji użytkownika. Możesz założyć kompletnie puste konto do tego celu, tylko na potrzeby tej strony. W przyszłości dzięki niemu będziesz przeglądać swoje dane i wysyłać rozwiązania. Zamknięcie konta jest równoznaczne z zaprzestaniem korzystania z tej strony.",
+    "NOT_LOGGED_IN_3": "Po zalogowaniu, w tym miejscu znajdziesz pole w które wkleisz rzeczony kod."
+  },
+  "404": {
+    "404": "404",
+    "DOES_NOT_EXIST": "Ta strona albo nie istnieje, albo nie masz do niej dostępu",
+    "GO_BACK": "Z powrotem"
+  },
+  "ADMIN": {
+    "COURSES": {
+      "UUID": "ID",
+      "NAME": "Imię",
+      "SEMESTER": "Sem",
+      "LANGUAGE": "Jęz",
+      "GROUPS_COUNT": "Grupy",
+      "STUDENTS_COUNT": "Studenci",
+      "LAB_COUNT": "Labor",
+      "CREATE_COURSE": "Załóż nowy kurs"
+    },
+    "COURSE": {
+      "NAME": "Nazwa",
+      "LANGUAGE": "Język",
+      "DESCRIPTION": "Opis",
+      "DESCRIPTION_SHORT": "Krótki opis",
+      "CREATE_GROUP": "Utwórz grupę",
+      "CREATE_LAB": "Utwórz laboratorium",
+      "GROUP_NAME": "Nazwa grupy",
+      "NO_STUDENTS_YET": "Jeszcze żaden student nie został zapisany",
+      "STUDENTS_SIGNED_UP": "studentów zostało zapisanych",
+      "GROUP_GOTO": "Szczegóły",
+      "SAVE_CHANGES": "Zapisz zmiany",
+      "STUDENT_COUNT": "Studencji",
+      "LAB_NAME": "Nazwa laboratorium",
+      "LAB_START": "Początek",
+      "LAB_START_NOT_DEFINED": "Jeszcze nie zdefiniowany",
+      "LAB_END_NOT_DEFINED": "Jeszcze nie zdefiniowany",
+      "LAB_END": "Koniec",
+      "LAB_NAME_NOT_DEFINED": "Nadal bezimienne",
+      "GROUP_NAME_NOT_DEFINED": "Nadal bezimienna",
+      "DELETE": "Usuń zajęcia",
+      "SEMESTER": "Semestr",
+      "ACTIVE": "Aktywne",
+      "INACTIVE": "Zamknięte",
+      "SHOWN": "Widoczne",
+      "HIDDEN": "Ukryte",
+      "GENERATE_CODE": "Generuj kod"
+    },
+    "GROUP": {
+      "ADD_STUDENT": "Dodaj studenta",
+      "UPLOAD_CHANGES": "Zapisz zmiany",
+      "STUDENTS_ID": "ID",
+      "STUDENTS_NAME": "Imię",
+      "STUDENTS_EMAIL": "Email",
+      "STUDENTS_NA": "N/A",
+      "STUDENTS_FINAL_GRADE": "Ocena końcowa",
+      "STUDENTS_CONTACT_EMAIL": "Email kontaktowy"
+    },
+    "LABORATORY": {
+      "DELETE": "Usuń laboratorium",
+      "GROUP_TASKS": "Zadania dla każdej grupy",
+      "TASK_FOR_GROUP": "Zadanie dla grupy",
+      "START": "Laboratorium zaczyna się",
+      "END": "Laboratorium kończy się",
+      "GRACE": "Laboratorium ma dozwolony margines opóźnienia",
+      "TASK": "Zasób zadania",
+      "PUBLIC_DESCRIPTION": "Opis laboratorium",
+      "UPLOAD": "Zapisz zmiany"
+    },
+    "RESOURCES": {
+      "HEADER": "Zasoby",
+      "RENAME": "Zmień nazwę",
+      "CREATE": "Utwórz",
+      "NOT_USED": "Ten zasób nie jest nigdzie użyty.",
+      "USED_BY_COURSE": "Użyty przez",
+      "USED_BY_LAB": "Lab",
+      "PERMISSIONS": "Dostępne dla",
+      "PERMISSIONS_ALL": "Każdego",
+      "PERMISSIONS_LOGGEDIN": "Zalogowani użytkownicy",
+      "PERMISSIONS_TASKGROUP": "Zasób zadania",
+      "PERMISSIONS_NONE": "Nikt",
+      "COPY_LINK_TO_CLIPBOARD": "Kopiuj link do schowka"
+    },
+    "STUDENTS": {
+      "NAME": "Imię",
+      "USOSID": "USOS id",
+      "REGISTEREDAT": "Zarejestrowani"
+    },
+    "STUDENT": {
+      "RENAME": "Zmień imię",
+      "PARTOOK_IN_COURSES": "Brali udział w",
+      "NAME": "Imię",
+      "EMAIL": "Email",
+      "USOSID": "Usos id",
+      "COURSE_ACTIVE": "Zajęcia aktywne",
+      "COURSE_CLOSED": "Zajęcia zamknięte",
+      "SAVE_CHANGES": "Zapisz zmiany",
+      "NOT_YET_GRADED": "Brak oceny",
+      "CONTACT_EMAIL": "Email kontaktowy"
+    },
+    "SUMMARY": {
+      "SUMMARY": "Podsumowanie",
+      "UNMARKED_COUNT": "Rozwiązania oczekujące ocenienia"
+    },
+    "SUBMISSIONS": {
+      "SUBMISSIONS": "Rozwiązania",
+      "COURSE_FILTER": "Zajęcia",
+      "STUDENT_FILTER": "Student",
+      "STATUS_FILTER": "Status",
+      "STATUS_FILTER_UNGRADED": "Brak oceny",
+      "STATUS_FILTER_GRADED": "Ocenione",
+      "STATUS_FILTER_ALL": "Dowolne",
+      "ANY_COURSE": "Dowolne zajęcia",
+      "ANY_STUDENT": "Dowolny student",
+      "FINAL_FILTER_TRUE": "Rozwiązania końcowe",
+      "FINAL_FILTER_FALSE": "Rozwiązania nadpisane",
+      "GRADE": "Ocena",
+      "HEADER": "Rozwiązania zadań laboratoryjnych",
+      "NOT_FINAL": "To nie jest ostatnie przesłane przez nich rozwiązanie",
+      "NO_SUBMISSIONS": "Brak rozwiązań w systemie",
+      "COPY_LINK_TO_CLIPBOARD": "Kopiuj link do schowka"
+    },
+    "CODES": {
+      "DESCR": "Kody",
+      "VALID_THROUGH": "Ważne do",
+      "USED_BY": "Użyte#",
+      "ACTIVE": "Aktywne",
+      "INACTIVE": "Nieaktywne",
+      "SHOW_INACTIVE": "Pokaż nieważne",
+      "COPY_LINK_TO_CLIPBOARD": "Kopiuj link do schowka",
+      "DELETE_CODE": "Usuń kod. Istniejące użycia nie będą naruszone."
+    },
+    "ARTICLE": {
+      "SUBMIT": "Zapisz",
+      "MAJOR_EN": "Główna kategoria angielska",
+      "MAJOR_PL": "Główna kategoria polska",
+      "MINOR_EN": "Drugorzędna kategoria angielska",
+      "MINOR_PL": "Drugorzędna kategoria polska",
+      "AVAILABLE_FROM": "Ustaw dostępność",
+      "LIMITED_AVAILABILITY": "Ograniczona",
+      "NO_LIMITED_AVAILABILITY": "Nieograniczona",
+      "CONTENTS_EN": "Zawartość angielska",
+      "CONTENTS_PL": "Zawartość polska"
+    },
+    "ARTICLES": {
+      "CREATE_ARTICLE": "Utwórz artykuł"
+    },
+    "EDITOR": {
+      "PREVIEW": "Widok renderowanego html",
+      "PREVIEW_RAW": "Widok brudnego html",
+      "TOGGLE_VIEW": "Zmień tryb widoku"
+    }
+  },
+  "PENDING": {
+    "LABS": {
+      "TITLE": "Nadchodzące laboratoria",
+      "TIMERANGE": "następne 7 dni",
+      "COURSENAME": "Zajęcia",
+      "LABNAME": "Lab",
+      "GROUPNAME": "Grupa",
+      "STARTSAT": "Początek",
+      "ENDSAT": "Koniec"
+    }
+  },
+  "STUDENT": {
+    "PROFILE": {
+      "PROFILE": "Twoje dane",
+      "NAME": "Imię",
+      "EMAIL": "Email",
+      "CONTACT_EMAIL": "Email kontaktowy",
+      "USOSID": "USOS id",
+      "SAVE_CHANGES": "Zapisz zmiany",
+      "DISCLAIMER": "Ręczna zmiana imienia, emailu kontaktowego albo usos id jest możliwa tylko przez pierwsze 7 dni albo do przesłania pierwszego rozwiązania. Aby zmodyfikować lub usunąć dane po tym czasie skontaktuj się z administratorem. Email kontaktowy jest opcjonalny, może być np Twoim mailem pw."
+    },
+    "DASHBOARD": {
+      "YOUR_COURSES": "Zapisane zajęcia",
+      "COURSE_DETAILS": "Szczegóły zajęć",
+      "SELECT_COURSE_TO_VIEW": "Wybierz zajęcia aby zobaczyć więcej informacji",
+      "ACTIVE_EVENTS": "Laboratorium w trakcie",
+      "UPCOMING_EVENTS": "Następujące laboratoria niedługo się odbędą",
+      "YOUR_SUBMISSIONS": "Twoje rozwiązania",
+      "GROUP_NAME": "Twoja grupa",
+      "NO_GROUP": "Brak grupy",
+      "NO_GRADE_YET": "Brak oceny",
+      "GRADE": "Ocena",
+      "DOWNLOAD_TASK": "Pobierz zadania",
+      "UPLOAD_SUBMISSION": "Wyślij rozwiązanie",
+      "DOWNLOAD_SUBMISSION": "Pobierz wysłane rozwiązanie",
+      "GOTO": "Strona zajęć",
+      "GROUP": "Twoja grupa",
+      "TABLE_LABORATORY": "Laboratorium",
+      "TABLE_GRADE": "Ocena",
+      "PICK_COURSE": "Wybierz zajęcia...",
+      "TABLE_DATES": "Data",
+      "NO_COURSE_SELECTED": "",
+      "NO_COURSES_SIGNED": "Obecnie brak zapisanych kursów"
+    },
+    "SUBMISSIONS": {
+      "COURSE": "Kurs",
+      "LAB": "Lab",
+      "GRADE": "Ocena",
+      "NO_GRADE_YET": "N/A",
+      "SUBMITTED_AT": "Wysłane",
+      "NO_SUBMISSIONS": "Nie wysłano jeszcze żadnych rozwiązań"
+    }
+  }
 }

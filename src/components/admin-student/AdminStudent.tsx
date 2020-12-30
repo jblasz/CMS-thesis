@@ -82,6 +82,21 @@ function AdminStudentComponent(): JSX.Element {
                     <FormControl
                       type="text"
                       onChange={(e) => {
+                        student.contactEmail = e.target.value;
+                        setStudent(new Student(student));
+                      }}
+                      value={student.contactEmail}
+                    />
+                  </InputGroup.Prepend>
+                  <InputGroup.Text>
+                    {t('ADMIN.STUDENT.CONTACT_EMAIL')}
+                  </InputGroup.Text>
+                </InputGroup>
+                <InputGroup className="mb-3">
+                  <InputGroup.Prepend>
+                    <FormControl
+                      type="text"
+                      onChange={(e) => {
                         student.email = e.target.value;
                         setStudent(new Student(student));
                       }}

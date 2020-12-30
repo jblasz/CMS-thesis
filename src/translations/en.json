@@ -150,7 +150,8 @@
       "STUDENTS_NAME": "Name",
       "STUDENTS_EMAIL": "Email",
       "STUDENTS_NA": "N/A",
-      "STUDENTS_FINAL_GRADE": "Final grade"
+      "STUDENTS_FINAL_GRADE": "Final grade",
+      "STUDENTS_CONTACT_EMAIL": "Contact email"
     },
     "LABORATORY": {
       "SET_EDIT_MODE": "Enable editing mode",
@@ -193,13 +194,15 @@
       "COURSE_ACTIVE": "Course active",
       "COURSE_CLOSED": "Course closed",
       "SAVE_CHANGES": "Upload changes",
-      "NOT_YET_GRADED": "No grade yet"
+      "NOT_YET_GRADED": "No grade yet",
+      "CONTACT_EMAIL": "Contact email"
     },
     "SUMMARY": {
       "SUMMARY": "Summary",
       "UNMARKED_COUNT": "Ungraded final solutions"
     },
     "SUBMISSIONS": {
+      "SUBMISSIONS": "Submissions",
       "COURSE_FILTER": "Course",
       "STUDENT_FILTER": "Student",
       "STATUS_FILTER": "Status",
@@ -213,7 +216,8 @@
       "GRADE": "Grade",
       "HEADER": "Laboratory submissions",
       "NOT_FINAL": "This is not the final submission that the student made",
-      "NO_SUBMISSIONS": "You have not made any submissions yet"
+      "NO_SUBMISSIONS": "You have not made any submissions yet",
+      "COPY_LINK_TO_CLIPBOARD": "Copy resource link to clipboard"
     },
     "CODES": {
       "DESCR": "Codes",
@@ -221,7 +225,9 @@
       "USED_BY": "Used#",
       "ACTIVE": "Active",
       "INACTIVE": "Inactive",
-      "SHOW_INACTIVE": "Show inactive codes"
+      "SHOW_INACTIVE": "Show inactive codes",
+      "COPY_LINK_TO_CLIPBOARD": "Copy resource link to clipboard",
+      "DELETE_CODE": "Delete code. People that already used it are NOT invalidated."
     },
     "ARTICLE": {
       "SUBMIT": "Submit",
@@ -237,6 +243,11 @@
     },
     "ARTICLES": {
       "CREATE_ARTICLE": "Create an article"
+    },
+    "EDITOR": {
+      "PREVIEW": "Displaying rendered html",
+      "PREVIEW_RAW": "Displaying raw html",
+      "TOGGLE_VIEW": "Toggle display preview"
     }
   },
   "PENDING": {

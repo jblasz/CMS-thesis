@@ -70,7 +70,6 @@ export function AdminArticleComponent(): JSX.Element {
             {t('ADMIN.ARTICLE.SUBMIT')}
           </Button>
           <Button
-            variant="danger"
             onClick={async () => {
               try {
                 setLoading(true);

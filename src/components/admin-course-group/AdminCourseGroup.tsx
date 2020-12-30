@@ -4,14 +4,13 @@ import {
 } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { faFile, faSort, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faSort, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   deleteAdminCourseGroup, deleteCourseGroupStudent, getAdminCourseGroup, patchCourseGroupStudent,
 } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
-// import { getAd } from '../../services/api/students.service';
 import { getCodes, postCodeNew } from '../../services/api/codes.service';
 import { formatDate } from '../../utils';
 import { Code } from '../../interfaces/code';
@@ -90,7 +89,6 @@ function AdminCourseGroupComponent(): JSX.Element {
         <WarningStripComponent error={error} />
         <Button
           className="float-right"
-          variant="danger"
           onClick={async () => {
             try {
               setLoading(true);
@@ -130,7 +128,6 @@ function AdminCourseGroupComponent(): JSX.Element {
             </Form.Control>
             <InputGroup.Append>
               <Button
-                variant="primary"
                 className="py-0"
                 onClick={async () => {
                   try {
@@ -159,11 +156,10 @@ function AdminCourseGroupComponent(): JSX.Element {
             <InputGroup.Prepend>
               <Button
                 className="p-2"
-                variant="primary"
                 onClick={async () => {
                   try {
                     setLoading(true);
-                    const { code } = await postCodeNew(courseID, validThrough);
+                    const { code } = await postCodeNew(groupID, validThrough);
                     setNewCode({ _id: code._id, validThrough: code.validThrough });
                   } catch (e) {
                     console.error(e);
@@ -224,6 +220,20 @@ function AdminCourseGroupComponent(): JSX.Element {
               </Button>
             </th>
             <th>
+              {t('ADMIN.GROUP.STUDENTS_CONTACT_EMAIL')}
+              <Button
+                variant="light"
+                onClick={() => {
+                  group.students.sort((a, b) => sortDirection * (a.contactEmail || '').localeCompare(b.contactEmail || ''));
+                  setSortDirection(-sortDirection);
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faSort}
+                />
+              </Button>
+            </th>
+            <th>
               {t('ADMIN.GROUP.STUDENTS_EMAIL')}
               <Button
                 variant="light"
@@ -246,6 +256,7 @@ function AdminCourseGroupComponent(): JSX.Element {
             <tr key={student._id}>
               <td><Link to={`/admin/students/${student._id}`}>{student._id}</Link></td>
               <td>{student.name || t('ADMIN.GROUP.STUDENT_NA')}</td>
+              <td>{student.contactEmail || t('ADMIN.GROUP.STUDENT_NA')}</td>
               <td>{student.email || t('ADMIN.GROUP.STUDENT_NA')}</td>
               <td>
                 <Form>
@@ -316,7 +327,7 @@ function AdminCourseGroupComponent(): JSX.Element {
                           }
                         }}
                       >
-                        <FontAwesomeIcon icon={faFile} />
+                        <FontAwesomeIcon icon={faSave} />
                       </Button>
                     </InputGroup.Append>
                   </InputGroup>
@@ -324,7 +335,6 @@ function AdminCourseGroupComponent(): JSX.Element {
               </td>
               <td>
                 <Button
-                  variant="danger"
                   onClick={async () => {
                     try {
                       setLoading(true);

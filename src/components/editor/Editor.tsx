@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import { faEye, faRedo } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Editor } from 'react-draft-wysiwyg';
 import {
@@ -42,17 +42,13 @@ export function EditorComponent(props: EditorComponentProps) {
         </Col>
         <Col className="border">
           <ButtonGroup>
-            <Button onClick={() => {
-              setViewRaw(!viewRaw);
-            }}
+            <Button
+              onClick={() => {
+                setViewRaw(!viewRaw);
+              }}
+              title={t('ADMIN.EDITOR.TOGGLE_VIEW')}
             >
               <FontAwesomeIcon icon={faEye} />
-            </Button>
-            <Button onClick={() => {
-              setText(draftToHtml(convertToRaw(editorState.getCurrentContent())));
-            }}
-            >
-              <FontAwesomeIcon icon={faRedo} />
             </Button>
           </ButtonGroup>
           {viewRaw

@@ -277,11 +277,10 @@ export async function setCourseLabMockResponse(
 export async function patchCourseGroupStudentMockResponse(
   courseID: string,
   groupID: string,
-  studentID: string,
 ): Promise<IPatchCourseGroupStudentResponse> {
   const course = inMemoryCourseMocks.find((x) => x._id === courseID);
   const group = course && course.groups.find((x) => x._id === groupID);
-  const { student } = await getStudentMockResponse(studentID);
+  const { student } = await getStudentMockResponse();
   if (course && group && student) {
     if (!group.students.find((x) => x._id === student._id)) {
       group.students.push(student);

@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Container, Form, Col, Button, Table, Collapse, InputGroup,
+  Container, Form, Col, Button, Table, Collapse, InputGroup, ButtonGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -92,16 +92,18 @@ function AdminResourcesComponent(): JSX.Element {
                         <div>
                           <Form.Row>
                             <Col md="auto" className="m-2 text-center">
-                              <Button className="mx-2"><FontAwesomeIcon icon={faDownload} /></Button>
-                              <Button className="mx-2"><FontAwesomeIcon icon={faUpload} /></Button>
-                              <Button className="mx-2" title={t('ADMIN.RESOURCES.COPY_LINK_TO_CLIPBOARD')}>
-                                <FontAwesomeIcon
-                                  icon={faClipboard}
-                                  onClick={() => {
-                                    navigator.clipboard.writeText('a link will exist here');
-                                  }}
-                                />
-                              </Button>
+                              <ButtonGroup>
+                                <Button><FontAwesomeIcon icon={faDownload} /></Button>
+                                <Button><FontAwesomeIcon icon={faUpload} /></Button>
+                                <Button title={t('ADMIN.RESOURCES.COPY_LINK_TO_CLIPBOARD')}>
+                                  <FontAwesomeIcon
+                                    icon={faClipboard}
+                                    onClick={() => {
+                                      navigator.clipboard.writeText('a link will exist here');
+                                    }}
+                                  />
+                                </Button>
+                              </ButtonGroup>
                             </Col>
                             <Col className="m-2 text-center">
                               <InputGroup className="mx-2">
@@ -157,7 +159,6 @@ function AdminResourcesComponent(): JSX.Element {
                             <Col md="auto" className="m-2 center-block">
                               <Button
                                 className="mx-2"
-                                variant="danger"
                                 onClick={async () => {
                                   try {
                                     setLoading(true);

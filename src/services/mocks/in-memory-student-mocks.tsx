@@ -93,8 +93,8 @@ export function generateStudentMocks(count = 100) {
   }
 }
 
-export function getStudentMockResponse(id: string): Promise<GetStudentResponse> {
-  const student = inMemoryStudentMocks.find((x) => x._id === id);
+export function getStudentMockResponse(): Promise<GetStudentResponse> {
+  const student = inMemoryStudentMocks[0];
   return student
     ? Promise.resolve({
       student,

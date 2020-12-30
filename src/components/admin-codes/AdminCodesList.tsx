@@ -55,7 +55,7 @@ export function AdminCodesListComponent(props: AdminCodesListComponentProps): JS
               <td>
                 <Row>
                   <ButtonGroup>
-                    <Button className="mx-4" title={t('ADMIN.CODES.COPY_LINK_TO_CLIPBOARD')}>
+                    <Button title={t('ADMIN.CODES.COPY_LINK_TO_CLIPBOARD')}>
                       <FontAwesomeIcon
                         icon={faClipboard}
                         onClick={() => {
@@ -64,6 +64,7 @@ export function AdminCodesListComponent(props: AdminCodesListComponentProps): JS
                       />
                     </Button>
                     <Button
+                      title={t('ADMIN.CODES.DELETE_CODE')}
                       onClick={async () => {
                         try {
                           setLoading(true);

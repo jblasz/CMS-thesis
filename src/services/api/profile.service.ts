@@ -1,7 +1,7 @@
 import { config } from '../../config';
 import { GetStudentResponse, PatchStudentResponse } from '../../interfaces/api';
 import { Student } from '../../interfaces/student';
-import { getRandomStudents, getStudentMockResponse } from '../mocks/in-memory-student-mocks';
+import { getStudentMockResponse } from '../mocks/in-memory-student-mocks';
 import { axiosInstance } from './request.service';
 
 /**
@@ -9,7 +9,7 @@ import { axiosInstance } from './request.service';
  */
 export async function getProfile(): Promise<GetStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse(getRandomStudents(1)[0]._id);
+    const r = await getStudentMockResponse();
     return { ...r, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.get('/profile');
@@ -31,7 +31,7 @@ export async function patchProfile(params: {
   usosId?: string
 }): Promise<PatchStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse(getRandomStudents(1)[0]._id);
+    const r = await getStudentMockResponse();
     return { ok: true, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.patch('/profile', params);

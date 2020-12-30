@@ -198,7 +198,6 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                             <ButtonGroup>
                               <Button
                                 className="float-right"
-                                // variant="danger"
                                 onClick={async () => {
                                   try {
                                     setLoading(true);
