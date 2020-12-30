@@ -16,7 +16,7 @@ import { axiosInstance } from './request.service';
 /**
  * /resource GET
  */
-export async function getResources(): Promise<IGetResourcesResponse> {
+export async function getAdminResources(): Promise<IGetResourcesResponse> {
   if (config.useMocks) {
     return getResourcesMockResponse();
   }
@@ -28,7 +28,7 @@ export async function getResources(): Promise<IGetResourcesResponse> {
 /**
  * /resource/:id GET
  */
-export async function getResource(_id: string): Promise<IGetResourceResponse> {
+export async function getAdminResource(_id: string): Promise<IGetResourceResponse> {
   if (config.useMocks) {
     return getResourceMockResponse(_id);
   }
@@ -41,7 +41,7 @@ export async function getResource(_id: string): Promise<IGetResourceResponse> {
  * /resource/:id PUT
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function putResource(
+export async function putAdminResource(
   id: string, bytes: ArrayBuffer, filename: string,
 ): Promise<IPutResourceResponse> {
   if (config.useMocks) {
@@ -62,7 +62,7 @@ export async function putResource(
 /**
  * /resource/:id PATCH
  */
-export async function patchResource(
+export async function patchAdminResource(
   _id: string, name: string, permission: Permission,
 ): Promise<IPatchResourceResponse> {
   if (config.useMocks) {
@@ -80,7 +80,7 @@ export async function patchResource(
 /**
  * /resource/:id DELETE
  */
-export async function deleteResource(_id: string): Promise<IApiPostResponse> {
+export async function deleteAdminResource(_id: string): Promise<IApiPostResponse> {
   if (config.useMocks) {
     return deleteResourceMockResponse(_id);
   }

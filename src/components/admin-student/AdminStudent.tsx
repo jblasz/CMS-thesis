@@ -9,7 +9,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ICourseGroupMetaWithGrade } from '../../interfaces/api';
 import { ISubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
-import { getStudent, patchStudent } from '../../services/api/students.service';
+import { getAdminUser, patchAdminUser } from '../../services/api/user.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { SubmissionListComponent } from '../submission-list/SubmissionListCompontent';
@@ -33,7 +33,7 @@ function AdminStudentComponent(): JSX.Element {
         student: _student,
         attends: _attendedCourseGroupLabs,
         submissions: _submissions,
-      } = await getStudent(id);
+      } = await getAdminUser(id);
       setStudent(_student);
       setAttendedCourseGroupLabs(_attendedCourseGroupLabs);
       setSubmissions(_submissions);
@@ -111,7 +111,7 @@ function AdminStudentComponent(): JSX.Element {
                   <Button onClick={async () => {
                     try {
                       setLoading(true);
-                      const { student: _student } = await patchStudent(student._id, {
+                      const { student: _student } = await patchAdminUser(student._id, {
                         contactEmail: student.contactEmail || '',
                         email: student.email,
                         name: student.name || '',

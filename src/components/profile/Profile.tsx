@@ -7,8 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 import { Student } from '../../interfaces/student';
-import { patchStudent } from '../../services/api/students.service';
-import { getUser } from '../../services/api/user.service';
+import { getProfile, patchProfile } from '../../services/api/profile.service';
 import { AppContext } from '../../services/contexts/app-context';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
@@ -23,7 +22,7 @@ function ProfileComponent() {
   const getAndSetAll = useCallback(async () => {
     try {
       setLoading(true);
-      const { student: _student } = await getUser();
+      const { student: _student } = await getProfile();
       setStudent(_student);
     } catch (e) {
       setError(e);
@@ -120,7 +119,7 @@ function ProfileComponent() {
                     <Button onClick={async () => {
                       try {
                         setLoading(true);
-                        const { student: _student } = await patchStudent(student._id, {
+                        const { student: _student } = await patchProfile({
                           contactEmail: student.contactEmail || '',
                           name: student.name || '',
                           usosId: student.usosId || '',

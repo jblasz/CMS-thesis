@@ -3,7 +3,7 @@ import { Button, Container, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Course } from '../../interfaces/course';
-import { getCourses, putCourse } from '../../services/api/courses.service';
+import { getAdminCourses, putAdminCourse } from '../../services/api/courses.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 
@@ -17,7 +17,7 @@ function AdminCoursesComponent(): JSX.Element {
   const getAndSetCourses = async () => {
     try {
       setLoading(true);
-      setCourses((await getCourses()).courses.map((x) => new Course(x)));
+      setCourses((await getAdminCourses()).courses.map((x) => new Course(x)));
     } catch (e) {
       setError(e);
     } finally {
@@ -80,7 +80,7 @@ function AdminCoursesComponent(): JSX.Element {
                 type="submit"
                 onClick={async () => {
                   if (courses.find((x) => x.name === '')) { return; }
-                  await putCourse(new Course());
+                  await putAdminCourse(new Course());
                   await getAndSetCourses();
                 }}
               >

@@ -13,11 +13,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { LoadingSpinner } from '../loading-spinner';
 import { Permission, IResourceMeta } from '../../interfaces/resource';
-import {
-  getResources, patchResource, deleteResource,
-} from '../../services/api/resources.service';
-// import './AdminResources.scss';
 import { WarningStripComponent } from '../info/WarningStrip';
+import { deleteAdminResource, getAdminResources, patchAdminResource } from '../../services/api/resources.service';
 
 function AdminResourcesComponent(): JSX.Element {
   const [t] = useTranslation();
@@ -33,7 +30,7 @@ function AdminResourcesComponent(): JSX.Element {
   const getAndSetResources = useCallback(async () => {
     try {
       setLoading(true);
-      const r = await getResources();
+      const r = await getAdminResources();
       setResources(r.resources);
       setLoading(false);
     } catch (e) {
@@ -141,7 +138,7 @@ function AdminResourcesComponent(): JSX.Element {
                                   <Button onClick={async () => {
                                     try {
                                       setLoading(true);
-                                      await patchResource(
+                                      await patchAdminResource(
                                         resource._id, rename, resource.permission,
                                       );
                                       await getAndSetResources();
@@ -164,7 +161,7 @@ function AdminResourcesComponent(): JSX.Element {
                                 onClick={async () => {
                                   try {
                                     setLoading(true);
-                                    await deleteResource(resource._id);
+                                    await deleteAdminResource(resource._id);
                                     await getAndSetResources();
                                   } catch (e) {
                                     setError(e);
@@ -229,7 +226,7 @@ function AdminResourcesComponent(): JSX.Element {
                         onClick={async () => {
                           try {
                             setLoading(true);
-                            await patchResource('', newResource.name, newResource.permission);
+                            await patchAdminResource('', newResource.name, newResource.permission);
                             await getAndSetResources();
                           } catch (e) {
                             console.error(e);

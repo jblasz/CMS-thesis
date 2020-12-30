@@ -7,17 +7,18 @@ import { useTranslation } from 'react-i18next';
 import { faFile, faSort, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  deleteCourseGroup, deleteCourseGroupStudent, getCourseGroup, patchCourseGroupStudent,
+  deleteAdminCourseGroup, deleteCourseGroupStudent, getAdminCourseGroup, patchCourseGroupStudent,
 } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
-import { getStudents } from '../../services/api/students.service';
+// import { getAd } from '../../services/api/students.service';
 import { getCodes, postCodeNew } from '../../services/api/codes.service';
 import { formatDate } from '../../utils';
 import { Code } from '../../interfaces/code';
 import { AdminCodesListComponent } from '../admin-codes/AdminCodesList';
 import { SubmissionGrade } from '../../interfaces/resource';
 import { WarningStripComponent } from '../info/WarningStrip';
+import { getAdminUsers } from '../../services/api/user.service';
 
 interface BaseStudent {
   _id: string
@@ -58,7 +59,7 @@ function AdminCourseGroupComponent(): JSX.Element {
     try {
       setLoading(true);
       const [{ group: _group }, { students: _students }, { codes: _codes }] = await Promise.all(
-        [getCourseGroup(courseID, groupID), getStudents(), getCodes(true, courseID)],
+        [getAdminCourseGroup(courseID, groupID), getAdminUsers(), getCodes(true, courseID)],
       );
       const filtered = _students
         .filter((x) => !_group.students.find((y) => y._id === x._id))
@@ -93,7 +94,7 @@ function AdminCourseGroupComponent(): JSX.Element {
           onClick={async () => {
             try {
               setLoading(true);
-              await deleteCourseGroup(courseID, group._id);
+              await deleteAdminCourseGroup(courseID, group._id);
               alert('course deleted succesfully');
               await getAndSetBoth();
             } catch (e) {

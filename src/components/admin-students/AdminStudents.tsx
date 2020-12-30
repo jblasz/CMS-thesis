@@ -5,7 +5,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Student } from '../../interfaces/student';
-import { getStudents } from '../../services/api/students.service';
+import { getAdminUsers } from '../../services/api/user.service';
 import { formatDate } from '../../utils';
 
 function AdminStudentsComponent(): JSX.Element {
@@ -14,7 +14,7 @@ function AdminStudentsComponent(): JSX.Element {
   const [students, setStudents] = useState<Student[]>([]);
 
   const getAndSetStudents = async () => {
-    setStudents((await getStudents()).students.map((x) => new Student(x)));
+    setStudents((await getAdminUsers()).students.map((x) => new Student(x)));
   };
 
   useEffect(() => {

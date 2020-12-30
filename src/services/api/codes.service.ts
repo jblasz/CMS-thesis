@@ -40,15 +40,15 @@ export async function getCodes(grabInactive = false, courseId?:string): Promise<
 }
 
 /**
- * /code/:courseId POST
+ * /code/:groupId POST
  */
 export async function postCodeNew(
-  courseId: string, validThrough: Date,
+  groupId: string, validThrough: Date,
 ): Promise<IPostCodeNewResponse> {
   if (config.useMocks) {
-    return postCodeNewMockResponse(courseId, validThrough);
+    return postCodeNewMockResponse(groupId, validThrough);
   }
-  const { data } = await axiosInstance.post(`/code/${courseId}`, { validThrough });
+  const { data } = await axiosInstance.post(`/code/${groupId}`, { validThrough });
   const { code } = data as IPostCodeNewResponse;
   return { code };
 }

@@ -7,16 +7,14 @@ import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import {
-  deleteCourseLaboratory, getCourseLaboratory, putLaboratory,
-} from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
-import { getResources } from '../../services/api/resources.service';
 import { IResourceMeta } from '../../interfaces/resource';
 import { CourseTask } from '../../interfaces/courseTask';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { EditorComponent } from '../editor/Editor';
+import { deleteAdminCourseLaboratory, getAdminCourseLaboratory, putAdminLaboratory } from '../../services/api/courses.service';
+import { getAdminResources } from '../../services/api/resources.service';
 
 function AdminCourseLaboratoryComponent(): JSX.Element {
   const { courseID, labID } = useParams<{labID: string, courseID: string}>();
@@ -46,7 +44,9 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   const getAndSetCourseLaboratory = useCallback(async () => {
     try {
       setLoading(true);
-      const [r, r2] = await Promise.all([getCourseLaboratory(courseID, labID), getResources()]);
+      const [r, r2] = await Promise.all([
+        getAdminCourseLaboratory(courseID, labID), getAdminResources(),
+      ]);
       const lab = new CourseLaboratory(r.laboratory);
       validateAndSetLaboratory(lab);
       setResourceNames(r2.resources);
@@ -78,7 +78,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
             <Button
               className="mx-1"
               onClick={async () => {
-                await putLaboratory(courseID, laboratory);
+                await putAdminLaboratory(courseID, laboratory);
               }}
             >
               {t('ADMIN.LABORATORY.UPLOAD')}
@@ -90,7 +90,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
             onClick={async () => {
               try {
                 setLoading(true);
-                await deleteCourseLaboratory(courseID, laboratory._id);
+                await deleteAdminCourseLaboratory(courseID, laboratory._id);
                 alert('course laboratory deleted succesfully');
                 await getAndSetCourseLaboratory();
               } catch (e) {

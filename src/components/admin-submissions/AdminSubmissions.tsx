@@ -8,9 +8,9 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ISubmissionMeta } from '../../interfaces/resource';
-import { getCourses } from '../../services/api/courses.service';
-import { getStudents } from '../../services/api/students.service';
+import { getAdminCourses } from '../../services/api/courses.service';
 import { getSubmissions } from '../../services/api/submissions.service';
+import { getAdminUsers } from '../../services/api/user.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { SubmissionListComponent } from '../submission-list/SubmissionListCompontent';
@@ -53,7 +53,7 @@ function AdminSubmissionsComponent(): JSX.Element {
   const loadFilters = useCallback(async () => {
     try {
       const [_courses, _students] = await Promise.all([
-        getCourses().then((x): BareCourse[] => x.courses.map((y) => ({
+        getAdminCourses().then((x): BareCourse[] => x.courses.map((y) => ({
           id: y._id,
           name: y.name,
           students: y.groups.reduce(
@@ -67,7 +67,7 @@ function AdminSubmissionsComponent(): JSX.Element {
             [],
           ),
         }))),
-        getStudents().then((x) => x.students.map((y) => ({ id: y._id, name: y.name }))),
+        getAdminUsers().then((x) => x.students.map((y) => ({ id: y._id, name: y.name }))),
       ]);
 
       setCourses(_courses as BareCourse[]);

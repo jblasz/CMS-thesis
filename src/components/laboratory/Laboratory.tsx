@@ -7,10 +7,10 @@ import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { Course } from '../../interfaces/course';
-import { getCourse, getCourseLaboratory } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
+import { getPublicCourse, getPublicCourseLaboratory } from '../../services/api/courses.service';
 
 function LaboratoryComponent(): JSX.Element {
   const { id, labID } = useParams<{ id: string, labID: string }>();
@@ -25,7 +25,7 @@ function LaboratoryComponent(): JSX.Element {
       try {
         setLoading(true);
         const [{ course: _course }, { laboratory: _laboratory }] = await Promise.all([
-          getCourse(id), getCourseLaboratory(id, labID),
+          getPublicCourse(id), getPublicCourseLaboratory(id, labID),
         ]);
         setCourse(new Course(_course));
         setLaboratory(new CourseLaboratory(_laboratory));

@@ -7,10 +7,10 @@ import {
 } from 'react-bootstrap';
 import { Course } from '../../interfaces/course';
 import { LoadingSpinner } from '../loading-spinner';
-import { getCourse } from '../../services/api/courses.service';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
+import { getPublicCourse } from '../../services/api/courses.service';
 
 function computeCompoundDate(lab: CourseLaboratory) {
   const dates = new Set<string>();
@@ -32,7 +32,7 @@ function CourseComponent(): JSX.Element {
   const getAndSetCourse = async (courseID: string) => {
     try {
       setLoading(true);
-      const { course: _course } = await getCourse(courseID);
+      const { course: _course } = await getPublicCourse(courseID);
       setCourse(new Course(_course));
     } catch (e) {
       console.error(e);

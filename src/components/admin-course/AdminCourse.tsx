@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 import { Course, CourseLanguage } from '../../interfaces/course';
-import { deleteCourse, getCourse, putCourse } from '../../services/api/courses.service';
+import { deleteAdminCourse, getAdminCourse, putAdminCourse } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
@@ -36,7 +36,7 @@ function AdminCourseComponent(): JSX.Element {
   const getAndSetCourse = useCallback(async () => {
     try {
       setLoading(true);
-      const c = await getCourse(id);
+      const c = await getAdminCourse(id);
       validateAndSetCourse(new Course(c.course));
     } catch (e) {
       setError(e);
@@ -67,7 +67,7 @@ function AdminCourseComponent(): JSX.Element {
               variant="primary"
               type="submit"
               onClick={async () => {
-                await putCourse(course);
+                await putAdminCourse(course);
                 await getAndSetCourse();
               }}
             >
@@ -80,7 +80,7 @@ function AdminCourseComponent(): JSX.Element {
             onClick={async () => {
               try {
                 setLoading(true);
-                await deleteCourse(course._id);
+                await deleteAdminCourse(course._id);
                 alert('course deleted successfully');
               } catch (e) {
                 setError(e);

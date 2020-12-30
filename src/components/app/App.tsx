@@ -11,7 +11,6 @@ import { RegisterComponent } from '../register';
 import { ResearchComponent } from '../research';
 import { ArticlesComponent } from '../articles';
 import { FooterComponent } from '../footer';
-import { getCourses } from '../../services/api/courses.service';
 import { Course } from '../../interfaces/course';
 import { Component404 } from '../404';
 import { CourseListComponent } from '../courseList';
@@ -40,6 +39,7 @@ import { LoadingSpinner } from '../loading-spinner';
 import { IGetArticlesResponse } from '../../interfaces/api';
 import { IUser, Role } from '../../interfaces/user';
 import { axiosInstance } from '../../services/api/request.service';
+import { getPublicCourses } from '../../services/api/courses.service';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -62,7 +62,7 @@ function App():JSX.Element {
       const [
         { courses: _courses }, { articles: _articles },
       ] = await Promise.all([
-        getCourses(),
+        getPublicCourses(),
         getArticles().catch(() => ({ articles: [] } as IGetArticlesResponse)),
       ]);
       setCourses(_courses.map((x) => new Course(x)));

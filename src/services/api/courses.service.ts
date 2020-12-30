@@ -31,9 +31,21 @@ import { axiosInstance } from './request.service';
 import { config } from '../../config';
 
 /**
+ * /public/course GET
+ */
+export async function getPublicCourses(): Promise<IGetCoursesResponse> {
+  if (config.useMocks) {
+    const { courses } = await getCoursesListMockResponse();
+    return { courses: courses.map((x) => new Course(x)) };
+  }
+  const { courses } = (await axiosInstance.get('/public/course')).data as IGetCoursesResponse;
+  return { courses: courses.map((x) => new Course(x)) };
+}
+
+/**
  * /course GET
  */
-export async function getCourses(): Promise<IGetCoursesResponse> {
+export async function getAdminCourses(): Promise<IGetCoursesResponse> {
   if (config.useMocks) {
     const { courses } = await getCoursesListMockResponse();
     return { courses: courses.map((x) => new Course(x)) };
@@ -43,9 +55,18 @@ export async function getCourses(): Promise<IGetCoursesResponse> {
 }
 
 /**
+ * /public/course/:id GET
+ */
+export async function getPublicCourse(_id: string): Promise<IGetCourseResponse> {
+  if (config.useMocks) { return getCourseMockResponse(_id); }
+  const { course } = (await axiosInstance.get(`/public/course/${_id}`)).data as IGetCourseResponse;
+  return { course: new Course(course) };
+}
+
+/**
  * /course/:id GET
  */
-export async function getCourse(_id: string): Promise<IGetCourseResponse> {
+export async function getAdminCourse(_id: string): Promise<IGetCourseResponse> {
   if (config.useMocks) { return getCourseMockResponse(_id); }
   const { course } = (await axiosInstance.get(`/course/${_id}`)).data as IGetCourseResponse;
   return { course: new Course(course) };
@@ -54,7 +75,7 @@ export async function getCourse(_id: string): Promise<IGetCourseResponse> {
 /**
  * /course/:id PUT
  */
-export async function putCourse(course: Course): Promise<IPostCourseResponse> {
+export async function putAdminCourse(course: Course): Promise<IPostCourseResponse> {
   if (config.useMocks) { return putCourseMockResponse(course); }
   const { course: _course } = (await axiosInstance.post(`/course/${course._id}`, { course })).data as IPostCourseResponse;
   return { ok: true, course: new Course(_course) };
@@ -63,7 +84,7 @@ export async function putCourse(course: Course): Promise<IPostCourseResponse> {
 /**
  * /course/:id DELETE
  */
-export async function deleteCourse(_id: string): Promise<IApiPostResponse> {
+export async function deleteAdminCourse(_id: string): Promise<IApiPostResponse> {
   if (config.useMocks) { return deleteCourseMockResponse(_id); }
   const { ok } = (await axiosInstance.delete(`/course/${_id}`)).data as IApiPostResponse;
   return { ok };
@@ -72,29 +93,31 @@ export async function deleteCourse(_id: string): Promise<IApiPostResponse> {
 /**
  * /course/:id/group/:id2 GET
  */
-export async function getCourseGroup(
+export async function getAdminCourseGroup(
   courseID: string, groupID: string,
 ): Promise<IGetCourseGroupResponse> {
   if (config.useMocks) { return getCourseGroupMockResponse(courseID, groupID); }
-  const { courseId, courseName, group } = (await axiosInstance.get(`/course/${courseID}/group/${groupID}`)).data as IGetCourseGroupResponse;
+  const { courseId, courseName, group } = (await axiosInstance.get(`/public/course/${courseID}/group/${groupID}`)).data as IGetCourseGroupResponse;
   return { courseId, courseName, group: new CourseGroup(group) };
 }
 
 /**
  * /course/:id/group/:id2 PUT
  */
-export async function setCourseGroup(
+export async function setAdminCourseGroup(
   id: string, group: CourseGroup,
 ): Promise<IPostCourseGroupResponse> {
   if (config.useMocks) { return setCourseGroupResponse(id, group); }
-  const { ok, group: _group } = (await axiosInstance.put(`/course/${id}/group/${group._id}`, group)).data as IPostCourseGroupResponse;
+  const path = group._id === '' ? `/course/${id}/group` : `/course/${id}/group/${group._id}`;
+  const
+    { ok, group: _group } = (await axiosInstance.put(path, group)).data as IPostCourseGroupResponse;
   return { group: new CourseGroup(_group), ok };
 }
 
 /**
  * /course/:id/group/:id2 DELETE
  */
-export async function deleteCourseGroup(
+export async function deleteAdminCourseGroup(
   courseId: string,
   groupId: string,
 ): Promise<IApiPostResponse> {
@@ -106,7 +129,24 @@ export async function deleteCourseGroup(
 /**
  * /course/:id/laboratory/:id2 GET
  */
-export async function getCourseLaboratory(
+export async function getPublicCourseLaboratory(
+  courseID: string,
+  labID: string,
+): Promise<IGetLaboratoryResponse> {
+  if (config.useMocks) { return getLaboratoryMockResponse(courseID, labID); }
+  const {
+    courseId,
+    courseName,
+    laboratory,
+  } = (await axiosInstance.get(`/public/course/${courseID}/laboratory/${labID}`)).data as IGetLaboratoryResponse;
+
+  return { courseId, courseName, laboratory: new CourseLaboratory(laboratory) };
+}
+
+/**
+ * /course/:id/laboratory/:id2 GET
+ */
+export async function getAdminCourseLaboratory(
   courseID: string,
   labID: string,
 ): Promise<IGetLaboratoryResponse> {
@@ -123,7 +163,7 @@ export async function getCourseLaboratory(
 /**
  * /course/:id/laboratory/:id2 PUT
  */
-export async function putLaboratory(
+export async function putAdminLaboratory(
   courseID: string,
   lab: CourseLaboratory,
 ): Promise<IPutCourseLaboratoryResponse> {
@@ -133,14 +173,16 @@ export async function putLaboratory(
     return Promise.reject(error);
   }
   if (config.useMocks) { return setCourseLabMockResponse(courseID, lab); }
-  const { ok, laboratory } = (await axiosInstance.put(`/course/${courseID}/laboratory/${lab._id}`, lab)).data as IPutCourseLaboratoryResponse;
+  const path = lab._id === '' ? `/course/${courseID}/laboratory` : `/course/${courseID}/laboratory/${lab._id}`;
+  const
+    { ok, laboratory } = (await axiosInstance.put(path, lab)).data as IPutCourseLaboratoryResponse;
   return { ok, laboratory: new CourseLaboratory(laboratory) };
 }
 
 /**
  * /course/:id/laboratory/:id2 DELETE
  */
-export async function deleteCourseLaboratory(
+export async function deleteAdminCourseLaboratory(
   courseID: string,
   labID: string,
 ): Promise<IApiPostResponse> {
