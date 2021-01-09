@@ -4,12 +4,14 @@ import {
   CardDeck, Container,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { PendingCoursesComponent } from '../info-cards/PendingCoursesComponent';
 import { StudentSubmissionListComponent } from '../submission-list/StudentSubmissionList';
 import { StudentCourseListComponent } from './StudentCourseList';
 
 export function StudentDashboardComponent(): JSX.Element {
   const [t] = useTranslation();
+  const focus = new URLSearchParams(useLocation().search).get('focus');
 
   return (
     <Container>
@@ -27,7 +29,7 @@ export function StudentDashboardComponent(): JSX.Element {
             {t('STUDENT.DASHBOARD.YOUR_COURSES')}
           </Card.Header>
           <Card.Body>
-            <StudentCourseListComponent />
+            <StudentCourseListComponent focus={focus || ''} />
           </Card.Body>
         </Card>
         <Card className="chunky-width my-2">

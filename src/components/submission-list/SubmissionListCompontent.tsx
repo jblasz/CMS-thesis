@@ -212,7 +212,6 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                               >
                                 <FontAwesomeIcon icon={faTrash} />
                               </Button>
-
                             </ButtonGroup>
                           </Col>
                         </Form.Row>

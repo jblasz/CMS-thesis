@@ -51,9 +51,13 @@ function AdminStudentComponent(): JSX.Element {
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container>
-      <WarningStripComponent error={error} />
       <Card>
         <Card.Header>
           <small>{student._id || id}</small>
@@ -95,6 +99,7 @@ function AdminStudentComponent(): JSX.Element {
                 <InputGroup className="mb-3">
                   <InputGroup.Prepend>
                     <FormControl
+                      disabled
                       type="text"
                       onChange={(e) => {
                         student.email = e.target.value;
@@ -128,7 +133,6 @@ function AdminStudentComponent(): JSX.Element {
                       setLoading(true);
                       const { student: _student } = await patchAdminUser(student._id, {
                         contactEmail: student.contactEmail || '',
-                        email: student.email,
                         name: student.name || '',
                         usosId: student.usosId || '',
                       });

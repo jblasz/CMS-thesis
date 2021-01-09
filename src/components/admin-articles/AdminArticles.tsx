@@ -40,9 +40,12 @@ export function AdminArticlesComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container>
-      <WarningStripComponent error={error} />
       <ListGroup>
         {articles.map((x) => (
           <ListGroup.Item key={x._id}>

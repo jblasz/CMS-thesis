@@ -45,6 +45,10 @@ export function StudentSubmissionListComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   if (!submissions.length) {
     return (
       <Container>
@@ -58,7 +62,6 @@ export function StudentSubmissionListComponent(): JSX.Element {
       <div className="box">
         <div className="box-inner">
           <div className="student-submission-list">
-            <WarningStripComponent error={error} />
             <Table className="table-sm table-bright">
               <thead>
                 <tr>

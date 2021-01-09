@@ -1,14 +1,19 @@
 import React, { useContext } from 'react';
 import { Redirect, Route, RouteProps } from 'react-router-dom';
+import { Role } from '../../interfaces/user';
 import { AppContext } from '../../services/contexts/app-context';
 
-function PrivateRoute(props: RouteProps) {
-  const { component, ...other } = props;
+interface PrivateRouteProps extends RouteProps {
+  admin: boolean
+}
+
+function PrivateRoute(props: PrivateRouteProps) {
+  const { component, admin, ...other } = props;
   const { user } = useContext(AppContext);
   if (!component) {
     throw new Error('Component missing?');
   }
-  if (!user) {
+  if (!user || (admin && user.role !== Role.ADMIN)) {
     return <Redirect to="/404" />;
   }
   return (

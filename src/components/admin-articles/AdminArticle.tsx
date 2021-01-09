@@ -50,10 +50,13 @@ export function AdminArticleComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container>
       <Form>
-        <WarningStripComponent error={error} />
         <Row className="justify-content-between">
           <Button onClick={async () => {
             try {

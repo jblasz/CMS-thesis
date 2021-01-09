@@ -83,10 +83,12 @@ function AdminCourseGroupComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
   return (
     <Container>
       <Form>
-        <WarningStripComponent error={error} />
         <Button
           className="float-right"
           onClick={async () => {

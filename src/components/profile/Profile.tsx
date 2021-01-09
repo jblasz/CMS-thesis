@@ -39,6 +39,10 @@ function ProfileComponent() {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   if (!user) {
     return <Redirect to="/404" />;
   }
@@ -53,7 +57,6 @@ function ProfileComponent() {
           <div className="box-wrapper">
             <div className="box">
               <div className="box-inner">
-                <WarningStripComponent error={error} />
                 <Form>
                   <InputGroup className="mb-3">
                     <InputGroup.Prepend>
@@ -74,10 +77,11 @@ function ProfileComponent() {
                     <InputGroup.Prepend>
                       <FormControl
                         type="text"
-                        onChange={(e) => {
-                          student.email = e.target.value;
-                          setStudent(new Student(student));
-                        }}
+                        disabled
+                        // onChange={(e) => {
+                        //   student.email = e.target.value;
+                        //   setStudent(new Student(student));
+                        // }}
                         value={student.email}
                       />
                     </InputGroup.Prepend>

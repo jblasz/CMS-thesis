@@ -46,7 +46,7 @@ export function CourseListSidebarComponent(props: CourseListSidebarComponentProp
   const [t] = useTranslation();
 
   return (
-    <div className="sidebar-container my-4 col-auto box-wrapper" style={{ alignContent: 'center' }}>
+    <div className="sidebar-container my-4 box-wrapper" style={{ alignContent: 'center' }}>
       <div className="row justify-content-center">
         <aside className="box sidebar col">
           <div className="box-inner">
@@ -56,7 +56,7 @@ export function CourseListSidebarComponent(props: CourseListSidebarComponentProp
                   {t('MAIN.FILTER.LANGUAGE')}
                 </Form.Label>
                 <Form.Row>
-                  <ButtonGroup>
+                  <ButtonGroup className="flex-wrap">
                     <Button
                       className="shadow-none btn"
                       active={languageFilter === Language.ANY}
@@ -86,7 +86,7 @@ export function CourseListSidebarComponent(props: CourseListSidebarComponentProp
                   {t('MAIN.FILTER.STATUS')}
                 </Form.Label>
                 <Form.Row>
-                  <ButtonGroup>
+                  <ButtonGroup className="flex-wrap">
                     <Button
                       className="shadow-none"
                       active={statusFilter === Status.ANY}

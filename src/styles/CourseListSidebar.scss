@@ -9,12 +9,10 @@
 }
 
 .sidebar-container {
-  max-width: 280px;
   .sidebar {
     position: -webkit-sticky;
     position: sticky;
     top: 80px;
-    min-width: 250px;
     max-width: 350px;
   
     .Dropdown-control {

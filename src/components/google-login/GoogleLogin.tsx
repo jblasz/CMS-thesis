@@ -26,20 +26,11 @@ export function GoogleButton(): JSX.Element {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { profileObj: { email, name }, accessToken } = onlineResp;
             try {
-              await postUser(accessToken);
-              // throw new Error('acb');
+              const { student } = await postUser(accessToken);
               setUser({
                 role: Role.STUDENT,
-                student: new Student({
-                  _id: '',
-                  email,
-                  name,
-                  usosId: '',
-                  registeredAt: new Date(),
-                  contactEmail: '',
-                }),
+                student: new Student(student),
               });
-              // throw new Error('acb');
             } catch (e) {
               setUser(null);
             }

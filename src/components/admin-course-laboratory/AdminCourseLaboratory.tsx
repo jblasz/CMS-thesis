@@ -13,7 +13,13 @@ import { IResourceMeta } from '../../interfaces/resource';
 import { CourseTask } from '../../interfaces/courseTask';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { EditorComponent } from '../editor/Editor';
-import { deleteAdminCourseLaboratory, getAdminCourseLaboratory, putAdminLaboratory } from '../../services/api/courses.service';
+import {
+  deleteAdminCourseLaboratory,
+  getAdminCourse,
+  getAdminCourseLaboratory,
+  putAdminCourseLaboratoryTask,
+  putAdminLaboratory,
+} from '../../services/api/courses.service';
 import { getAdminResources } from '../../services/api/resources.service';
 
 function AdminCourseLaboratoryComponent(): JSX.Element {
@@ -21,6 +27,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
 
   const [t] = useTranslation();
   const [laboratory, setLaboratory] = useState(new CourseLaboratory(labID));
+  const [groupHash, setGroupHash] = useState<{[key: string]: string}>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [chosenGroupID, setChosenGroup] = useState('');
@@ -44,9 +51,10 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   const getAndSetCourseLaboratory = useCallback(async () => {
     try {
       setLoading(true);
-      const [r, r2] = await Promise.all([
-        getAdminCourseLaboratory(courseID, labID), getAdminResources(),
+      const [r, r2, r3] = await Promise.all([
+        getAdminCourseLaboratory(courseID, labID), getAdminResources(), getAdminCourse(courseID),
       ]);
+      setGroupHash(r3.course.groups.reduce((agg, curr) => ({ ...agg, [curr._id]: curr.name }), {}));
       const lab = new CourseLaboratory(r.laboratory);
       validateAndSetLaboratory(lab);
       setResourceNames(r2.resources);
@@ -69,10 +77,13 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
   return (
     <Container>
       <Form className="my-2">
-        <WarningStripComponent error={error} />
         <Form.Row className="justify-content-between">
           <Col>
             <Button
@@ -103,11 +114,28 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
           </Button>
         </Form.Row>
         <Form.Row>
-          <p>
-            {t('ADMIN.LABORATORY.GROUP_TASKS')}
-          </p>
+          <Form.Group as={Col} key="name">
+            <Form.Label>{t('ADMIN.LABORATORY.NAME')}</Form.Label>
+            <Form.Control
+              type="string"
+              value={laboratory.name}
+              onChange={(event) => {
+                laboratory.name = event.target.value;
+                validateAndSetLaboratory(new CourseLaboratory(laboratory));
+              }}
+            />
+          </Form.Group>
         </Form.Row>
-        <Form.Row>
+        <Form.Row className="my-2">
+          <EditorComponent
+            text={laboratory.description}
+            setText={(text) => {
+              laboratory.description = text;
+              validateAndSetLaboratory(new CourseLaboratory(laboratory));
+            }}
+          />
+        </Form.Row>
+        <Form.Row className="my-2">
           <ButtonGroup toggle>
             {Object.keys(laboratory.tasks).map((groupID) => (
               <ToggleButton
@@ -123,7 +151,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                   setEditorText((laboratory.tasks[groupID] && laboratory.tasks[groupID].description) || '');
                 }}
               >
-                {groupID}
+                {groupHash[groupID] || 'ERROR'}
               </ToggleButton>
             ))}
           </ButtonGroup>
@@ -132,9 +160,16 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
       {chosenGroupID && laboratory.tasks[chosenGroupID] ? (() => {
         const task = laboratory.tasks[chosenGroupID];
         return (
-          <Jumbotron>
-            <h3>{`${t('ADMIN.LABORATORY.TASK_FOR_GROUP')} ${chosenGroupID}`}</h3>
-            <p><small>{task._id}</small></p>
+          <Jumbotron className="p-4">
+            <Button
+              className="float-right"
+              onClick={async () => {
+                await putAdminCourseLaboratoryTask(courseID, laboratory._id, chosenGroupID, task);
+              }}
+            >
+              {`${t('ADMIN.LABORATORY.UPLOAD_CHANGES_TO')} ${groupHash[chosenGroupID]}`}
+            </Button>
+            <h3>{`${t('ADMIN.LABORATORY.TASK_FOR_GROUP')} ${groupHash[chosenGroupID] || 'ERROR'}`}</h3>
             <Form>
               <Row>
                 <Col className="text-center">

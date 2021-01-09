@@ -86,6 +86,7 @@ function App():JSX.Element {
   axiosInstance.interceptors.response.use((response) => response,
     (error) => {
       if (error.response.status === 401) {
+        Cookies.remove('authorization');
         setUser(null);
         history.push('/');
       }
@@ -109,7 +110,7 @@ function App():JSX.Element {
           <div className="main">
             <NavigationBarComponent courses={courses} articles={articles} />
             <EventsStripComponent />
-            <Switch>
+            <Switch className="px-2">
               <Route
                 exact
                 path="/"
@@ -125,19 +126,19 @@ function App():JSX.Element {
               <Route exact path="/research" component={ResearchComponent} />
               <Route exact path="/articles/:id" component={ArticlesComponent} />
               <Route exact path="/code" component={CodeValidationComponent} />
-              <PrivateRoute exact path="/dashboard" component={StudentDashboardComponent} />
-              <PrivateRoute exact path="/profile" component={ProfileComponent} />
-              <PrivateRoute exact path="/admin" component={AdminPanelComponent} />
-              <PrivateRoute exact path="/admin/resources" component={AdminResourcesComponent} />
-              <PrivateRoute exact path="/admin/students" component={AdminStudentsComponent} />
-              <PrivateRoute exact path="/admin/students/:id" component={AdminStudentComponent} />
-              <PrivateRoute exact path="/admin/courses" component={AdminCoursesComponent} />
-              <PrivateRoute exact path="/admin/courses/:id" component={AdminCourseComponent} />
-              <PrivateRoute exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
-              <PrivateRoute exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
-              <PrivateRoute exact path="/admin/submissions" component={AdminSubmissionsComponent} />
-              <PrivateRoute exact path="/admin/articles" component={AdminArticlesComponent} />
-              <PrivateRoute exact path="/admin/articles/:id" component={AdminArticleComponent} />
+              <PrivateRoute admin={false} exact path="/dashboard" component={StudentDashboardComponent} />
+              <PrivateRoute admin={false} exact path="/profile" component={ProfileComponent} />
+              <PrivateRoute admin exact path="/admin" component={AdminPanelComponent} />
+              <PrivateRoute admin exact path="/admin/resources" component={AdminResourcesComponent} />
+              <PrivateRoute admin exact path="/admin/students" component={AdminStudentsComponent} />
+              <PrivateRoute admin exact path="/admin/students/:id" component={AdminStudentComponent} />
+              <PrivateRoute admin exact path="/admin/courses" component={AdminCoursesComponent} />
+              <PrivateRoute admin exact path="/admin/courses/:id" component={AdminCourseComponent} />
+              <PrivateRoute admin exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
+              <PrivateRoute admin exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
+              <PrivateRoute admin exact path="/admin/submissions" component={AdminSubmissionsComponent} />
+              <PrivateRoute admin exact path="/admin/articles" component={AdminArticlesComponent} />
+              <PrivateRoute admin exact path="/admin/articles/:id" component={AdminArticleComponent} />
               <Route exact path="/404" component={Component404} />
             </Switch>
           </div>
@@ -150,7 +151,7 @@ function App():JSX.Element {
             containerClasses="cookie-consent-container"
             overlay
             onAccept={() => {
-            // setting it again by hook to trigger useCookie hook elsewhere in the app
+              // setting it again by hook to trigger useCookie hook elsewhere in the app
               setCookie('CookieConsent', 'true');
             }}
           >

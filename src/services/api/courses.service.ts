@@ -23,12 +23,14 @@ import {
   IApiPostResponse,
   IPatchCourseGroupStudentResponse,
   IPutCourseLaboratoryResponse,
+  IPutCourseLaboratoryTaskResponse,
 } from '../../interfaces/api';
 import { ISubmissionMeta, SubmissionGrade } from '../../interfaces/resource';
 import { postSubmissionMockResponse } from '../mocks/in-memory-resource-mocks';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { axiosInstance } from './request.service';
 import { config } from '../../config';
+import { CourseTask } from '../../interfaces/courseTask';
 
 /**
  * /public/course GET
@@ -167,16 +169,32 @@ export async function putAdminLaboratory(
   courseID: string,
   lab: CourseLaboratory,
 ): Promise<IPutCourseLaboratoryResponse> {
-  const { error } = lab.validate();
-  if (error) {
-    console.error(error);
-    return Promise.reject(error);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { tasks: _tasks, ...toSend } = lab;
+  if (config.useMocks) {
+    return setCourseLabMockResponse(courseID, new CourseLaboratory({ ...toSend, tasks: {} }));
   }
-  if (config.useMocks) { return setCourseLabMockResponse(courseID, lab); }
   const path = lab._id === '' ? `/course/${courseID}/laboratory` : `/course/${courseID}/laboratory/${lab._id}`;
   const
-    { ok, laboratory } = (await axiosInstance.put(path, lab)).data as IPutCourseLaboratoryResponse;
+    { ok, laboratory } = (
+      await axiosInstance.put(path, toSend)
+    ).data as IPutCourseLaboratoryResponse;
   return { ok, laboratory: new CourseLaboratory(laboratory) };
+}
+
+/**
+ * /course/:id/laboratory/:id2/task/:groupid PUT
+ */
+export async function putAdminCourseLaboratoryTask(
+  courseID: string, labID: string, groupID: string, task: CourseTask,
+): Promise<IPutCourseLaboratoryTaskResponse> {
+  if (config.useMocks) {
+    return { ok: true, task: new CourseTask(task) };
+  }
+  const { ok, task: _task } = (
+    (await axiosInstance.put(`/course/${courseID}/laboratory/${labID}/task/${groupID}`, { task })).data as IPutCourseLaboratoryTaskResponse
+  );
+  return { ok, task: new CourseTask(_task) };
 }
 
 /**

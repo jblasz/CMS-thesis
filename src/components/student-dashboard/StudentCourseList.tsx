@@ -18,13 +18,18 @@ import { formatDate, stringifyDatePair } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 
-export function StudentCourseListComponent(): JSX.Element {
+interface StudentCourseListComponentProps {
+  focus: string
+}
+
+export function StudentCourseListComponent(props: StudentCourseListComponentProps): JSX.Element {
+  const { focus } = props;
   const [t] = useTranslation();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [courses, setCourses] = useState<ICourseGroupMetaWithGrade[]>([]);
   const [course, setCourse] = useState<IStudentCourse>();
-  const [courseId, setCourseId] = useState('');
+  const [courseId, setCourseId] = useState(focus || '');
 
   const getAndSetCourse = useCallback(async (id: string) => {
     try {
@@ -43,12 +48,18 @@ export function StudentCourseListComponent(): JSX.Element {
       setLoading(true);
       const { courses: _courses } = await getStudentCourses();
       setCourses(_courses);
+      const match = focus || (_courses && _courses[0] && _courses[0].groupId);
+      if (match) {
+        setCourseId(match);
+        const { course: _course } = await getStudentCourse(match);
+        setCourse(StudentCourse(_course));
+      }
     } catch (e) {
       setError(e);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [focus]);
 
   useEffect(() => {
     getAndSetCourses();
@@ -82,7 +93,10 @@ export function StudentCourseListComponent(): JSX.Element {
                   label: crs.courseName,
                 }))
               }
-              value={courseId}
+              value={{
+                value: courseId,
+                label: course && course._id === courseId && course.name,
+              }}
               onChange={(event) => {
                 setCourseId(event.value);
                 getAndSetCourse(event.value);
@@ -96,7 +110,7 @@ export function StudentCourseListComponent(): JSX.Element {
                 <>
                   <Row>
                     <Link to={`courses/${course._id}`}>
-                      <h3>{t('STUDENT.DASHBOARD.GOTO')}</h3>
+                      <h3>{course.name}</h3>
                     </Link>
                   </Row>
                   <Row>

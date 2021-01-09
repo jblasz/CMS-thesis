@@ -50,9 +50,12 @@ function CourseComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container>
-      <WarningStripComponent error={error} />
       <Col>
         <Row>
           <Col className="box-wrapper">

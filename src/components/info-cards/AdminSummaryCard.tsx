@@ -26,16 +26,21 @@ export function AdminSummaryCard(): JSX.Element {
   useEffect(() => {
     getAndSetAdminDashboard();
   }, []);
+
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Card className="chunky-width my-2">
       <Card.Header>
         {t('ADMIN.SUMMARY.SUMMARY')}
       </Card.Header>
       <Card.Body>
-        <WarningStripComponent error={error} />
         <Col>
           {`${t('ADMIN.SUMMARY.UNMARKED_COUNT')}: ${unmarkedCount}`}
         </Col>

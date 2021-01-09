@@ -52,8 +52,13 @@ function CodeValidationComponent(): JSX.Element {
       });
     }
   };
+
   if (loading) {
     return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <WarningStripComponent error={error} />;
   }
 
   if (!user) {
@@ -85,9 +90,9 @@ function CodeValidationComponent(): JSX.Element {
     }
     console.error('Unrecognized type', type);
   }
+
   return (
     <Jumbotron>
-      <WarningStripComponent error={error} />
       <Container className="justify-content-center">
         <Form>
           <Form.Label>{t('CODE_VALIDATION.CODE_VALIDATION')}</Form.Label>

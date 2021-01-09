@@ -164,7 +164,8 @@
       "GRACE": "Laboratory has a grace period of",
       "TASK": "Task resource",
       "PUBLIC_DESCRIPTION": "Laboratory description",
-      "UPLOAD": "Upload changes"
+      "UPLOAD": "Upload changes to public description",
+      "UPLOAD_CHANGES_TO": "Upload changes to task for"
     },
     "RESOURCES": {
       "HEADER": "Resources",
@@ -183,7 +184,8 @@
     "STUDENTS": {
       "NAME": "Name",
       "USOSID": "USOS id",
-      "REGISTEREDAT": "Registered at"
+      "REGISTEREDAT": "Registered at",
+      "EMAIL": "Email"
     },
     "STUDENT": {
       "RENAME": "Rename",
@@ -194,8 +196,12 @@
       "COURSE_ACTIVE": "Course active",
       "COURSE_CLOSED": "Course closed",
       "SAVE_CHANGES": "Upload changes",
-      "NOT_YET_GRADED": "No grade yet",
-      "CONTACT_EMAIL": "Contact email"
+      "NOT_YET_GRADED": "N/A",
+      "CONTACT_EMAIL": "Contact email",
+      "COURSE": "Course",
+      "GROUP": "Group",
+      "STATUS": "Status",
+      "GRADE": "Grade"
     },
     "SUMMARY": {
       "SUMMARY": "Summary",
@@ -300,7 +306,10 @@
       "GRADE": "Grade",
       "NO_GRADE_YET": "N/A",
       "SUBMITTED_AT": "Submitted",
-      "NO_SUBMISSIONS": "You have not made any submissions yet"
+      "NO_SUBMISSIONS": "You have not made any submissions yet",
+      "NOTE": "Attached note",
+      "DOWNLOAD_SUBMISSION": "Download submission",
+      "COPY_LINK_TO_CLIPBOARD":"Copy resource link to clipboard"
     }
   }
 }

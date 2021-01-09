@@ -159,7 +159,8 @@
       "GRACE": "Laboratorium ma dozwolony margines opóźnienia",
       "TASK": "Zasób zadania",
       "PUBLIC_DESCRIPTION": "Opis laboratorium",
-      "UPLOAD": "Zapisz zmiany"
+      "UPLOAD": "Zapisz zmiany do publicznego opisu",
+      "UPLOAD_CHANGES_TO": "Zapisz zmiany zadania dla"
     },
     "RESOURCES": {
       "HEADER": "Zasoby",
@@ -178,7 +179,8 @@
     "STUDENTS": {
       "NAME": "Imię",
       "USOSID": "USOS id",
-      "REGISTEREDAT": "Zarejestrowani"
+      "REGISTEREDAT": "Zarejestrowani",
+      "EMAIL": "Email"
     },
     "STUDENT": {
       "RENAME": "Zmień imię",
@@ -189,8 +191,12 @@
       "COURSE_ACTIVE": "Zajęcia aktywne",
       "COURSE_CLOSED": "Zajęcia zamknięte",
       "SAVE_CHANGES": "Zapisz zmiany",
-      "NOT_YET_GRADED": "Brak oceny",
-      "CONTACT_EMAIL": "Email kontaktowy"
+      "NOT_YET_GRADED": "N/A",
+      "CONTACT_EMAIL": "Email kontaktowy",
+      "COURSE": "Course",
+      "GROUP": "Group",
+      "STATUS": "Status",
+      "GRADE": "Grade"
     },
     "SUMMARY": {
       "SUMMARY": "Podsumowanie",
@@ -295,7 +301,10 @@
       "GRADE": "Ocena",
       "NO_GRADE_YET": "N/A",
       "SUBMITTED_AT": "Wysłane",
-      "NO_SUBMISSIONS": "Nie wysłano jeszcze żadnych rozwiązań"
+      "NO_SUBMISSIONS": "Nie wysłano jeszcze żadnych rozwiązań",
+      "NOTE": "Załączona notka",
+      "DOWNLOAD_SUBMISSION": "Pobierz wysłane rozwiązanie",
+      "COPY_LINK_TO_CLIPBOARD": "Kopiuj link do schowka"
     }
   }
 }

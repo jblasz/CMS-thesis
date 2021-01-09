@@ -2,11 +2,13 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
-// import './WarningStrip.scss';
 
 export function WarningStripComponent(props: {error: string}): JSX.Element {
   const { error } = props;
   const [{ hidden, hiddenFor }, setHidden] = useState({ hidden: false, hiddenFor: '' });
+  if (error) {
+    console.error({ error });
+  }
   return (
     error ? (
       <Row className={`justify-content-center row-auto wrapper my-2 ${hidden && hiddenFor === error ? 'hide' : ''}`}>

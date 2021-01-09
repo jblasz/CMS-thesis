@@ -32,12 +32,16 @@ export function AdminCodesCardComponent(): JSX.Element {
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Card className="chunky-width my-2">
       <Card.Header>
         {t('ADMIN.CODES.DESCR')}
       </Card.Header>
-      <WarningStripComponent error={error} />
       <Card.Body>
         <Form>
           <Form.Group controlId="formBasicCheckbox">

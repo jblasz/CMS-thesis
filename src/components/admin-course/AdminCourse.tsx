@@ -2,7 +2,7 @@ import React, {
   useState, useEffect, useCallback,
 } from 'react';
 import {
-  Container, Form, Col, Button, Table,
+  Container, Form, Col, Button, Table, InputGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
@@ -26,10 +26,13 @@ function AdminCourseComponent(): JSX.Element {
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [warning, setWarning] = useState('');
+  const [newName, setNewName] = useState('');
+  const [newLabName, setNewLabName] = useState('');
 
   const validateAndSetCourse = useCallback((crs: Course) => {
     const res = crs.validate();
-    setError(res.error || '');
+    setWarning(res.error || '');
     setCourseState(new Course(crs));
   }, []);
 
@@ -37,13 +40,13 @@ function AdminCourseComponent(): JSX.Element {
     try {
       setLoading(true);
       const c = await getAdminCourse(id);
-      validateAndSetCourse(new Course(c.course));
+      setCourseState(new Course(c.course));
     } catch (e) {
       setError(e);
     } finally {
       setLoading(false);
     }
-  }, [id, validateAndSetCourse]);
+  }, [id]);
 
   useEffect(() => {
     getAndSetCourse();
@@ -59,6 +62,7 @@ function AdminCourseComponent(): JSX.Element {
 
   return (
     <Container>
+      {warning ? <WarningStripComponent error={warning} /> : <></>}
       <Form>
         <Form.Row className="justify-content-between">
           <Col>
@@ -197,25 +201,35 @@ function AdminCourseComponent(): JSX.Element {
                   </td>
                 </tr>
               ))}
-              <tr>
-                <td>
-                  <Button
-                    className="mx-1"
-                    variant="primary"
-                    type="submit"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      if (course.laboratories.find((x) => x.name === '')) { return; }
-                      course.laboratories.push(new CourseLaboratory());
-                      validateAndSetCourse(course);
-                    }}
-                  >
-                    {t('ADMIN.COURSE.CREATE_LAB')}
-                  </Button>
-                </td>
-              </tr>
             </tbody>
           </Table>
+        </Form.Row>
+        <Form.Row>
+          <InputGroup>
+            <Form.Control
+              type="text"
+              value={newLabName}
+              onChange={(event) => {
+                setNewLabName(event.target.value);
+              }}
+            />
+            <InputGroup.Append>
+              <Button
+                className="mx-1"
+                variant="primary"
+                type="submit"
+                onClick={async (event) => {
+                  event.preventDefault();
+                  const l = new CourseLaboratory();
+                  l.name = newLabName;
+                  course.laboratories.push(l);
+                  validateAndSetCourse(course);
+                }}
+              >
+                {t('ADMIN.COURSE.CREATE_LAB')}
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
         </Form.Row>
         <Form.Row>
           <Table responsive>
@@ -239,25 +253,37 @@ function AdminCourseComponent(): JSX.Element {
                   </td>
                 </tr>
               ))}
-              <tr>
-                <td>
-                  <Button
-                    className="mx-1"
-                    variant="primary"
-                    type="submit"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      if (course.groups.find((x) => x.name === '')) { return; }
-                      course.groups.push(new CourseGroup());
-                      validateAndSetCourse(course);
-                    }}
-                  >
-                    {t('ADMIN.COURSE.CREATE_GROUP')}
-                  </Button>
-                </td>
-              </tr>
             </tbody>
           </Table>
+        </Form.Row>
+        <Form.Row>
+          <InputGroup>
+            <Form.Control
+              type="text"
+              value={newName}
+              onChange={(event) => {
+                setNewName(event.target.value);
+              }}
+            />
+            <InputGroup.Append>
+              <Button
+                className="mx-1"
+                variant="primary"
+                type="submit"
+                onClick={async (event) => {
+                  event.preventDefault();
+                  course.groups.push(new CourseGroup({
+                    _id: '',
+                    name: newName,
+                    students: [],
+                  }));
+                  validateAndSetCourse(course);
+                }}
+              >
+                {t('ADMIN.COURSE.CREATE_GROUP')}
+              </Button>
+            </InputGroup.Append>
+          </InputGroup>
         </Form.Row>
       </Form>
     </Container>

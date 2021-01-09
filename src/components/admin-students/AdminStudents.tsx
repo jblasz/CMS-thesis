@@ -1,25 +1,47 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 import {
+  Button,
   Container, Table,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Student } from '../../interfaces/student';
-import { getAdminUsers } from '../../services/api/user.service';
+import { deleteAdminUser, getAdminUsers } from '../../services/api/user.service';
 import { formatDate } from '../../utils';
+import { WarningStripComponent } from '../info/WarningStrip';
+import { LoadingSpinner } from '../loading-spinner';
 
 function AdminStudentsComponent(): JSX.Element {
   const [t] = useTranslation();
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [students, setStudents] = useState<Student[]>([]);
 
   const getAndSetStudents = async () => {
-    setStudents((await getAdminUsers()).students.map((x) => new Student(x)));
+    try {
+      setLoading(true);
+      setStudents((await getAdminUsers()).students.map((x) => new Student(x)));
+    } catch (e) {
+      setError(e);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     getAndSetStudents();
   }, []);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
 
   return (
     <Container>
@@ -30,6 +52,7 @@ function AdminStudentsComponent(): JSX.Element {
             <th>{t('ADMIN.STUDENTS.EMAIL')}</th>
             <th>{t('ADMIN.STUDENTS.USOSID')}</th>
             <th>{t('ADMIN.STUDENTS.REGISTEREDAT')}</th>
+            <th>{' '}</th>
           </tr>
         </thead>
         <tbody>
@@ -48,6 +71,22 @@ function AdminStudentsComponent(): JSX.Element {
               </td>
               <td>
                 {(student.registeredAt && formatDate(student.registeredAt)) || ''}
+              </td>
+              <td>
+                <Button
+                  onClick={async () => {
+                    try {
+                      setLoading(true);
+                      await deleteAdminUser(student._id);
+                    } catch (e) {
+                      setError(e);
+                    } finally {
+                      setLoading(false);
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </Button>
               </td>
             </tr>
           ))}

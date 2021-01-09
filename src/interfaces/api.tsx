@@ -3,6 +3,7 @@ import { Code } from './code';
 import { ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
+import { ICourseTask } from './courseTask';
 import { IResourceMeta, SubmissionGrade, ISubmissionMeta } from './resource';
 import { IStudent } from './student';
 import { IStudentCourse } from './studentCourse';
@@ -73,6 +74,10 @@ export interface IPostCourseGroupResponse extends IApiPostResponse {
 
 export interface IPutCourseLaboratoryResponse extends IApiPostResponse {
   laboratory: ICourseLaboratory
+}
+
+export interface IPutCourseLaboratoryTaskResponse extends IApiPostResponse {
+  task: ICourseTask
 }
 
 export interface IPatchCourseGroupStudentResponse extends IApiPostResponse {

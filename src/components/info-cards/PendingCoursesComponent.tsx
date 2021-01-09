@@ -38,11 +38,15 @@ export function PendingCoursesComponent(props: PendingCoursesComponentProps): JS
   if (loading) {
     return <LoadingSpinner />;
   }
+
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container className="box-wrapper">
       <div className="box">
         <div className="box-inner">
-          <WarningStripComponent error={error} />
           <Card.Subtitle className="mb-2">
             <i>{t('PENDING.LABS.TIMERANGE')}</i>
           </Card.Subtitle>

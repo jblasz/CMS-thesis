@@ -109,7 +109,7 @@ export function EventsStripComponent(): JSX.Element {
                 {upcomingEvents.map((event) => (
                   <tr key={`${event.courseId}${event.groupId}${event.labId}`}>
                     <td>
-                      <Link to={`/courses/${event.courseId}/laboratory/${event.labId}`}>
+                      <Link to={`/dashboard?focus=${event.courseId}baf`}>
                         {`${event.courseName}, ${event.labName} `}
                       </Link>
                     </td>
@@ -135,7 +135,7 @@ export function EventsStripComponent(): JSX.Element {
                 {upcomingEvents.map((event) => (
                   <tr key={`${event.courseId}${event.groupId}${event.labId}`}>
                     <td>
-                      <Link to={`/courses/${event.courseId}/laboratory/${event.labId}`}>
+                      <Link to={`/dashboard?focus=${event.courseId}`}>
                         {`${event.courseName}, ${event.labName} `}
                       </Link>
                     </td>

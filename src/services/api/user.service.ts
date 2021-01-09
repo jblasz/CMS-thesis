@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { config } from '../../config';
 import {
   IPostUserResponse,
@@ -19,13 +20,16 @@ export async function postUser(jwt: string): Promise<IPostUserResponse> {
   if (config.useMocks) {
     return postUserMockResponse(jwt);
   }
-  const { data } = await axiosInstance.post('/public/user', {
+  const { data, headers: { authorization } } = await axiosInstance.post('/public/user', {
     tokenId: jwt,
   }, {
     headers: {
       authorization: jwt,
     },
   });
+  if (authorization) {
+    Cookies.set('authorization', authorization);
+  }
   const { attends, student, submissions } = data as IPostUserResponse;
   return {
     attends,
@@ -100,13 +104,13 @@ export async function patchAdminUser(id: string, params: {
 }
 
 /**
- * /students/:id DELETE
+ * /user/:id DELETE
  */
 export async function deleteAdminUser(id: string): Promise<IApiPostResponse> {
   if (config.useMocks) {
     return deleteStudentMockResponse(id);
   }
-  const { data } = await axiosInstance.delete(`/students/${id}`);
+  const { data } = await axiosInstance.delete(`/user/${id}`);
   const { ok } = data as IApiPostResponse;
   return { ok };
 }
