@@ -2,12 +2,14 @@ import joi from 'joi';
 import { CourseGroupStudent, ICourseGroupStudent } from './courseGroupStudent';
 import { Validable, ValResult } from './misc';
 
-export interface ICourseGroup {
+export interface IGroupStub {
   _id: string
   name: string
-  students: ICourseGroupStudent[]
 }
 
+export interface ICourseGroup extends IGroupStub {
+  students: ICourseGroupStudent[]
+}
 export class CourseGroup implements ICourseGroup, Validable {
   _id = ''
 
@@ -15,14 +17,17 @@ export class CourseGroup implements ICourseGroup, Validable {
 
   students: CourseGroupStudent[] = []
 
-  constructor(o?:ICourseGroup | string) {
+  constructor(o?:ICourseGroup | string | IGroupStub) {
     if (typeof o === 'string') {
       this._id = o;
     } else if (o) {
       this._id = o._id || '';
       this.name = o.name || '';
-      if (o.students && o.students.length) {
-        this.students = o.students.map((student) => new CourseGroupStudent(student));
+      if (Object.keys(o).includes('students')) {
+        const oo = o as ICourseGroup;
+        if (oo.students && oo.students.length) {
+          this.students = oo.students.map((student) => new CourseGroupStudent(student));
+        }
       }
     }
   }

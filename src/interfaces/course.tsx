@@ -1,8 +1,7 @@
 import joi from 'joi';
 import { v4 } from 'uuid';
-import { IResourceLink } from './resourceLink';
-import { CourseLaboratory, ICourseLaboratory } from './courseLaboratory';
-import { ICourseGroup, CourseGroup } from './courseGroup';
+import { CourseLaboratory, ICourseLaboratory, ILaboratoryStub } from './courseLaboratory';
+import { ICourseGroup, CourseGroup, IGroupStub } from './courseGroup';
 import { Validable, ValResult } from './misc';
 
 export enum CourseLanguage {
@@ -10,17 +9,21 @@ export enum CourseLanguage {
   PL = 'pl'
 }
 
-export interface ICourse {
+export interface ICourseStub {
   _id: string
   name: string
-  descriptionShort: string
-  description: string
   language: CourseLanguage
   semester: string
-  links: IResourceLink[]
+  active: boolean
+  description: string
+  descriptionShort: string
+  groups: IGroupStub[]
+  laboratories: ILaboratoryStub[]
+}
+
+export interface ICourse extends ICourseStub {
   laboratories: ICourseLaboratory[]
   groups: ICourseGroup[]
-  active: boolean
   shown: boolean
 }
 
@@ -37,8 +40,6 @@ export class Course implements ICourse, Validable {
 
   semester = 'F'
 
-  links: IResourceLink[] = []
-
   laboratories: CourseLaboratory[] = []
 
   groups: CourseGroup[] = []
@@ -47,7 +48,7 @@ export class Course implements ICourse, Validable {
 
   shown = true
 
-  constructor(o?: ICourse | string) {
+  constructor(o?: ICourse | string | ICourseStub) {
     if (typeof o === 'string') {
       this._id = o;
     } else if (o) {
@@ -57,14 +58,14 @@ export class Course implements ICourse, Validable {
       this.descriptionShort = o.descriptionShort || '';
       this.language = o.language || 'en';
       this.semester = o.semester || '';
-      this.links = o.links || [];
       this.active = !!o.active;
-      this.shown = !!o.shown;
-      if (o.laboratories && o.laboratories.length) {
-        this.laboratories = o.laboratories.map((lab) => new CourseLaboratory(lab));
+      const oo = o as ICourse;
+      this.shown = !!oo.shown;
+      if (oo.laboratories && oo.laboratories.length) {
+        this.laboratories = oo.laboratories.map((lab) => new CourseLaboratory(lab));
       }
-      if (o.groups && o.groups.length) {
-        this.groups = o.groups.map((group) => new CourseGroup(group));
+      if (oo.groups && oo.groups.length) {
+        this.groups = oo.groups.map((group) => new CourseGroup(group));
       }
     }
   }
@@ -74,19 +75,16 @@ export class Course implements ICourse, Validable {
       _id: joi.string().optional(),
       name: joi.string().required(),
       description: joi.string().required(),
+      descriptionShort: joi.string().required(),
       language: joi.string().allow('en', 'pl').required(),
       semester: joi.string().required(),
-      links: joi.array().items(joi.object().keys({
-        description: joi.string().required(),
-        link: joi.string().required(),
-      })),
     }).validate({
       _id: this._id,
       name: this.name,
       description: this.description,
+      descriptionShort: this.descriptionShort,
       language: this.language,
       semester: this.semester,
-      links: this.links,
     });
     if (error) {
       return { ok: false, error: error.message };

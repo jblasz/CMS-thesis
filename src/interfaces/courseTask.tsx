@@ -10,6 +10,7 @@ export interface ICourseTask {
   resourceId?: string
   forLabName?: string
   forLabId?: string
+  location: string
 }
 
 export class CourseTask implements ICourseTask, Validable {
@@ -29,6 +30,8 @@ export class CourseTask implements ICourseTask, Validable {
 
   forLabId?: string
 
+  location = ''
+
   constructor(o?: ICourseTask) {
     if (o) {
       this._id = o._id || '';
@@ -36,6 +39,7 @@ export class CourseTask implements ICourseTask, Validable {
       this.resourceId = o.resourceId || '';
       this.forLabId = o.forLabId || '';
       this.forLabName = o.forLabName || '';
+      this.location = o.location || '';
       if (o.dateFrom) { this.dateFrom = new Date(o.dateFrom); }
       if (o.dateTo) { this.dateTo = new Date(o.dateTo); }
     }

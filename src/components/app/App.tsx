@@ -85,7 +85,7 @@ function App():JSX.Element {
   (error) => error);
   axiosInstance.interceptors.response.use((response) => response,
     (error) => {
-      if (error.response.status === 401) {
+      if (error && error.response && error.response.status === 401) {
         Cookies.remove('authorization');
         setUser(null);
         history.push('/');
@@ -109,7 +109,7 @@ function App():JSX.Element {
         <main>
           <div className="main">
             <NavigationBarComponent courses={courses} articles={articles} />
-            <EventsStripComponent />
+            { user && user.role === Role.STUDENT ? <EventsStripComponent /> : <></> }
             <Switch className="px-2">
               <Route
                 exact

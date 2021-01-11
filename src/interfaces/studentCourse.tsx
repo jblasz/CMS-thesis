@@ -1,6 +1,5 @@
 import { CourseLanguage } from './course';
 import { SubmissionGrade } from './resource';
-import { IResourceLink } from './resourceLink';
 
 export interface IStudentCourse {
   _id: string
@@ -8,7 +7,6 @@ export interface IStudentCourse {
   description: string
   language: CourseLanguage
   semester: string
-  links: IResourceLink[]
   laboratories: IStudentCourseLaboratory[]
   groupId: string
   groupName: string
@@ -43,7 +41,6 @@ export function StudentCourse(o: IStudentCourse): IStudentCourse {
     description: o.description || '',
     language: o.language || CourseLanguage.EN,
     semester: o.semester || '',
-    links: o.links || [],
     laboratories: (o.laboratories && o.laboratories.map((x) => StudentCourseLaboratory(x))) || [],
     active: o.active || true,
     groupId: o.groupId || '',

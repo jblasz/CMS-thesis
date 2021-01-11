@@ -117,6 +117,7 @@ export function generateCourseTaskMock(dateFrom?: Date, duration?: number):Cours
       }
       : {}),
     resourceId: grabRandomResource()._id,
+    location: '',
   });
 }
 

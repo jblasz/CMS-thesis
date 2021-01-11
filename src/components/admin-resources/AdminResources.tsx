@@ -49,10 +49,13 @@ function AdminResourcesComponent(): JSX.Element {
     return <LoadingSpinner />;
   }
 
+  if (error) {
+    return <WarningStripComponent error={error} />;
+  }
+
   return (
     <Container>
       <Form>
-        <WarningStripComponent error={error} />
         <Form.Row>
           <Table responsive>
             <thead>

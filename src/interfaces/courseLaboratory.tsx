@@ -10,11 +10,14 @@ export interface TaskToGroupMapping extends ITaskToGroupMapping {
   [groupId: string]: CourseTask
 }
 
-export interface ICourseLaboratory {
+export interface ILaboratoryStub {
   _id: string
   name: string
   description: string
   descriptionShort: string
+}
+
+export interface ICourseLaboratory extends ILaboratoryStub {
   tasks: ITaskToGroupMapping
 }
 
@@ -29,7 +32,7 @@ export class CourseLaboratory implements ICourseLaboratory, Validable {
 
   name = ''
 
-  constructor(o?: ICourseLaboratory | string) {
+  constructor(o?: ICourseLaboratory | string | ILaboratoryStub) {
     if (typeof o === 'string') {
       this._id = o;
     } else if (o) {
@@ -37,12 +40,13 @@ export class CourseLaboratory implements ICourseLaboratory, Validable {
       this.description = o.description || '';
       this.descriptionShort = o.descriptionShort || '';
       this.name = o.name || '';
-      if (o.tasks) {
-        this.tasks = Object.keys(o.tasks).reduce(
+      const oo = o as ICourseLaboratory;
+      if (oo.tasks) {
+        this.tasks = Object.keys(oo.tasks).reduce(
           (newMapping: TaskToGroupMapping, groupUUID) => (
             {
               ...newMapping,
-              [groupUUID]: new CourseTask(o.tasks[groupUUID]),
+              [groupUUID]: new CourseTask(oo.tasks[groupUUID]),
             }),
           {},
         );
