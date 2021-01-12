@@ -125,7 +125,6 @@ export async function getStudentCourseMockResponse(id: string): Promise<IGetStud
         dateFrom: new Date(new Date().valueOf() + 60 * 60 * 1000),
       }],
       language: CourseLanguage.EN,
-      links: [],
       name: 'course name',
       semester: '2020Z',
       grade: SubmissionGrade.B_PLUS,

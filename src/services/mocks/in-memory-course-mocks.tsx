@@ -56,7 +56,6 @@ export function generateCourseMock(id = v4()) {
     semester: `20${Math.random() > 0.5 ? '20' : '21'}${Math.random() > 0.5 ? 'Z' : 'L'}`,
     groups,
     laboratories: generateList(3, 5).map(() => generateLaboratoryMock(groups)),
-    links: [],
     active: Math.random() > 0.5,
     shown: true,
   });
