@@ -94,7 +94,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
                   className={`card-container col-3 m-3 ${course.active ? '' : 'inactive'}`}
                   key={course._id}
                   id={`li-course-${course._id}`}
-                  style={{ minWidth: '300px' }}
+                  // style={{ minWidth: '300px' }}
                 >
                   {/*
                   below is a hack to scroll taking into account 80px navbar offset.

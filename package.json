@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.30",
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
@@ -16,6 +17,7 @@
     "bootstrap-switch-button-react": "^1.2.0",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
+    "express": "^4.17.1",
     "html-to-draftjs": "^1.5.0",
     "i18next": "^19.6.0",
     "i18next-browser-languagedetector": "^6.0.1",
@@ -47,6 +49,7 @@
     "eject": "react-scripts eject",
     "watch": "npm-watch",
     "serve": "serve -s build",
+    "e-serve": "node serve.js",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings 0 --fix"
   },
   "husky": {

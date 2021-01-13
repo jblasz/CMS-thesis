@@ -31,14 +31,13 @@
 }
 
 .tiles-wrap {
-  // margin: 50px auto;
-
+  position: relative;
+  z-index: 0;
   .card-container {
     min-width: 30vh;
-    // min-height: 25vh;
-    // background: master.$radial-grad;
-    @include master.nav-colorset();
+    position: relative;
 
+    @include master.nav-colorset();
     .description {
       padding: 20px 10px 10px 10px;
     }
@@ -78,10 +77,6 @@
       right: -2px;
       bottom: -2px;
       z-index: -1;
-      background: #fff;
-    }
-
-    &:before {
       transform: skew(-2deg, -2deg);
       background: master.$col-3;
     }

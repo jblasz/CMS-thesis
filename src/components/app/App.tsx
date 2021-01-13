@@ -3,8 +3,9 @@ import Cookies from 'js-cookie';
 import CookieConsent from 'react-cookie-consent';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
-import { Route, useHistory } from 'react-router-dom';
-import Switch from 'react-bootstrap/esm/Switch';
+import {
+  Redirect, Route, useHistory, Switch,
+} from 'react-router-dom';
 import { NavigationBarComponent } from '../navbar';
 import { LoginComponent } from '../login';
 import { RegisterComponent } from '../register';
@@ -16,7 +17,6 @@ import { Component404 } from '../404';
 import { CourseListComponent } from '../courseList';
 import { CourseComponent } from '../course';
 import { LaboratoryComponent } from '../laboratory';
-import { PrivateRoute } from '../private-route';
 import { ProfileComponent } from '../profile';
 import { AdminPanelComponent } from '../admin-panel/AdminPanel';
 import { AdminCoursesComponent } from '../admin-courses';
@@ -68,7 +68,7 @@ function App():JSX.Element {
       setCourses(_courses.map((x) => new Course(x)));
       setArticles(_articles);
     } catch (e) {
-      console.error('error?', e);
+      console.error('getAndSetCourses() error', e);
       setError(`GetAndSetCourse() ${e}`);
     } finally {
       setLoading(false);
@@ -109,11 +109,11 @@ function App():JSX.Element {
         <main>
           <div className="main">
             <NavigationBarComponent courses={courses} articles={articles} />
-            { user && user.role === Role.STUDENT ? <EventsStripComponent /> : <></> }
-            <Switch className="px-2">
+            { user && (user as IUser).role === Role.STUDENT ? <EventsStripComponent /> : <></> }
+            <Switch>
               <Route
-                exact
                 path="/"
+                exact
                 component={() => (
                   <CourseListComponent courses={courses} />
                 )}
@@ -126,20 +126,35 @@ function App():JSX.Element {
               <Route exact path="/research" component={ResearchComponent} />
               <Route exact path="/articles/:id" component={ArticlesComponent} />
               <Route exact path="/code" component={CodeValidationComponent} />
-              <PrivateRoute admin={false} exact path="/dashboard" component={StudentDashboardComponent} />
-              <PrivateRoute admin={false} exact path="/profile" component={ProfileComponent} />
-              <PrivateRoute admin exact path="/admin" component={AdminPanelComponent} />
-              <PrivateRoute admin exact path="/admin/resources" component={AdminResourcesComponent} />
-              <PrivateRoute admin exact path="/admin/students" component={AdminStudentsComponent} />
-              <PrivateRoute admin exact path="/admin/students/:id" component={AdminStudentComponent} />
-              <PrivateRoute admin exact path="/admin/courses" component={AdminCoursesComponent} />
-              <PrivateRoute admin exact path="/admin/courses/:id" component={AdminCourseComponent} />
-              <PrivateRoute admin exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
-              <PrivateRoute admin exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
-              <PrivateRoute admin exact path="/admin/submissions" component={AdminSubmissionsComponent} />
-              <PrivateRoute admin exact path="/admin/articles" component={AdminArticlesComponent} />
-              <PrivateRoute admin exact path="/admin/articles/:id" component={AdminArticleComponent} />
+              { user
+                ? (
+                  <>
+                    <Route exact path="/dashboard" component={StudentDashboardComponent} />
+                    <Route exact path="/profile" component={ProfileComponent} />
+                  </>
+                )
+                : <></>}
+              {
+                user && user.role === Role.ADMIN
+                  ? (
+                    <>
+                      <Route exact path="/admin" component={AdminPanelComponent} />
+                      <Route exact path="/admin/resources" component={AdminResourcesComponent} />
+                      <Route exact path="/admin/students" component={AdminStudentsComponent} />
+                      <Route exact path="/admin/students/:id" component={AdminStudentComponent} />
+                      <Route exact path="/admin/courses" component={AdminCoursesComponent} />
+                      <Route exact path="/admin/courses/:id" component={AdminCourseComponent} />
+                      <Route exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
+                      <Route exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
+                      <Route exact path="/admin/submissions" component={AdminSubmissionsComponent} />
+                      <Route exact path="/admin/articles" component={AdminArticlesComponent} />
+                      <Route exact path="/admin/articles/:id" component={AdminArticleComponent} />
+                    </>
+                  )
+                  : <></>
+              }
               <Route exact path="/404" component={Component404} />
+              <Redirect to="/404" />
             </Switch>
           </div>
           <FooterComponent />
@@ -158,6 +173,7 @@ function App():JSX.Element {
             {t('MAIN.COOKIE_CONSENT')}
           </CookieConsent>
         </main>
+
       </AppContext.Provider>
     </div>
   );

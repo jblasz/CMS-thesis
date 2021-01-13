@@ -33,6 +33,7 @@ export function GoogleButton(): JSX.Element {
                 student: new Student(student),
               });
             } catch (e) {
+              console.error('google signin success, but backend request errored', e);
               setUser(null);
             }
           }
