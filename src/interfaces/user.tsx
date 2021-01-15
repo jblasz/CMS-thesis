@@ -12,7 +12,7 @@ export interface IUser {
 
 export function User(u?: IUser): IUser {
   return {
-    role: Role.STUDENT,
+    role: Role.ADMIN,
     student: new Student(),
     ...u,
   };

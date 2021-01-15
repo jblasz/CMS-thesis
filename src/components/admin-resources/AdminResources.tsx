@@ -1,7 +1,7 @@
 import React, {
-  useState, useEffect, useCallback, Fragment,
+  useState, useEffect, useCallback, Fragment, useContext,
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import {
   Container, Form, Col, Button, Table, Collapse, InputGroup, ButtonGroup,
 } from 'react-bootstrap';
@@ -15,6 +15,8 @@ import { LoadingSpinner } from '../loading-spinner';
 import { Permission, IResourceMeta } from '../../interfaces/resource';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { deleteAdminResource, getAdminResources, patchAdminResource } from '../../services/api/resources.service';
+import { Role } from '../../interfaces/user';
+import { AppContext } from '../../services/contexts/app-context';
 
 function AdminResourcesComponent(): JSX.Element {
   const [t] = useTranslation();
@@ -26,6 +28,7 @@ function AdminResourcesComponent(): JSX.Element {
     _id: '', name: '', usedBy: [], permission: Permission.ALL,
   });
   const [rename, setRename] = useState('');
+  const { user } = useContext(AppContext);
 
   const getAndSetResources = useCallback(async () => {
     try {
@@ -44,6 +47,10 @@ function AdminResourcesComponent(): JSX.Element {
   useEffect(() => {
     getAndSetResources();
   }, [getAndSetResources]);
+
+  if (!user || user.role !== Role.ADMIN) {
+    return <Redirect to="/404" />;
+  }
 
   if (loading) {
     return <LoadingSpinner />;

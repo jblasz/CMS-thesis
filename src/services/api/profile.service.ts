@@ -7,9 +7,9 @@ import { axiosInstance } from './request.service';
 /**
  * /profile GET
  */
-export async function getProfile(): Promise<GetStudentResponse> {
+export async function getProfile(studentID: string): Promise<GetStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse();
+    const r = await getStudentMockResponse(studentID);
     return { ...r, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.get('/profile');
@@ -25,13 +25,14 @@ export async function getProfile(): Promise<GetStudentResponse> {
  * /profile PATCH
  */
 export async function patchProfile(params: {
+  studentID: string
   name?: string
   email?: string
   contactEmail?: string
   usosId?: string
 }): Promise<PatchStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse();
+    const r = await getStudentMockResponse(params.studentID);
     return { ok: true, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.patch('/profile', params);

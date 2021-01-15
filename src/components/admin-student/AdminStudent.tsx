@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
-import { ICourseGroupMetaWithGrade } from '../../interfaces/api';
+import { ICourseGroupMetaWithGrade } from '../../interfaces/misc';
 import { ISubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 import { getAdminUser, patchAdminUser } from '../../services/api/user.service';

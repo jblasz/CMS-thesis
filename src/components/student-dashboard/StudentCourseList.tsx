@@ -11,7 +11,7 @@ import {
 import Dropdown from 'react-dropdown';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ICourseGroupMetaWithGrade } from '../../interfaces/api';
+import { ICourseGroupMetaWithGrade } from '../../interfaces/misc';
 import { IStudentCourse, StudentCourse } from '../../interfaces/studentCourse';
 import { getStudentCourse, getStudentCourses } from '../../services/api/dashboard.service';
 import { formatDate, stringifyDatePair } from '../../utils';

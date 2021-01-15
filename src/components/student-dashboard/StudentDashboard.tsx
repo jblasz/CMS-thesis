@@ -21,7 +21,7 @@ export function StudentDashboardComponent(): JSX.Element {
             {t('PENDING.LABS.TITLE')}
           </Card.Header>
           <Card.Body>
-            <PendingCoursesComponent admin={false} />
+            <PendingCoursesComponent />
           </Card.Body>
         </Card>
         <Card className="chunky-width my-2">

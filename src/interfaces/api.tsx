@@ -1,44 +1,15 @@
 import { IArticleMeta, IArticle } from './article';
-import { Code } from './code';
+import { ICode } from './code';
 import { ICourse } from './course';
 import { ICourseGroup } from './courseGroup';
 import { ICourseLaboratory } from './courseLaboratory';
 import { ICourseTask } from './courseTask';
-import { IResourceMeta, SubmissionGrade, ISubmissionMeta } from './resource';
+import {
+  ICourseGroupMeta, ICourseGroupMetaWithGrade, IPendingLaboratory, ICourseLabGroupMetaWithDates,
+} from './misc';
+import { IResourceMeta, ISubmissionMeta } from './resource';
 import { IStudent } from './student';
 import { IStudentCourse } from './studentCourse';
-
-export interface ICourseGroupMeta {
-  groupId: string
-  groupName: string
-  courseId: string
-  courseName: string
-  active: boolean
-}
-
-export interface ICourseGroupMetaWithGrade extends ICourseGroupMeta {
-  grade?: SubmissionGrade
-}
-
-export interface ICourseLabGroupMeta extends ICourseGroupMeta {
-  labId: string
-  labName: string
-}
-
-export interface ICourseLabGroupMetaWithDates extends ICourseLabGroupMeta {
-  startsAt: Date
-  endsAt: Date
-}
-
-export function CourseLabGroupMetaWithDates(
-  g: ICourseLabGroupMetaWithDates,
-): ICourseLabGroupMetaWithDates {
-  return {
-    ...g,
-    startsAt: new Date(g.startsAt),
-    endsAt: new Date(g.endsAt),
-  };
-}
 
 export interface IApiPostResponse {
   ok: boolean
@@ -94,11 +65,11 @@ export interface IPostCodeResponse extends IApiPostResponse {
 }
 
 export interface IGetCodesResponse {
-  codes: Code[]
+  codes: ICode[]
 }
 
 export interface IPostCodeNewResponse {
-  code: Code
+  code: ICode
 }
 
 export interface IGetResourcesResponse {
@@ -118,13 +89,13 @@ export interface IGetStudentsResponse {
 
 export interface IGetUserResponse {
   student: IStudent
-  attends: ICourseGroupMeta[]
+  attends: ICourseGroupMetaWithGrade[]
   submissions: ISubmissionMeta[]
 }
 
 export interface IPostUserResponse {
   student: IStudent
-  attends: ICourseGroupMeta[]
+  attends: ICourseGroupMetaWithGrade[]
   submissions: ISubmissionMeta[]
 }
 
@@ -150,21 +121,8 @@ export interface IPatchSubmissionResponse extends IApiPostResponse {
   submission: ISubmissionMeta
 }
 
-export interface IPendingLaboratory extends ICourseLabGroupMeta {
-  startsAt: Date
-  endsAt: Date
-}
-
 export interface IGetDashboardLaboratoriesResponse {
   laboratories: IPendingLaboratory[]
-}
-
-export function PendingLaboratory(lab: IPendingLaboratory): IPendingLaboratory {
-  return {
-    ...lab,
-    startsAt: new Date(lab.startsAt),
-    endsAt: new Date(lab.endsAt),
-  };
 }
 
 export interface IPatchResourceResponse extends IApiPostResponse {

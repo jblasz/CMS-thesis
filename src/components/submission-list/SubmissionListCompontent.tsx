@@ -8,7 +8,8 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { SubmissionGrade, ISubmissionMeta } from '../../interfaces/resource';
+import { SubmissionGrade } from '../../interfaces/misc';
+import { ISubmissionMeta } from '../../interfaces/resource';
 import { patchSubmission, deleteSubmission } from '../../services/api/submissions.service';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';

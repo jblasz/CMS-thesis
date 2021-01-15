@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Card, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { Code } from '../../interfaces/code';
+import { ICode } from '../../interfaces/code';
 import { getCodes } from '../../services/api/codes.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
@@ -9,7 +9,7 @@ import { AdminCodesListComponent } from '../admin-codes/AdminCodesList';
 
 export function AdminCodesCardComponent(): JSX.Element {
   const [t] = useTranslation();
-  const [codes, setCodes] = useState<Code[]>([]);
+  const [codes, setCodes] = useState<ICode[]>([]);
   const [showInactive, setShowInactive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

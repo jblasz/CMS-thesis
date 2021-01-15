@@ -5,13 +5,13 @@ import {
   Button, ButtonGroup, Row, Table,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { Code } from '../../interfaces/code';
+import { ICode } from '../../interfaces/code';
 import { deleteCode } from '../../services/api/codes.service';
 import { formatDate } from '../../utils';
 import { LoadingSpinner } from '../loading-spinner';
 
 interface AdminCodesListComponentProps {
-  codes: Code[]
+  codes: ICode[]
 }
 
 export function AdminCodesListComponent(props: AdminCodesListComponentProps): JSX.Element {

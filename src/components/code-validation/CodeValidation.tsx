@@ -6,9 +6,10 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { LoadingSpinner } from '../loading-spinner';
 import { postCode } from '../../services/api/codes.service';
-import { ICourseGroupMeta, PostCodeResponseType } from '../../interfaces/api';
+import { PostCodeResponseType } from '../../interfaces/api';
 import { AppContext } from '../../services/contexts/app-context';
 import { WarningStripComponent } from '../info/WarningStrip';
+import { ICourseGroupMeta } from '../../interfaces/misc';
 
 interface CodeValidationComponentState {
   loading: boolean,

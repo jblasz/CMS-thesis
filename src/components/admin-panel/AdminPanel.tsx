@@ -19,7 +19,7 @@ export function AdminPanelComponent(): JSX.Element {
               {t('PENDING.LABS.TITLE')}
             </Card.Header>
             <Card.Body>
-              <PendingCoursesComponent admin />
+              <PendingCoursesComponent />
             </Card.Body>
           </Card>
           <AdminCodesCardComponent />

@@ -22,14 +22,14 @@ function ProfileComponent() {
   const getAndSetAll = useCallback(async () => {
     try {
       setLoading(true);
-      const { student: _student } = await getProfile();
+      const { student: _student } = await getProfile((user && user.student && user.student._id) || '');
       setStudent(_student);
     } catch (e) {
       setError(e);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     getAndSetAll();
@@ -127,6 +127,7 @@ function ProfileComponent() {
                           contactEmail: student.contactEmail || '',
                           name: student.name || '',
                           usosId: student.usosId || '',
+                          studentID: student._id || '',
                         });
                         setStudent(new Student(_student));
                       } catch (e) {

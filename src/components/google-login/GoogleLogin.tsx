@@ -23,13 +23,13 @@ export function GoogleButton(): JSX.Element {
         onSuccess={async (response) => {
           const onlineResp = response as GoogleLoginResponse;
           if (onlineResp.profileObj) {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { profileObj: { email, name }, accessToken, tokenId } = onlineResp;
+            const {
+              profileObj: { email, name }, tokenId, googleId,
+            } = onlineResp;
             try {
-              const { student } = await postUser(tokenId);
-              console.log(student);
+              const { student } = await postUser(tokenId, googleId, email, name, '123456');
               setUser({
-                role: Role.STUDENT,
+                role: Role.ADMIN,
                 student: new Student(student),
               });
             } catch (e) {

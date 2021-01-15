@@ -1,3 +1,4 @@
+import { SubmissionGrade } from './misc';
 import { IStudent } from './student';
 
 export interface IUsedBy {
@@ -20,15 +21,6 @@ export interface IResourceMeta {
   name: string
   permission: Permission
   usedBy: IUsedBy[]
-}
-
-export enum SubmissionGrade {
-  A = '5.0',
-  B_PLUS = '4.5',
-  B = '4.0',
-  C_PLUS = '3.5',
-  C = '3.0',
-  F = '2.0'
 }
 
 export interface ISubmissionMeta {

@@ -1,4 +1,4 @@
-import { SubmissionGrade } from './resource';
+import { SubmissionGrade } from './misc';
 
 export interface ICourseGroupStudent {
   _id: string

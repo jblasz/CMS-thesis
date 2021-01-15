@@ -1,5 +1,5 @@
 import { CourseLanguage } from './course';
-import { SubmissionGrade } from './resource';
+import { SubmissionGrade } from './misc';
 
 export interface IStudentCourse {
   _id: string

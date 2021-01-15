@@ -1,45 +1,30 @@
-import { loremIpsum } from 'lorem-ipsum';
 import { v4 } from 'uuid';
-import { Permission, IResourceMeta, ISubmissionMeta } from '../../interfaces/resource';
-import { generateList } from '../../utils';
+import { ICourseTask } from '../../interfaces/courseTask';
+import {
+  Permission, ISubmissionMeta, IUsedBy,
+} from '../../interfaces/resource';
+import {
+  getIMCourses, getIMResources, getIMSubmissions, setIMResources, setIMSubmissions,
+} from './in-memory-database';
 
-const inMemoryResourceMocks: IResourceMeta[] = [];
-
-const inMemorySubmissionMocks: ISubmissionMeta[] = [];
-
-export function getResourceMocks() {
-  return [...inMemoryResourceMocks];
-}
-
-function roll(min:number, max: number) {
-  return Math.floor(Math.random() * (max - min));
-}
-
-export function grabRandomResource() {
-  if (!inMemoryResourceMocks.length) {
-    inMemoryResourceMocks.push({
-      _id: v4(),
-      name: loremIpsum().split(' ').slice(0, 3).join(' '),
-      permission: Permission.ALL,
-      usedBy: [],
-    });
+export function getLabsReferencingResourceId(id: string): IUsedBy[] {
+  const courses = getIMCourses();
+  const matches: IUsedBy[] = [];
+  for (const course of courses) {
+    for (const lab of course.laboratories) {
+      const groupId = Object.keys(lab.tasks).find((gid) => lab.tasks[gid].resourceId === id);
+      if (groupId) {
+        matches.push({
+          courseId: course._id, courseName: course.name, labId: lab._id, labName: lab.name, groupId,
+        });
+      }
+    }
   }
-  return inMemoryResourceMocks[roll(0, inMemoryResourceMocks.length)];
-}
-
-export function generateResourceMocks(count = 10) {
-  generateList(count).forEach(() => inMemoryResourceMocks.push(
-    {
-      _id: v4(),
-      name: loremIpsum().split(' ').slice(0, 3).join(' '),
-      usedBy: [],
-      permission: Permission.ALL,
-    },
-  ));
+  return matches;
 }
 
 export async function getResourceMockResponse(id: string) {
-  const f = inMemoryResourceMocks.find((x) => x._id === id);
+  const f = getIMResources().find((x) => x._id === id);
   if (f) {
     return Promise.resolve({ resource: f });
   }
@@ -47,45 +32,87 @@ export async function getResourceMockResponse(id: string) {
 }
 
 export async function putResourceMockResponse(id: string) {
+  const resources = getIMResources();
   if (id) {
-    const f = inMemoryResourceMocks.findIndex((x) => x._id === id);
+    const f = resources.findIndex((x) => x._id === id);
     if (f > -1) {
       return Promise.resolve({ ok: true, ...await getResourceMockResponse(id) });
     }
+  } else {
+    const n = {
+      _id: v4(),
+      name: 'NEW_NAME',
+      permission: Permission.NONE,
+      usedBy: [],
+    };
+    resources.push(n);
+    setIMResources(resources);
+    return Promise.resolve({ ok: true, ...await getResourceMockResponse(n._id) });
   }
 
   return Promise.reject(new Error('Resource has id, but isnt in memory'));
 }
 
 export async function postSubmissionMockResponse(submission: ISubmissionMeta) {
-  inMemorySubmissionMocks.push(submission);
+  let found: ICourseTask | undefined;
+  for (const course of getIMCourses()) {
+    const g = course.groups.find((x) => x._id === submission.forGroupID);
+    if (g) {
+      for (const lab of course.laboratories) {
+        const task = lab.tasks[g._id];
+        if (task) {
+          found = task;
+          break;
+        }
+      }
+    }
+    if (found) {
+      break;
+    }
+  }
+  if (!found) {
+    throw new Error('404 not found');
+  }
+  if (
+    !found.dateFrom
+    || !found.dateTo
+    || found.dateFrom.valueOf() > new Date().valueOf()
+    || found.dateTo.valueOf() + found.gracePeriod * 60 * 1000 < new Date().valueOf()) {
+    throw new Error('Too late, too early, or task not fully defined yet');
+  }
+
+  const submissions = getIMSubmissions();
+  submissions.filter((x) => x.submittedBy === submission.submittedBy
+    && x.forCourseID === submission.forCourseID
+    && x.forGroupID === submission.forGroupID
+    && x.forLabID === submission.forLabID)
+    .forEach((s) => {
+      s.final = false;
+    });
+
+  setIMSubmissions([...submissions, submission]);
   return Promise.resolve({ ok: true });
 }
 
 export async function patchResourceMockResponse(_id: string, name: string, permission: Permission) {
   if (_id) {
-    const f = inMemoryResourceMocks.find((x) => x._id === _id);
-    if (f) {
-      f.name = name;
-      f.permission = permission;
-      return Promise.resolve({ ok: true, ...await getResourceMockResponse(f._id) });
+    const resources = getIMResources();
+    const f = resources.findIndex((x) => x._id === _id);
+    if (f > -1) {
+      resources[f].name = name;
+      resources[f].permission = permission;
+      setIMResources(resources);
+      return Promise.resolve({ ok: true, ...await getResourceMockResponse(_id) });
     }
-    return Promise.reject(new Error('Resource of id not found'));
   }
-  const topush: IResourceMeta = {
-    _id: v4(),
-    name: '',
-    permission: Permission.ALL,
-    usedBy: [],
-  };
-  inMemoryResourceMocks.push(topush);
-  return Promise.resolve({ ok: true, ...await getResourceMockResponse(topush._id) });
+  return Promise.reject(new Error('Resource of id not found'));
 }
 
 export async function deleteResourceMockResponse(_id: string) {
-  const f = inMemoryResourceMocks.findIndex((x) => x._id === _id);
+  const resources = getIMResources();
+  const f = resources.findIndex((x) => x._id === _id);
   if (f > -1) {
-    inMemoryResourceMocks.splice(f, 1);
+    resources.splice(f, 1);
     return Promise.resolve({ ok: true });
   }
   return Promise.reject(new Error('Failed to find resource of given id'));

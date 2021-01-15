@@ -1,3 +1,11 @@
+export enum SubmissionGrade {
+  A = '5.0',
+  B_PLUS = '4.5',
+  B = '4.0',
+  C_PLUS = '3.5',
+  C = '3.0',
+  F = '2.0'
+}
 export interface ValResult {
   ok: boolean
   error?: string
@@ -6,4 +14,49 @@ export interface ValResult {
 
 export interface Validable {
   validate: () => ValResult
+}
+
+export interface ICourseGroupMeta {
+  groupId: string
+  groupName: string
+  courseId: string
+  courseName: string
+  active: boolean
+}
+
+export interface ICourseGroupMetaWithGrade extends ICourseGroupMeta {
+  grade?: SubmissionGrade
+}
+
+export interface ICourseLabGroupMeta extends ICourseGroupMeta {
+  labId: string
+  labName: string
+}
+
+export interface ICourseLabGroupMetaWithDates extends ICourseLabGroupMeta {
+  startsAt: Date
+  endsAt: Date
+}
+
+export function CourseLabGroupMetaWithDates(
+  g: ICourseLabGroupMetaWithDates,
+): ICourseLabGroupMetaWithDates {
+  return {
+    ...g,
+    startsAt: new Date(g.startsAt),
+    endsAt: new Date(g.endsAt),
+  };
+}
+
+export interface IPendingLaboratory extends ICourseLabGroupMeta {
+  startsAt: Date
+  endsAt: Date
+}
+
+export function PendingLaboratory(lab: IPendingLaboratory): IPendingLaboratory {
+  return {
+    ...lab,
+    startsAt: new Date(lab.startsAt),
+    endsAt: new Date(lab.endsAt),
+  };
 }

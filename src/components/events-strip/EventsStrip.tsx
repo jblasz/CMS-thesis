@@ -9,13 +9,13 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { ICourseLabGroupMetaWithDates } from '../../interfaces/api';
 import { getStudentDashboard } from '../../services/api/dashboard.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { config } from '../../config';
 import { AppContext } from '../../services/contexts/app-context';
 import { Role } from '../../interfaces/user';
+import { ICourseLabGroupMetaWithDates } from '../../interfaces/misc';
 
 export function EventsStripComponent(): JSX.Element {
   const [{ events, activeEvents, upcomingEvents }, setEvents] = useState<{

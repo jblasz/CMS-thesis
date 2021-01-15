@@ -1,4 +1,4 @@
-import { Course } from '../../interfaces/course';
+import { Course, ICourseStub } from '../../interfaces/course';
 import {
   getCoursesListMockResponse,
   getCourseMockResponse,
@@ -25,12 +25,13 @@ import {
   IPutCourseLaboratoryResponse,
   IPutCourseLaboratoryTaskResponse,
 } from '../../interfaces/api';
-import { ISubmissionMeta, SubmissionGrade } from '../../interfaces/resource';
+import { ISubmissionMeta } from '../../interfaces/resource';
 import { postSubmissionMockResponse } from '../mocks/in-memory-resource-mocks';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { axiosInstance } from './request.service';
 import { config } from '../../config';
 import { CourseTask } from '../../interfaces/courseTask';
+import { SubmissionGrade } from '../../interfaces/misc';
 
 /**
  * /public/course GET
@@ -77,7 +78,7 @@ export async function getAdminCourse(_id: string): Promise<IGetCourseResponse> {
 /**
  * /course/:id PUT
  */
-export async function putAdminCourse(course: Course): Promise<IPostCourseResponse> {
+export async function putAdminCourse(course: ICourseStub): Promise<IPostCourseResponse> {
   if (config.useMocks) { return putCourseMockResponse(course); }
   const { course: _course } = (await axiosInstance.post(`/course/${course._id}`, { course })).data as IPostCourseResponse;
   return { ok: true, course: new Course(_course) };
@@ -123,7 +124,7 @@ export async function deleteAdminCourseGroup(
   courseId: string,
   groupId: string,
 ): Promise<IApiPostResponse> {
-  if (config.useMocks) { return deleteGroupMockResponse(courseId); }
+  if (config.useMocks) { return deleteGroupMockResponse(courseId, groupId); }
   const { ok } = (await axiosInstance.delete(`/course/${courseId}/group/${groupId}`)).data as IApiPostResponse;
   return { ok };
 }
@@ -230,7 +231,7 @@ export async function patchCourseGroupStudent(
   courseID: string, groupID: string, studentID: string, grade?: SubmissionGrade | null,
 ): Promise<IPatchCourseGroupStudentResponse> {
   if (config.useMocks) {
-    return patchCourseGroupStudentMockResponse(courseID, groupID);
+    return patchCourseGroupStudentMockResponse(studentID, courseID, groupID);
   }
   const { group, ok } = (await axiosInstance.patch(`/course/${courseID}/group/${groupID}/student/${studentID}`, {
     ...(grade || grade === null ? { grade } : {}),

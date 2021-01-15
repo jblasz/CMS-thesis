@@ -13,11 +13,11 @@ import { LoadingSpinner } from '../loading-spinner';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import { getCodes, postCodeNew } from '../../services/api/codes.service';
 import { formatDate } from '../../utils';
-import { Code } from '../../interfaces/code';
+import { ICode } from '../../interfaces/code';
 import { AdminCodesListComponent } from '../admin-codes/AdminCodesList';
-import { SubmissionGrade } from '../../interfaces/resource';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { getAdminUsers } from '../../services/api/user.service';
+import { SubmissionGrade } from '../../interfaces/misc';
 
 interface BaseStudent {
   _id: string
@@ -42,7 +42,7 @@ function AdminCourseGroupComponent(): JSX.Element {
   ] = useState<{
     students: BaseStudent[],
     group: CourseGroup}>({ students: [], group: new CourseGroup() });
-  const [codes, setCodes] = useState<Code[]>([]);
+  const [codes, setCodes] = useState<ICode[]>([]);
 
   const validateAndSetCourseGroup = useCallback(
     (_group: CourseGroup, _students: BaseStudent[]) => {

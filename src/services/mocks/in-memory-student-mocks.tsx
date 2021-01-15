@@ -1,162 +1,78 @@
-import { v4 } from 'uuid';
-import { GetStudentResponse, IGetUserResponse, IPostUserResponse } from '../../interfaces/api';
-import { SubmissionGrade } from '../../interfaces/resource';
-import { Student } from '../../interfaces/student';
-import { shuffleList } from '../../utils';
+import {
+  GetStudentResponse, IGetUserResponse, IPostUserResponse, PatchStudentResponse,
+} from '../../interfaces/api';
+import {
+  getAttendanceByStudent, getIMStudents, getSubmissionsByStudent, setIMStudents,
+} from './in-memory-database';
 
-const inMemoryStudentMocks: Student[] = [];
-
-let generatorCount = 0;
-
-export async function getUserMockResponse(): Promise<IGetUserResponse> {
-  return Promise.resolve({
-    student: inMemoryStudentMocks[0],
-    attends: [],
-    submissions: [],
-  });
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function postUserMockResponse(jwt: string): Promise<IPostUserResponse> {
-  return Promise.resolve({
-    student: inMemoryStudentMocks[0],
-    attends: [
-      {
-        courseId: v4(),
-        courseName: 'course name',
-        groupId: v4(),
-        groupName: 'group name',
-        active: true,
-      },
-      {
-        courseId: v4(),
-        courseName: 'course name',
-        groupId: v4(),
-        groupName: 'group name',
-        active: false,
-      },
-    ],
-    submissions: [
-      {
-        _id: v4(),
-        final: true,
-        forCourseID: v4(),
-        forCourseName: 'course name',
-        forGroupID: v4(),
-        forGroupName: 'group name',
-        forLabID: v4(),
-        forLabName: 'lab name',
-        note: 'students optional note',
-        submittedAt: new Date(Date.UTC(2020, 3, 1)),
-        submittedBy: new Student(),
-        grade: SubmissionGrade.A,
-      },
-      {
-        _id: v4(),
-        final: true,
-        forCourseID: v4(),
-        forCourseName: 'course name 2',
-        forGroupID: v4(),
-        forGroupName: 'group name 2',
-        forLabID: v4(),
-        forLabName: 'lab name 2',
-        note: 'students optional note',
-        submittedAt: new Date(Date.UTC(2020, 3, 1)),
-        submittedBy: new Student(),
-        grade: SubmissionGrade.B_PLUS,
-      },
-    ],
-  });
-}
-
-export function getRandomStudents(count: number) {
-  return shuffleList([...inMemoryStudentMocks]).slice(0, count - 1) as Student[];
-}
-
-export function generateStudentMock(id = v4()) {
-  const n = generatorCount++;
-  const s = new Student({
-    _id: id,
-    email: `mail_${n}@domain.com`,
-    contactEmail: 'contactemail1',
-    name: `student Mk ${n}`,
-    usosId: '123321',
-  });
-  inMemoryStudentMocks.push(s);
-  return s;
-}
-
-export function generateStudentMocks(count = 100) {
-  generateStudentMock('staticStudentID');
-  for (let i = 0; i < count - 1; i++) {
-    generateStudentMock();
+export async function getUserMockResponse(gid: string): Promise<IGetUserResponse> {
+  const students = getIMStudents();
+  const s = students.find((x) => x._id === gid);
+  if (!s) {
+    throw new Error('Student not found');
   }
+  return Promise.resolve({
+    student: s,
+    attends: getAttendanceByStudent(s._id),
+    submissions: getSubmissionsByStudent(s._id),
+  });
 }
 
-export function getStudentMockResponse(): Promise<GetStudentResponse> {
-  const student = inMemoryStudentMocks[0];
-  return student
-    ? Promise.resolve({
-      student,
-      attends: [
-        {
-          courseId: v4(),
-          courseName: 'course name',
-          groupId: v4(),
-          groupName: 'group name',
-          active: true,
-        },
-        {
-          courseId: v4(),
-          courseName: 'course name',
-          groupId: v4(),
-          groupName: 'group name',
-          active: false,
-          grade: SubmissionGrade.B,
-        },
-      ],
-      submissions: [
-        {
-          _id: v4(),
-          final: true,
-          forCourseID: v4(),
-          forCourseName: 'course name',
-          forGroupID: v4(),
-          forGroupName: 'group name',
-          forLabID: v4(),
-          forLabName: 'lab name',
-          note: 'students optional note',
-          submittedAt: new Date(Date.UTC(2020, 3, 1)),
-          submittedBy: new Student(),
-          grade: SubmissionGrade.A,
-        },
-        {
-          _id: v4(),
-          final: true,
-          forCourseID: v4(),
-          forCourseName: 'course name 2',
-          forGroupID: v4(),
-          forGroupName: 'group name 2',
-          forLabID: v4(),
-          forLabName: 'lab name 2',
-          note: 'students optional note',
-          submittedAt: new Date(Date.UTC(2020, 3, 1)),
-          submittedBy: new Student(),
-          grade: SubmissionGrade.B_PLUS,
-        },
-      ],
-    }) : Promise.reject();
+export function postUserMockResponse(
+  gid: string, email: string, name: string, usosId: string,
+): Promise<IPostUserResponse> {
+  const students = getIMStudents();
+  const s = students.find((x) => x._id === gid);
+  if (!s) {
+    students.push({
+      _id: gid,
+      contactEmail: email,
+      email,
+      name,
+      usosId,
+      registeredAt: new Date(),
+    });
+    setIMStudents(students);
+  }
+  return getUserMockResponse(gid);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function getStudentMockResponse(id: string): Promise<GetStudentResponse> {
+  return getUserMockResponse(id);
+}
+
+export function patchStudentMockResponse(params: {
+  studentID: string
+  name?: string
+  email?: string
+  contactEmail?: string
+  usosId?: string
+}): Promise<PatchStudentResponse> {
+  const students = getIMStudents();
+  const student = students.find((x) => x._id === params.studentID);
+  if (!student) {
+    throw new Error('404 student not found');
+  }
+  return Promise.resolve({
+    ok: true,
+    student,
+  });
+}
+
 export function getStudentsMockResponse(byCourseId?: string) {
-  return Promise.resolve({ students: inMemoryStudentMocks.map((x) => new Student(x)) });
+  const students = byCourseId ? getIMStudents().filter((s) => {
+    const a = getAttendanceByStudent(s._id);
+    return a.find((x) => x.courseId === byCourseId);
+  }) : getIMStudents();
+  return Promise.resolve({ students });
 }
 
 export function deleteStudentMockResponse(id: string) {
-  const f = inMemoryStudentMocks.findIndex((x) => x._id === id);
+  const students = getIMStudents();
+  const f = students.findIndex((x) => x._id === id);
   if (f > -1) {
-    inMemoryStudentMocks.splice(f, 1);
+    students.splice(f, 1);
+    setIMStudents(students);
     return Promise.resolve({ ok: true });
   }
   return Promise.reject(new Error('Student of this id not found'));

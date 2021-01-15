@@ -9,16 +9,18 @@ import { Student } from '../../interfaces/student';
 import {
   postUserMockResponse,
   deleteStudentMockResponse,
-  getStudentMockResponse, getStudentsMockResponse,
+  getStudentMockResponse, getStudentsMockResponse, patchStudentMockResponse,
 } from '../mocks/in-memory-student-mocks';
 import { axiosInstance } from './request.service';
 
 /**
  * /user POST
  */
-export async function postUser(jwt: string): Promise<IPostUserResponse> {
+export async function postUser(
+  jwt: string, gid: string, email: string, name: string, usosId: string,
+): Promise<IPostUserResponse> {
   if (config.useMocks) {
-    return postUserMockResponse(jwt);
+    return postUserMockResponse(jwt, email, name, usosId);
   }
   const { data, headers: { authorization } } = await axiosInstance.post('/public/user', {
     tokenId: jwt,
@@ -38,23 +40,6 @@ export async function postUser(jwt: string): Promise<IPostUserResponse> {
   };
 }
 
-// replaced by /profile?
-/**
-//  * /user GET
-//  */
-// export async function getUser(): Promise<IGetUserResponse> {
-//   if (config.useMocks) {
-//     return getUserMockResponse();
-//   }
-//   const { data } = await axiosInstance.get('/user');
-//   const { student, attends, submissions } = data as IGetUserResponse;
-//   return {
-//     attends,
-//     student: new Student(student),
-//     submissions: submissions.map((x) => SubmissionMeta(x)),
-//   };
-// }
-
 /**
  * /user GET
  */
@@ -73,7 +58,7 @@ export async function getAdminUsers(byCourseId?: string): Promise<IGetStudentsRe
  */
 export async function getAdminUser(id: string): Promise<GetStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse();
+    const r = await getStudentMockResponse(id);
     return { ...r, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.get(`/students/${id}`);
@@ -95,7 +80,13 @@ export async function patchAdminUser(id: string, params: {
   usosId?: string
 }): Promise<PatchStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse();
+    const r = await patchStudentMockResponse({
+      studentID: id,
+      name: params.name,
+      email: params.email,
+      contactEmail: params.contactEmail,
+      usosId: params.usosId,
+    });
     return { ok: true, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.patch(`/students/${id}`, params);

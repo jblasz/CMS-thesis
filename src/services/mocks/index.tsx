@@ -1,20 +1,22 @@
 import { loremIpsum } from 'lorem-ipsum';
 import { v4 } from 'uuid';
 import {
-  IGetAdminDashboardResponse,
   IGetResourcesResponse,
   IGetStudentCourseResponse,
   IGetStudentCoursesResponse,
   IGetStudentDashboardResponse,
 } from '../../interfaces/api';
 import { CourseLanguage } from '../../interfaces/course';
-import { SubmissionGrade } from '../../interfaces/resource';
+import { SubmissionGrade } from '../../interfaces/misc';
 import { StudentCourse } from '../../interfaces/studentCourse';
 import { generateList } from '../../utils';
-import { generateCourseMock, getCoursesListMockResponse, getLabsReferencingResourceId } from './in-memory-course-mocks';
-import { generateResourceMocks, getResourceMocks } from './in-memory-resource-mocks';
-import { generateStudentMocks, getStudentsMockResponse } from './in-memory-student-mocks';
-import { generateSubmissionMock } from './in-memory-submissions-mocks';
+import {
+  generateStudentMocks, generateResourceMocks, generateCourseMock, generateSubmissionMock,
+} from './generate';
+import { getCoursesListMockResponse } from './in-memory-course-mocks';
+import { getIMResources } from './in-memory-database';
+import { getLabsReferencingResourceId } from './in-memory-resource-mocks';
+import { getStudentsMockResponse } from './in-memory-student-mocks';
 
 export async function populateInMemoryDBWithSomeMocks(count = 5) {
   generateStudentMocks(100);
@@ -35,7 +37,7 @@ export async function populateInMemoryDBWithSomeMocks(count = 5) {
 export async function getResourcesMockResponse(): Promise<IGetResourcesResponse> {
   return Promise.resolve(
     {
-      resources: ((await getResourceMocks())).map((x) => ({
+      resources: ((await getIMResources())).map((x) => ({
         _id: x._id,
         name: x.name,
         usedBy: getLabsReferencingResourceId(x._id),
@@ -45,12 +47,7 @@ export async function getResourcesMockResponse(): Promise<IGetResourcesResponse>
   );
 }
 
-export async function getAdminDashboardMockResponse(): Promise<IGetAdminDashboardResponse> {
-  return Promise.resolve({
-    unmarkedSolutionsCount: 3,
-  });
-}
-
+// TODO: Todoooobedoo
 export async function getStudentDashboardMockResponse(): Promise<IGetStudentDashboardResponse> {
   return Promise.resolve({
     upcoming: [

@@ -1,39 +1,35 @@
-import { loremIpsum } from 'lorem-ipsum';
-import { v4 } from 'uuid';
-import { CourseTask } from '../../interfaces/courseTask';
-import { SubmissionGrade, ISubmissionMeta } from '../../interfaces/resource';
-import { Student } from '../../interfaces/student';
+import { IGetAdminDashboardResponse } from '../../interfaces/api';
+import { ISubmissionMeta } from '../../interfaces/resource';
+import { getIMSubmissions, setIMSubmissions } from './in-memory-database';
 
-const inMemorySubmissions: ISubmissionMeta[] = [];
+enum StatusFilter {
+  ALL = 0,
+  UNGRADED,
+  GRADED,
+}
 
-export function generateSubmissionMock(task: CourseTask, student: Student) {
-  inMemorySubmissions.push({
-    _id: v4(),
-    forLabID: task.forLabId || v4(),
-    forLabName: task.forLabName || 'lab name',
-    note: loremIpsum(),
-    submittedAt: new Date(0),
-    submittedBy: student,
-    final: Math.random() > 0.5,
-    forCourseID: v4(),
-    forCourseName: 'course name',
-    forGroupID: v4(),
-    forGroupName: 'group name',
-    grade: Math.random() > 0.5
-      ? SubmissionGrade.A
-      : Math.random() > 0.5 ? SubmissionGrade.F : undefined,
+export async function getAdminDashboardMockResponse(): Promise<IGetAdminDashboardResponse> {
+  return Promise.resolve({
+    unmarkedSolutionsCount:
+    getIMSubmissions().reduce((agg, curr) => (curr.grade ? agg : agg + 1), 0),
   });
 }
 
 export function getSubmissionsMockResponse(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  courseFilter: string, studentFilter: string, statusFilter: number,
+  courseFilter: string, studentFilter: string, statusFilter: StatusFilter,
 ) {
-  return Promise.resolve({ submissions: inMemorySubmissions.map((x) => ({ ...x })) });
+  const submissions = getIMSubmissions().filter((x) => x.forCourseID === courseFilter
+    && x.submittedBy._id === studentFilter
+    && (
+      statusFilter === StatusFilter.ALL
+      || (statusFilter === StatusFilter.GRADED && x.grade)
+      || (statusFilter === StatusFilter.UNGRADED && !x.grade)
+    ));
+  return Promise.resolve({ submissions });
 }
 
 export function getSubmissionMockResponse(id: string) {
-  const f = inMemorySubmissions.find((x) => x._id === id);
+  const f = getIMSubmissions().find((x) => x._id === id);
   if (f) {
     return Promise.resolve({ submission: f });
   }
@@ -41,18 +37,20 @@ export function getSubmissionMockResponse(id: string) {
 }
 
 export function deleteSubmissionMockResponse(id: string) {
-  const f = inMemorySubmissions.findIndex((x) => x._id === id);
+  const submissions = getIMSubmissions();
+  const f = submissions.findIndex((x) => x._id === id);
   if (f > -1) {
-    inMemorySubmissions.splice(f, 1);
+    submissions.splice(f, 1);
+    setIMSubmissions(submissions);
     return Promise.resolve({ ok: true });
   }
   return Promise.reject(new Error('Submission of this id not found'));
 }
 
 export function patchSubmissionMockResponse(submission: ISubmissionMeta) {
-  const f = inMemorySubmissions.findIndex((x) => x._id === submission._id);
+  const f = getIMSubmissions().findIndex((x) => x._id === submission._id);
   if (f > -1) {
-    inMemorySubmissions[f] = submission;
+    getIMSubmissions()[f] = submission;
     return Promise.resolve({ ok: true, submission });
   }
   return Promise.reject(new Error('Submission of this id not found'));

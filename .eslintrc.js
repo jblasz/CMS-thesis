@@ -30,6 +30,7 @@ module.exports = {
     'no-underscore-dangle': ["error", { "allow": ["_id"] }],
     'no-restricted-syntax': 'off',
     'no-alert': 'off',
-    'no-nested-ternary': 'off'
+    'no-nested-ternary': 'off',
+    'guard-for-in': 'off'
   },
 };

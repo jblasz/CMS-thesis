@@ -7,7 +7,6 @@ import {
   Redirect, Route, useHistory, Switch,
 } from 'react-router-dom';
 import { NavigationBarComponent } from '../navbar';
-import { LoginComponent } from '../login';
 import { RegisterComponent } from '../register';
 import { ResearchComponent } from '../research';
 import { ArticlesComponent } from '../articles';
@@ -118,7 +117,6 @@ function App():JSX.Element {
                   <CourseListComponent courses={courses} />
                 )}
               />
-              <Route exact path="/login" component={LoginComponent} />
               <Route exact path="/register" component={RegisterComponent} />
               <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
               <Route exact path="/courses/:id" component={CourseComponent} />
@@ -126,31 +124,32 @@ function App():JSX.Element {
               <Route exact path="/research" component={ResearchComponent} />
               <Route exact path="/articles/:id" component={ArticlesComponent} />
               <Route exact path="/code" component={CodeValidationComponent} />
-              { user
-                ? (
-                  <>
-                    <Route exact path="/dashboard" component={StudentDashboardComponent} />
-                    <Route exact path="/profile" component={ProfileComponent} />
-                  </>
-                )
-                : <></>}
               {
-                user && user.role === Role.ADMIN
-                  ? (
-                    <>
-                      <Route exact path="/admin" component={AdminPanelComponent} />
-                      <Route exact path="/admin/resources" component={AdminResourcesComponent} />
-                      <Route exact path="/admin/students" component={AdminStudentsComponent} />
-                      <Route exact path="/admin/students/:id" component={AdminStudentComponent} />
-                      <Route exact path="/admin/courses" component={AdminCoursesComponent} />
-                      <Route exact path="/admin/courses/:id" component={AdminCourseComponent} />
-                      <Route exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
-                      <Route exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
-                      <Route exact path="/admin/submissions" component={AdminSubmissionsComponent} />
-                      <Route exact path="/admin/articles" component={AdminArticlesComponent} />
-                      <Route exact path="/admin/articles/:id" component={AdminArticleComponent} />
-                    </>
-                  )
+                user
+                  ? user.role === Role.ADMIN
+                    ? (
+                      <>
+                        <Route exact path="/dashboard" component={StudentDashboardComponent} />
+                        <Route exact path="/profile" component={ProfileComponent} />
+                        <Route exact path="/admin" component={AdminPanelComponent} />
+                        <Route exact path="/admin/resources" component={AdminResourcesComponent} />
+                        <Route exact path="/admin/students" component={AdminStudentsComponent} />
+                        <Route exact path="/admin/students/:id" component={AdminStudentComponent} />
+                        <Route exact path="/admin/courses" component={AdminCoursesComponent} />
+                        <Route exact path="/admin/courses/:id" component={AdminCourseComponent} />
+                        <Route exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
+                        <Route exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
+                        <Route exact path="/admin/submissions" component={AdminSubmissionsComponent} />
+                        <Route exact path="/admin/articles" component={AdminArticlesComponent} />
+                        <Route exact path="/admin/articles/:id" component={AdminArticleComponent} />
+                      </>
+                    )
+                    : (
+                      <>
+                        <Route exact path="/dashboard" component={StudentDashboardComponent} />
+                        <Route exact path="/profile" component={ProfileComponent} />
+                      </>
+                    )
                   : <></>
               }
               <Route exact path="/404" component={Component404} />
