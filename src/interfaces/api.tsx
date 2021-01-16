@@ -94,6 +94,7 @@ export interface IGetUserResponse {
 }
 
 export interface IPostUserResponse {
+  token?: string
   student: IStudent
   attends: ICourseGroupMetaWithGrade[]
   submissions: ISubmissionMeta[]

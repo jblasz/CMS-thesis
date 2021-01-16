@@ -29,11 +29,16 @@ export async function postUser(
       authorization: jwt,
     },
   });
+  const {
+    attends, student, submissions, token,
+  } = data as IPostUserResponse;
   if (authorization) {
     Cookies.set('authorization', authorization);
+  } else if (token) {
+    Cookies.set('authorization', token);
   }
-  const { attends, student, submissions } = data as IPostUserResponse;
   return {
+    token,
     attends,
     student: new Student(student),
     submissions: submissions.map((x) => SubmissionMeta(x)),
