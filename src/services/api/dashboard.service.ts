@@ -27,7 +27,11 @@ export async function getDashboardLaboratories(
     const { laboratories } = await getDashboardLaboratoriesMockResponse(studentID);
     return { laboratories: laboratories.map((x) => PendingLaboratory(x)) };
   }
-  const { data } = await axiosInstance.get('/dashboard/laboratory');
+  const { data } = await axiosInstance.get('/dashboard/laboratory', {
+    params: {
+      time: 7,
+    },
+  });
   const { laboratories } = data as IGetDashboardLaboratoriesResponse;
   return { laboratories: laboratories.map((x) => PendingLaboratory(x)) };
 }

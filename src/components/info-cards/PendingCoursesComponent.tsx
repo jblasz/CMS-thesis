@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IPendingLaboratory } from '../../interfaces/misc';
 import { Role } from '../../interfaces/user';
-import { getDashboardLaboratories } from '../../services/api/dashboard.service';
+import { getStudentDashboard } from '../../services/api/dashboard.service';
 import { AppContext } from '../../services/contexts/app-context';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
@@ -24,14 +24,14 @@ export function PendingCoursesComponent(): JSX.Element {
   const getAndSetCourses = useCallback(async () => {
     try {
       setLoading(true);
-      const ret = await getDashboardLaboratories((user && user.student && user.student._id) || '');
-      setPLabs(ret.laboratories);
+      const ret = await getStudentDashboard();
+      setPLabs(ret.upcoming);
     } catch (e) {
       setError(e);
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, []);
   useEffect(() => {
     getAndSetCourses();
   }, [getAndSetCourses]);
