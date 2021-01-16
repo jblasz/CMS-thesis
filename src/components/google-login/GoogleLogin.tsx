@@ -27,9 +27,10 @@ export function GoogleButton(): JSX.Element {
               profileObj: { email, name }, tokenId, googleId,
             } = onlineResp;
             try {
-              const { student } = await postUser(tokenId, googleId, email, name, '123456');
+              const
+                { response: { student }, isAdmin } = await postUser(tokenId, googleId, email, name, '123456');
               setUser({
-                role: Role.ADMIN,
+                role: isAdmin ? Role.ADMIN : Role.STUDENT,
                 student: new Student(student),
               });
             } catch (e) {

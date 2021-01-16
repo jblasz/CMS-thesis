@@ -2,7 +2,9 @@ import Cookies from 'js-cookie';
 import { config } from '../../config';
 import {
   IPostUserResponse,
-  IApiPostResponse, GetStudentResponse, IGetStudentsResponse, PatchStudentResponse,
+  IApiPostResponse,
+  GetStudentResponse,
+  IGetStudentsResponse, PatchStudentResponse, IPostUserAdminResponse,
 } from '../../interfaces/api';
 import { SubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
@@ -18,9 +20,15 @@ import { axiosInstance } from './request.service';
  */
 export async function postUser(
   jwt: string, gid: string, email: string, name: string, usosId: string,
-): Promise<IPostUserResponse> {
+): Promise<{
+    response: IPostUserResponse,
+    isAdmin: boolean
+  }> {
   if (config.useMocks) {
-    return postUserMockResponse(jwt, email, name, usosId);
+    return {
+      response: await postUserMockResponse(jwt, email, name, usosId),
+      isAdmin: true,
+    };
   }
   const { data, headers: { authorization } } = await axiosInstance.post('/public/user', {
     tokenId: jwt,
@@ -29,6 +37,30 @@ export async function postUser(
       authorization: jwt,
     },
   });
+  if (data.user) {
+    const { token, user } = data as IPostUserAdminResponse;
+    if (authorization) {
+      Cookies.set('authorization', authorization);
+    } else if (token) {
+      Cookies.set('authorization', token);
+    }
+    return {
+      isAdmin: true,
+      response: {
+        token,
+        attends: [],
+        student: new Student({
+          _id: user._id,
+          contactEmail: user.email,
+          email: user.email,
+          name: user.fullname,
+          usosId: '',
+          registeredAt: new Date(user.registeredAt),
+        }),
+        submissions: [],
+      },
+    };
+  }
   const {
     attends, student, submissions, token,
   } = data as IPostUserResponse;
@@ -38,10 +70,13 @@ export async function postUser(
     Cookies.set('authorization', token);
   }
   return {
-    token,
-    attends,
-    student: new Student(student),
-    submissions: submissions.map((x) => SubmissionMeta(x)),
+    isAdmin: false,
+    response: {
+      token,
+      attends,
+      student: new Student(student),
+      submissions: submissions.map((x) => SubmissionMeta(x)),
+    },
   };
 }
 
