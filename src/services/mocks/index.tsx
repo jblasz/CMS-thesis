@@ -4,30 +4,112 @@ import {
   IGetStudentCoursesResponse,
   IGetStudentDashboardResponse,
 } from '../../interfaces/api';
-import { ICourseGroupMetaWithGrade, ICourseLabGroupMetaWithDates } from '../../interfaces/misc';
+import { ICourse } from '../../interfaces/course';
+import { ICourseGroupMetaWithGrade, ICourseLabGroupMetaWithDates, SubmissionGrade } from '../../interfaces/misc';
+import { IStudent } from '../../interfaces/student';
 import { StudentCourse } from '../../interfaces/studentCourse';
 import { generateList } from '../../utils';
 import {
-  generateStudentMocks, generateResourceMocks, generateCourseMock, generateSubmissionMock,
+  generateResourceMocks, generateCourseMock, generateSubmissionMock, generateStudentMock,
 } from './generate';
-import { getCoursesListMockResponse } from './in-memory-course-mocks';
-import { getIMCourses, getIMResources, getIMStudents } from './in-memory-database';
+import {
+  getIMCourses, getIMResources, getIMStudents, getIMSubmissions, setIMSubmissions,
+} from './in-memory-database';
 import { getLabsReferencingResourceId } from './in-memory-resource-mocks';
-import { getStudentsMockResponse } from './in-memory-student-mocks';
+
+const studentCount = 20;
 
 export async function populateInMemoryDBWithSomeMocks(count = 5) {
-  generateStudentMocks(100);
+  // and some fake fillers
+  for (let i = 0; i < studentCount - 1; i++) {
+    generateStudentMock();
+  }
+
   generateResourceMocks(10);
   generateCourseMock('staticCourseID');
-  generateList(count).forEach(() => generateCourseMock());
-  const { students } = await getStudentsMockResponse();
-  const tasks = (await getCoursesListMockResponse())
-    .courses
-    .map((x) => Object.values(x.laboratories[0].tasks)[0]);
-  generateList(20).forEach(() => generateSubmissionMock(
-    tasks[Math.floor(Math.random() * tasks.length)],
-    students[Math.floor(Math.random() * students.length)],
-  ));
+  generateList(count).forEach((val) => generateCourseMock(`course_id_${val}`));
+
+  // generate submissions to some random tasks
+  getIMCourses().forEach((course) => {
+    generateList(20).forEach(() => {
+      const group = course.groups[Math.floor(Math.random() * course.groups.length)];
+      const student = group.students[Math.floor(Math.random() * group.students.length)];
+      const lab = course.laboratories[Math.floor(Math.random() * course.laboratories.length)];
+      const task = lab.tasks[group._id];
+
+      generateSubmissionMock(
+        course,
+        task,
+        group,
+        student,
+      );
+    });
+  });
+
+  // generate static admin account with their google id
+  generateStudentMock('115746765603275561022');
+  // sign up the admin for a single course
+  const course = getIMCourses().find((x) => x._id === 'staticCourseID') as ICourse;
+  const student = getIMStudents().find((x) => x._id === '115746765603275561022') as IStudent;
+  const group = course.groups[0];
+  group.students.push(student);
+  const lab = course.laboratories[0];
+  // say they have made a couple of submissions
+  setIMSubmissions([{
+    _id: 'staticSubmission0',
+    final: true,
+    forCourseID: course._id,
+    forCourseName: course.name,
+    forGroupID: group._id,
+    forGroupName: group.name,
+    forLabID: lab._id,
+    forLabName: lab.name,
+    note: 'Note to submission',
+    submittedAt: new Date(),
+    submittedBy: student,
+    grade: SubmissionGrade.A,
+  },
+  {
+    _id: 'staticSubmission1',
+    final: false,
+    forCourseID: course._id,
+    forCourseName: course.name,
+    forGroupID: group._id,
+    forGroupName: group.name,
+    forLabID: lab._id,
+    forLabName: lab.name,
+    note: 'Note to a non-final submission submission',
+    submittedAt: new Date(0),
+    submittedBy: student,
+  }, {
+    _id: 'staticSubmission2',
+    final: true,
+    forCourseID: course._id,
+    forCourseName: course.name,
+    forGroupID: group._id,
+    forGroupName: group.name,
+    forLabID: course.laboratories[1]._id,
+    forLabName: course.laboratories[1].name,
+    note: 'Note to failed submission',
+    submittedAt: new Date(),
+    submittedBy: student,
+    grade: SubmissionGrade.F,
+  }, {
+    _id: 'staticSubmission3',
+    final: true,
+    forCourseID: course._id,
+    forCourseName: course.name,
+    forGroupID: group._id,
+    forGroupName: group.name,
+    forLabID: course.laboratories[2]._id,
+    forLabName: course.laboratories[2].name,
+    note: 'Note to not yet resolved submission',
+    submittedAt: new Date(),
+    submittedBy: student,
+  },
+  ...getIMSubmissions(),
+  ]);
+
   console.log('generated some mocks for in-memory');
 }
 
@@ -57,13 +139,17 @@ export async function getStudentDashboardMockResponse(
     if (!group) {
       return;
     }
-    const highRange = new Date(new Date().valueOf() + 7 * 24 * 60 * 60 * 1000);
+    const now = new Date();
+    const highRange = new Date(now.valueOf() + 31 * 24 * 60 * 60 * 1000);
     course.laboratories.forEach((laboratory) => {
       const task = laboratory.tasks[group._id];
       if (task
         && task.dateFrom
-         && task.dateTo
-          && task.dateTo.valueOf() <= highRange.valueOf()
+        && task.dateTo
+        && (
+          (task.dateFrom.valueOf() < now.valueOf() && task.dateTo.valueOf() > now.valueOf())
+        || (task.dateFrom.valueOf() > now.valueOf() && task.dateFrom.valueOf() < highRange.valueOf()
+        ))
       ) {
         upcoming.push({
           active: course.active,
@@ -126,6 +212,7 @@ export async function getStudentCourseMockResponse(
 
   const inGroupStudent = group.students.find((x) => x._id === studentID);
   const grade = inGroupStudent && inGroupStudent.grade;
+  const submissions = getIMSubmissions().filter((x) => x.forCourseID === course._id);
 
   return Promise.resolve({
     course: StudentCourse({
@@ -139,16 +226,22 @@ export async function getStudentCourseMockResponse(
       semester: course.semester,
       grade,
       laboratories: laboratories
-        ? laboratories.map((lab) => ({
-          _id: lab._id,
-          name: lab.name,
-          ...(lab.tasks[group._id] && lab.tasks[group._id].dateFrom
-            ? { dateFrom: lab.tasks[group._id].dateFrom }
-            : {}),
-          ...(lab.tasks[group._id] && lab.tasks[group._id].dateTo
-            ? { dateTo: lab.tasks[group._id].dateTo }
-            : {}),
-        })) : [],
+        ? laboratories.map((lab) => {
+          const taskId = lab.tasks[group._id] && lab.tasks[group._id].resourceId;
+          const sub = submissions.find((x) => x.final && x.forLabID === lab._id);
+          return ({
+            _id: lab._id,
+            name: lab.name,
+            ...(taskId ? { taskId } : {}),
+            ...(sub ? { latestSubmissionId: sub._id } : {}),
+            ...(lab.tasks[group._id] && lab.tasks[group._id].dateFrom
+              ? { dateFrom: lab.tasks[group._id].dateFrom }
+              : {}),
+            ...(lab.tasks[group._id] && lab.tasks[group._id].dateTo
+              ? { dateTo: lab.tasks[group._id].dateTo }
+              : {}),
+          });
+        }) : [],
     }),
   });
 }

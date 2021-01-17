@@ -254,7 +254,7 @@
   "PENDING": {
     "LABS": {
       "TITLE": "Nadchodzące laboratoria",
-      "TIMERANGE": "następne 7 dni",
+      "TIMERANGE": "następne 30 dni",
       "COURSENAME": "Zajęcia",
       "LABNAME": "Lab",
       "GROUPNAME": "Grupa",
@@ -273,6 +273,8 @@
       "DISCLAIMER": "Ręczna zmiana imienia, emailu kontaktowego albo usos id jest możliwa tylko przez pierwsze 7 dni albo do przesłania pierwszego rozwiązania. Aby zmodyfikować lub usunąć dane po tym czasie skontaktuj się z administratorem. Email kontaktowy jest opcjonalny, może być np Twoim mailem pw."
     },
     "DASHBOARD": {
+      "CONFIRM_UPLOAD": "Upload",
+      "CHANGE_NOTE": "Attach note (optional)",
       "YOUR_COURSES": "Zapisane zajęcia",
       "COURSE_DETAILS": "Szczegóły zajęć",
       "SELECT_COURSE_TO_VIEW": "Wybierz zajęcia aby zobaczyć więcej informacji",

@@ -1,11 +1,10 @@
 import { config } from '../../config';
 import {
-  IApiPostResponse, IGetSubmissionResponse, IGetSubmissionsResponse, IPatchSubmissionResponse,
+  IApiPostResponse, IGetSubmissionsResponse, IPatchSubmissionResponse,
 } from '../../interfaces/api';
 import { ISubmissionMeta, SubmissionMeta } from '../../interfaces/resource';
 import {
   deleteSubmissionMockResponse,
-  getSubmissionMockResponse,
   getSubmissionsMockResponse,
   patchSubmissionMockResponse,
 } from '../mocks/in-memory-submissions-mocks';
@@ -28,13 +27,18 @@ export async function getSubmissions(
 /**
  * /submissions/:id GET
  */
-export async function getSubmission(id: string): Promise<IGetSubmissionResponse> {
-  if (config.useMocks) {
-    return getSubmissionMockResponse(id);
-  }
-  const { data } = await axiosInstance.get(`/submissions/${id}`);
-  const { submission } = data as IGetSubmissionResponse;
-  return { submission: SubmissionMeta(submission) };
+export async function getSubmission(id: string) {
+  // if (config.useMocks) {
+  //   return getSubmissionMockResponse(id);
+  // }
+  const a = document.createElement('a');
+  a.target = '_blank';
+  a.href = `${axiosInstance.defaults.baseURL}/submissions/${id}`;
+  a.click();
+  return Promise.resolve({});
+  // const { data } = await axiosInstance.get(`/submissions/${id}`);
+  // const { submission } = data as IGetSubmissionResponse;
+  // return { submission: SubmissionMeta(submission) };
 }
 
 /**

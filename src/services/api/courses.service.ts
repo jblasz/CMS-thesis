@@ -27,7 +27,6 @@ import {
   IPutCourseLaboratoryResponse,
   IPutCourseLaboratoryTaskResponse,
 } from '../../interfaces/api';
-import { ISubmissionMeta } from '../../interfaces/resource';
 import { postSubmissionMockResponse } from '../mocks/in-memory-resource-mocks';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { axiosInstance } from './request.service';
@@ -217,9 +216,23 @@ export async function deleteAdminCourseLaboratory(
 /**
  * /course/:id/laboratory/:id2/submission POST
  */
-export async function postSubmission(submission: ISubmissionMeta): Promise<IApiPostResponse> {
-  if (config.useMocks) { return postSubmissionMockResponse(submission); }
-  const { ok } = (await axiosInstance.post(`/course/${submission.forCourseID}/laboratory/${submission.forLabID}/submission`, submission)).data as IApiPostResponse;
+export async function postSubmission(
+  courseID: string,
+  laboratoryID: string,
+  data: FormData,
+  studentID: string,
+  note: string,
+): Promise<IApiPostResponse> {
+  if (config.useMocks) {
+    return postSubmissionMockResponse(
+      courseID,
+      laboratoryID,
+      data,
+      studentID,
+      note,
+    );
+  }
+  const { ok } = (await axiosInstance.post(`/course/${courseID}/laboratory/${laboratoryID}/submission`, data)).data as IApiPostResponse;
   return { ok };
 }
 

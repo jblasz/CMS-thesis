@@ -259,7 +259,7 @@
   "PENDING": {
     "LABS": {
       "TITLE": "Upcoming labs",
-      "TIMERANGE": "next 7 days",
+      "TIMERANGE": "next 30 days",
       "COURSENAME": "Course",
       "LABNAME": "Lab",
       "GROUPNAME": "Group",
@@ -278,6 +278,8 @@
       "DISCLAIMER": "You can only manually change your name, contact email and usos id within 7 days of creating the account, or until your first submission is made. To remove or modify your data after that contact the admin. Contact email can be your pw mail. The google mail is non-modifiable, as it is the google account you used for login."
     },
     "DASHBOARD": {
+      "CONFIRM_UPLOAD": "Upload",
+      "CHANGE_NOTE": "Attach note (optional)",
       "YOUR_COURSES": "Courses you are/were attending",
       "COURSE_DETAILS": "Course details",
       "SELECT_COURSE_TO_VIEW": "Click on one of the courses to the left to view more",

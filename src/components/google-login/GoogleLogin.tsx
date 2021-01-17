@@ -26,6 +26,7 @@ export function GoogleButton(): JSX.Element {
             const {
               profileObj: { email, name }, tokenId, googleId,
             } = onlineResp;
+            console.log({ googleId });
             try {
               const
                 { response: { student }, isAdmin } = await postUser(tokenId, googleId, email, name, '123456');

@@ -1,6 +1,6 @@
 import { v4 } from 'uuid';
 import {
-  Permission, ISubmissionMeta, IUsedBy,
+  Permission, IUsedBy,
 } from '../../interfaces/resource';
 import {
   getIMCourses, getIMResources, getIMSubmissions, setIMResources, setIMSubmissions,
@@ -52,14 +52,19 @@ export async function putResourceMockResponse(id: string) {
   return Promise.reject(new Error('Resource has id, but isnt in memory'));
 }
 
-export async function postSubmissionMockResponse(submission: ISubmissionMeta) {
-  const { forLabID, forGroupID, forCourseID } = submission;
-
-  const course = getIMCourses().find((x) => x._id === forCourseID);
-  const group = course && course.groups.find((x) => x._id === forGroupID);
-  const lab = course && course.laboratories.find((x) => x._id === forLabID);
-  const task = lab && lab.tasks[forGroupID];
-  if (!course || !group || !lab || !task) {
+export async function postSubmissionMockResponse(
+  courseID: string,
+  laboratoryID: string,
+  data: FormData,
+  studentID: string,
+  note: string,
+) {
+  const course = getIMCourses().find((x) => x._id === courseID);
+  const group = course && course.groups.find((x) => x.students.find((y) => y._id === studentID));
+  const student = group && group.students.find((x) => x._id === studentID);
+  const lab = course && course.laboratories.find((x) => x._id === laboratoryID);
+  const task = lab && group && lab.tasks[group._id];
+  if (!course || !group || !lab || !task || !student) {
     throw new Error('Course not found');
   }
   if (
@@ -71,15 +76,27 @@ export async function postSubmissionMockResponse(submission: ISubmissionMeta) {
   }
 
   const submissions = getIMSubmissions();
-  submissions.filter((x) => x.submittedBy === submission.submittedBy
-    && x.forCourseID === submission.forCourseID
-    && x.forGroupID === submission.forGroupID
-    && x.forLabID === submission.forLabID)
+  submissions.filter((x) => x.submittedBy._id === studentID
+    && x.forCourseID === courseID
+    && x.forGroupID === group._id
+    && x.forLabID === laboratoryID)
     .forEach((s) => {
       s.final = false;
     });
 
-  setIMSubmissions([...submissions, submission]);
+  setIMSubmissions([...submissions, {
+    _id: v4(),
+    final: true,
+    forCourseID: courseID,
+    forCourseName: course.name,
+    forGroupID: group._id,
+    forGroupName: group.name,
+    forLabID: lab._id,
+    forLabName: lab.name,
+    note,
+    submittedAt: new Date(),
+    submittedBy: student,
+  }]);
   return Promise.resolve({ ok: true });
 }
 

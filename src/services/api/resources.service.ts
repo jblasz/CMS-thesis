@@ -1,13 +1,14 @@
 import { config } from '../../config';
 import {
   IApiPostResponse,
-  IGetResourceResponse, IGetResourcesResponse, IPatchResourceResponse, IPutResourceResponse,
+  IGetResourcesResponse,
+  IPatchResourceResponse,
+  IPutResourceResponse,
 } from '../../interfaces/api';
 import { Permission } from '../../interfaces/resource';
 import { getResourcesMockResponse } from '../mocks';
 import {
   deleteResourceMockResponse,
-  getResourceMockResponse,
   patchResourceMockResponse,
   putResourceMockResponse,
 } from '../mocks/in-memory-resource-mocks';
@@ -28,13 +29,19 @@ export async function getAdminResources(): Promise<IGetResourcesResponse> {
 /**
  * /resource/:id GET
  */
-export async function getAdminResource(_id: string): Promise<IGetResourceResponse> {
-  if (config.useMocks) {
-    return getResourceMockResponse(_id);
-  }
-  const { data } = await axiosInstance.get(`/resource${_id}`);
-  const { resource } = data as IGetResourceResponse;
-  return { resource };
+export async function getAdminResource(_id: string) {
+  const a = document.createElement('a');
+  a.target = '_blank';
+  a.href = `${axiosInstance.defaults.baseURL}/resource/${_id}`;
+  a.click();
+  return Promise.resolve({});
+
+  // if (config.useMocks) {
+  //   return getResourceMockResponse(_id);
+  // }
+  // const { data } = await axiosInstance.get(`/resource${_id}`);
+  // const { resource } = data as IGetResourceResponse;
+  // return { resource };
 }
 
 /**

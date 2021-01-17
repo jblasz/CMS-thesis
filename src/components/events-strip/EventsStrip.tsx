@@ -32,7 +32,6 @@ export function EventsStripComponent(): JSX.Element {
   const [error, setError] = useState('');
   const [t] = useTranslation();
   const [hide, setHidden] = useState(config.hideWarningStrip);
-  let isMounted = true;
 
   const getAndSetEvents = useCallback(async () => {
     try {
@@ -41,36 +40,36 @@ export function EventsStripComponent(): JSX.Element {
       }
       setLoading(true);
       const { upcoming: _events } = await getStudentDashboard(user.student._id);
-      const _activeEvents = _events.filter(
-        (event) => event.startsAt.valueOf() >= new Date().valueOf(),
+      const now = new Date();
+      const highRange = new Date(now.valueOf() + 31 * 24 * 60 * 60 * 1000);
+
+      const _activeEvents: ICourseLabGroupMetaWithDates[] = [];
+      const _upcomingEvents: ICourseLabGroupMetaWithDates[] = [];
+      _events.forEach(
+        (event) => {
+          if (event.startsAt.valueOf() < now.valueOf() && event.endsAt.valueOf() > now.valueOf()) {
+            _activeEvents.push(event);
+          } else if (event.startsAt.valueOf() > now.valueOf()
+          && event.startsAt.valueOf() <= highRange.valueOf()) {
+            _upcomingEvents.push(event);
+          }
+        },
       );
-      const _upcomingEvents = _events.filter(
-        (event) => event.startsAt.valueOf() < new Date().valueOf(),
-      );
-      if (isMounted) {
-        setEvents({
-          events: _events,
-          activeEvents: _activeEvents,
-          upcomingEvents: _upcomingEvents,
-        });
-      }
+
+      setEvents({
+        events: _events,
+        activeEvents: _activeEvents,
+        upcomingEvents: _upcomingEvents,
+      });
     } catch (e) {
-      if (isMounted) {
-        setError(`Events strip: ${e}`);
-      }
+      setError(`Events strip: ${e}`);
     } finally {
-      if (isMounted) {
-        setLoading(false);
-      }
+      setLoading(false);
     }
-  }, [isMounted, user]);
+  }, [user]);
 
   useEffect(() => {
     getAndSetEvents();
-    return () => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      isMounted = false;
-    };
   }, [getAndSetEvents]);
 
   if (!user || user.role === Role.ADMIN) {
@@ -97,7 +96,7 @@ export function EventsStripComponent(): JSX.Element {
           <FontAwesomeIcon icon={faWindowClose} />
         </Button>
       </div>
-      {activeEvents
+      {activeEvents.length
         ? (
           <>
             <table>
@@ -109,10 +108,10 @@ export function EventsStripComponent(): JSX.Element {
                 </tr>
               </thead>
               <tbody>
-                {upcomingEvents.map((event) => (
+                {activeEvents.map((event) => (
                   <tr key={`${event.courseId}${event.groupId}${event.labId}`}>
                     <td>
-                      <Link to={`/dashboard?focus=${event.courseId}baf`}>
+                      <Link to={`/dashboard?focus=${event.courseId}`}>
                         {`${event.courseName}, ${event.labName} `}
                       </Link>
                     </td>
@@ -123,7 +122,7 @@ export function EventsStripComponent(): JSX.Element {
           </>
         )
         : <></>}
-      {upcomingEvents
+      {upcomingEvents.length
         ? (
           <>
             <table>

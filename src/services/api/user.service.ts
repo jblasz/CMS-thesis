@@ -25,8 +25,9 @@ export async function postUser(
     isAdmin: boolean
   }> {
   if (config.useMocks) {
+    Cookies.set('authorization', jwt);
     return {
-      response: await postUserMockResponse(jwt, email, name, usosId),
+      response: await postUserMockResponse(gid, email, name, usosId),
       isAdmin: true,
     };
   }
