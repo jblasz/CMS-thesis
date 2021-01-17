@@ -37,8 +37,8 @@ export function postUserMockResponse(
   return getUserMockResponse(gid);
 }
 
-export function getStudentMockResponse(id: string): Promise<GetStudentResponse> {
-  return getUserMockResponse(id);
+export function getStudentMockResponse(studentID: string): Promise<GetStudentResponse> {
+  return getUserMockResponse(studentID);
 }
 
 export function patchStudentMockResponse(params: {
@@ -48,11 +48,22 @@ export function patchStudentMockResponse(params: {
   contactEmail?: string
   usosId?: string
 }): Promise<PatchStudentResponse> {
-  const students = getIMStudents();
-  const student = students.find((x) => x._id === params.studentID);
+  const { studentID, ...rest } = params;
+  const student = getIMStudents().find((x) => x._id === studentID);
   if (!student) {
-    throw new Error('404 student not found');
+    throw new Error('404');
   }
+  Object.keys(rest).forEach((key) => {
+    if (key === 'name') {
+      student.name = rest.name as string;
+    } else if (key === 'email') {
+      student.email = rest.email as string;
+    } else if (key === 'contactEmail') {
+      student.contactEmail = rest.email as string;
+    } else if (key === 'usosId') {
+      student.usosId = rest.usosId as string;
+    }
+  });
   return Promise.resolve({
     ok: true,
     student,

@@ -4,12 +4,29 @@ import {
   IGetCodesResponse, IPostCodeNewResponse, IPostCodeResponse, PostCodeResponseType,
 } from '../../interfaces/api';
 import { ICode } from '../../interfaces/code';
-import { getIMCodes, getIMCourses, setIMCodes } from './in-memory-database';
+import {
+  getIMCodes, getIMCourses, getIMStudents, setIMCodes,
+} from './in-memory-database';
 
-export async function postCodeMockResponse(code: string): Promise<IPostCodeResponse> {
+export async function postCodeMockResponse(
+  studentID: string, code: string,
+): Promise<IPostCodeResponse> {
   const c = getIMCodes().find((x) => x._id === code);
   if (c) {
     if (c.validThrough.valueOf() >= new Date().valueOf()) {
+      const course = getIMCourses().find((x) => x._id === c.for.courseId);
+      const group = course && course.groups.find((x) => x._id === c.for.groupId);
+      const student = getIMStudents().find((x) => x._id === studentID);
+      if (!course || !group || !student) {
+        throw new Error('Bad code, course student or group not found');
+      }
+      group.students.push({
+        _id: student._id,
+        contactEmail: student.contactEmail || '',
+        email: student.email || '',
+        name: student.name || '',
+        usosId: student.usosId || '',
+      });
       return Promise.resolve({
         ok: true,
         type: PostCodeResponseType.COURSE_SIGNUP,
@@ -55,6 +72,7 @@ export async function postCodeNewMockResponse(
     valid: true,
     validThrough,
   };
+  setIMCodes([...getIMCodes(), code]);
   return Promise.resolve({
     code,
   });

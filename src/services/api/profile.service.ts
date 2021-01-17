@@ -1,7 +1,7 @@
 import { config } from '../../config';
 import { GetStudentResponse, PatchStudentResponse } from '../../interfaces/api';
 import { Student } from '../../interfaces/student';
-import { getStudentMockResponse } from '../mocks/in-memory-student-mocks';
+import { getStudentMockResponse, patchStudentMockResponse } from '../mocks/in-memory-student-mocks';
 import { axiosInstance } from './request.service';
 
 /**
@@ -32,7 +32,7 @@ export async function patchProfile(params: {
   usosId?: string
 }): Promise<PatchStudentResponse> {
   if (config.useMocks) {
-    const r = await getStudentMockResponse(params.studentID);
+    const r = await patchStudentMockResponse(params);
     return { ok: true, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.patch('/profile', params);

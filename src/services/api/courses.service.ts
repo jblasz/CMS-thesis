@@ -11,6 +11,8 @@ import {
   patchCourseGroupStudentMockResponse,
   setCourseLabMockResponse,
   deleteCourseMockResponse,
+  putAdminCourseLaboratoryTaskMockResponse,
+  deleteCourseGroupStudentMockResponse,
 } from '../mocks/in-memory-course-mocks';
 import { CourseGroup } from '../../interfaces/courseGroup';
 import {
@@ -190,7 +192,7 @@ export async function putAdminCourseLaboratoryTask(
   courseID: string, labID: string, groupID: string, task: CourseTask,
 ): Promise<IPutCourseLaboratoryTaskResponse> {
   if (config.useMocks) {
-    return { ok: true, task: new CourseTask(task) };
+    return putAdminCourseLaboratoryTaskMockResponse(courseID, labID, groupID, task);
   }
   const { ok, task: _task } = (
     (await axiosInstance.put(`/course/${courseID}/laboratory/${labID}/task/${groupID}`, { task })).data as IPutCourseLaboratoryTaskResponse
@@ -249,7 +251,7 @@ export async function deleteCourseGroupStudent(
   courseID: string, groupID: string, studentID: string,
 ): Promise<IApiPostResponse> {
   if (config.useMocks) {
-    return { ok: true };
+    return deleteCourseGroupStudentMockResponse(courseID, groupID, studentID);
   }
   const { ok } = (await axiosInstance.delete(`/course/${courseID}/group/${groupID}/student/${studentID}`)).data as IPatchCourseGroupStudentResponse;
   return { ok };

@@ -9,7 +9,13 @@ import { Permission } from '../../interfaces/resource';
 import { IStudent, Student } from '../../interfaces/student';
 import { generateList, shuffleList } from '../../utils';
 import {
-  getIMCourses, getIMResources, getIMStudents, getIMSubmissions, setIMCourses, setIMResources,
+  getIMCourses,
+  getIMResources,
+  getIMStudents,
+  getIMSubmissions,
+  setIMCourses,
+  setIMResources,
+  setIMStudents,
 } from './in-memory-database';
 
 const labCount = 0;
@@ -53,6 +59,7 @@ export function generateStudentMock(id = v4()) {
     usosId: '123321',
   });
   students.push(s);
+  setIMStudents(students);
   return s;
 }
 

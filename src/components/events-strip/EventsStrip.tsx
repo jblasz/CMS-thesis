@@ -36,8 +36,11 @@ export function EventsStripComponent(): JSX.Element {
 
   const getAndSetEvents = useCallback(async () => {
     try {
+      if (!user || !user.student || user.role !== Role.STUDENT) {
+        return;
+      }
       setLoading(true);
-      const { upcoming: _events } = await getStudentDashboard();
+      const { upcoming: _events } = await getStudentDashboard(user.student._id);
       const _activeEvents = _events.filter(
         (event) => event.startsAt.valueOf() >= new Date().valueOf(),
       );
@@ -60,7 +63,7 @@ export function EventsStripComponent(): JSX.Element {
         setLoading(false);
       }
     }
-  }, [isMounted]);
+  }, [isMounted, user]);
 
   useEffect(() => {
     getAndSetEvents();

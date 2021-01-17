@@ -11,7 +11,7 @@ enum StatusFilter {
 export async function getAdminDashboardMockResponse(): Promise<IGetAdminDashboardResponse> {
   return Promise.resolve({
     unmarkedSolutionsCount:
-    getIMSubmissions().reduce((agg, curr) => (curr.grade ? agg : agg + 1), 0),
+      getIMSubmissions().reduce((agg, curr) => (curr.grade ? agg : agg + 1), 0),
   });
 }
 

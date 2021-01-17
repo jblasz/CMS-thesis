@@ -22,24 +22,20 @@ interface CodeValidationComponentState {
 function CodeValidationComponent(): JSX.Element {
   const { user } = useContext(AppContext);
   const [t] = useTranslation();
-  const [state, setState] = useState<CodeValidationComponentState>({
-    loading: false,
-    code: '',
-    error: '',
-  });
-  const {
-    code, loading, error, type, courseSignup,
-  } = state;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [code, setCode] = useState('');
+  const [course, setCourse] = useState<ICourseGroupMeta>();
   const submitCode = async () => {
     try {
-      const resp = await postCode(code);
+      if (!user || !user.student) {
+        return;
+      }
+      setLoading(true);
+      const resp = await postCode(user.student._id, code);
       switch (resp.type) {
         case PostCodeResponseType.COURSE_SIGNUP: {
-          setState({
-            ...state,
-            type: resp.type,
-            courseSignup: resp.courseSignup,
-          });
+          setCourse(resp.courseSignup);
           break;
         }
         default: {
@@ -47,10 +43,9 @@ function CodeValidationComponent(): JSX.Element {
         }
       }
     } catch (err) {
-      setState({
-        ...state,
-        error: err,
-      });
+      setError(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,19 +72,16 @@ function CodeValidationComponent(): JSX.Element {
     );
   }
 
-  if (type) {
-    if (type === PostCodeResponseType.COURSE_SIGNUP && courseSignup) {
-      return (
-        <Jumbotron>
-          <Container className="justify-content-center">
-            <h1>{t('CODE_VALIDATION.SUCCESS')}</h1>
-            <p>{t('CODE_VALIDATION.COURSE_SIGNUP_SUCCESS')}</p>
-            <Link className="nav-link" to={`/courses/${courseSignup.courseId}`}>{courseSignup.courseName || t('CODE_VALIDATION.GOTO_COURSE')}</Link>
-          </Container>
-        </Jumbotron>
-      );
-    }
-    console.error('Unrecognized type', type);
+  if (course) {
+    return (
+      <Jumbotron>
+        <Container className="justify-content-center">
+          <h1>{t('CODE_VALIDATION.SUCCESS')}</h1>
+          <p>{t('CODE_VALIDATION.COURSE_SIGNUP_SUCCESS')}</p>
+          <Link className="nav-link" to={`/courses/${course.courseId}`}>{course.courseName || t('CODE_VALIDATION.GOTO_COURSE')}</Link>
+        </Container>
+      </Jumbotron>
+    );
   }
 
   return (
@@ -100,10 +92,7 @@ function CodeValidationComponent(): JSX.Element {
           <Form.Control
             type="text"
             value={code}
-            onChange={(e) => setState({
-              ...state,
-              code: e.currentTarget.value,
-            })}
+            onChange={(e) => setCode(e.target.value)}
           />
           <Form.Text><small>{t('CODE_VALIDATION.CAN_INPUT_ANY_KIND')}</small></Form.Text>
         </Form>

@@ -7,7 +7,6 @@ import {
   Redirect, Route, useHistory, Switch,
 } from 'react-router-dom';
 import { NavigationBarComponent } from '../navbar';
-import { RegisterComponent } from '../register';
 import { ResearchComponent } from '../research';
 import { ArticlesComponent } from '../articles';
 import { FooterComponent } from '../footer';
@@ -92,7 +91,9 @@ function App():JSX.Element {
       return Promise.reject(error);
     });
 
-  useEffect(() => { getAndSetCourses(); }, []);
+  useEffect(() => {
+    getAndSetCourses();
+  }, []);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -117,7 +118,6 @@ function App():JSX.Element {
                   <CourseListComponent courses={courses} />
                 )}
               />
-              <Route exact path="/register" component={RegisterComponent} />
               <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
               <Route exact path="/courses/:id" component={CourseComponent} />
               <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
@@ -156,7 +156,7 @@ function App():JSX.Element {
               <Redirect to="/404" />
             </Switch>
           </div>
-          <FooterComponent />
+          <FooterComponent onRefresh={() => getAndSetCourses()} />
           <CookieConsent
             location="bottom"
             buttonText={t('MAIN.COOKIE_CONSENT_ACCEPT')}

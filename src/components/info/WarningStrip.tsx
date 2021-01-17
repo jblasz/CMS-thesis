@@ -7,7 +7,7 @@ export function WarningStripComponent(props: {error: string}): JSX.Element {
   const { error } = props;
   const [{ hidden, hiddenFor }, setHidden] = useState({ hidden: false, hiddenFor: '' });
   if (error) {
-    console.error({ error });
+    console.error(error);
   }
   return (
     error ? (

@@ -2,7 +2,9 @@ import {
   faTasks, faUpload, faDownload,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useContext, useEffect, useState,
+} from 'react';
 import {
   Button,
   ButtonGroup,
@@ -14,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { ICourseGroupMetaWithGrade } from '../../interfaces/misc';
 import { IStudentCourse, StudentCourse } from '../../interfaces/studentCourse';
 import { getStudentCourse, getStudentCourses } from '../../services/api/dashboard.service';
+import { AppContext } from '../../services/contexts/app-context';
 import { formatDate, stringifyDatePair } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
@@ -30,28 +33,35 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
   const [courses, setCourses] = useState<ICourseGroupMetaWithGrade[]>([]);
   const [course, setCourse] = useState<IStudentCourse>();
   const [courseId, setCourseId] = useState(focus || '');
+  const { user } = useContext(AppContext);
 
   const getAndSetCourse = useCallback(async (id: string) => {
     try {
+      if (!user || !user.student) {
+        return;
+      }
       setLoading(true);
-      const { course: _course } = await getStudentCourse(id);
+      const { course: _course } = await getStudentCourse(user.student._id, id);
       setCourse(StudentCourse(_course));
     } catch (e) {
       setError(e);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   const getAndSetCourses = useCallback(async () => {
     try {
+      if (!user || !user.student._id) {
+        return;
+      }
       setLoading(true);
-      const { courses: _courses } = await getStudentCourses();
+      const { courses: _courses } = await getStudentCourses(user.student._id);
       setCourses(_courses);
-      const match = focus || (_courses && _courses[0] && _courses[0].groupId);
+      const match = focus || (_courses && _courses[0] && _courses[0].courseId);
       if (match) {
         setCourseId(match);
-        const { course: _course } = await getStudentCourse(match);
+        const { course: _course } = await getStudentCourse(user.student._id, match);
         setCourse(StudentCourse(_course));
       }
     } catch (e) {
@@ -59,7 +69,7 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
     } finally {
       setLoading(false);
     }
-  }, [focus]);
+  }, [focus, user]);
 
   useEffect(() => {
     getAndSetCourses();

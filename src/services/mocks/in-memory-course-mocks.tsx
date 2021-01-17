@@ -12,9 +12,11 @@ import {
   IPostCourseGroupResponse,
   IPostCourseResponse,
   IPutCourseLaboratoryResponse,
+  IPutCourseLaboratoryTaskResponse,
 } from '../../interfaces/api';
 import { getIMCourses, getIMStudents, setIMCourses } from './in-memory-database';
 import { IPendingLaboratory } from '../../interfaces/misc';
+import { CourseTask } from '../../interfaces/courseTask';
 
 export async function getCoursesListMockResponse() {
   return Promise.resolve({ courses: getIMCourses() });
@@ -119,6 +121,22 @@ export async function getLaboratoryMockResponse(
     );
   }
   return Promise.reject(new Error('404 not found'));
+}
+
+export async function putAdminCourseLaboratoryTaskMockResponse(
+  courseID: string, labID: string, groupID: string, task: CourseTask,
+): Promise<IPutCourseLaboratoryTaskResponse> {
+  const course = getIMCourses().find((x) => x._id === courseID);
+  const lab = course && course.laboratories.find((x) => x._id === labID);
+  const groupExists = course && course.groups.find((x) => x._id === groupID);
+  if (!course || !lab || !groupExists) {
+    throw new Error('Group, course or lab doesnt exist');
+  }
+  lab.tasks[groupID] = task;
+  return Promise.resolve({
+    ok: true,
+    task,
+  });
 }
 
 export async function setCourseLabMockResponse(
@@ -239,4 +257,20 @@ Promise<IGetDashboardLaboratoriesResponse> {
       };
     }),
   });
+}
+
+export async function deleteCourseGroupStudentMockResponse(
+  courseID: string, groupID: string, studentID: string,
+): Promise<IApiPostResponse> {
+  const course = getIMCourses().find((x) => x._id === courseID);
+  const group = course && course.groups.find((x) => x._id === groupID);
+  const student = getIMStudents().find((x) => x._id === studentID);
+  if (course && group && student) {
+    const i = group.students.findIndex((x) => x._id === studentID);
+    if (i > -1) {
+      group.students.splice(i, 1);
+    }
+    return Promise.resolve({ ok: true });
+  }
+  throw new Error('404 not found');
 }

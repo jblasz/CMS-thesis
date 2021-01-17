@@ -23,15 +23,18 @@ export function PendingCoursesComponent(): JSX.Element {
   const [t] = useTranslation();
   const getAndSetCourses = useCallback(async () => {
     try {
+      if (!user || !user.student) {
+        return;
+      }
       setLoading(true);
-      const ret = await getStudentDashboard();
+      const ret = await getStudentDashboard(user.student._id);
       setPLabs(ret.upcoming);
     } catch (e) {
       setError(e);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
   useEffect(() => {
     getAndSetCourses();
   }, [getAndSetCourses]);

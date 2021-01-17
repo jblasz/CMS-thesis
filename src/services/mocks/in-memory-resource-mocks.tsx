@@ -1,5 +1,4 @@
 import { v4 } from 'uuid';
-import { ICourseTask } from '../../interfaces/courseTask';
 import {
   Permission, ISubmissionMeta, IUsedBy,
 } from '../../interfaces/resource';
@@ -54,30 +53,20 @@ export async function putResourceMockResponse(id: string) {
 }
 
 export async function postSubmissionMockResponse(submission: ISubmissionMeta) {
-  let found: ICourseTask | undefined;
-  for (const course of getIMCourses()) {
-    const g = course.groups.find((x) => x._id === submission.forGroupID);
-    if (g) {
-      for (const lab of course.laboratories) {
-        const task = lab.tasks[g._id];
-        if (task) {
-          found = task;
-          break;
-        }
-      }
-    }
-    if (found) {
-      break;
-    }
-  }
-  if (!found) {
-    throw new Error('404 not found');
+  const { forLabID, forGroupID, forCourseID } = submission;
+
+  const course = getIMCourses().find((x) => x._id === forCourseID);
+  const group = course && course.groups.find((x) => x._id === forGroupID);
+  const lab = course && course.laboratories.find((x) => x._id === forLabID);
+  const task = lab && lab.tasks[forGroupID];
+  if (!course || !group || !lab || !task) {
+    throw new Error('Course not found');
   }
   if (
-    !found.dateFrom
-    || !found.dateTo
-    || found.dateFrom.valueOf() > new Date().valueOf()
-    || found.dateTo.valueOf() + found.gracePeriod * 60 * 1000 < new Date().valueOf()) {
+    !task.dateFrom
+    || !task.dateTo
+    || task.dateFrom.valueOf() > new Date().valueOf()
+    || task.dateTo.valueOf() + task.gracePeriod * 60 * 1000 < new Date().valueOf()) {
     throw new Error('Too late, too early, or task not fully defined yet');
   }
 

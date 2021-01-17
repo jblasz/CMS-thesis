@@ -51,9 +51,11 @@ export async function getAdminDashboard(): Promise<IGetAdminDashboardResponse> {
 /**
  * /dashboard/studentSummary
  */
-export async function getStudentDashboard(): Promise<IGetStudentDashboardResponse> {
+export async function getStudentDashboard(
+  studentID: string,
+): Promise<IGetStudentDashboardResponse> {
   if (config.useMocks) {
-    return Promise.resolve(getStudentDashboardMockResponse());
+    return Promise.resolve(getStudentDashboardMockResponse(studentID));
   }
   const { data } = await axiosInstance.get('/dashboard/studentSummary');
   const { upcoming } = data as IGetStudentDashboardResponse;
@@ -63,9 +65,9 @@ export async function getStudentDashboard(): Promise<IGetStudentDashboardRespons
 /**
  * /student/courses GET
  */
-export async function getStudentCourses(): Promise<IGetStudentCoursesResponse> {
+export async function getStudentCourses(studentID: string): Promise<IGetStudentCoursesResponse> {
   if (config.useMocks) {
-    const { courses } = await getStudentCoursesMockResponse();
+    const { courses } = await getStudentCoursesMockResponse(studentID);
     return { courses };
   }
   const { data } = await axiosInstance.get('/student/courses');
@@ -76,11 +78,13 @@ export async function getStudentCourses(): Promise<IGetStudentCoursesResponse> {
 /**
  * /student/courses/:id GET
  */
-export async function getStudentCourse(id: string): Promise<IGetStudentCourseResponse> {
+export async function getStudentCourse(
+  studentID: string, courseID: string,
+): Promise<IGetStudentCourseResponse> {
   if (config.useMocks) {
-    return getStudentCourseMockResponse(id);
+    return getStudentCourseMockResponse(studentID, courseID);
   }
-  const { data } = await axiosInstance.get(`/student/courses/${id}`);
+  const { data } = await axiosInstance.get(`/student/courses/${courseID}`);
   const { course } = data as IGetStudentCourseResponse;
   return { course: StudentCourse(course) };
 }

@@ -1,9 +1,13 @@
 import React from 'react';
-import { Navbar } from 'react-bootstrap';
+import { Button, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-// import './Footer.scss';
 
-function FooterComponent(): JSX.Element {
+interface FooterComponentProps {
+  onRefresh: () => void
+}
+
+function FooterComponent(props: FooterComponentProps): JSX.Element {
+  const { onRefresh } = props;
   const [t] = useTranslation();
 
   return (
@@ -17,6 +21,9 @@ function FooterComponent(): JSX.Element {
       <Navbar.Text>
         <a href="https://www.pw.edu.pl/engpw" className="m-2">{t('FOOTER.PW_URL')}</a>
       </Navbar.Text>
+      <div className="float-right">
+        <Button className="btn button btn-primary" onClick={onRefresh}>{'   '}</Button>
+      </div>
     </Navbar>
   );
 }

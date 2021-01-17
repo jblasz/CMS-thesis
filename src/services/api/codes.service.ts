@@ -10,9 +10,9 @@ import { axiosInstance } from './request.service';
 /**
  * /code POST
  */
-export async function postCode(code: string): Promise<IPostCodeResponse> {
+export async function postCode(studentID: string, code: string): Promise<IPostCodeResponse> {
   if (config.useMocks) {
-    return postCodeMockResponse(code);
+    return postCodeMockResponse(studentID, code);
   }
   const { data } = await axiosInstance.post('/code', null, {
     headers: {
