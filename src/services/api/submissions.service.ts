@@ -71,13 +71,14 @@ export async function patchSubmission(
     return patchSubmissionMockResponse(submission);
   }
   const {
-    submittedBy, forLabID, submittedAt, note,
+    submittedBy, forLabID, submittedAt, note, grade,
   } = submission;
   const { data } = await axiosInstance.patch(`/submissions/${submission._id}`, {
     ...(submittedBy ? { submittedByStudentId: submittedBy._id } : {}),
     ...(forLabID ? { forLabId: forLabID } : {}),
     ...(submittedAt ? { submittedAt } : {}),
     ...(note ? { note } : {}),
+    ...(grade ? { grade } : {}),
   });
   const { ok, submission: _submission } = data as IPatchSubmissionResponse;
   return { ok, submission: SubmissionMeta(_submission) };

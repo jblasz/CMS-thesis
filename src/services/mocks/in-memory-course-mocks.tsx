@@ -1,7 +1,9 @@
 import { v4 } from 'uuid';
-import { Course, ICourse, ICourseStub } from '../../interfaces/course';
+import {
+  Course, ICourse, ICourseStubCore,
+} from '../../interfaces/course';
 import { CourseLaboratory, ICourseLaboratory } from '../../interfaces/courseLaboratory';
-import { CourseGroup, ICourseGroup } from '../../interfaces/courseGroup';
+import { CourseGroup, ICourseGroup, IGroupStub } from '../../interfaces/courseGroup';
 import {
   IApiPostResponse,
   IGetCourseGroupResponse,
@@ -43,14 +45,19 @@ export async function getCourseGroupMockResponse(
   return Promise.reject(new Error('404 not found'));
 }
 
-export async function putCourseMockResponse(course: ICourseStub): Promise<IPostCourseResponse> {
+export async function putCourseMockResponse(course: ICourseStubCore): Promise<IPostCourseResponse> {
   const courses = getIMCourses();
   if (course._id) {
-    const f = courses.findIndex((x) => x._id === course._id);
-    if (f > -1) {
-      const c = new Course(course);
-      courses[f] = c;
-      setIMCourses(courses);
+    const f = courses.find((x) => x._id === course._id);
+    if (f) {
+      f._id = course._id;
+      f.active = course.active;
+      f.description = course.description;
+      f.descriptionShort = course.descriptionShort;
+      f.language = course.language;
+      f.name = course.name;
+      f.semester = course.semester;
+      f.shown = course.shown;
       return Promise.resolve(
         {
           ok: true,
@@ -63,6 +70,8 @@ export async function putCourseMockResponse(course: ICourseStub): Promise<IPostC
   const n = new Course({
     ...course,
     _id: v4(),
+    groups: [],
+    laboratories: [],
   });
   courses.push(n);
   setIMCourses(courses);
@@ -82,16 +91,17 @@ export async function deleteCourseMockResponse(_id: string) {
 
 export async function setCourseGroupResponse(
   courseID: string,
-  group: CourseGroup,
+  group: IGroupStub,
 ): Promise<IPostCourseGroupResponse> {
   const course = getIMCourses().find((x) => x._id === courseID);
   if (!course) {
     return Promise.reject();
   }
   if (group._id) {
-    const toReplace = course.groups.findIndex((x) => x._id === group._id);
-    if (toReplace > -1) {
-      course.groups[toReplace] = group;
+    const toReplace = course.groups.find((x) => x._id === group._id);
+    if (toReplace) {
+      toReplace._id = group._id;
+      toReplace.name = group.name;
       return Promise.resolve(
         { ok: true, group: (await getCourseGroupMockResponse(course._id, group._id)).group },
       );
@@ -100,6 +110,7 @@ export async function setCourseGroupResponse(
     course.groups.push(new CourseGroup({
       ...group,
       _id: v4(),
+      students: [],
     }));
     return Promise.resolve(
       { ok: true, group: (await getCourseGroupMockResponse(course._id, group._id)).group },

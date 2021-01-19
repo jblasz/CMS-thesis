@@ -1,4 +1,4 @@
-import { Course, ICourseStub } from '../../interfaces/course';
+import { Course, ICourseStubCore } from '../../interfaces/course';
 import {
   getCoursesListMockResponse,
   getCourseMockResponse,
@@ -14,7 +14,7 @@ import {
   putAdminCourseLaboratoryTaskMockResponse,
   deleteCourseGroupStudentMockResponse,
 } from '../mocks/in-memory-course-mocks';
-import { CourseGroup } from '../../interfaces/courseGroup';
+import { CourseGroup, IGroupStub } from '../../interfaces/courseGroup';
 import {
   IGetCoursesResponse,
   IGetCourseResponse,
@@ -79,9 +79,11 @@ export async function getAdminCourse(_id: string): Promise<IGetCourseResponse> {
 /**
  * /course/:id PUT
  */
-export async function putAdminCourse(course: ICourseStub): Promise<IPostCourseResponse> {
+export async function putAdminCourse(course: ICourseStubCore): Promise<IPostCourseResponse> {
   if (config.useMocks) { return putCourseMockResponse(course); }
-  const { course: _course } = (await axiosInstance.post(`/course/${course._id}`, { course })).data as IPostCourseResponse;
+  const { course: _course } = (await axiosInstance.post(`/course/${course._id}`, {
+    course,
+  })).data as IPostCourseResponse;
   return { ok: true, course: new Course(_course) };
 }
 
@@ -109,10 +111,13 @@ export async function getAdminCourseGroup(
  * /course/:id/group/:id2 PUT
  */
 export async function setAdminCourseGroup(
-  id: string, group: CourseGroup,
+  id: string, group: IGroupStub,
 ): Promise<IPostCourseGroupResponse> {
   if (config.useMocks) { return setCourseGroupResponse(id, group); }
-  const { ok, group: _group } = (await axiosInstance.put(`/course/${id}/group/${group._id}`, group)).data as IPostCourseGroupResponse;
+  const { ok, group: _group } = (await axiosInstance.put(`/course/${id}/group/${group._id}`, {
+    _id: group._id,
+    name: group.name,
+  })).data as IPostCourseGroupResponse;
   return { group: new CourseGroup(_group), ok };
 }
 

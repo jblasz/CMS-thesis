@@ -9,7 +9,7 @@ export enum CourseLanguage {
   PL = 'pl'
 }
 
-export interface ICourseStub {
+export interface ICourseStubCore {
   _id: string
   name: string
   language: CourseLanguage
@@ -17,6 +17,10 @@ export interface ICourseStub {
   active: boolean
   description: string
   descriptionShort: string
+  shown: boolean
+}
+
+export interface ICourseStub extends ICourseStubCore {
   groups: IGroupStub[]
   laboratories: ILaboratoryStub[]
 }

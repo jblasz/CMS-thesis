@@ -10,9 +10,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 import { Course, CourseLanguage } from '../../interfaces/course';
-import { deleteAdminCourse, getAdminCourse, putAdminCourse } from '../../services/api/courses.service';
+import {
+  deleteAdminCourse, getAdminCourse, putAdminCourse, setAdminCourseGroup,
+} from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
-import { CourseGroup } from '../../interfaces/courseGroup';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { EditorComponent } from '../editor/Editor';
@@ -272,12 +273,11 @@ function AdminCourseComponent(): JSX.Element {
                 type="submit"
                 onClick={async (event) => {
                   event.preventDefault();
-                  course.groups.push(new CourseGroup({
+                  await setAdminCourseGroup('', {
                     _id: '',
                     name: newName,
-                    students: [],
-                  }));
-                  validateAndSetCourse(course);
+                  });
+                  await getAndSetCourse();
                 }}
               >
                 {t('ADMIN.COURSE.CREATE_GROUP')}
