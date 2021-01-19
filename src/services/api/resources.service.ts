@@ -49,15 +49,13 @@ export async function getAdminResource(_id: string) {
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function putAdminResource(
-  id: string, bytes: ArrayBuffer, filename: string,
+  id: string, file: FormData,
 ): Promise<IPutResourceResponse> {
   if (config.useMocks) {
     return putResourceMockResponse(id);
   }
-  const d = new FormData();
-  const blob = new Blob([bytes]);
-  d.append('file', blob, filename);
-  const { data } = await axiosInstance.put(`/resource/${id}`, d, {
+
+  const { data } = await axiosInstance.put(`/resource/${id}`, file, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -76,7 +74,6 @@ export async function patchAdminResource(
     return patchResourceMockResponse(_id, name, permission);
   }
   const { data } = await axiosInstance.patch(`/resource/${_id}`, {
-    _id,
     name,
     permission,
   });

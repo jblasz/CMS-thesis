@@ -35,7 +35,9 @@ export async function patchProfile(params: {
     const r = await patchStudentMockResponse(params);
     return { ok: true, student: new Student(r.student) };
   }
-  const { data } = await axiosInstance.patch('/profile', params);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { email, studentID, ...rest } = params;
+  const { data } = await axiosInstance.patch('/profile', rest);
   const { ok, student } = data as PatchStudentResponse;
   return { ok, student: new Student(student) };
 }

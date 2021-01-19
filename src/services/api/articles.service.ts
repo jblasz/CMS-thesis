@@ -12,7 +12,7 @@ import {
 import { axiosInstance } from './request.service';
 
 /**
- * /article GET
+ * /public/articles GET
  */
 export async function getArticles(): Promise<IGetArticlesResponse> {
   if (config.useMocks) {
@@ -24,7 +24,7 @@ export async function getArticles(): Promise<IGetArticlesResponse> {
 }
 
 /**
- * /article GET
+ * /articles GET
  */
 export async function getAdminArticles(): Promise<IGetArticlesResponse> {
   if (config.useMocks) {
@@ -36,7 +36,7 @@ export async function getAdminArticles(): Promise<IGetArticlesResponse> {
 }
 
 /**
- * /article/:id GET
+ * /public/articles/:id GET
  */
 export async function getArticle(id: string): Promise<IGetArticleResponse> {
   if (config.useMocks) {
@@ -48,7 +48,7 @@ export async function getArticle(id: string): Promise<IGetArticleResponse> {
 }
 
 /**
- * /article/:id GET
+ * /articles/:id GET
  */
 export async function getAdminArticle(id: string): Promise<IGetArticleResponse> {
   if (config.useMocks) {
@@ -60,7 +60,7 @@ export async function getAdminArticle(id: string): Promise<IGetArticleResponse> 
 }
 
 /**
- * /article/:id PUT
+ * /articles/:id PUT
  */
 export async function putArticle(id: string, article: IArticle): Promise<IPutArticleResponse> {
   if (config.useMocks) {

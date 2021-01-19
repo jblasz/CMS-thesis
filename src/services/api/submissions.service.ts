@@ -14,12 +14,19 @@ import { axiosInstance } from './request.service';
  * /submissions GET
  */
 export async function getSubmissions(
-  courseFilter: string, studentFilter: string, statusFilter: number,
+  courseFilter: string, studentFilter: string, statusFilter: number, final = true,
 ): Promise<IGetSubmissionsResponse> {
   if (config.useMocks) {
     return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter);
   }
-  const { data } = await axiosInstance.get('/submissions');
+  const { data } = await axiosInstance.get('/submissions', {
+    params: {
+      course: courseFilter,
+      student: studentFilter,
+      status: statusFilter,
+      final,
+    },
+  });
   const { submissions } = data as IGetSubmissionsResponse;
   return { submissions: submissions.map((x) => SubmissionMeta(x)) };
 }
@@ -63,7 +70,15 @@ export async function patchSubmission(
   if (config.useMocks) {
     return patchSubmissionMockResponse(submission);
   }
-  const { data } = await axiosInstance.patch(`/submissions/${submission._id}`);
+  const {
+    submittedBy, forLabID, submittedAt, note,
+  } = submission;
+  const { data } = await axiosInstance.patch(`/submissions/${submission._id}`, {
+    ...(submittedBy ? { submittedByStudentId: submittedBy._id } : {}),
+    ...(forLabID ? { forLabId: forLabID } : {}),
+    ...(submittedAt ? { submittedAt } : {}),
+    ...(note ? { note } : {}),
+  });
   const { ok, submission: _submission } = data as IPatchSubmissionResponse;
   return { ok, submission: SubmissionMeta(_submission) };
 }

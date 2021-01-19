@@ -26,9 +26,9 @@ export class Student implements IStudent {
       this._id = o;
     } else if (o) {
       this._id = o._id || '';
-      this.email = o.email || o.fullname || '';
+      this.email = o.email || '';
       this.contactEmail = o.contactEmail || '';
-      this.name = o.name || '';
+      this.name = o.name || o.fullname || '';
       this.usosId = o.usosId || '';
       this.registeredAt = (o.registeredAt && new Date(o.registeredAt)) || new Date(0);
     }

@@ -26,13 +26,14 @@ export async function postCode(studentID: string, code: string): Promise<IPostCo
 /**
  * /code GET
  */
-export async function getCodes(grabInactive = false, courseId?:string): Promise<IGetCodesResponse> {
+export async function getCodes(inactive = false, courseId?:string): Promise<IGetCodesResponse> {
   if (config.useMocks) {
-    return getCodesMockResponse(grabInactive, courseId);
+    return getCodesMockResponse(inactive, courseId);
   }
   const { data } = await axiosInstance.get('/code', {
     params: {
       ...(courseId ? { courseId } : {}),
+      inactive,
     },
   });
   const { codes } = data as IGetCodesResponse;

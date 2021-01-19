@@ -112,9 +112,7 @@ export async function setAdminCourseGroup(
   id: string, group: CourseGroup,
 ): Promise<IPostCourseGroupResponse> {
   if (config.useMocks) { return setCourseGroupResponse(id, group); }
-  const path = group._id === '' ? `/course/${id}/group` : `/course/${id}/group/${group._id}`;
-  const
-    { ok, group: _group } = (await axiosInstance.put(path, group)).data as IPostCourseGroupResponse;
+  const { ok, group: _group } = (await axiosInstance.put(`/course/${id}/group/${group._id}`, group)).data as IPostCourseGroupResponse;
   return { group: new CourseGroup(_group), ok };
 }
 
@@ -131,7 +129,7 @@ export async function deleteAdminCourseGroup(
 }
 
 /**
- * /course/:id/laboratory/:id2 GET
+ * /public/course/:id/laboratory/:id2 GET
  */
 export async function getPublicCourseLaboratory(
   courseID: string,
@@ -176,10 +174,9 @@ export async function putAdminLaboratory(
   if (config.useMocks) {
     return setCourseLabMockResponse(courseID, new CourseLaboratory({ ...toSend, tasks: {} }));
   }
-  const path = lab._id === '' ? `/course/${courseID}/laboratory` : `/course/${courseID}/laboratory/${lab._id}`;
   const
     { ok, laboratory } = (
-      await axiosInstance.put(path, toSend)
+      await axiosInstance.put(`/course/${courseID}/laboratory/${lab._id}`, toSend)
     ).data as IPutCourseLaboratoryResponse;
   return { ok, laboratory: new CourseLaboratory(laboratory) };
 }

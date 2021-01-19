@@ -16,7 +16,7 @@ import {
 import { axiosInstance } from './request.service';
 
 /**
- * /user POST
+ * /public/user POST
  */
 export async function postUser(
   jwt: string, gid: string, email: string, name: string, usosId: string,
@@ -40,10 +40,8 @@ export async function postUser(
   });
   if (data.user) {
     const { token, user } = data as IPostUserAdminResponse;
-    if (authorization) {
-      Cookies.set('authorization', authorization);
-    } else if (token) {
-      Cookies.set('authorization', token);
+    if (authorization || token) {
+      Cookies.set('authorization', authorization || token);
     }
     return {
       isAdmin: true,
@@ -65,10 +63,8 @@ export async function postUser(
   const {
     attends, student, submissions, token,
   } = data as IPostUserResponse;
-  if (authorization) {
-    Cookies.set('authorization', authorization);
-  } else if (token) {
-    Cookies.set('authorization', token);
+  if (authorization || token) {
+    Cookies.set('authorization', authorization || token);
   }
   return {
     isAdmin: false,
@@ -82,7 +78,7 @@ export async function postUser(
 }
 
 /**
- * /user GET
+ * /students GET
  */
 export async function getAdminUsers(byCourseId?: string): Promise<IGetStudentsResponse> {
   if (config.useMocks) {
@@ -95,7 +91,7 @@ export async function getAdminUsers(byCourseId?: string): Promise<IGetStudentsRe
 }
 
 /**
- * /user/:id GET
+ * /students/:id GET
  */
 export async function getAdminUser(id: string): Promise<GetStudentResponse> {
   if (config.useMocks) {
@@ -112,7 +108,7 @@ export async function getAdminUser(id: string): Promise<GetStudentResponse> {
 }
 
 /**
- * /user/:id PATCH
+ * /students/:id PATCH
  */
 export async function patchAdminUser(id: string, params: {
   name?: string
