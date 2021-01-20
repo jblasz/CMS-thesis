@@ -68,13 +68,6 @@ export function generateStudentMock(id = v4()) {
   return s;
 }
 
-export function generateStudentMocks(count = 20) {
-  generateStudentMock('115746765603275561022');
-  for (let i = 0; i < count - 1; i++) {
-    generateStudentMock();
-  }
-}
-
 export function generateResourceMocks(count = 10) {
   const resources = getIMResources();
   generateList(count).forEach(() => resources.push(

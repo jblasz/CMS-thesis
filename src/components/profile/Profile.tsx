@@ -78,10 +78,6 @@ function ProfileComponent() {
                       <FormControl
                         type="text"
                         disabled
-                        // onChange={(e) => {
-                        //   student.email = e.target.value;
-                        //   setStudent(new Student(student));
-                        // }}
                         value={student.email}
                       />
                     </InputGroup.Prepend>

@@ -1,6 +1,12 @@
 ## Necessities
 
-You need `node` and `yarn`, and a `.env` environment file with at least `REACT_APP_CLIENT_ID`, which is the public google application id used for authentication.
+You need `node` and `yarn`, and a `.env` environment file with at least `REACT_APP_CLIENT_ID`, which is the public google application id used for authentication. You can use 593522798742-ucqq8hmq1mhjn816eebl1bmd983e2v2j.apps.googleusercontent.com for this purpose (created expressly for the public repo). Make sure the app runs on port 3000, or login will not work. Alternatively you can set `REACT_APP_START_LOGGED_IN=1` to bypass the login process and 'pretend' you are logged in, which will bypass the need for login (and sharing your google information). Perfectly fine if you do that. In this mocked state, you can toggle between admin-student role by clicking on the 'toggle role' button on the top navbar.
+
+Note that this entire application is not production-worthy, and should work with `REACT_APP_USE_MOCKS=1`, which means all requests to a REST back-end are replaced with mocks. While it would work in a production environment, for full deployment to happen we would need a REST back-end, removal of all mocking functionalities, and the slightly dumb 'toggle role' button, as that role would be determined by the back-end.
+
+The full documentation is included in a thesis document. I will see about placing a link to it here once I know it is okay with the university to do.
+
+Note that an error is usually thrown into the console about react state update on an unmounted component... Sadly it is introduced internally within a dependency. Haven't yet ironed it out. However, it can be ignored.
 
 ## Development setup
 
@@ -46,7 +52,7 @@ NOTE: Automatic pre-commit linting is enabled, using `husky`. This means even if
 
 For simple dev setup, run `yarn && yarn start`.
 
-For a production build dev setup (fewer warnings, but optimized and all that), run `yarn && yarn watch` in one terminal, and `yarn serve` in another.
+For a production build dev setup (fewer warnings, but optimized and all that), run `yarn && yarn watch` in one terminal, and `yarn serve` or `yarn e-serve` (alternate serve that uses express.js to serve static files).
 
 ## Available Scripts
 
@@ -79,17 +85,3 @@ Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.
-
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.

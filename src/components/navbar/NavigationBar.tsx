@@ -136,8 +136,8 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
             </NavDropdown>
           ) : <></>}
           <Button
-            className="p-0 m-0"
-            style={{ opacity: 0 }}
+            className="nav-link"
+            style={{ opacity: 0.5, borderWidth: 0 }}
             onClick={() => {
               if (user) {
                 user.role = user.role === Role.ADMIN ? Role.STUDENT : Role.ADMIN;
@@ -145,7 +145,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               }
             }}
           >
-            SECRET BUTTON
+            Toggle role
           </Button>
         </Nav>
         <AuthNav />

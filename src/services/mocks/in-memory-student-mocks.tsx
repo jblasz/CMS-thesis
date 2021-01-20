@@ -59,7 +59,7 @@ export function patchStudentMockResponse(params: {
     } else if (key === 'email') {
       student.email = rest.email as string;
     } else if (key === 'contactEmail') {
-      student.contactEmail = rest.email as string;
+      student.contactEmail = rest.contactEmail as string;
     } else if (key === 'usosId') {
       student.usosId = rest.usosId as string;
     }

@@ -46,6 +46,9 @@ export async function populateInMemoryDBWithSomeMocks(count = 5) {
     });
   });
 
+  // mock for bypassing google login
+  generateStudentMock('mock-id');
+
   // generate static admin account with their google id
   generateStudentMock('115746765603275561022');
   // sign up the admin for a single course
