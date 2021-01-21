@@ -145,7 +145,10 @@ export async function putAdminCourseLaboratoryTaskMockResponse(
   if (!course || !lab || !groupExists) {
     throw new Error('Group, course or lab doesnt exist');
   }
-  lab.tasks[groupID] = task;
+  lab.tasks[groupID] = new CourseTask({
+    ...task,
+    _id: task._id || v4(),
+  });
   return Promise.resolve({
     ok: true,
     task,

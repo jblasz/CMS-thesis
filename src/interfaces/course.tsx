@@ -96,13 +96,13 @@ export class Course implements ICourse, Validable {
       .map((lab) => ({ ...lab.validate(), _id: lab._id }))
       .find((x) => !x.ok);
     if (fail) {
-      return { ok: false, error: `Lab ${fail._id} error - ${fail.error}` };
+      return { ok: false, error: `Lab error - ${fail.error}` };
     }
     const fail2 = this.groups
       .map((group) => ({ ...group.validate(), _id: group._id }))
       .find((x) => !x.ok);
     if (fail2) {
-      return { ok: false, error: `Group ${fail2._id} error - ${fail2.error}` };
+      return { ok: false, error: `Group error - ${fail2.error}` };
     }
     // ensure each lab has a task for each group
     const gids = this.groups.map((x) => x._id);
@@ -110,10 +110,10 @@ export class Course implements ICourse, Validable {
       const gidsWithTasks = Object.keys(lab.tasks);
       const unmatched = gids.find((gid) => !gidsWithTasks.includes(gid));
       if (unmatched) {
-        return { ok: false, error: `Lab ${lab._id} has no task defined for group ${unmatched}` };
+        return { ok: false, error: `Lab ${lab.name} has no task defined for one of the groups` };
       }
       if (gids.length !== Object.keys(lab.tasks).length) {
-        return { ok: false, error: `Lab ${lab._id} has a task for a nonexistent group defined` };
+        return { ok: false, error: `Lab ${lab.name} has a task for a nonexistent group defined` };
       }
     }
     return { ok: true, json: JSON.stringify(this) };

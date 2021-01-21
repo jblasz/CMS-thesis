@@ -84,7 +84,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   }
   return (
     <Container>
-      <WarningStripComponent error={warning} />
+      <WarningStripComponent error={warning} warning />
       <Form className="my-2">
         <Form.Row className="justify-content-between">
           <Col>

@@ -60,7 +60,7 @@ export class CourseLaboratory implements ICourseLaboratory, Validable {
       .find((x) => !x.ok);
 
     if (root) {
-      return { ok: false, error: `Task ${root._id} for group ${root.gid} error - ${root.error}` };
+      return { ok: false, error: `${this.name} warning - task for one of the groups is empty` };
     }
     const { error } = joi.object().keys({
       description: joi.string().required(),
