@@ -1,5 +1,4 @@
 import joi from 'joi';
-import { v4 } from 'uuid';
 import { CourseLaboratory, ICourseLaboratory, ILaboratoryStub } from './courseLaboratory';
 import { ICourseGroup, CourseGroup, IGroupStub } from './courseGroup';
 import { Validable, ValResult } from './misc';
@@ -32,9 +31,9 @@ export interface ICourse extends ICourseStub {
 }
 
 export class Course implements ICourse, Validable {
-  _id = v4();
+  _id = '';
 
-  name = v4();
+  name = '';
 
   description = ''
 

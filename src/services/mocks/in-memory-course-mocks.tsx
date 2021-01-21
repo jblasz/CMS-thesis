@@ -65,7 +65,8 @@ export async function putCourseMockResponse(course: ICourseStubCore): Promise<IP
         },
       );
     }
-    return Promise.reject();
+    console.log(course, f);
+    throw new Error('Id not empty, but no course in memory');
   }
   const n = new Course({
     ...course,
@@ -95,7 +96,7 @@ export async function setCourseGroupResponse(
 ): Promise<IPostCourseGroupResponse> {
   const course = getIMCourses().find((x) => x._id === courseID);
   if (!course) {
-    return Promise.reject();
+    throw new Error('Id not empty, but no course in memory');
   }
   if (group._id) {
     const toReplace = course.groups.find((x) => x._id === group._id);
@@ -106,17 +107,18 @@ export async function setCourseGroupResponse(
         { ok: true, group: (await getCourseGroupMockResponse(course._id, group._id)).group },
       );
     }
-  } else {
-    course.groups.push(new CourseGroup({
-      ...group,
-      _id: v4(),
-      students: [],
-    }));
-    return Promise.resolve(
-      { ok: true, group: (await getCourseGroupMockResponse(course._id, group._id)).group },
-    );
+    console.error(group);
+    throw new Error('Group id not empty, but not found in list');
   }
-  return Promise.reject(new Error('404 not found'));
+  const g = new CourseGroup({
+    _id: v4(),
+    name: group.name,
+    students: [],
+  });
+  course.groups.push(g);
+  return Promise.resolve(
+    { ok: true, group: (await getCourseGroupMockResponse(course._id, g._id)).group },
+  );
 }
 
 export async function getLaboratoryMockResponse(

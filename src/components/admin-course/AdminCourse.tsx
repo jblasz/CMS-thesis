@@ -11,7 +11,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import {
-  deleteAdminCourse, getAdminCourse, putAdminCourse, putAdminLaboratory, setAdminCourseGroup,
+  deleteAdminCourse, getAdminCourse, putAdminCourse, putAdminLaboratory, putAdminCourseGroup,
 } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
@@ -63,7 +63,7 @@ function AdminCourseComponent(): JSX.Element {
 
   return (
     <Container>
-      {warning ? <WarningStripComponent error={warning} /> : <></>}
+      {warning ? <WarningStripComponent error={warning} warning /> : <></>}
       <Form>
         <Form.Row className="justify-content-between">
           <Col>
@@ -279,7 +279,7 @@ function AdminCourseComponent(): JSX.Element {
                   try {
                     setLoading(true);
                     event.preventDefault();
-                    await setAdminCourseGroup('', {
+                    await putAdminCourseGroup(course._id, {
                       _id: '',
                       name: newName,
                     });

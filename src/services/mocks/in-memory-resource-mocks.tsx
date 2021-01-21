@@ -110,8 +110,19 @@ export async function patchResourceMockResponse(_id: string, name: string, permi
       setIMResources(resources);
       return Promise.resolve({ ok: true, ...await getResourceMockResponse(_id) });
     }
+    throw new Error('Resource id exists but not found');
   }
-  return Promise.reject(new Error('Resource of id not found'));
+  const id = v4();
+  setIMResources([
+    ...getIMResources(),
+    {
+      _id: id,
+      name,
+      permission,
+      usedBy: [],
+    },
+  ]);
+  return Promise.resolve({ ok: true, ...await getResourceMockResponse(id) });
 }
 
 export async function deleteResourceMockResponse(_id: string) {

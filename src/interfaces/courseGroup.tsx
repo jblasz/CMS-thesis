@@ -10,6 +10,7 @@ export interface IGroupStub {
 export interface ICourseGroup extends IGroupStub {
   students: ICourseGroupStudent[]
 }
+
 export class CourseGroup implements ICourseGroup, Validable {
   _id = ''
 

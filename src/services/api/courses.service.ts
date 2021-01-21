@@ -110,11 +110,11 @@ export async function getAdminCourseGroup(
 /**
  * /course/:id/group/:id2 PUT
  */
-export async function setAdminCourseGroup(
-  id: string, group: IGroupStub,
+export async function putAdminCourseGroup(
+  courseId: string, group: IGroupStub,
 ): Promise<IPostCourseGroupResponse> {
-  if (config.useMocks) { return setCourseGroupResponse(id, group); }
-  const { ok, group: _group } = (await axiosInstance.put(`/course/${id}/group/${group._id}`, {
+  if (config.useMocks) { return setCourseGroupResponse(courseId, group); }
+  const { ok, group: _group } = (await axiosInstance.put(`/course/${courseId}/group/${group._id}`, {
     _id: group._id,
     name: group.name,
   })).data as IPostCourseGroupResponse;

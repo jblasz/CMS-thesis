@@ -82,9 +82,15 @@ function AdminCoursesComponent(): JSX.Element {
                 variant="primary"
                 type="submit"
                 onClick={async () => {
-                  if (courses.find((x) => x.name === '')) { return; }
-                  await putAdminCourse(new Course());
-                  await getAndSetCourses();
+                  try {
+                    setLoading(true);
+                    await putAdminCourse(new Course());
+                    await getAndSetCourses();
+                  } catch (e) {
+                    setError(e);
+                  } finally {
+                    setLoading(false);
+                  }
                 }}
               >
                 {t('ADMIN.COURSES.CREATE_COURSE')}

@@ -1,6 +1,9 @@
 @use './master';
 
 .error-strip {
+  &.warning {
+    background-color: palegoldenrod;
+  }
   background-color: red;
   button.btn.close-button {
     padding: 0;
