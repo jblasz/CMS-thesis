@@ -33,23 +33,25 @@ export function CollapseUploadComponent(props: CollapseUploadComponentProps) {
         <InputGroup className="mx-2">
           <Form.Row>
             <Col className="col-xs-8">
-              <input
-                className="m-2 p-1"
-                type="file"
-                name="file"
-                onChange={(event) => {
-                  if (event && event.target && event.target.files && event.target.files[0]) {
-                    const f = new FormData();
-                    f.append('file', event.target.files[0]);
-                    setFile(f);
-                  }
-                }}
-              />
+              <Button>
+                <input
+                  className=""
+                  type="file"
+                  name="file"
+                  onChange={(event) => {
+                    if (event && event.target && event.target.files && event.target.files[0]) {
+                      const f = new FormData();
+                      f.append('file', event.target.files[0]);
+                      setFile(f);
+                    }
+                  }}
+                />
+              </Button>
             </Col>
             <Col className="col-xs-4">
               <Button
                 disabled={!file}
-                className="button btn-primary m-2"
+                className="button btn-primary"
                 onClick={async (event) => {
                   try {
                     if (!file) {

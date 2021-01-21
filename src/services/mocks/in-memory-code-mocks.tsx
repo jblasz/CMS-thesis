@@ -40,8 +40,9 @@ export async function postCodeMockResponse(
 export async function getCodesMockResponse(
   grabInactive = false, courseId?: string,
 ): Promise<IGetCodesResponse> {
-  const f1 = courseId ? getIMCodes().filter((x) => x._id === courseId) : getIMCodes();
-  const f2 = grabInactive ? f1 : f1.filter((x) => x.for.active);
+  const f1 = courseId ? getIMCodes().filter((x) => x.for.courseId === courseId) : getIMCodes();
+  const f2 = grabInactive ? f1 : f1.filter((x) => x.valid);
+  console.log(getIMCodes(), f1, f2);
   return Promise.resolve({
     codes: f2,
   });

@@ -168,6 +168,7 @@ function AdminCourseGroupComponent(): JSX.Element {
                     setLoading(true);
                     const { code } = await postCodeNew(groupID, validThrough);
                     setNewCode({ _id: code._id, validThrough: code.validThrough });
+                    await getAndSetBoth();
                   } catch (e) {
                     console.error(e);
                     setError(e);
@@ -273,7 +274,7 @@ function AdminCourseGroupComponent(): JSX.Element {
                       placeholder={t('ADMIN.GROUP.STUDENT_GRADE')}
                       onChange={(e) => {
                         student.grade = e.target.value as SubmissionGrade;
-                        setGroupAndStudents({ group, students });
+                        setGroupAndStudents({ ...{ group, students } });
                       }}
                       value={student.grade}
                     >

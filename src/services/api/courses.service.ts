@@ -248,7 +248,7 @@ export async function patchCourseGroupStudent(
   courseID: string, groupID: string, studentID: string, grade?: SubmissionGrade | null,
 ): Promise<IPatchCourseGroupStudentResponse> {
   if (config.useMocks) {
-    return patchCourseGroupStudentMockResponse(studentID, courseID, groupID);
+    return patchCourseGroupStudentMockResponse(studentID, courseID, groupID, grade);
   }
   const { group, ok } = (await axiosInstance.patch(`/course/${courseID}/group/${groupID}/student/${studentID}`, {
     ...(grade || grade === null ? { grade } : {}),

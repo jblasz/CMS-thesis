@@ -17,7 +17,7 @@ import {
   IPutCourseLaboratoryTaskResponse,
 } from '../../interfaces/api';
 import { getIMCourses, getIMStudents, setIMCourses } from './in-memory-database';
-import { IPendingLaboratory } from '../../interfaces/misc';
+import { IPendingLaboratory, SubmissionGrade } from '../../interfaces/misc';
 import { CourseTask } from '../../interfaces/courseTask';
 
 export async function getCoursesListMockResponse() {
@@ -199,13 +199,24 @@ export async function patchCourseGroupStudentMockResponse(
   studentID: string,
   courseID: string,
   groupID: string,
+  grade?: SubmissionGrade | null,
 ): Promise<IPatchCourseGroupStudentResponse> {
   const course = getIMCourses().find((x) => x._id === courseID);
   const group = course && course.groups.find((x) => x._id === groupID);
   const student = getIMStudents().find((x) => x._id === studentID);
   if (course && group && student) {
-    if (!group.students.find((x) => x._id === student._id)) {
-      group.students.push(student);
+    const inGroup = group.students.find((x) => x._id === student._id);
+    if (!inGroup) {
+      group.students.push({
+        _id: student._id,
+        contactEmail: student.contactEmail,
+        email: student.email,
+        name: student.name,
+        usosId: student.usosId,
+        grade: grade || undefined,
+      });
+    } else {
+      inGroup.grade = grade || undefined;
     }
     return Promise.resolve({ ok: true, group });
   }
