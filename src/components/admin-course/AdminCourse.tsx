@@ -11,7 +11,7 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import {
-  deleteAdminCourse, getAdminCourse, putAdminCourse, setAdminCourseGroup,
+  deleteAdminCourse, getAdminCourse, putAdminCourse, putAdminLaboratory, setAdminCourseGroup,
 } from '../../services/api/courses.service';
 import { LoadingSpinner } from '../loading-spinner';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
@@ -221,10 +221,14 @@ function AdminCourseComponent(): JSX.Element {
                 type="submit"
                 onClick={async (event) => {
                   event.preventDefault();
-                  const l = new CourseLaboratory();
-                  l.name = newLabName;
-                  course.laboratories.push(l);
-                  validateAndSetCourse(course);
+                  await putAdminLaboratory(course._id, new CourseLaboratory({
+                    _id: '',
+                    description: '',
+                    descriptionShort: '',
+                    name: newLabName || '',
+                    tasks: {},
+                  }));
+                  await getAndSetCourse();
                 }}
               >
                 {t('ADMIN.COURSE.CREATE_LAB')}
@@ -272,12 +276,19 @@ function AdminCourseComponent(): JSX.Element {
                 variant="primary"
                 type="submit"
                 onClick={async (event) => {
-                  event.preventDefault();
-                  await setAdminCourseGroup('', {
-                    _id: '',
-                    name: newName,
-                  });
-                  await getAndSetCourse();
+                  try {
+                    setLoading(true);
+                    event.preventDefault();
+                    await setAdminCourseGroup('', {
+                      _id: '',
+                      name: newName,
+                    });
+                    await getAndSetCourse();
+                  } catch (e) {
+                    setError(e);
+                  } finally {
+                    setLoading(false);
+                  }
                 }}
               >
                 {t('ADMIN.COURSE.CREATE_GROUP')}

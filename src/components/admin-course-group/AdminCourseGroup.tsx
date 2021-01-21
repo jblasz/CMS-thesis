@@ -113,11 +113,16 @@ function AdminCourseGroupComponent(): JSX.Element {
             <Form.Control
               style={{ maxWidth: '500px' }}
               as="select"
-              value={newStudent._id}
+              disabled={!newStudent || !newStudent._id}
+              value={(newStudent && newStudent._id) || ''}
               onChange={
-                (e) => setNewStudent(
-                  students.find((x) => x._id === e.target.value) as BaseStudent,
-                )
+                (e) => {
+                  if (newStudent && newStudent._id) {
+                    setNewStudent(
+                      students.find((x) => x._id === e.target.value) as BaseStudent,
+                    );
+                  }
+                }
               }
             >
               {students.map(

@@ -159,13 +159,21 @@ export async function setCourseLabMockResponse(
     return Promise.reject(new Error('404 not found'));
   }
   if (lab._id) {
-    const toReplace = course.laboratories.findIndex((x) => x._id === lab._id);
-    if (toReplace > -1) {
-      course.laboratories[toReplace] = lab;
+    const toReplace = course.laboratories.find((x) => x._id === lab._id);
+    if (toReplace) {
+      toReplace._id = lab._id;
+      toReplace.description = lab.description;
+      toReplace.descriptionShort = lab.descriptionShort;
+      toReplace.name = lab.name;
+      course.groups.forEach((group) => {
+        if (!toReplace.tasks[group._id]) {
+          toReplace.tasks[group._id] = new CourseTask();
+        }
+      });
       return Promise.resolve(
         {
           ok: true,
-          laboratory: (await getLaboratoryMockResponse(course._id, lab._id)).laboratory,
+          laboratory: (await getLaboratoryMockResponse(course._id, toReplace._id)).laboratory,
         },
       );
     }

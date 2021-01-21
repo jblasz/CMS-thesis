@@ -30,6 +30,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   const [groupHash, setGroupHash] = useState<{[key: string]: string}>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [warning, setWarning] = useState('');
   const [chosenGroupID, setChosenGroup] = useState('');
   const [resourceNames, setResourceNames] = useState<IResourceMeta[]>([]);
   const [editorText, setEditorText] = useState('');
@@ -38,11 +39,11 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
     lab: CourseLaboratory, taskID?: string, task?: CourseTask,
   ) => {
     if (taskID && task) {
-      lab.tasks[taskID] = task;
+      lab.tasks[taskID] = new CourseTask(task);
     }
     const res = lab.validate();
-    setError(res.error || '');
-    setLaboratory(lab);
+    setWarning(res.error || '');
+    setLaboratory(new CourseLaboratory(lab));
     const choice = taskID || (Object.keys(lab.tasks) && Object.keys(lab.tasks)[0]) || '';
     setChosenGroup(choice || '');
     setEditorText((lab.tasks[choice] && lab.tasks[choice].description) || '');
@@ -83,13 +84,22 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   }
   return (
     <Container>
+      <WarningStripComponent error={warning} />
       <Form className="my-2">
         <Form.Row className="justify-content-between">
           <Col>
             <Button
               className="mx-1"
               onClick={async () => {
-                await putAdminLaboratory(courseID, laboratory);
+                try {
+                  setLoading(true);
+                  await putAdminLaboratory(courseID, laboratory);
+                  await getAndSetCourseLaboratory();
+                } catch (e) {
+                  setError(e);
+                } finally {
+                  setLoading(false);
+                }
               }}
             >
               {t('ADMIN.LABORATORY.UPLOAD')}
@@ -165,6 +175,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
               className="float-right"
               onClick={async () => {
                 await putAdminCourseLaboratoryTask(courseID, laboratory._id, chosenGroupID, task);
+                await getAndSetCourseLaboratory();
               }}
             >
               {`${t('ADMIN.LABORATORY.UPLOAD_CHANGES_TO')} ${groupHash[chosenGroupID]}`}

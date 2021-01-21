@@ -167,16 +167,10 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
                                 <Col className="col-sm-4">
                                   <p>{lab.grade || t('STUDENT.DASHBOARD.NO_GRADE_YET')}</p>
                                 </Col>
-                                {/* <div className="w-100" /> */}
                                 <Col className="col-sm-8">
                                   <ButtonGroup>
                                     <Button
                                       title={t('STUDENT.DASHBOARD.DOWNLOAD_TASK')}
-                                      // disabled={
-                                      //   (lab.dateFrom
-                                      //     && lab.dateFrom.valueOf() > new Date().valueOf())
-                                      //     || !lab.taskId
-                                      // }
                                       disabled={!lab.taskId}
                                       onClick={async () => {
                                         getAdminResource(lab.taskId as string);
@@ -199,8 +193,8 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
                                     <Button
                                       disabled={!lab.latestSubmissionId}
                                       title={t('STUDENT.DASHBOARD.DOWNLOAD_SUBMISSION')}
-                                      onClick={() => {
-                                        getSubmission(lab.latestSubmissionId as string);
+                                      onClick={async () => {
+                                        await getSubmission(lab.latestSubmissionId as string);
                                       }}
                                     >
                                       <FontAwesomeIcon icon={faDownload} />

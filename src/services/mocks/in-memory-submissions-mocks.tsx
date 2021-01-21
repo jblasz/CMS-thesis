@@ -2,12 +2,6 @@ import { IGetAdminDashboardResponse } from '../../interfaces/api';
 import { ISubmissionMeta } from '../../interfaces/resource';
 import { getIMSubmissions, setIMSubmissions } from './in-memory-database';
 
-enum StatusFilter {
-  ALL = 0,
-  UNGRADED,
-  GRADED,
-}
-
 export async function getAdminDashboardMockResponse(): Promise<IGetAdminDashboardResponse> {
   return Promise.resolve({
     unmarkedSolutionsCount:
@@ -16,15 +10,17 @@ export async function getAdminDashboardMockResponse(): Promise<IGetAdminDashboar
 }
 
 export function getSubmissionsMockResponse(
-  courseFilter: string, studentFilter: string, statusFilter: StatusFilter,
+  courseFilter: string, studentFilter: string, statusFilter: number, final = true,
 ) {
-  const submissions = getIMSubmissions().filter((x) => x.forCourseID === courseFilter
-    && x.submittedBy._id === studentFilter
+  const submissions = getIMSubmissions().filter((x) => x.forCourseID.includes(courseFilter)
+    && x.submittedBy._id.includes(studentFilter)
     && (
-      statusFilter === StatusFilter.ALL
-      || (statusFilter === StatusFilter.GRADED && x.grade)
-      || (statusFilter === StatusFilter.UNGRADED && !x.grade)
-    ));
+      statusFilter === 0
+      || (statusFilter === 1 && x.grade)
+      || (statusFilter === 2 && !x.grade)
+    )
+    && x.final === final);
+  console.log(courseFilter, studentFilter, statusFilter, submissions);
   return Promise.resolve({ submissions });
 }
 

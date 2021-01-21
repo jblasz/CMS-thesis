@@ -17,7 +17,7 @@ export async function getSubmissions(
   courseFilter: string, studentFilter: string, statusFilter: number, final = true,
 ): Promise<IGetSubmissionsResponse> {
   if (config.useMocks) {
-    return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter);
+    return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter, final);
   }
   const { data } = await axiosInstance.get('/submissions', {
     params: {

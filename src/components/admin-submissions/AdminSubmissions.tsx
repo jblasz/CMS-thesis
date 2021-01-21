@@ -24,31 +24,27 @@ interface BareCourse extends BareData {
   students: BareData[];
 }
 
-enum StatusFilter {
-  ALL = 0,
-  UNGRADED,
-  GRADED,
-}
-
 function AdminSubmissionsComponent(): JSX.Element {
   const [t] = useTranslation();
   const [courseFilter, setCourseFilter] = useState('');
   const [studentFilter, setStudentFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>(
-    StatusFilter.UNGRADED,
+  const [statusFilter, setStatusFilter] = useState<number>(
+    2,
   );
-  const [finalFilter, setFinalFilter] = useState('');
+  const [finalFilter, setFinalFilter] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [courses, setCourses] = useState<BareCourse[]>([]);
   const [students, setStudents] = useState<BareData[]>([]);
   const [submissions, setSubmissions] = useState<ISubmissionMeta[]>([]);
-  const getSubmissionsByFilters = useCallback(async () => {
+  const getSubmissionsByFilters = useCallback(async (
+    cf: string, sf: string, stf: number, ff: boolean,
+  ) => {
     const { submissions: _submissions } = await getSubmissions(
-      courseFilter, studentFilter, statusFilter,
+      cf, sf, stf, ff,
     );
     setSubmissions(_submissions);
-  }, [courseFilter, studentFilter, statusFilter]);
+  }, []);
 
   const loadFilters = useCallback(async () => {
     try {
@@ -72,13 +68,24 @@ function AdminSubmissionsComponent(): JSX.Element {
 
       setCourses(_courses as BareCourse[]);
       setStudents(_students);
-      await getSubmissionsByFilters();
+      if (_courses && _courses[0]) {
+        setCourseFilter(_courses[0].id);
+        const { submissions: _submissions } = await getSubmissions(
+          _courses[0].id, '', 2, true,
+        );
+        setSubmissions(_submissions);
+      } else {
+        const { submissions: _submissions } = await getSubmissions(
+          '', '', 2, true,
+        );
+        setSubmissions(_submissions);
+      }
     } catch (e) {
       setError(e);
     } finally {
       setLoading(false);
     }
-  }, [getSubmissionsByFilters]);
+  }, []);
 
   useEffect(() => {
     loadFilters();
@@ -109,9 +116,18 @@ function AdminSubmissionsComponent(): JSX.Element {
                         as="select"
                         placeholder={t('ADMIN.SUBMISSIONS.COURSE_FILTER')}
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        onChange={(e: any) => {
-                          setCourseFilter(e.target.value);
-                          getSubmissionsByFilters();
+                        onChange={async (event: any) => {
+                          try {
+                            setLoading(true);
+                            setCourseFilter(event.target.value);
+                            await getSubmissionsByFilters(
+                              event.target.value, studentFilter, statusFilter, finalFilter,
+                            );
+                          } catch (e) {
+                            setError(e);
+                          } finally {
+                            setLoading(false);
+                          }
                         }}
                         value={courseFilter}
                       >
@@ -126,9 +142,18 @@ function AdminSubmissionsComponent(): JSX.Element {
                         as="select"
                         placeholder={t('ADMIN.SUBMISSIONS.STUDENT_FILTER')}
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        onChange={(e: any) => {
-                          setStudentFilter(e.target.value);
-                          getSubmissionsByFilters();
+                        onChange={async (event: any) => {
+                          try {
+                            setLoading(true);
+                            setStudentFilter(event.target.value);
+                            await getSubmissionsByFilters(
+                              courseFilter, event.target.value, statusFilter, finalFilter,
+                            );
+                          } catch (e) {
+                            setError(e);
+                          } finally {
+                            setLoading(false);
+                          }
                         }}
                         value={studentFilter}
                       >
@@ -152,15 +177,27 @@ function AdminSubmissionsComponent(): JSX.Element {
                         as="select"
                         placeholder={t('ADMIN.SUBMISSIONS.STATUS_FILTER')}
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        onChange={(e: any) => {
-                          setStatusFilter(e.target.value);
-                          getSubmissionsByFilters();
+                        onChange={async (event: any) => {
+                          try {
+                            setLoading(true);
+                            // eslint-disable-next-line radix
+                            setStatusFilter(Number.parseInt(event.target.value));
+                            await getSubmissionsByFilters(
+                              // eslint-disable-next-line radix
+                              courseFilter, studentFilter, Number.parseInt(event.target.value),
+                              finalFilter,
+                            );
+                          } catch (e) {
+                            setError(e);
+                          } finally {
+                            setLoading(false);
+                          }
                         }}
                         value={statusFilter}
                       >
-                        <option value={StatusFilter.UNGRADED}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_UNGRADED')}</option>
-                        <option value={StatusFilter.GRADED}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_GRADED')}</option>
-                        <option value={StatusFilter.ALL}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_ALL')}</option>
+                        <option value={2}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_UNGRADED')}</option>
+                        <option value={1}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_GRADED')}</option>
+                        <option value={0}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_ALL')}</option>
                       </FormControl>
                     </InputGroup.Prepend>
                     <InputGroup.Append>
@@ -168,9 +205,18 @@ function AdminSubmissionsComponent(): JSX.Element {
                         as="select"
                         placeholder={t('ADMIN.SUBMISSIONS.STATUS_FILTER')}
                         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        onChange={(e: any) => {
-                          setFinalFilter(e.target.value);
-                          getSubmissionsByFilters();
+                        onChange={async (event: any) => {
+                          try {
+                            setLoading(true);
+                            setFinalFilter(event.target.value === 'true');
+                            await getSubmissionsByFilters(
+                              courseFilter, studentFilter, statusFilter, event.target.value === 'true',
+                            );
+                          } catch (e) {
+                            setError(e);
+                          } finally {
+                            setLoading(false);
+                          }
                         }}
                         value={`${finalFilter}`}
                       >
@@ -183,7 +229,9 @@ function AdminSubmissionsComponent(): JSX.Element {
                     <SubmissionListComponent
                       submissions={submissions}
                       onSubmit={(_submissions) => setSubmissions(_submissions)}
-                      onUpload={() => getSubmissionsByFilters()}
+                      onUpload={() => getSubmissionsByFilters(
+                        courseFilter, studentFilter, statusFilter, finalFilter,
+                      )}
                       skipStudentColumn={false}
                     />
                   </Form.Row>

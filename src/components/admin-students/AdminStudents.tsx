@@ -78,6 +78,7 @@ function AdminStudentsComponent(): JSX.Element {
                     try {
                       setLoading(true);
                       await deleteAdminUser(student._id);
+                      await getAndSetStudents();
                     } catch (e) {
                       setError(e);
                     } finally {

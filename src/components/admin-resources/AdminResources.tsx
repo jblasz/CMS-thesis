@@ -14,7 +14,9 @@ import {
 import { LoadingSpinner } from '../loading-spinner';
 import { Permission, IResourceMeta } from '../../interfaces/resource';
 import { WarningStripComponent } from '../info/WarningStrip';
-import { deleteAdminResource, getAdminResources, patchAdminResource } from '../../services/api/resources.service';
+import {
+  deleteAdminResource, getAdminResource, getAdminResources, patchAdminResource, putAdminResource,
+} from '../../services/api/resources.service';
 import { Role } from '../../interfaces/user';
 import { AppContext } from '../../services/contexts/app-context';
 
@@ -29,6 +31,8 @@ function AdminResourcesComponent(): JSX.Element {
   });
   const [rename, setRename] = useState('');
   const { user } = useContext(AppContext);
+  const [uploadPrompt, setUploadPrompt] = useState(false);
+  const [file, setFile] = useState<FormData>();
 
   const getAndSetResources = useCallback(async () => {
     try {
@@ -81,6 +85,7 @@ function AdminResourcesComponent(): JSX.Element {
                       } else {
                         setUncollapsedIndex(-1);
                       }
+                      setUploadPrompt(false);
                     }}
                   >
                     <td>
@@ -103,13 +108,33 @@ function AdminResourcesComponent(): JSX.Element {
                           <Form.Row>
                             <Col md="auto" className="m-2 text-center">
                               <ButtonGroup>
-                                <Button><FontAwesomeIcon icon={faDownload} /></Button>
-                                <Button><FontAwesomeIcon icon={faUpload} /></Button>
+                                <Button
+                                  onClick={async (event) => {
+                                    try {
+                                      setLoading(true);
+                                      event.preventDefault();
+                                      await getAdminResource(resource._id);
+                                    } catch (e) {
+                                      setError(e);
+                                    } finally {
+                                      setLoading(false);
+                                    }
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon={faDownload} />
+                                </Button>
+                                <Button
+                                  onClick={() => {
+                                    setUploadPrompt(!uploadPrompt);
+                                  }}
+                                >
+                                  <FontAwesomeIcon icon={faUpload} />
+                                </Button>
                                 <Button title={t('ADMIN.RESOURCES.COPY_LINK_TO_CLIPBOARD')}>
                                   <FontAwesomeIcon
                                     icon={faClipboard}
                                     onClick={() => {
-                                      navigator.clipboard.writeText('a link will exist here');
+                                      navigator.clipboard.writeText(`${process.env.REACT_APP_BACKEND_ADDRESS}/resource/${resource._id}`);
                                     }}
                                   />
                                 </Button>
@@ -184,6 +209,49 @@ function AdminResourcesComponent(): JSX.Element {
                                 <FontAwesomeIcon icon={faTrash} />
                               </Button>
                             </Col>
+                          </Form.Row>
+                          <Form.Row>
+                            <Collapse in={uploadPrompt}>
+                              <div>
+                                <Button className="my-2">
+                                  <input
+                                    type="file"
+                                    onChange={(event) => {
+                                      if (
+                                        event
+                                    && event.target
+                                    && event.target.files
+                                    && event.target.files[0]
+                                      ) {
+                                        const f = new FormData();
+                                        f.append('file', event.target.files[0]);
+                                        setFile(f);
+                                      }
+                                    }}
+                                  />
+                                </Button>
+                                <Button
+                                  className="my-2"
+                                  disabled={!file}
+                                  onClick={async (event) => {
+                                    try {
+                                      if (!file || !resource._id) {
+                                        throw new Error('Cant sest resource, file or res id missing');
+                                      }
+                                      event.preventDefault();
+                                      setLoading(true);
+                                      await putAdminResource(resource._id, file);
+                                    } catch (e) {
+                                      setError(e);
+                                    } finally {
+                                      setLoading(false);
+                                    }
+                                  }}
+                                >
+                                  {t('ADMIN.RESOURCE.UPLOAD')}
+                                </Button>
+                              </div>
+                            </Collapse>
                           </Form.Row>
                           <Form.Row>
                             {resource.usedBy && resource.usedBy.length ? (

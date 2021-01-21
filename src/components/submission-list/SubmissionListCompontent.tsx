@@ -1,5 +1,5 @@
 import {
-  faDownload, faUpload, faClipboard, faSave, faTrash, faExclamation, faSort,
+  faDownload, faClipboard, faSave, faTrash, faExclamation, faSort,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Fragment, useState } from 'react';
@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { SubmissionGrade } from '../../interfaces/misc';
 import { ISubmissionMeta } from '../../interfaces/resource';
-import { patchSubmission, deleteSubmission } from '../../services/api/submissions.service';
+import { patchSubmission, deleteSubmission, getSubmission } from '../../services/api/submissions.service';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
@@ -129,13 +129,25 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                                   )
                                   : <></>
                               }
-                              <Button><FontAwesomeIcon icon={faDownload} /></Button>
-                              <Button><FontAwesomeIcon icon={faUpload} /></Button>
+                              <Button onClick={async (event) => {
+                                try {
+                                  setLoading(true);
+                                  event.preventDefault();
+                                  await getSubmission(submission._id);
+                                } catch (e) {
+                                  setError(e);
+                                } finally {
+                                  setLoading(false);
+                                }
+                              }}
+                              >
+                                <FontAwesomeIcon icon={faDownload} />
+                              </Button>
                               <Button title={t('ADMIN.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
                                 <FontAwesomeIcon
                                   icon={faClipboard}
                                   onClick={() => {
-                                    navigator.clipboard.writeText('a link will exist here');
+                                    navigator.clipboard.writeText(`${process.env.REACT_APP_BACKEND_ADDRESS}/submissions/${submission._id}`);
                                   }}
                                 />
                               </Button>
@@ -177,11 +189,11 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                                       await patchSubmission(
                                         submission,
                                       );
-                                      onUpload();
                                     } catch (e) {
                                       setError(e);
                                     } finally {
                                       setLoading(false);
+                                      onUpload();
                                     }
                                   }}
                                 >
@@ -203,11 +215,11 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                                   try {
                                     setLoading(true);
                                     await deleteSubmission(submission._id);
-                                    onUpload();
                                   } catch (e) {
                                     setError(e);
                                   } finally {
                                     setLoading(false);
+                                    onUpload();
                                   }
                                 }}
                               >

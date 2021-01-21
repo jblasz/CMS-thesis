@@ -119,6 +119,7 @@ export async function deleteResourceMockResponse(_id: string) {
   const f = resources.findIndex((x) => x._id === _id);
   if (f > -1) {
     resources.splice(f, 1);
+    setIMResources(resources);
     return Promise.resolve({ ok: true });
   }
   return Promise.reject(new Error('Failed to find resource of given id'));

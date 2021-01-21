@@ -57,10 +57,10 @@ function updateCourses() {
       const indices = g.students.map((s, i) => i).reverse();
       indices.forEach((i) => {
         const s = g.students[i];
-        const as = students[s._id];
         if (!s) {
           g.students.splice(i, 1);
         } else {
+          const as = students[s._id];
           g.students[i] = as;
         }
       });

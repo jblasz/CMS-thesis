@@ -40,6 +40,7 @@ export class CourseTask implements ICourseTask, Validable {
       this.forLabId = o.forLabId || '';
       this.forLabName = o.forLabName || '';
       this.location = o.location || '';
+      this.gracePeriod = o.gracePeriod || 0;
       if (o.dateFrom) { this.dateFrom = new Date(o.dateFrom); }
       if (o.dateTo) { this.dateTo = new Date(o.dateTo); }
     }

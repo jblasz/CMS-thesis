@@ -55,11 +55,7 @@ export async function putAdminResource(
     return putResourceMockResponse(id);
   }
 
-  const { data } = await axiosInstance.put(`/resource/${id}`, file, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  const { data } = await axiosInstance.put(`/resource/${id}`, file);
   const { ok, resource } = data as IPutResourceResponse;
   return { ok, resource };
 }

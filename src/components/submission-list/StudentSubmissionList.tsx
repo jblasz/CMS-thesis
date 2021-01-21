@@ -2,7 +2,9 @@ import {
   faDownload, faClipboard,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback, useContext, useEffect, useState,
+} from 'react';
 import {
   Table, Button, Container, ButtonGroup,
 } from 'react-bootstrap';
@@ -11,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { SubmissionGrade } from '../../interfaces/misc';
 import { ISubmissionMeta } from '../../interfaces/resource';
 import { getSubmissions } from '../../services/api/submissions.service';
+import { AppContext } from '../../services/contexts/app-context';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
@@ -20,11 +23,15 @@ export function StudentSubmissionListComponent(): JSX.Element {
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { user } = useContext(AppContext);
 
   const getAndSetSubmissions = useCallback(async () => {
     try {
+      if (!user || !user.student || !user.student._id) {
+        throw new Error('must be a student to retrieve student data');
+      }
       setLoading(true);
-      const { submissions: _submissions } = await getSubmissions('', '', 0);
+      const { submissions: _submissions } = await getSubmissions('', user.student._id, 0);
       setSubmissions(_submissions.sort((a, b) => {
         if (a.final !== b.final) {
           return a.final ? -1 : 1;
@@ -36,7 +43,7 @@ export function StudentSubmissionListComponent(): JSX.Element {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     getAndSetSubmissions();

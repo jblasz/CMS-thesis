@@ -17,7 +17,7 @@ import {
 } from './in-memory-database';
 import { getLabsReferencingResourceId } from './in-memory-resource-mocks';
 
-const studentCount = 20;
+const studentCount = 5;
 
 export async function populateInMemoryDBWithSomeMocks(count = 5) {
   // and some fake fillers
@@ -243,6 +243,7 @@ export async function getStudentCourseMockResponse(
             ...(lab.tasks[group._id] && lab.tasks[group._id].dateTo
               ? { dateTo: lab.tasks[group._id].dateTo }
               : {}),
+            ...(sub && sub.grade ? { grade: sub.grade } : {}),
           });
         }) : [],
     }),
