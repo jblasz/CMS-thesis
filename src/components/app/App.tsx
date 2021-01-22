@@ -111,48 +111,29 @@ function App():JSX.Element {
             <NavigationBarComponent courses={courses} articles={articles} />
             { user && (user as IUser).role === Role.STUDENT ? <EventsStripComponent /> : <></> }
             <Switch>
-              <Route
-                path="/"
-                exact
-                component={() => (
-                  <CourseListComponent courses={courses} />
-                )}
-              />
+              <Route path="/" exact component={() => (<CourseListComponent courses={courses} />)} />
               <Route exact path="/courses/:id/laboratory/:labID" component={LaboratoryComponent} />
               <Route exact path="/courses/:id" component={CourseComponent} />
               <Route exact path="/courses" component={() => <CourseListComponent courses={courses} />} />
               <Route exact path="/research" component={ResearchComponent} />
               <Route exact path="/articles/:id" component={ArticlesComponent} />
               <Route exact path="/code" component={CodeValidationComponent} />
-              {
-                user
-                  ? user.role === Role.ADMIN
-                    ? (
-                      <>
-                        <Route exact path="/dashboard" component={StudentDashboardComponent} />
-                        <Route exact path="/profile" component={ProfileComponent} />
-                        <Route exact path="/admin" component={AdminPanelComponent} />
-                        <Route exact path="/admin/resources" component={AdminResourcesComponent} />
-                        <Route exact path="/admin/students" component={AdminStudentsComponent} />
-                        <Route exact path="/admin/students/:id" component={AdminStudentComponent} />
-                        <Route exact path="/admin/courses" component={AdminCoursesComponent} />
-                        <Route exact path="/admin/courses/:id" component={AdminCourseComponent} />
-                        <Route exact path="/admin/courses/:courseID/group/:groupID" component={AdminCourseGroupComponent} />
-                        <Route exact path="/admin/courses/:courseID/laboratory/:labID" component={AdminCourseLaboratoryComponent} />
-                        <Route exact path="/admin/submissions" component={AdminSubmissionsComponent} />
-                        <Route exact path="/admin/articles" component={AdminArticlesComponent} />
-                        <Route exact path="/admin/articles/:id" component={AdminArticleComponent} />
-                      </>
-                    )
-                    : (
-                      <>
-                        <Route exact path="/dashboard" component={StudentDashboardComponent} />
-                        <Route exact path="/profile" component={ProfileComponent} />
-                      </>
-                    )
-                  : <></>
-              }
-              <Route exact path="/404" component={Component404} />
+              <Route exact path="/dashboard" component={user ? StudentDashboardComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/profile" component={user ? ProfileComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/dashboard" component={user && user.role === Role.ADMIN ? StudentDashboardComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/profile" component={user && user.role === Role.ADMIN ? ProfileComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin" component={user && user.role === Role.ADMIN ? AdminPanelComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/resources" component={user && user.role === Role.ADMIN ? AdminResourcesComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/students" component={user && user.role === Role.ADMIN ? AdminStudentsComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/students/:id" component={user && user.role === Role.ADMIN ? AdminStudentComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/courses" component={user && user.role === Role.ADMIN ? AdminCoursesComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/courses/:id" component={user && user.role === Role.ADMIN ? AdminCourseComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/courses/:courseID/group/:groupID" component={user && user.role === Role.ADMIN ? AdminCourseGroupComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/courses/:courseID/laboratory/:labID" component={user && user.role === Role.ADMIN ? AdminCourseLaboratoryComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/submissions" component={user && user.role === Role.ADMIN ? AdminSubmissionsComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/articles" component={user && user.role === Role.ADMIN ? AdminArticlesComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/articles/:id" component={user && user.role === Role.ADMIN ? AdminArticleComponent : () => <Redirect to="/404" />} />
+              <Route path="/404" component={Component404} />
               <Redirect to="/404" />
             </Switch>
           </div>

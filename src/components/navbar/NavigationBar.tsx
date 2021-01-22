@@ -135,18 +135,20 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               </NavDropdown.Item>
             </NavDropdown>
           ) : <></>}
-          <Button
-            className="nav-link"
-            style={{ opacity: 0.5, borderWidth: 0 }}
-            onClick={() => {
-              if (user) {
-                user.role = user.role === Role.ADMIN ? Role.STUDENT : Role.ADMIN;
-                setUser({ ...user });
-              }
-            }}
-          >
-            Toggle role
-          </Button>
+          { user ? (
+            <Button
+              className="nav-link"
+              style={{ opacity: 0.5, borderWidth: 0 }}
+              onClick={() => {
+                if (user) {
+                  user.role = user.role === Role.ADMIN ? Role.STUDENT : Role.ADMIN;
+                  setUser({ ...user });
+                }
+              }}
+            >
+              Toggle role
+            </Button>
+          ) : <></> }
         </Nav>
         <AuthNav />
       </Navbar.Collapse>
