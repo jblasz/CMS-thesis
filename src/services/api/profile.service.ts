@@ -1,5 +1,7 @@
 import { config } from '../../config';
-import { GetStudentResponse, PatchStudentResponse } from '../../interfaces/api';
+import {
+  GetStudentResponse, IUserResponse, PatchStudentResponse,
+} from '../../interfaces/api';
 import { Student } from '../../interfaces/student';
 import { getStudentMockResponse, patchStudentMockResponse } from '../mocks/in-memory-student-mocks';
 import { axiosInstance } from './request.service';
@@ -13,6 +15,25 @@ export async function getProfile(studentID: string): Promise<GetStudentResponse>
     return { ...r, student: new Student(r.student) };
   }
   const { data } = await axiosInstance.get('/profile');
+  if (data.profile) {
+    const {
+      _id, email,
+      fullname,
+      registeredAt,
+    } = data.profile as IUserResponse;
+    return {
+      attends: [],
+      student: new Student({
+        _id,
+        contactEmail: email,
+        email,
+        name: fullname,
+        usosID: '',
+        registeredAt: new Date(registeredAt),
+      }),
+      submissions: [],
+    };
+  }
   const { attends, student, submissions } = data as GetStudentResponse;
   return {
     attends,

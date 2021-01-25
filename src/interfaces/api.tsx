@@ -100,17 +100,19 @@ export interface IPostUserResponse {
   submissions: ISubmissionMeta[]
 }
 
+export interface IUserResponse {
+  isActive: boolean,
+  isAdmin: boolean,
+  _id: string,
+  googleId: string,
+  fullname: string,
+  email: string,
+  registeredAt: string
+}
+
 export interface IPostUserAdminResponse {
   token: string
-  user: {
-    isActive: boolean,
-    isAdmin: boolean,
-    _id: string,
-    googleId: string,
-    fullname: string,
-    email: string,
-    registeredAt: string
-  }
+  user: IUserResponse
 }
 
 export interface GetStudentResponse {

@@ -119,13 +119,13 @@ function ProfileComponent() {
                     <Button onClick={async () => {
                       try {
                         setLoading(true);
-                        const { student: _student } = await patchProfile({
+                        await patchProfile({
                           contactEmail: student.contactEmail || '',
                           name: student.name || '',
                           usosID: student.usosID || '',
                           studentID: student._id || '',
                         });
-                        setStudent(new Student(_student));
+                        await getAndSetAll();
                       } catch (e) {
                         setError(e);
                       } finally {
