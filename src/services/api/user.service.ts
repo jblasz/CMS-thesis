@@ -85,7 +85,11 @@ export async function getAdminUsers(byCourseId?: string): Promise<IGetStudentsRe
     const { students } = await getStudentsMockResponse(byCourseId);
     return { students: students.map((x) => new Student(x)) };
   }
-  const { data } = await axiosInstance.get('/students');
+  const { data } = await axiosInstance.get('/students', {
+    params: {
+      ...(byCourseId ? { byCourseId } : {}),
+    },
+  });
   const { students } = data as IGetStudentsResponse;
   return { students: students.map((x) => new Student(x)) };
 }
