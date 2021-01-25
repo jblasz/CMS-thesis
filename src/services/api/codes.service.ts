@@ -51,6 +51,7 @@ export async function postCodeNew(
   }
   const { data } = await axiosInstance.post(`/code/${groupId}`, { validThrough });
   const { code } = data as IPostCodeNewResponse;
+  code.validThrough = new Date(code.validThrough);
   return { code };
 }
 
