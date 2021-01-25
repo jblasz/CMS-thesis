@@ -117,10 +117,10 @@ function AdminStudentComponent(): JSX.Element {
                     <FormControl
                       type="text"
                       onChange={(e) => {
-                        student.usosId = e.target.value;
+                        student.usosID = e.target.value;
                         setStudent(new Student(student));
                       }}
-                      value={student.usosId}
+                      value={student.usosID}
                     />
                   </InputGroup.Prepend>
                   <InputGroup.Text>
@@ -134,7 +134,7 @@ function AdminStudentComponent(): JSX.Element {
                       const { student: _student } = await patchAdminUser(student._id, {
                         contactEmail: student.contactEmail || '',
                         name: student.name || '',
-                        usosId: student.usosId || '',
+                        usosID: student.usosID || '',
                       });
                       setStudent(new Student(_student));
                     } catch (e) {

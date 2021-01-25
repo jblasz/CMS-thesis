@@ -66,7 +66,7 @@ export async function putArticle(id: string, article: IArticle): Promise<IPutArt
   if (config.useMocks) {
     return putArticleMockResponse(id, article);
   }
-  const { ok, article: _article } = (await axiosInstance.put(`/articles/${id}`, article)).data as IPutArticleResponse;
+  const { ok, article: _article } = (await axiosInstance.put(`/articles/${id}`, { article })).data as IPutArticleResponse;
   return { ok, article: Article(_article) };
 }
 

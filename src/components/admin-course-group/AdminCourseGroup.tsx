@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container, Form, Button, Table, InputGroup, FormControl,
 } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { faSave, faSort, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -33,7 +33,6 @@ function AdminCourseGroupComponent(): JSX.Element {
   const [newStudent, setNewStudent] = useState<BaseStudent>({ _id: '', name: '' });
   const [
     validThrough,
-    // setValidThrough,
   ] = useState(new Date(new Date().valueOf() + 31 * 24 * 60 * 60 * 1000));
   const [newCode, setNewCode] = useState({ _id: '', validThrough: new Date(0) });
   const [
@@ -43,6 +42,7 @@ function AdminCourseGroupComponent(): JSX.Element {
     students: BaseStudent[],
     group: CourseGroup}>({ students: [], group: new CourseGroup() });
   const [codes, setCodes] = useState<ICode[]>([]);
+  const history = useHistory();
 
   const validateAndSetCourseGroup = useCallback(
     (_group: CourseGroup, _students: BaseStudent[]) => {
@@ -92,17 +92,18 @@ function AdminCourseGroupComponent(): JSX.Element {
         <Button
           className="float-right"
           onClick={async () => {
+            let succeeded = false;
             try {
               setLoading(true);
               await deleteAdminCourseGroup(courseID, group._id);
-              alert('course deleted succesfully');
-              await getAndSetBoth();
+              succeeded = true;
             } catch (e) {
-              console.error(e);
               setError(e);
-              alert('failed to delete course, details in console');
             } finally {
               setLoading(false);
+            }
+            if (succeeded) {
+              history.push(`/admin/courses/${courseID}`);
             }
           }}
         >

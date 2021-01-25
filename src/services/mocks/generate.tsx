@@ -61,7 +61,7 @@ export function generateStudentMock(id = v4()) {
     email: `mail_${n}@domain.com`,
     contactEmail: 'contactemail1',
     name: `student Mk ${n}`,
-    usosId: '123321',
+    usosID: '123321',
   });
   students.push(s);
   setIMStudents(students);

@@ -19,7 +19,7 @@ import { axiosInstance } from './request.service';
  * /public/user POST
  */
 export async function postUser(
-  jwt: string, gid: string, email: string, name: string, usosId: string,
+  jwt: string, gid: string, email: string, name: string, usosID: string,
 ): Promise<{
     response: IPostUserResponse,
     isAdmin: boolean
@@ -27,7 +27,7 @@ export async function postUser(
   if (config.useMocks) {
     Cookies.set('authorization', jwt);
     return {
-      response: await postUserMockResponse(gid, email, name, usosId),
+      response: await postUserMockResponse(gid, email, name, usosID),
       isAdmin: true,
     };
   }
@@ -53,7 +53,7 @@ export async function postUser(
           contactEmail: user.email,
           email: user.email,
           name: user.fullname,
-          usosId: '',
+          usosID: '',
           registeredAt: new Date(user.registeredAt),
         }),
         submissions: [],
@@ -114,7 +114,7 @@ export async function patchAdminUser(id: string, params: {
   name?: string
   email?: string
   contactEmail?: string
-  usosId?: string
+  usosID?: string
 }): Promise<PatchStudentResponse> {
   if (config.useMocks) {
     const r = await patchStudentMockResponse({
@@ -122,23 +122,25 @@ export async function patchAdminUser(id: string, params: {
       name: params.name,
       email: params.email,
       contactEmail: params.contactEmail,
-      usosId: params.usosId,
+      usosID: params.usosID,
     });
     return { ok: true, student: new Student(r.student) };
   }
-  const { data } = await axiosInstance.patch(`/students/${id}`, params);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { email, ...rest } = params;
+  const { data } = await axiosInstance.patch(`/students/${id}`, rest);
   const { ok, student } = data as PatchStudentResponse;
   return { ok, student: new Student(student) };
 }
 
 /**
- * /user/:id DELETE
+ * /students/:id DELETE
  */
 export async function deleteAdminUser(id: string): Promise<IApiPostResponse> {
   if (config.useMocks) {
     return deleteStudentMockResponse(id);
   }
-  const { data } = await axiosInstance.delete(`/user/${id}`);
+  const { data } = await axiosInstance.delete(`/students/${id}`);
   const { ok } = data as IApiPostResponse;
   return { ok };
 }

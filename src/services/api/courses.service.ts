@@ -80,9 +80,29 @@ export async function getAdminCourse(_id: string): Promise<IGetCourseResponse> {
  * /course/:id PUT
  */
 export async function putAdminCourse(course: ICourseStubCore): Promise<IPostCourseResponse> {
+  console.log(course);
   if (config.useMocks) { return putCourseMockResponse(course); }
+  const {
+    _id,
+    active,
+    description,
+    descriptionShort,
+    language,
+    name,
+    semester,
+    shown,
+  } = course;
   const { course: _course } = (await axiosInstance.post(`/course/${course._id}`, {
-    course,
+    course: {
+      _id,
+      active,
+      description,
+      descriptionShort,
+      language,
+      name,
+      semester,
+      shown,
+    },
   })).data as IPostCourseResponse;
   return { ok: true, course: new Course(_course) };
 }
@@ -115,8 +135,10 @@ export async function putAdminCourseGroup(
 ): Promise<IPostCourseGroupResponse> {
   if (config.useMocks) { return setCourseGroupResponse(courseId, group); }
   const { ok, group: _group } = (await axiosInstance.put(`/course/${courseId}/group/${group._id}`, {
-    _id: group._id,
-    name: group.name,
+    group: {
+      _id: group._id,
+      name: group.name,
+    },
   })).data as IPostCourseGroupResponse;
   return { group: new CourseGroup(_group), ok };
 }
@@ -181,7 +203,7 @@ export async function putAdminLaboratory(
   }
   const
     { ok, laboratory } = (
-      await axiosInstance.put(`/course/${courseID}/laboratory/${lab._id}`, toSend)
+      await axiosInstance.put(`/course/${courseID}/laboratory/${lab._id}`, { laboratory: toSend })
     ).data as IPutCourseLaboratoryResponse;
   return { ok, laboratory: new CourseLaboratory(laboratory) };
 }

@@ -3,7 +3,7 @@ import {
 } from 'react-bootstrap';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -34,6 +34,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
   const [chosenGroupID, setChosenGroup] = useState('');
   const [resourceNames, setResourceNames] = useState<IResourceMeta[]>([]);
   const [editorText, setEditorText] = useState('');
+  const history = useHistory();
 
   const validateAndSetLaboratory = useCallback((
     lab: CourseLaboratory, taskID?: string, task?: CourseTask,
@@ -108,15 +109,18 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
           <Button
             className="mx-1"
             onClick={async () => {
+              let succeeded = false;
               try {
                 setLoading(true);
                 await deleteAdminCourseLaboratory(courseID, laboratory._id);
-                alert('course laboratory deleted succesfully');
-                await getAndSetCourseLaboratory();
+                succeeded = true;
               } catch (e) {
                 setError(e);
               } finally {
                 setLoading(false);
+              }
+              if (succeeded) {
+                history.push(`/admin/courses/${courseID}`);
               }
             }}
           >

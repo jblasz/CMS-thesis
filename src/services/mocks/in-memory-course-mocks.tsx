@@ -85,6 +85,7 @@ export async function deleteCourseMockResponse(_id: string) {
   const f = courses.findIndex((x) => x._id === _id);
   if (f > -1) {
     courses.splice(f, 1);
+    setIMCourses(courses);
     return Promise.resolve({ ok: true });
   }
   return Promise.reject(new Error('404 not found'));
@@ -215,7 +216,7 @@ export async function patchCourseGroupStudentMockResponse(
         contactEmail: student.contactEmail,
         email: student.email,
         name: student.name,
-        usosId: student.usosId,
+        usosID: student.usosID,
         grade: grade || undefined,
       });
     } else {
@@ -282,12 +283,12 @@ Promise<IGetDashboardLaboratoriesResponse> {
       return {
         courseId: c._id,
         courseName: c.name,
-        endsAt: l.tasks[g._id].dateTo as Date,
+        dateTo: l.tasks[g._id].dateTo as Date,
         groupId: g._id,
         groupName: g.name,
         labId: l._id,
         labName: l.name,
-        startsAt: l.tasks[g._id].dateFrom as Date,
+        dateFrom: l.tasks[g._id].dateFrom as Date,
         active: c.active,
       };
     }),

@@ -5,7 +5,7 @@ import {
   Container, Form, Col, Button, Table, InputGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react';
@@ -30,6 +30,7 @@ function AdminCourseComponent(): JSX.Element {
   const [warning, setWarning] = useState('');
   const [newName, setNewName] = useState('');
   const [newLabName, setNewLabName] = useState('');
+  const history = useHistory();
 
   const validateAndSetCourse = useCallback((crs: Course) => {
     const res = crs.validate();
@@ -82,14 +83,18 @@ function AdminCourseComponent(): JSX.Element {
           <Button
             className="mx-2"
             onClick={async () => {
+              let succeeded = false;
               try {
                 setLoading(true);
                 await deleteAdminCourse(course._id);
-                alert('course deleted successfully');
+                succeeded = true;
               } catch (e) {
                 setError(e);
               } finally {
                 setLoading(false);
+              }
+              if (succeeded) {
+                history.push('/admin/courses');
               }
             }}
           >

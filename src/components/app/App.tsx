@@ -46,7 +46,7 @@ function App():JSX.Element {
   const [user, setUser] = useState<IUser | null>(process.env.REACT_APP_START_LOGGED_IN ? {
     role: Role.ADMIN,
     student: {
-      _id: 'mock-id', email: 'mock-email', name: 'mock-name', usosId: 'mock-id', registeredAt: new Date(), contactEmail: '',
+      _id: 'mock-id', email: 'mock-email', name: 'mock-name', usosID: 'mock-id', registeredAt: new Date(), contactEmail: '',
     },
   } : null);
   const [, setError] = useState('');

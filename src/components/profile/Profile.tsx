@@ -105,10 +105,10 @@ function ProfileComponent() {
                       <FormControl
                         type="text"
                         onChange={(e) => {
-                          student.usosId = e.target.value;
+                          student.usosID = e.target.value;
                           setStudent(new Student(student));
                         }}
-                        value={student.usosId}
+                        value={student.usosID}
                       />
                     </InputGroup.Prepend>
                     <InputGroup.Text>
@@ -122,7 +122,7 @@ function ProfileComponent() {
                         const { student: _student } = await patchProfile({
                           contactEmail: student.contactEmail || '',
                           name: student.name || '',
-                          usosId: student.usosId || '',
+                          usosID: student.usosID || '',
                           studentID: student._id || '',
                         });
                         setStudent(new Student(_student));

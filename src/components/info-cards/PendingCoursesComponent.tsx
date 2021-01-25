@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IPendingLaboratory } from '../../interfaces/misc';
 import { Role } from '../../interfaces/user';
-import { getStudentDashboard } from '../../services/api/dashboard.service';
+import { getDashboardLaboratories, getStudentDashboard } from '../../services/api/dashboard.service';
 import { AppContext } from '../../services/contexts/app-context';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
@@ -27,14 +27,19 @@ export function PendingCoursesComponent(): JSX.Element {
         return;
       }
       setLoading(true);
-      const ret = await getStudentDashboard(user.student._id);
-      setPLabs(ret.upcoming);
+      if (admin) {
+        const ret = await getDashboardLaboratories((user && user.student && user.student._id) || '');
+        setPLabs(ret.laboratories);
+      } else {
+        const ret = await getStudentDashboard(user.student._id);
+        setPLabs(ret.upcoming);
+      }
     } catch (e) {
       setError(e);
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [admin, user]);
   useEffect(() => {
     getAndSetCourses();
   }, [getAndSetCourses]);
@@ -91,10 +96,10 @@ export function PendingCoursesComponent(): JSX.Element {
                   <td>
                     <Col>
                       <Row>
-                        {formatDate(lab.startsAt, true)}
+                        {formatDate(lab.dateFrom, true)}
                       </Row>
                       <Row>
-                        {formatDate(lab.endsAt, true)}
+                        {formatDate(lab.dateTo, true)}
                       </Row>
                     </Col>
                   </td>

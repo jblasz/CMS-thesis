@@ -5,7 +5,7 @@ import {
   Button, Col, Container, Form, Row,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -28,6 +28,7 @@ export function AdminArticleComponent(): JSX.Element {
     pl: { categoryMinor: '', contents: '', categoryMajor: '' },
   }));
   const [availableFrom, setAvailableFrom] = useState(false);
+  const history = useHistory();
 
   const getAndSetArticle = useCallback(async () => {
     try {
@@ -74,14 +75,18 @@ export function AdminArticleComponent(): JSX.Element {
           </Button>
           <Button
             onClick={async () => {
+              let succeed = false;
               try {
                 setLoading(true);
                 await deleteArticle(id);
-                await getAndSetArticle();
+                succeed = true;
               } catch (e) {
                 setError(e);
               } finally {
                 setLoading(false);
+              }
+              if (succeed) {
+                history.push('/admin/articles');
               }
             }}
           >

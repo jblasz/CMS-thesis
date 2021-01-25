@@ -34,8 +34,8 @@ export interface ICourseLabGroupMeta extends ICourseGroupMeta {
 }
 
 export interface ICourseLabGroupMetaWithDates extends ICourseLabGroupMeta {
-  startsAt: Date
-  endsAt: Date
+  dateFrom: Date
+  dateTo: Date
 }
 
 export function CourseLabGroupMetaWithDates(
@@ -43,20 +43,20 @@ export function CourseLabGroupMetaWithDates(
 ): ICourseLabGroupMetaWithDates {
   return {
     ...g,
-    startsAt: new Date(g.startsAt),
-    endsAt: new Date(g.endsAt),
+    dateFrom: new Date(g.dateFrom),
+    dateTo: new Date(g.dateTo),
   };
 }
 
 export interface IPendingLaboratory extends ICourseLabGroupMeta {
-  startsAt: Date
-  endsAt: Date
+  dateFrom: Date
+  dateTo: Date
 }
 
 export function PendingLaboratory(lab: IPendingLaboratory): IPendingLaboratory {
   return {
     ...lab,
-    startsAt: new Date(lab.startsAt),
-    endsAt: new Date(lab.endsAt),
+    dateFrom: new Date(lab.dateFrom),
+    dateTo: new Date(lab.dateTo),
   };
 }

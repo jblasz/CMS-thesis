@@ -47,10 +47,10 @@ export function EventsStripComponent(): JSX.Element {
       const _upcomingEvents: ICourseLabGroupMetaWithDates[] = [];
       _events.forEach(
         (event) => {
-          if (event.startsAt.valueOf() < now.valueOf() && event.endsAt.valueOf() > now.valueOf()) {
+          if (event.dateFrom.valueOf() < now.valueOf() && event.dateTo.valueOf() > now.valueOf()) {
             _activeEvents.push(event);
-          } else if (event.startsAt.valueOf() > now.valueOf()
-          && event.startsAt.valueOf() <= highRange.valueOf()) {
+          } else if (event.dateFrom.valueOf() > now.valueOf()
+          && event.dateFrom.valueOf() <= highRange.valueOf()) {
             _upcomingEvents.push(event);
           }
         },

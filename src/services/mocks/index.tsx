@@ -158,12 +158,12 @@ export async function getStudentDashboardMockResponse(
           active: course.active,
           courseId: course._id,
           courseName: course.name,
-          endsAt: task.dateTo,
+          dateTo: task.dateTo,
           groupId: group._id,
           groupName: group.name,
           labId: laboratory._id,
           labName: laboratory.name,
-          startsAt: task.dateFrom,
+          dateFrom: task.dateFrom,
         });
       }
     });

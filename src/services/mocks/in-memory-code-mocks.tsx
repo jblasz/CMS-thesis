@@ -25,7 +25,7 @@ export async function postCodeMockResponse(
         contactEmail: student.contactEmail || '',
         email: student.email || '',
         name: student.name || '',
-        usosId: student.usosId || '',
+        usosID: student.usosID || '',
       });
       return Promise.resolve({
         ok: true,

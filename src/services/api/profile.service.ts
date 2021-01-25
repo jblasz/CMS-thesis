@@ -29,7 +29,7 @@ export async function patchProfile(params: {
   name?: string
   email?: string
   contactEmail?: string
-  usosId?: string
+  usosID?: string
 }): Promise<PatchStudentResponse> {
   if (config.useMocks) {
     const r = await patchStudentMockResponse(params);
