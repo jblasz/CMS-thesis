@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Col, Row } from 'react-bootstrap';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { CourseListSidebarComponent, Status, Language } from './CourseListSidebar';
-import bgImg from '../../images/main_2.jpeg';
+import bgImg from '../../images/main_1.jpeg';
 
 export interface CourseListComponentProps {
   courses: Course[];

@@ -13,13 +13,14 @@ import {
   generateResourceMocks, generateCourseMock, generateSubmissionMock, generateStudentMock,
 } from './generate';
 import {
-  getIMCourses, getIMResources, getIMStudents, getIMSubmissions, setIMSubmissions,
+  getIMArticles,
+  getIMCourses, getIMResources, getIMStudents, getIMSubmissions, setIMArticles, setIMSubmissions,
 } from './in-memory-database';
 import { getLabsReferencingResourceId } from './in-memory-resource-mocks';
 
 const studentCount = 5;
 
-export async function populateInMemoryDBWithSomeMocks(count = 5) {
+export async function populateInMemoryDBWithSomeMocks() {
   // and some fake fillers
   for (let i = 0; i < studentCount - 1; i++) {
     generateStudentMock();
@@ -27,7 +28,8 @@ export async function populateInMemoryDBWithSomeMocks(count = 5) {
 
   generateResourceMocks(10);
   generateCourseMock('staticCourseID');
-  generateList(count).forEach((val) => generateCourseMock(`course_id_${val}`));
+  // 2 full courses
+  generateList(2).forEach((val) => generateCourseMock(`course_id_${val}`));
 
   // generate submissions to some random tasks
   getIMCourses().forEach((course) => {
@@ -113,6 +115,84 @@ export async function populateInMemoryDBWithSomeMocks(count = 5) {
   ...getIMSubmissions(),
   ]);
 
+  // varied course types
+  generateCourseMock('course-with-groups', 'Course with groups', false, true, true);
+  generateCourseMock('course-with-labs', 'Course with labs', true, false, true);
+  generateCourseMock('course-with-nothing', 'No labs, groups or kings', false, false, true);
+
+  // 3 articles
+  setIMArticles([
+    ...getIMArticles(),
+    {
+      _id: 'standalone-article',
+      en: {
+        categoryMajor: 'Contact',
+        categoryMinor: '',
+        contents: `
+        <div style="margin-top: 10vh">
+          I take public consultations only <i>by previous appointment</i>.</br>
+          Postal address: 24 Cavendish Square, 213-123 London</br>
+          Phone: Invented for 10 years, but I have not procured one yet. You can contact me by carrier pidgeon if you like.</br>
+          Email: What is an email? This is 1886</br>
+          </div>
+        `,
+      },
+      pl: {
+        categoryMajor: 'Kontakt',
+        categoryMinor: '',
+        contents: `
+        <div style="margin-top: 10vh">
+          Konsultacje <i>za wcześniejszym umówieniem</i>.</br>
+          Postal address: 24 Cavendish Square, 213-123 London</br>
+          Phone: Invented for 10 years, but I have not procured one yet. You can contact me by carrier pidgeon if you like.</br>
+          Email: What is an email? This is 1886</br>
+        </div>
+        `,
+      },
+    },
+    {
+      _id: 'faq-1',
+      en: {
+        categoryMajor: 'FAQ',
+        categoryMinor: 'Who is mr Hyde?',
+        contents: `
+        <div style="margin-top: 10vh">
+        A dear friend of mine.
+        </div>
+        `,
+      },
+      pl: {
+        categoryMajor: 'FAQ',
+        categoryMinor: 'Kim jest mr Hyde?',
+        contents: `
+        <div style="margin-top: 10vh">
+        Bliski przyjaciel.
+        </div>
+        `,
+      },
+    },
+    {
+      _id: 'faq-2',
+      en: {
+        categoryMajor: 'FAQ',
+        categoryMinor: 'Personal interests',
+        contents: `
+        <div style="margin-top: 10vh">
+        <i>A respected doctor and friend of both Lanyon, a fellow physician, and Utterson, a lawyer. Jekyll is a seemingly prosperous man, well established in the community, and known for his decency and charitable works..</i> - Robert Louis Stevenson
+        </div>
+        `,
+      },
+      pl: {
+        categoryMajor: 'FAQ',
+        categoryMinor: 'Zainteresowania',
+        contents: `
+        <div style="margin-top: 10vh">
+        <i>A respected doctor and friend of both Lanyon, a fellow physician, and Utterson, a lawyer. Jekyll is a seemingly prosperous man, well established in the community, and known for his decency and charitable works..</i> - Robert Louis Stevenson
+        </div>
+        `,
+      },
+    },
+  ]);
   console.log('generated some mocks for in-memory');
 }
 

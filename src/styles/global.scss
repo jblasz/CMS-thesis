@@ -42,11 +42,8 @@
   --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
 
   /* theme font-family */
-  --Abel: "Abel", cursive;
-  --Anton: "Anton", cursive;
-  --Josefin: "Josefin Sans", cursive;
+  --Abel: "Abel", "Times New Roman", cursive;
   --Lexend: "Lexend Deca", cursive;
-  --Livvic: "Livvic", cursive;
 
   --footer-height: 70px;
 }
@@ -56,9 +53,13 @@ body {
   background: master.$background;
   margin: 0%;
   box-sizing: border-box;
-  padding-top: 45px;
   clear: both;
+  padding-top: 45px;
   font-family: master.$font-small;
+}
+
+html {
+  padding-top: 35px;
 }
 
 .footer {
@@ -69,7 +70,7 @@ body {
 }
 
 .main {
-  min-height: calc(100vh - var(--footer-height));
+  min-height: calc(100vh - var(--footer-height) + 100px);
   padding-bottom: 100px;
 }
 

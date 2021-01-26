@@ -34,7 +34,6 @@ export function AdminArticleComponent(): JSX.Element {
     try {
       setLoading(true);
       const { article: _article } = await getArticle(id);
-
       setArticle(Article(_article));
     } catch (e) {
       setError(e);
@@ -174,6 +173,9 @@ export function AdminArticleComponent(): JSX.Element {
             </Form.Group>
           </Col>
         </Row>
+        <Form.Label>
+          English contents
+        </Form.Label>
         <EditorComponent
           text={article.en.contents}
           setText={(text) => {
@@ -181,6 +183,9 @@ export function AdminArticleComponent(): JSX.Element {
             setArticle(Article(article));
           }}
         />
+        <Form.Label>
+          Polish contents
+        </Form.Label>
         <EditorComponent
           text={article.pl.contents}
           setText={(text) => {

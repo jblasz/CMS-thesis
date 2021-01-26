@@ -22,7 +22,7 @@ function FooterComponent(props: FooterComponentProps): JSX.Element {
         <a href="https://www.pw.edu.pl/engpw" className="m-2">{t('FOOTER.PW_URL')}</a>
       </Navbar.Text>
       <div className="float-right">
-        <Button className="btn button btn-primary" onClick={onRefresh}>{'   '}</Button>
+        <Button className="btn button btn-primary" onClick={onRefresh}>Mock page refresh (to see changes to navbar)</Button>
       </div>
     </Navbar>
   );

@@ -5,7 +5,7 @@ import { CourseGroup, ICourseGroup } from '../../interfaces/courseGroup';
 import { CourseLaboratory, TaskToGroupMapping } from '../../interfaces/courseLaboratory';
 import { CourseTask, ICourseTask } from '../../interfaces/courseTask';
 import { SubmissionGrade } from '../../interfaces/misc';
-import { Permission } from '../../interfaces/resource';
+import { IResourceMeta, Permission } from '../../interfaces/resource';
 import { IStudent, Student } from '../../interfaces/student';
 import { generateList, shuffleList } from '../../utils';
 import {
@@ -128,23 +128,32 @@ export function generateCourseTaskMock(date: Date, duration: number):CourseTask 
   });
 }
 
-export async function generateCourseMock(id: string) {
-  const groups = generateList(2).map(() => generateCourseGroupMock());
+export async function generateCourseMock(id: string, name = `Course Name Mk${generatorCount++}`, makeLabs = true, makeGroups = true, active = Math.random() > 0.5) {
+  const groups = makeGroups ? generateList(2).map(() => generateCourseGroupMock()) : [];
   const rootDate = new Date(new Date().valueOf() - 60 * 24 * 60 * 60 * 1000);
+  const resource: IResourceMeta = {
+    _id: `${id}_resource`,
+    name: `Course regulations for ${name}`,
+    permission: Permission.ALL,
+    usedBy: [],
+  };
   const topush = new Course({
     _id: id,
-    name: `Course Name Mk${generatorCount++}`,
-    description: `<span style="color: rgb(26,188,156);"><em>inline styling</em></span> ${loremIpsum()}`,
+    name,
+    description: `
+      <span>${loremIpsum({ count: 10 })}</span><br/>
+      <a href="${process.env.REACT_APP_BACKEND_ADDRESS as string}/resource/${resource._id}" taget="_blank">Course regulations</a>`,
     descriptionShort: `<span style="color: rgb(255,0,0);"><em>inline styling</em></span> ${loremIpsum()}`,
     language: Math.random() > 0.5 ? CourseLanguage.EN : CourseLanguage.PL,
     semester: `20${Math.random() > 0.5 ? '20' : '21'}${Math.random() > 0.5 ? 'Z' : 'L'}`,
     groups,
-    laboratories: generateList(3, 1).map(() => {
+    laboratories: makeLabs ? generateList(3, 1).map(() => {
       rootDate.setTime(rootDate.valueOf() + 30 * 24 * 60 * 60 * 1000);
       return generateLaboratoryMock(rootDate, groups);
-    }),
-    active: Math.random() > 0.5,
+    }) : [],
+    active,
     shown: true,
   });
   setIMCourses([...getIMCourses(), topush]);
+  setIMResources([...getIMResources(), resource]);
 }
