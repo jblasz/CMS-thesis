@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { SubmissionGrade } from '../../interfaces/misc';
 import { ISubmissionMeta } from '../../interfaces/resource';
-import { getSubmissions } from '../../services/api/submissions.service';
+import { getSubmission, getSubmissions } from '../../services/api/submissions.service';
 import { AppContext } from '../../services/contexts/app-context';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
@@ -120,12 +120,19 @@ export function StudentSubmissionListComponent(): JSX.Element {
                       </td>
                       <td>
                         <ButtonGroup>
-                          <Button title={t('STUDENT.SUBMISSIONS.DOWNLOAD_SUBMISSION')}><FontAwesomeIcon icon={faDownload} /></Button>
+                          <Button
+                            title={t('STUDENT.SUBMISSIONS.DOWNLOAD_SUBMISSION')}
+                            onClick={() => {
+                              getSubmission(submission._id);
+                            }}
+                          >
+                            <FontAwesomeIcon icon={faDownload} />
+                          </Button>
                           <Button title={t('STUDENT.SUBMISSIONS.COPY_LINK_TO_CLIPBOARD')}>
                             <FontAwesomeIcon
                               icon={faClipboard}
                               onClick={() => {
-                                navigator.clipboard.writeText('a link will exist here');
+                                navigator.clipboard.writeText(`${process.env.REACT_APP_BACKEND_ADDRESS}/submissions/${submission._id}`);
                               }}
                             />
                           </Button>
@@ -137,7 +144,6 @@ export function StudentSubmissionListComponent(): JSX.Element {
               </tbody>
             </Table>
           </div>
-
         </div>
       </div>
     </Container>

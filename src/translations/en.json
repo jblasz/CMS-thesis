@@ -9,7 +9,7 @@
     "LOGIN": "Login",
     "REGISTER": "Register",
     "COURSES": "Courses",
-    "ARTICLES": "Articles",
+    "ARTICLES": "Subpages",
     "RESEARCH": "Research",
     "COURSES_EN": "In English",
     "COURSES_PL": "In Polish",
@@ -22,7 +22,7 @@
       "STUDENTS": "Students",
       "RESOURCES": "Resources",
       "SUBMISSIONS": "Submissions",
-      "ARTICLES": "Articles"
+      "ARTICLES": "Subpages"
     }
   },
   "FOOTER": {
@@ -237,18 +237,19 @@
     },
     "ARTICLE": {
       "SUBMIT": "Submit",
-      "MAJOR_EN": "Major English locale",
-      "MAJOR_PL": "Major Polish locale",
-      "MINOR_EN": "Minor English locale",
-      "MINOR_PL": "Minor Polish locale",
-      "AVAILABLE_FROM": "Set availability",
+      "MAJOR_EN": "Button/dropdown name (EN)",
+      "MINOR_EN": "Becomes a button if this is empty, dropdown entry otherwise (EN)",
+      "MAJOR_PL": "Button/dropdown name (PL)",
+      "MINOR_PL": "Becomes a button if this is empty, dropdown entry otherwise (PL)",
+      "AVAILABILITY": "Availability",
+      "AVAILABLE_FROM": "Set availability (whether it becomes available only after some date), set above to enable",
       "LIMITED_AVAILABILITY": "Limited",
       "NO_LIMITED_AVAILABILITY": "Unlimited",
       "CONTENTS_EN": "English contents",
       "CONTENTS_PL": "Polish contents"
     },
     "ARTICLES": {
-      "CREATE_ARTICLE": "Create an article"
+      "CREATE_ARTICLE": "Create a subpage"
     },
     "EDITOR": {
       "PREVIEW": "Displaying rendered html",

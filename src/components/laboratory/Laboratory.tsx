@@ -68,7 +68,7 @@ function LaboratoryComponent(): JSX.Element {
           </div>
         </div>
       </div>
-      <h4>{t('COURSE.LABORATORY.PER_GROUP_TASKS')}</h4>
+      <h4>{laboratory.tasks.length ? t('COURSE.LABORATORY.PER_GROUP_TASKS') : ''}</h4>
       <ListGroup variant="flush">
         {Object.keys(laboratory.tasks).map((groupID) => {
           const task = laboratory.tasks[groupID];
@@ -94,7 +94,7 @@ function LaboratoryComponent(): JSX.Element {
                   </small>
                 </Row>
                 <Row>
-                  {task.description}
+                  <div dangerouslySetInnerHTML={{ __html: task.description }} />
                 </Row>
                 <Row>
                   <small>

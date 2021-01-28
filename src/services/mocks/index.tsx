@@ -39,6 +39,11 @@ export async function populateInMemoryDBWithSomeMocks() {
       const lab = course.laboratories[Math.floor(Math.random() * course.laboratories.length)];
       const task = lab.tasks[group._id];
 
+      if (!task.forLabId) {
+        task.forLabId = lab._id;
+        task.forLabName = lab.name;
+      }
+
       generateSubmissionMock(
         course,
         task,
@@ -116,9 +121,9 @@ export async function populateInMemoryDBWithSomeMocks() {
   ]);
 
   // varied course types
-  generateCourseMock('course-with-groups', 'Course with groups', false, true, true);
-  generateCourseMock('course-with-labs', 'Course with labs', true, false, true);
-  generateCourseMock('course-with-nothing', 'No labs, groups or kings', false, false, true);
+  generateCourseMock('course-with-groups', 'Course with groups, no labs', false, true, true);
+  generateCourseMock('course-with-labs', 'Course with labs, no groups', true, false, true);
+  generateCourseMock('course-with-nothing', 'No labs, groups or gods', false, false, true);
 
   // 3 articles
   setIMArticles([

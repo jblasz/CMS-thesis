@@ -18,8 +18,6 @@ Backend address is stored under `REACT_APP_BACKEND_ADDRESS=`.
 
 Any changes to .env require full recompilation, as they are grabbed only once.
 
-To switch between styles go to `src/_master.css` and change the first line to point to whichever macro file you want (out of the ones found in `src/styles/_style1-....scss`)
-
 Run `yarn`.
 
 Please copy the following to your .vscode/settings.json:

@@ -139,7 +139,7 @@ export function AdminArticleComponent(): JSX.Element {
           </Col>
           <Col>
             <Form.Group controlId="availableFrom">
-              <Form.Label>{t('ADMIN.ARTICLE.AVAILABLE_FROM')}</Form.Label>
+              <Form.Label>{t('ADMIN.ARTICLE.AVAILABILITY')}</Form.Label>
               <div>
                 <BootstrapSwitchButton
                   width={100}

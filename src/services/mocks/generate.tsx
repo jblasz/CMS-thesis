@@ -102,13 +102,19 @@ export function generateLaboratoryMock(
   if (groups && groups.find((x) => x._id === 'staticGroupID')) {
     tasks.staticGroupID._id = 'staticLabGroupID';
   }
-  return new CourseLaboratory({
+
+  const lab = new CourseLaboratory({
     _id: id,
     name: loremIpsum().split(' ').slice(0, 3).join(' '),
     description: `<h1>tag!</h1>${loremIpsum()}`,
     descriptionShort: `<h1>tag!</h1>${loremIpsum()}`,
     tasks,
   });
+  Object.values(tasks).forEach((task) => {
+    task.forLabId = lab._id;
+    task.forLabName = lab.name;
+  });
+  return lab;
 }
 
 export function generateCourseTaskMock(date: Date, duration: number):CourseTask {

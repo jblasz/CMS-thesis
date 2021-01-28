@@ -39,7 +39,11 @@ export function CollapseUploadComponent(props: CollapseUploadComponentProps) {
                   type="file"
                   name="file"
                   onChange={(event) => {
-                    if (event && event.target && event.target.files && event.target.files[0]) {
+                    if (event && event.target && event.target.files) {
+                      if (event.target.files.length !== 1) {
+                        alert('must select exactly one file');
+                        return;
+                      }
                       const f = new FormData();
                       f.append('file', event.target.files[0]);
                       setFile(f);
@@ -71,23 +75,23 @@ export function CollapseUploadComponent(props: CollapseUploadComponentProps) {
               </Button>
             </Col>
           </Form.Row>
-          <Form.Row>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              value={note}
-              onChange={(event) => {
-                event.preventDefault();
-                setNote(event.target.value);
-              }}
-            />
-          </Form.Row>
-          <Form.Row>
-            <Form.Label>
-              {t('STUDENT.DASHBOARD.CHANGE_NOTE')}
-            </Form.Label>
-          </Form.Row>
         </InputGroup>
+        <Form.Row>
+          <Form.Label>
+            {t('STUDENT.DASHBOARD.CHANGE_NOTE')}
+          </Form.Label>
+        </Form.Row>
+        <Form.Row>
+          <Form.Control
+            as="textarea"
+            rows={2}
+            value={note}
+            onChange={(event) => {
+              event.preventDefault();
+              setNote(event.target.value);
+            }}
+          />
+        </Form.Row>
       </Form>
     </Collapse>
   );

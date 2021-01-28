@@ -49,7 +49,6 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
       }
       setLoading(true);
       const { course: _course } = await getStudentCourse(user.student._id, id);
-      console.log(_course);
       setCourse(StudentCourse(_course));
     } catch (e) {
       setError(e);

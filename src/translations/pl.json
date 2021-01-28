@@ -9,7 +9,7 @@
     "LOGIN": "Login",
     "REGISTER": "Rejestracja",
     "COURSES": "Zajęcia",
-    "ARTICLES": "Artykuły",
+    "ARTICLES": "Substrony",
     "RESEARCH": "Research",
     "COURSES_EN": "W jęz Angielskim",
     "COURSES_PL": "W jęz Polskim",
@@ -22,7 +22,7 @@
       "STUDENTS": "Studenci",
       "RESOURCES": "Zasoby",
       "SUBMISSIONS": "Rozwiązania",
-      "ARTICLES": "Artykuły"
+      "ARTICLES": "Substrony"
     }
   },
   "FOOTER": {
@@ -232,18 +232,19 @@
     },
     "ARTICLE": {
       "SUBMIT": "Zapisz",
-      "MAJOR_EN": "Główna kategoria angielska",
-      "MAJOR_PL": "Główna kategoria polska",
-      "MINOR_EN": "Drugorzędna kategoria angielska",
-      "MINOR_PL": "Drugorzędna kategoria polska",
-      "AVAILABLE_FROM": "Ustaw dostępność",
+      "MAJOR_EN": "Button/dropdown name (EN)",
+      "MINOR_EN": "Becomes a button if this is empty, dropdown entry otherwise (EN)",
+      "MAJOR_PL": "Button/dropdown name (PL)",
+      "MINOR_PL": "Becomes a button if this is empty, dropdown entry otherwise (PL)",
+      "AVAILABILITY": "Dostępność",
+      "AVAILABLE_FROM": "Ustaw dostępność (od kiedy podstrona będzie widoczna), włącz powyższe aby umożliwić wybór daty",
       "LIMITED_AVAILABILITY": "Ograniczona",
       "NO_LIMITED_AVAILABILITY": "Nieograniczona",
       "CONTENTS_EN": "Zawartość angielska",
       "CONTENTS_PL": "Zawartość polska"
     },
     "ARTICLES": {
-      "CREATE_ARTICLE": "Utwórz artykuł"
+      "CREATE_ARTICLE": "Utwórz subsstronę"
     },
     "EDITOR": {
       "PREVIEW": "Widok renderowanego html",
