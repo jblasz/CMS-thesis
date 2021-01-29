@@ -98,7 +98,7 @@ export async function getLandingPage() {
   if (config.useMocks) {
     return getLandingPageMockResponse();
   }
-  const { data } = await axiosInstance.get('/landingPage');
+  const { data } = await axiosInstance.get('/public/landingPage');
   return { landingPage: data.landingPage || '' };
 }
 
@@ -109,6 +109,6 @@ export async function putLandingPage(v: string) {
   if (config.useMocks) {
     return putLandingPageMockResponse(v);
   }
-  const { data } = await axiosInstance.put('/admin/landingPage', { landingPage: v });
+  const { data } = await axiosInstance.put('/landingPage', { landingPage: v });
   return { landingPage: data.landingPage || '' };
 }
