@@ -5,6 +5,8 @@ import { ICourseGroupMetaWithGrade } from '../../interfaces/misc';
 import { IResourceMeta, ISubmissionMeta } from '../../interfaces/resource';
 import { IStudent } from '../../interfaces/student';
 
+let landingPage = '';
+
 let students: {[key: string]: IStudent} = {};
 
 let courses: {[key: string]: ICourse} = {};
@@ -16,6 +18,14 @@ let codes: {[key: string]: ICode} = {};
 let resources: {[key: string]: IResourceMeta} = {};
 
 let submissions: {[key: string]: ISubmissionMeta} = {};
+
+export function getIMLandingPage() {
+  return landingPage.toString();
+}
+
+export function setIMLandingPage(v: string) {
+  landingPage = v.toString();
+}
 
 export function getIMStudents() {
   return Object.values(students);

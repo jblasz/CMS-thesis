@@ -9,9 +9,11 @@ import {
 import { PendingLaboratory } from '../../interfaces/misc';
 import { StudentCourse } from '../../interfaces/studentCourse';
 import {
+  getLandingPageMockResponse,
   getStudentCourseMockResponse,
   getStudentCoursesMockResponse,
   getStudentDashboardMockResponse,
+  putLandingPageMockResponse,
 } from '../mocks';
 import { getDashboardLaboratoriesMockResponse } from '../mocks/in-memory-course-mocks';
 import { getAdminDashboardMockResponse } from '../mocks/in-memory-submissions-mocks';
@@ -87,4 +89,26 @@ export async function getStudentCourse(
   const { data } = await axiosInstance.get(`/student/courses/${courseID}`);
   const { course } = data as IGetStudentCourseResponse;
   return { course: StudentCourse(course) };
+}
+
+/**
+ * /landingPage GET
+ */
+export async function getLandingPage() {
+  if (config.useMocks) {
+    return getLandingPageMockResponse();
+  }
+  const { data } = await axiosInstance.get('/landingPage');
+  return { landingPage: data.landingPage || '' };
+}
+
+/**
+ * /admin/landingPage PUT
+ */
+export async function putLandingPage(v: string) {
+  if (config.useMocks) {
+    return putLandingPageMockResponse(v);
+  }
+  const { data } = await axiosInstance.put('/admin/landingPage', { landingPage: v });
+  return { landingPage: data.landingPage || '' };
 }

@@ -57,6 +57,9 @@ export function AdminArticlesComponent(): JSX.Element {
                 <Link to={`/admin/articles/${x._id}`}>{`${x.pl.categoryMajor} - ${x.pl.categoryMinor}`}</Link>
               </Col>
               <Col>
+                <p>{x.sortWeight}</p>
+              </Col>
+              <Col>
                 {x.availableFrom ? formatDate(x.availableFrom, true) : ''}
               </Col>
               <Col>
@@ -84,6 +87,7 @@ export function AdminArticlesComponent(): JSX.Element {
               setLoading(true);
               await putArticle('', {
                 _id: '',
+                sortWeight: 0,
                 en: {
                   categoryMajor: 'placeholder',
                   categoryMinor: 'placeholder',

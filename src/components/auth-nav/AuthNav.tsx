@@ -19,7 +19,7 @@ function AuthNav() {
       {
         user ? (
           <Navbar.Text className="p-2">
-            <Link to="/profile">{`${t('LOGIN.LOGGED_IN_AS')}: ${user.student.name}${user.role === Role.ADMIN ? '(ADMIN)' : ''}`}</Link>
+            <Link to="/profile">{`${user.student.name}${user.role === Role.ADMIN ? ' (ADMIN)' : ''}`}</Link>
           </Navbar.Text>
         ) : (
           <Navbar.Text className="p-2">

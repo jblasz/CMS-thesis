@@ -9,6 +9,7 @@ export interface ArticleLocaleWithContents extends IArticleLocale {
 
 export interface IArticleMeta {
   _id: string
+  sortWeight: number
   availableFrom?: Date
   pl: IArticleLocale
   en: IArticleLocale
@@ -26,6 +27,7 @@ export function ArticleMeta(o: IArticleMeta): IArticleMeta {
     _id: o._id || '',
     en: ArticleLocale(o.en),
     pl: ArticleLocale(o.pl),
+    sortWeight: o.sortWeight || 0,
     ...(o.availableFrom ? { availableFrom: new Date(o.availableFrom) } : {}),
   };
 }
@@ -38,7 +40,7 @@ export interface IArticle extends IArticleMeta {
 export function Article(o: IArticle): IArticle {
   const root = ArticleMeta(o);
   return {
-    _id: root._id,
+    ...root,
     en: {
       ...root.en,
       contents: (o && o.en && o.en.contents) || '',

@@ -22,7 +22,8 @@
       "STUDENTS": "Studenci",
       "RESOURCES": "Zasoby",
       "SUBMISSIONS": "Rozwiązania",
-      "ARTICLES": "Substrony"
+      "ARTICLES": "Substrony",
+      "LANDING_PAGE": "Strona główna"
     }
   },
   "FOOTER": {
@@ -111,6 +112,10 @@
       "STUDENTS_COUNT": "Studenci",
       "LAB_COUNT": "Labor",
       "CREATE_COURSE": "Załóż nowy kurs"
+    },
+    "LANDING_PAGE": {
+      "DESCR": "Define the landing page text",
+      "SUBMIT": "Submit"
     },
     "COURSE": {
       "NAME": "Nazwa",

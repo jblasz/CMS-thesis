@@ -1,14 +1,16 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { RefObject, useState } from 'react';
+import React, {
+  RefObject, useCallback, useEffect, useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 import { Parallax } from 'react-parallax';
-import { useTranslation } from 'react-i18next';
 import { Col, Row } from 'react-bootstrap';
 import { Course, CourseLanguage } from '../../interfaces/course';
 import { CourseListSidebarComponent, Status, Language } from './CourseListSidebar';
 import bgImg from '../../images/main_1.jpeg';
+import { getLandingPage } from '../../services/api/dashboard.service';
 
 export interface CourseListComponentProps {
   courses: Course[];
@@ -24,8 +26,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
         ? -1
         : 0
   ));
-
-  const [t] = useTranslation();
+  const [landingPage, setLandingPage] = useState('');
   const [languageFilter, setLanguageFilter] = useState(Language.ANY);
   const [statusFilter, setStatusFilter] = useState(Status.ANY);
   const [semesterFilter, setSemesterFilter] = useState('');
@@ -49,6 +50,19 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
 
   const semesters = [...new Set(courses.map((c) => c.semester).sort().reverse())];
 
+  const getAndSetLandingPage = useCallback(async () => {
+    try {
+      const { landingPage: _landingPage } = await getLandingPage();
+      setLandingPage(_landingPage);
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
+  useEffect(() => {
+    getAndSetLandingPage();
+  }, [getAndSetLandingPage]);
+
   return (
     <div>
       <Col>
@@ -66,8 +80,7 @@ function CourseListComponent(props: CourseListComponentProps): JSX.Element {
               }}
             >
               <div className="site-background">
-                <h1>{t('MAIN.OWNER')}</h1>
-                <h3>{t('MAIN.OWNER_TITLES')}</h3>
+                <div dangerouslySetInnerHTML={{ __html: landingPage }} />
               </div>
             </div>
           </Parallax>

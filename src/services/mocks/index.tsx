@@ -14,7 +14,14 @@ import {
 } from './generate';
 import {
   getIMArticles,
-  getIMCourses, getIMResources, getIMStudents, getIMSubmissions, setIMArticles, setIMSubmissions,
+  getIMCourses,
+  getIMLandingPage,
+  getIMResources,
+  getIMStudents,
+  getIMSubmissions,
+  setIMArticles,
+  setIMLandingPage,
+  setIMSubmissions,
 } from './in-memory-database';
 import { getLabsReferencingResourceId } from './in-memory-resource-mocks';
 
@@ -130,6 +137,7 @@ export async function populateInMemoryDBWithSomeMocks() {
     ...getIMArticles(),
     {
       _id: 'standalone-article',
+      sortWeight: 0,
       en: {
         categoryMajor: 'Contact',
         categoryMinor: '',
@@ -157,6 +165,7 @@ export async function populateInMemoryDBWithSomeMocks() {
     },
     {
       _id: 'faq-1',
+      sortWeight: 0,
       en: {
         categoryMajor: 'FAQ',
         categoryMinor: 'Who is mr Hyde?',
@@ -178,6 +187,7 @@ export async function populateInMemoryDBWithSomeMocks() {
     },
     {
       _id: 'faq-2',
+      sortWeight: 0,
       en: {
         categoryMajor: 'FAQ',
         categoryMinor: 'Personal interests',
@@ -198,6 +208,8 @@ export async function populateInMemoryDBWithSomeMocks() {
       },
     },
   ]);
+
+  setIMLandingPage('<h1 style="text-align:center;"><span style="color: rgb(0,0,0);">Dr Henry Jekyll</span></h1> <h3 style="text-align:center;"><span style="color: rgb(0,0,0);">Doctor of medicine, Canon Law, Legum Doctor, Fellowship of the Royal Society</span></h3> ');
   console.log('generated some mocks for in-memory');
 }
 
@@ -283,6 +295,19 @@ export async function getStudentCoursesMockResponse(
   });
   return Promise.resolve({
     courses,
+  });
+}
+
+export async function getLandingPageMockResponse() {
+  return Promise.resolve({
+    landingPage: getIMLandingPage(),
+  });
+}
+
+export async function putLandingPageMockResponse(v: string) {
+  setIMLandingPage(v);
+  return Promise.resolve({
+    landingPage: getIMLandingPage(),
   });
 }
 

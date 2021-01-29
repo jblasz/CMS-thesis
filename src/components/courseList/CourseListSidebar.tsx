@@ -46,16 +46,16 @@ export function CourseListSidebarComponent(props: CourseListSidebarComponentProp
   const [t] = useTranslation();
 
   return (
-    <div className="sidebar-container my-4 box-wrapper" style={{ alignContent: 'center' }}>
+    <div className="sidebar-container m-2 box-wrapper" style={{ alignContent: 'center' }}>
       <div className="row justify-content-center">
         <aside className="box sidebar col">
           <div className="box-inner">
             <Form>
-              <Form.Group className="my-2 ">
+              <Form.Group className="my-2">
                 <Form.Label>
                   {t('MAIN.FILTER.LANGUAGE')}
                 </Form.Label>
-                <Form.Row>
+                <Form.Row className="text-center">
                   <ButtonGroup className="flex-wrap">
                     <Button
                       className="shadow-none btn"

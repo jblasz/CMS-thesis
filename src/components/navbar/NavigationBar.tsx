@@ -29,20 +29,93 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
 
   const articleGroupings = articles.reduce(
     (agg: {
-      singletons: {[key:string]:{_id: string}},
-      compound: {[key:string]:{_id: string, categoryMinor: string}[]}}, curr) => {
+      singletons: {[key:string]:{_id: string, weight: number}},
+      compound: {[key:string]:{_id: string, categoryMinor: string, weight: number}[]}}, curr) => {
       const l = language === 'en' ? curr.en : curr.pl;
+      if (!l.categoryMajor) {
+        return agg;
+      }
       if (!l.categoryMinor) {
-        agg.singletons[l.categoryMajor] = { _id: curr._id };
+        agg.singletons[l.categoryMajor] = { _id: curr._id, weight: curr.sortWeight };
       } else {
         if (!agg.compound[l.categoryMajor]) {
           agg.compound[l.categoryMajor] = [];
         }
-        agg.compound[l.categoryMajor].push({ _id: curr._id, categoryMinor: l.categoryMinor });
+        agg.compound[l.categoryMajor].push(
+          { _id: curr._id, categoryMinor: l.categoryMinor, weight: curr.sortWeight },
+        );
       }
       return agg;
     }, { singletons: {}, compound: {} },
   );
+
+  const articlesToRender = [
+    {
+      component: (
+        <NavDropdown key="navbar-courses" title={t('NAVBAR.COURSES')} id="basic-nav-dropdown">
+          <NavDropdown.Item className="category" disabled>{t('NAVBAR.COURSES_PL')}</NavDropdown.Item>
+          <NavDropdown.Divider />
+          {courses.filter((course) => course.language === CourseLanguage.PL).map((course) => (
+            <NavDropdown.Item key={course._id} as="button">
+              <Link className="nav-link" to={`/courses/${course._id}`}>
+                {course.name}
+              </Link>
+            </NavDropdown.Item>
+          ))}
+          <NavDropdown.Item className="category" disabled>{t('NAVBAR.COURSES_EN')}</NavDropdown.Item>
+          <NavDropdown.Divider />
+          {courses.filter((course) => course.language === CourseLanguage.EN).map((course) => (
+            <NavDropdown.Item key={course._id} as="button">
+              <Link className="nav-link" to={`/courses/${course._id}`}>
+                {course.name}
+              </Link>
+            </NavDropdown.Item>
+          ))}
+        </NavDropdown>
+      ),
+      weight: -3,
+    },
+    ...(user && user.role === Role.STUDENT ? [{
+      component: (
+        <Link key="navbar-student-dashboard" className="nav-link" to="/dashboard">
+          <FontAwesomeIcon icon={faSitemap} />
+          {` ${t('NAVBAR.DASHBOARD')}`}
+        </Link>
+      ),
+      weight: -2,
+    }] : []),
+    {
+      component: (<Link key="navbar-code-link" className="nav-link" to="/code">{t('NAVBAR.CODE')}</Link>),
+      weight: -1,
+    },
+    ...Object.keys(articleGroupings.singletons).map((categoryMajor) => {
+      const article = articleGroupings.singletons[categoryMajor];
+      return {
+        component: <Link key={article._id} className="nav-link" to={`/articles/${article._id}`}>{categoryMajor}</Link>,
+        weight: article.weight,
+      };
+    }),
+    ...Object.keys(articleGroupings.compound).map((categoryMajor) => {
+      // sort in-place by weight
+      articleGroupings.compound[categoryMajor].sort((a, b) => a.weight - b.weight);
+      // set overall weight
+      const overallWeight = articleGroupings.compound[categoryMajor][0].weight;
+      return {
+        component: (
+          <NavDropdown key={categoryMajor} title={categoryMajor} id={categoryMajor}>
+            {articleGroupings.compound[categoryMajor].map((x) => (
+              <NavDropdown.Item key={x._id} as="button">
+                <Link className="nav-link" to={`/articles/${x._id}`}>
+                  {x.categoryMinor}
+                </Link>
+              </NavDropdown.Item>
+            ))}
+          </NavDropdown>
+        ),
+        weight: overallWeight,
+      };
+    }),
+  ].sort((a, b) => a.weight - b.weight);
 
   return (
     <Navbar className="nav" expand="lg" fixed="top">
@@ -54,52 +127,9 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto nav-items">
-          <NavDropdown title={t('NAVBAR.COURSES')} id="basic-nav-dropdown">
-            <NavDropdown.Item className="category" disabled>{t('NAVBAR.COURSES_PL')}</NavDropdown.Item>
-            <NavDropdown.Divider />
-            {courses.filter((course) => course.language === CourseLanguage.PL).map((course) => (
-              <NavDropdown.Item key={course._id} as="button">
-                <Link className="nav-link" to={`/courses/${course._id}`}>
-                  {course.name}
-                </Link>
-              </NavDropdown.Item>
-            ))}
-            <NavDropdown.Item className="category" disabled>{t('NAVBAR.COURSES_EN')}</NavDropdown.Item>
-            <NavDropdown.Divider />
-            {courses.filter((course) => course.language === CourseLanguage.EN).map((course) => (
-              <NavDropdown.Item key={course._id} as="button">
-                <Link className="nav-link" to={`/courses/${course._id}`}>
-                  {course.name}
-                </Link>
-              </NavDropdown.Item>
-            ))}
-          </NavDropdown>
           <>
-            {Object.keys(articleGroupings.singletons).map((categoryMajor) => {
-              const article = articleGroupings.singletons[categoryMajor];
-              return (
-                <Link key={article._id} className="nav-link" to={`/articles/${article._id}`}>{categoryMajor}</Link>
-              );
-            })}
-            {Object.keys(articleGroupings.compound).map((categoryMajor) => (
-              <NavDropdown key={categoryMajor} title={categoryMajor} id={categoryMajor}>
-                {articleGroupings.compound[categoryMajor].map((x) => (
-                  <NavDropdown.Item key={x._id} as="button">
-                    <Link className="nav-link" to={`/articles/${x._id}`}>
-                      {x.categoryMinor}
-                    </Link>
-                  </NavDropdown.Item>
-                ))}
-              </NavDropdown>
-            ))}
+            {articlesToRender.map((x) => x.component)}
           </>
-          <Link className="nav-link" to="/code">{t('NAVBAR.CODE')}</Link>
-          {user && user.role === Role.STUDENT ? (
-            <Link className="nav-link" to="/dashboard">
-              <FontAwesomeIcon icon={faSitemap} />
-              {` ${t('NAVBAR.DASHBOARD')}`}
-            </Link>
-          ) : <></>}
           {user && user.role === Role.ADMIN ? (
             <NavDropdown title={t('NAVBAR.ADMIN.DESCR')} id="nav-admin-dropdown">
               <NavDropdown.Item key="nav-admin-dropdown-dashboard" as="button">
@@ -131,6 +161,11 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               <NavDropdown.Item key="nav-admin-dropdown-articles" as="button">
                 <Link className="nav-link" to="/admin/articles">
                   {t('NAVBAR.ADMIN.ARTICLES')}
+                </Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item key="nav-admin-dropdown-landingpage" as="button">
+                <Link className="nav-link" to="/admin/landingPage">
+                  {t('NAVBAR.ADMIN.LANDING_PAGE')}
                 </Link>
               </NavDropdown.Item>
             </NavDropdown>

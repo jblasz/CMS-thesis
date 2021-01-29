@@ -42,24 +42,24 @@
   --sky: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
 
   /* theme font-family */
-  --Abel: "Abel", "Times New Roman", cursive;
-  --Lexend: "Lexend Deca", cursive;
+  --Alegreya-Sans: "Alegreya Sans", "Times New Roman", sans-serif;
+  --Lexend: "Lexend Deca", "Times New Roman", cursive;
 
   --footer-height: 70px;
 }
 
-html,
+// html,
 body {
   background: master.$background;
   margin: 0%;
   box-sizing: border-box;
   clear: both;
-  padding-top: 45px;
+  padding-top: calc(var(--footer-height) + 8px);
   font-family: master.$font-small;
 }
 
-html {
-  padding-top: 35px;
+.container {
+  padding-top: 25px;
 }
 
 .footer {
@@ -188,6 +188,7 @@ a {
 
 .nav {
   @include master.nav-colorset;
+  // padding-bottom: 0;
   .nav-link {
     font-size: 1.1rem;
   }

@@ -8,16 +8,7 @@ import { LoadingSpinner } from '../loading-spinner';
 import { postCode } from '../../services/api/codes.service';
 import { PostCodeResponseType } from '../../interfaces/api';
 import { AppContext } from '../../services/contexts/app-context';
-import { WarningStripComponent } from '../info/WarningStrip';
 import { ICourseGroupMeta } from '../../interfaces/misc';
-
-interface CodeValidationComponentState {
-  loading: boolean,
-  code: string
-  error: string
-  type?: PostCodeResponseType
-  courseSignup?: ICourseGroupMeta
-}
 
 function CodeValidationComponent(): JSX.Element {
   const { user } = useContext(AppContext);
@@ -51,10 +42,6 @@ function CodeValidationComponent(): JSX.Element {
 
   if (loading) {
     return <LoadingSpinner />;
-  }
-
-  if (error) {
-    return <WarningStripComponent error={error} />;
   }
 
   if (!user) {

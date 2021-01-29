@@ -22,7 +22,8 @@
       "STUDENTS": "Students",
       "RESOURCES": "Resources",
       "SUBMISSIONS": "Submissions",
-      "ARTICLES": "Subpages"
+      "ARTICLES": "Subpages",
+      "LANDING_PAGE": "Landing page"
     }
   },
   "FOOTER": {
@@ -103,6 +104,10 @@
     "GO_BACK": "Take me back"
   },
   "ADMIN": {
+    "LANDING_PAGE": {
+      "DESCR": "Define the landing page text",
+      "SUBMIT": "Submit"
+    },
     "COURSES": {
       "UUID": "ID",
       "NAME": "Name",
@@ -242,11 +247,13 @@
       "MAJOR_PL": "Button/dropdown name (PL)",
       "MINOR_PL": "Becomes a button if this is empty, dropdown entry otherwise (PL)",
       "AVAILABILITY": "Availability",
-      "AVAILABLE_FROM": "Set availability (whether it becomes available only after some date), set above to enable",
+      "AVAILABLE_FROM": "Set availability (whether it becomes available only after some date)",
       "LIMITED_AVAILABILITY": "Limited",
       "NO_LIMITED_AVAILABILITY": "Unlimited",
       "CONTENTS_EN": "English contents",
-      "CONTENTS_PL": "Polish contents"
+      "CONTENTS_PL": "Polish contents",
+      "SORT_WEIGHT": "Weight (see tooltip)",
+      "SORT_WEIGHT_TOOLTIP": "Subpage are placed in navbar in ascending weight. The weight of a dropdown is the weight of the highest subpage within the dropdown. The order of entries within dropdown is in ascending weight. Weight of \"Courses\" tab is -3, \"Sign up for a course\" is -2, and \"Student Dashboard\" is -1. Floats and negative numbers are accepted (write absolute value first, then write minus sign at the front)."
     },
     "ARTICLES": {
       "CREATE_ARTICLE": "Create a subpage"

@@ -1,7 +1,7 @@
 import React, {
-  useState, useEffect, useCallback, Fragment, useContext,
+  useState, useEffect, useCallback, Fragment,
 } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Container, Form, Col, Button, Table, Collapse, InputGroup, ButtonGroup,
 } from 'react-bootstrap';
@@ -17,31 +17,32 @@ import { WarningStripComponent } from '../info/WarningStrip';
 import {
   deleteAdminResource, getAdminResource, getAdminResources, patchAdminResource, putAdminResource,
 } from '../../services/api/resources.service';
-import { Role } from '../../interfaces/user';
-import { AppContext } from '../../services/contexts/app-context';
 
 function AdminResourcesComponent(): JSX.Element {
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [resources, setResources] = useState<IResourceMeta[]>([]);
-  const [uncollapsedIndex, setUncollapsedIndex] = useState(0);
+  const [uncollapsedIndex, setUncollapsedIndex] = useState(-1);
   const [newResource, setNewResource] = useState<IResourceMeta>({
     _id: '', name: '', usedBy: [], permission: Permission.ALL,
   });
-  const [rename, setRename] = useState('');
-  const { user } = useContext(AppContext);
+  const [renames, setRenames] = useState<{[key: string]: string}>({});
   const [uploadPrompt, setUploadPrompt] = useState(false);
   const [file, setFile] = useState<FormData>();
 
-  const getAndSetResources = useCallback(async () => {
+  const getAndSetResources = useCallback(async (index = 0) => {
     try {
       setLoading(true);
       const r = await getAdminResources();
       setResources(r.resources);
-      setLoading(false);
+      setRenames(r.resources.reduce((agg, curr) => ({ ...agg, [curr._id]: curr.name }), {}));
+      if (r.resources.length) {
+        setUncollapsedIndex(index);
+      } else {
+        setUncollapsedIndex(-1);
+      }
     } catch (e) {
-      console.error(e);
       setError(e);
     } finally {
       setLoading(false);
@@ -51,10 +52,6 @@ function AdminResourcesComponent(): JSX.Element {
   useEffect(() => {
     getAndSetResources();
   }, [getAndSetResources]);
-
-  if (!user || user.role !== Role.ADMIN) {
-    return <Redirect to="/404" />;
-  }
 
   if (loading) {
     return <LoadingSpinner />;
@@ -99,7 +96,6 @@ function AdminResourcesComponent(): JSX.Element {
                     className="hide-row"
                     onClick={() => {
                       setUncollapsedIndex(index);
-                      setRename(resources[index].name);
                     }}
                   >
                     <td>
@@ -148,9 +144,11 @@ function AdminResourcesComponent(): JSX.Element {
                                   </InputGroup.Text>
                                 </InputGroup.Prepend>
                                 <Form.Control
-                                  value={rename}
+                                  value={renames[resource._id]}
+                                  key={resource._id}
                                   onChange={(event) => {
-                                    setRename(event.target.value);
+                                    renames[resource._id] = event.target.value;
+                                    setRenames({ ...renames });
                                   }}
                                 />
                                 <InputGroup.Prepend>
@@ -176,9 +174,9 @@ function AdminResourcesComponent(): JSX.Element {
                                     try {
                                       setLoading(true);
                                       await patchAdminResource(
-                                        resource._id, rename, resource.permission,
+                                        resource._id, renames[resource._id] || '', resource.permission,
                                       );
-                                      await getAndSetResources();
+                                      await getAndSetResources(uncollapsedIndex);
                                     } catch (e) {
                                       setError(e);
                                     } finally {
@@ -306,7 +304,7 @@ function AdminResourcesComponent(): JSX.Element {
                           try {
                             setLoading(true);
                             await patchAdminResource('', newResource.name, newResource.permission);
-                            await getAndSetResources();
+                            await getAndSetResources(uncollapsedIndex);
                           } catch (e) {
                             console.error(e);
                             setError(e);

@@ -38,6 +38,8 @@ import { IGetArticlesResponse } from '../../interfaces/api';
 import { IUser, Role } from '../../interfaces/user';
 import { axiosInstance } from '../../services/api/request.service';
 import { getPublicCourses } from '../../services/api/courses.service';
+import ScrollToTop from './ScrollToTop';
+import { AdminLandingPageComponent } from '../admin-landing-page/AdminLandingPage';
 
 function App():JSX.Element {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -105,10 +107,13 @@ function App():JSX.Element {
         user, setUser,
       }}
       >
-        <header />
+        <header>
+          <NavigationBarComponent courses={courses} articles={articles} />
+
+        </header>
         <main>
           <div className="main">
-            <NavigationBarComponent courses={courses} articles={articles} />
+            <ScrollToTop />
             { user && (user as IUser).role === Role.STUDENT ? <EventsStripComponent /> : <></> }
             <Switch>
               <Route path="/" exact component={() => (<CourseListComponent courses={courses} />)} />
@@ -133,6 +138,7 @@ function App():JSX.Element {
               <Route exact path="/admin/submissions" component={user && user.role === Role.ADMIN ? AdminSubmissionsComponent : () => <Redirect to="/404" />} />
               <Route exact path="/admin/articles" component={user && user.role === Role.ADMIN ? AdminArticlesComponent : () => <Redirect to="/404" />} />
               <Route exact path="/admin/articles/:id" component={user && user.role === Role.ADMIN ? AdminArticleComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/admin/landingPage" component={user && user.role === Role.ADMIN ? AdminLandingPageComponent : () => <Redirect to="/404" />} />
               <Route path="/404" component={Component404} />
               <Redirect to="/404" />
             </Switch>

@@ -24,6 +24,7 @@ export function AdminArticleComponent(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [article, setArticle] = useState<IArticle>(Article({
     _id: '',
+    sortWeight: 0,
     en: { categoryMajor: '', categoryMinor: '', contents: '' },
     pl: { categoryMinor: '', contents: '', categoryMajor: '' },
   }));
@@ -171,6 +172,23 @@ export function AdminArticleComponent(): JSX.Element {
                 />
               </div>
             </Form.Group>
+          </Col>
+          <Col>
+            <Form.Label>{t('ADMIN.ARTICLE.SORT_WEIGHT')}</Form.Label>
+            <input
+              title={t('ADMIN.ARTICLE.SORT_WEIGHT_TOOLTIP')}
+              type="number"
+              min={-999}
+              value={article.sortWeight}
+              onChange={
+                (event) => {
+                  const v = parseFloat(event.target.value);
+                  // eslint-disable-next-line no-restricted-globals
+                  article.sortWeight = isNaN(v) ? 0 : v;
+                  setArticle(Article(article));
+                }
+              }
+            />
           </Col>
         </Row>
         <Form.Label>
