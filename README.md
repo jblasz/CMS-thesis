@@ -2,7 +2,7 @@
 
 You need `node` and `yarn`, and a `.env` environment file with at least `REACT_APP_CLIENT_ID`, which is the public google application id used for authentication. You can use 593522798742-ucqq8hmq1mhjn816eebl1bmd983e2v2j.apps.googleusercontent.com for this purpose (created expressly for the public repo). Make sure the app runs on port 3000, or login will not work. Alternatively you can set `REACT_APP_START_LOGGED_IN=1` to bypass the login process and 'pretend' you are logged in, which will bypass the need for login (and sharing your google information). Perfectly fine if you do that. In this mocked state, you can toggle between admin-student role by clicking on the 'toggle role' button on the top navbar.
 
-Note that this entire application is not production-worthy, and should work with `REACT_APP_USE_MOCKS=1`, which means all requests to a REST back-end are replaced with mocks. While it would work in a production environment, for full deployment to happen we would need a REST back-end, removal of all mocking functionalities, and the slightly dumb 'toggle role' button, as that role would be determined by the back-end.
+Note that this entire application is not production-worthy without a back-end running in paralel, and should work with `REACT_APP_USE_MOCKS=1`, which means all requests to a REST back-end are replaced with mocks. While it would work in a production environment, for full deployment to happen we would need a REST back-end, removal of all mocking functionalities, and the slightly dumb 'toggle role' button, as that role would be determined by the back-end.
 
 The full documentation is included in a thesis document. I will see about placing a link to it here once I know it is okay with the university to do.
 
@@ -50,7 +50,7 @@ NOTE: Automatic pre-commit linting is enabled, using `husky`. This means even if
 
 For simple dev setup, run `yarn && yarn start`.
 
-For a production build dev setup (fewer warnings, but optimized and all that), run `yarn && yarn watch` in one terminal, and `yarn serve` or `yarn e-serve` (alternate serve that uses express.js to serve static files).
+For a production build dev setup (fewer warnings, but optimized and all that), run `yarn && yarn watch` in one terminal, and `yarn serve` or `yarn e-serve` (alternate serve that uses express.js to serve static files). However, as deployment platform nor deployment pipeline have not been established, it will not run out of the box with mocks or google authentication. A deployment pipeline must first be prepared which would write environment variables into compiled files, something that wasn't done without knowing the deployment platform. If you are feeling adventurous, you can replace all occurences of `process.env.X` with the value of env variable `X`, for each var X. However, it is recommended to only run the dev setup (`yarn && yarn start`).
 
 ## Available Scripts
 

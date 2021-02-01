@@ -43,12 +43,13 @@ function AdminCourseGroupComponent(): JSX.Element {
     group: CourseGroup}>({ students: [], group: new CourseGroup() });
   const [codes, setCodes] = useState<ICode[]>([]);
   const history = useHistory();
+  const [warning, setWarning] = useState('');
 
   const validateAndSetCourseGroup = useCallback(
     (_group: CourseGroup, _students: BaseStudent[]) => {
       const res = _group.validate();
       if (res.error) {
-        setError(res.error);
+        setWarning(res.error);
       }
       setGroupAndStudents({ group: _group, students: _students });
     }, [],
@@ -86,8 +87,10 @@ function AdminCourseGroupComponent(): JSX.Element {
   if (error) {
     return <WarningStripComponent error={error} />;
   }
+
   return (
     <Container>
+      {warning ? <WarningStripComponent error={warning} warning /> : <></>}
       <Form>
         <Button
           className="float-right"

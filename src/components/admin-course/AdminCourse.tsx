@@ -224,6 +224,7 @@ function AdminCourseComponent(): JSX.Element {
                 className="mx-1"
                 variant="primary"
                 type="submit"
+                disabled={!newLabName}
                 onClick={async (event) => {
                   event.preventDefault();
                   await putAdminLaboratory(course._id, new CourseLaboratory({
@@ -280,6 +281,7 @@ function AdminCourseComponent(): JSX.Element {
                 className="mx-1"
                 variant="primary"
                 type="submit"
+                disabled={!newName}
                 onClick={async (event) => {
                   try {
                     setLoading(true);
