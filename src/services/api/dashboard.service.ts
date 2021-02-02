@@ -1,4 +1,3 @@
-import { config } from '../../config';
 import {
   IGetAdminDashboardResponse,
   IGetDashboardLaboratoriesResponse,
@@ -18,6 +17,7 @@ import {
 import { getDashboardLaboratoriesMockResponse } from '../mocks/in-memory-course-mocks';
 import { getAdminDashboardMockResponse } from '../mocks/in-memory-submissions-mocks';
 import { axiosInstance } from './request.service';
+import { appEnv } from '../../appEnv';
 
 /**
  * /dashboard/laboratory GET
@@ -25,7 +25,7 @@ import { axiosInstance } from './request.service';
 export async function getDashboardLaboratories(
   studentID: string,
 ): Promise<IGetDashboardLaboratoriesResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { laboratories } = await getDashboardLaboratoriesMockResponse(studentID);
     return { laboratories: laboratories.map((x) => PendingLaboratory(x)) };
   }
@@ -42,7 +42,7 @@ export async function getDashboardLaboratories(
  * /dashboard/summary GET
  */
 export async function getAdminDashboard(): Promise<IGetAdminDashboardResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return getAdminDashboardMockResponse();
   }
   const { data } = await axiosInstance.get('/dashboard/summary');
@@ -56,7 +56,7 @@ export async function getAdminDashboard(): Promise<IGetAdminDashboardResponse> {
 export async function getStudentDashboard(
   studentID: string,
 ): Promise<IGetStudentDashboardResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return Promise.resolve(getStudentDashboardMockResponse(studentID));
   }
   const { data } = await axiosInstance.get('/dashboard/studentSummary');
@@ -68,7 +68,7 @@ export async function getStudentDashboard(
  * /student/courses GET
  */
 export async function getStudentCourses(studentID: string): Promise<IGetStudentCoursesResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { courses } = await getStudentCoursesMockResponse(studentID);
     return { courses };
   }
@@ -83,7 +83,7 @@ export async function getStudentCourses(studentID: string): Promise<IGetStudentC
 export async function getStudentCourse(
   studentID: string, courseID: string,
 ): Promise<IGetStudentCourseResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return getStudentCourseMockResponse(studentID, courseID);
   }
   const { data } = await axiosInstance.get(`/student/courses/${courseID}`);
@@ -95,7 +95,7 @@ export async function getStudentCourse(
  * /landingPage GET
  */
 export async function getLandingPage() {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return getLandingPageMockResponse();
   }
   const { data } = await axiosInstance.get('/public/landingPage');
@@ -106,7 +106,7 @@ export async function getLandingPage() {
  * /admin/landingPage PUT
  */
 export async function putLandingPage(v: string) {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return putLandingPageMockResponse(v);
   }
   const { data } = await axiosInstance.put('/landingPage', { landingPage: v });

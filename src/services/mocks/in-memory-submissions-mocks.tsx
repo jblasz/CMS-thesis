@@ -20,7 +20,6 @@ export function getSubmissionsMockResponse(
       || (statusFilter === 2 && !x.grade)
     )
     && x.final === final);
-  console.log(courseFilter, studentFilter, statusFilter, submissions);
   return Promise.resolve({ submissions });
 }
 

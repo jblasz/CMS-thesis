@@ -14,6 +14,7 @@ import { patchSubmission, deleteSubmission, getSubmission } from '../../services
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
+import { appEnv } from '../../appEnv';
 
 interface SubmissionListComponentProps {
   submissions: ISubmissionMeta[]
@@ -147,7 +148,7 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                                 <FontAwesomeIcon
                                   icon={faClipboard}
                                   onClick={() => {
-                                    navigator.clipboard.writeText(`${process.env.REACT_APP_BACKEND_ADDRESS}/submissions/${submission._id}`);
+                                    navigator.clipboard.writeText(`${appEnv().backendAddress}/submissions/${submission._id}`);
                                   }}
                                 />
                               </Button>

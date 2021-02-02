@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { appEnv } from '../../appEnv';
 import { SubmissionGrade } from '../../interfaces/misc';
 import { ISubmissionMeta } from '../../interfaces/resource';
 import { getSubmission, getSubmissions } from '../../services/api/submissions.service';
@@ -132,7 +133,7 @@ export function StudentSubmissionListComponent(): JSX.Element {
                             <FontAwesomeIcon
                               icon={faClipboard}
                               onClick={() => {
-                                navigator.clipboard.writeText(`${process.env.REACT_APP_BACKEND_ADDRESS}/submissions/${submission._id}`);
+                                navigator.clipboard.writeText(`${appEnv().backendAddress}/submissions/${submission._id}`);
                               }}
                             />
                           </Button>

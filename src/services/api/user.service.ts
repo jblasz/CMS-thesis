@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { config } from '../../config';
+import { appEnv } from '../../appEnv';
 import {
   IPostUserResponse,
   IApiPostResponse,
@@ -24,7 +24,7 @@ export async function postUser(
     response: IPostUserResponse,
     isAdmin: boolean
   }> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     Cookies.set('authorization', jwt);
     return {
       response: await postUserMockResponse(gid, email, name, usosID),
@@ -81,7 +81,7 @@ export async function postUser(
  * /students GET
  */
 export async function getAdminUsers(byCourseId?: string): Promise<IGetStudentsResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { students } = await getStudentsMockResponse(byCourseId);
     return { students: students.map((x) => new Student(x)) };
   }
@@ -98,7 +98,7 @@ export async function getAdminUsers(byCourseId?: string): Promise<IGetStudentsRe
  * /students/:id GET
  */
 export async function getAdminUser(id: string): Promise<GetStudentResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const r = await getStudentMockResponse(id);
     return { ...r, student: new Student(r.student) };
   }
@@ -120,7 +120,7 @@ export async function patchAdminUser(id: string, params: {
   contactEmail?: string
   usosID?: string
 }): Promise<PatchStudentResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const r = await patchStudentMockResponse({
       studentID: id,
       name: params.name,
@@ -141,7 +141,7 @@ export async function patchAdminUser(id: string, params: {
  * /students/:id DELETE
  */
 export async function deleteAdminUser(id: string): Promise<IApiPostResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return deleteStudentMockResponse(id);
   }
   const { data } = await axiosInstance.delete(`/students/${id}`);

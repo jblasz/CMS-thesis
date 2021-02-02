@@ -1,4 +1,4 @@
-import { config } from '../../config';
+import { appEnv } from '../../appEnv';
 import {
   IApiPostResponse, IGetCodesResponse, IPostCodeNewResponse, IPostCodeResponse,
 } from '../../interfaces/api';
@@ -11,7 +11,7 @@ import { axiosInstance } from './request.service';
  * /code POST
  */
 export async function postCode(studentID: string, code: string): Promise<IPostCodeResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return postCodeMockResponse(studentID, code);
   }
   const { data } = await axiosInstance.post('/code', null, {
@@ -27,7 +27,7 @@ export async function postCode(studentID: string, code: string): Promise<IPostCo
  * /code GET
  */
 export async function getCodes(inactive = false, courseId?:string): Promise<IGetCodesResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return getCodesMockResponse(inactive, courseId);
   }
   const { data } = await axiosInstance.get('/code', {
@@ -46,7 +46,7 @@ export async function getCodes(inactive = false, courseId?:string): Promise<IGet
 export async function postCodeNew(
   groupId: string, validThrough: Date,
 ): Promise<IPostCodeNewResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return postCodeNewMockResponse(groupId, validThrough);
   }
   const { data } = await axiosInstance.post(`/code/${groupId}`, { validThrough });
@@ -60,7 +60,7 @@ export async function postCodeNew(
  */
 
 export async function deleteCode(code: string): Promise<IApiPostResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return deleteCodeMockResponse(code);
   }
   const { data } = await axiosInstance.delete(`/code/${code}`);

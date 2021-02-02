@@ -1,4 +1,4 @@
-import { config } from '../../config';
+import { appEnv } from '../../appEnv';
 import {
   IApiPostResponse, IGetArticleResponse, IGetArticlesResponse, IPutArticleResponse,
 } from '../../interfaces/api';
@@ -15,7 +15,7 @@ import { axiosInstance } from './request.service';
  * /public/articles GET
  */
 export async function getArticles(): Promise<IGetArticlesResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { articles } = await getArticlesMockResponse();
     return { articles: articles.map((x) => ArticleMeta(x)) };
   }
@@ -27,7 +27,7 @@ export async function getArticles(): Promise<IGetArticlesResponse> {
  * /articles GET
  */
 export async function getAdminArticles(): Promise<IGetArticlesResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { articles } = await getArticlesMockResponse();
     return { articles: articles.map((x) => ArticleMeta(x)) };
   }
@@ -39,7 +39,7 @@ export async function getAdminArticles(): Promise<IGetArticlesResponse> {
  * /public/articles/:id GET
  */
 export async function getArticle(id: string): Promise<IGetArticleResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { article } = await getArticleMockResponse(id);
     return { article: Article(article) };
   }
@@ -51,7 +51,7 @@ export async function getArticle(id: string): Promise<IGetArticleResponse> {
  * /articles/:id GET
  */
 export async function getAdminArticle(id: string): Promise<IGetArticleResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { article } = await getArticleMockResponse(id);
     return { article: Article(article) };
   }
@@ -63,7 +63,7 @@ export async function getAdminArticle(id: string): Promise<IGetArticleResponse> 
  * /articles/:id PUT
  */
 export async function putArticle(id: string, article: IArticle): Promise<IPutArticleResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return putArticleMockResponse(id, article);
   }
   const { ok, article: _article } = (await axiosInstance.put(`/articles/${id}`, { article })).data as IPutArticleResponse;
@@ -74,7 +74,7 @@ export async function putArticle(id: string, article: IArticle): Promise<IPutArt
  * /articles/:id DELETE
  */
 export async function deleteArticle(id: string): Promise<IApiPostResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return deleteArticleMockResponse(id);
   }
   const { ok } = (await axiosInstance.delete(`/articles/${id}`)).data as IApiPostResponse;

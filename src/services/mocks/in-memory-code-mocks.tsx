@@ -42,7 +42,6 @@ export async function getCodesMockResponse(
 ): Promise<IGetCodesResponse> {
   const f1 = courseId ? getIMCodes().filter((x) => x.for.courseId === courseId) : getIMCodes();
   const f2 = grabInactive ? f1 : f1.filter((x) => x.valid);
-  console.log(getIMCodes(), f1, f2);
   return Promise.resolve({
     codes: f2,
   });

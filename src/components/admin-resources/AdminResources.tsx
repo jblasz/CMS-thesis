@@ -17,6 +17,7 @@ import { WarningStripComponent } from '../info/WarningStrip';
 import {
   deleteAdminResource, getAdminResource, getAdminResources, patchAdminResource, putAdminResource,
 } from '../../services/api/resources.service';
+import { appEnv } from '../../appEnv';
 
 function AdminResourcesComponent(): JSX.Element {
   const [t] = useTranslation();
@@ -130,7 +131,7 @@ function AdminResourcesComponent(): JSX.Element {
                                   <FontAwesomeIcon
                                     icon={faClipboard}
                                     onClick={() => {
-                                      navigator.clipboard.writeText(`${process.env.REACT_APP_BACKEND_ADDRESS}/resource/${resource._id}`);
+                                      navigator.clipboard.writeText(`${appEnv().backendAddress}/resource/${resource._id}`);
                                     }}
                                   />
                                 </Button>

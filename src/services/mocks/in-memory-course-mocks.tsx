@@ -65,7 +65,6 @@ export async function putCourseMockResponse(course: ICourseStubCore): Promise<IP
         },
       );
     }
-    console.log(course, f);
     throw new Error('Id not empty, but no course in memory');
   }
   const n = new Course({

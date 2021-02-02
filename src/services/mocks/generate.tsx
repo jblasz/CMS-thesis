@@ -1,5 +1,6 @@
 import { loremIpsum } from 'lorem-ipsum';
 import { v4 } from 'uuid';
+import { appEnv } from '../../appEnv';
 import { Course, CourseLanguage, ICourse } from '../../interfaces/course';
 import { CourseGroup, ICourseGroup } from '../../interfaces/courseGroup';
 import { CourseLaboratory, TaskToGroupMapping } from '../../interfaces/courseLaboratory';
@@ -148,7 +149,7 @@ export async function generateCourseMock(id: string, name = `Course Name Mk${gen
     name,
     description: `
       <span>${loremIpsum({ count: 10 })}</span><br/>
-      <a href="${process.env.REACT_APP_BACKEND_ADDRESS as string}/resource/${resource._id}" taget="_blank">Course regulations</a>`,
+      <a href="${appEnv().backendAddress as string}/resource/${resource._id}" taget="_blank">Course regulations</a>`,
     descriptionShort: `<span style="color: rgb(255,0,0);"><em>inline styling</em></span> ${loremIpsum()}`,
     language: Math.random() > 0.5 ? CourseLanguage.EN : CourseLanguage.PL,
     semester: `20${Math.random() > 0.5 ? '20' : '21'}${Math.random() > 0.5 ? 'Z' : 'L'}`,

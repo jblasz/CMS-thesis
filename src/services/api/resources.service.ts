@@ -1,4 +1,4 @@
-import { config } from '../../config';
+import { appEnv } from '../../appEnv';
 import {
   IApiPostResponse,
   IGetResourcesResponse,
@@ -18,7 +18,7 @@ import { axiosInstance } from './request.service';
  * /resource GET
  */
 export async function getAdminResources(): Promise<IGetResourcesResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return getResourcesMockResponse();
   }
   const { data } = await axiosInstance.get('/resource');
@@ -36,7 +36,7 @@ export async function getAdminResource(_id: string) {
   a.click();
   return Promise.resolve({});
 
-  // if (config.useMocks) {
+  // if (appEnv().useMocks) {
   //   return getResourceMockResponse(_id);
   // }
   // const { data } = await axiosInstance.get(`/resource${_id}`);
@@ -51,7 +51,7 @@ export async function getAdminResource(_id: string) {
 export async function putAdminResource(
   id: string, file: FormData,
 ): Promise<IPutResourceResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return putResourceMockResponse(id);
   }
 
@@ -66,7 +66,7 @@ export async function putAdminResource(
 export async function patchAdminResource(
   _id: string, name: string, permission: Permission,
 ): Promise<IPatchResourceResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return patchResourceMockResponse(_id, name, permission);
   }
   const { data } = await axiosInstance.patch(`/resource/${_id}`, {
@@ -81,7 +81,7 @@ export async function patchAdminResource(
  * /resource/:id DELETE
  */
 export async function deleteAdminResource(_id: string): Promise<IApiPostResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return deleteResourceMockResponse(_id);
   }
   const { data } = await axiosInstance.delete(`/resource/${_id}`);

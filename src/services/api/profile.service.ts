@@ -1,4 +1,4 @@
-import { config } from '../../config';
+import { appEnv } from '../../appEnv';
 import {
   GetStudentResponse, IUserResponse, PatchStudentResponse,
 } from '../../interfaces/api';
@@ -10,7 +10,7 @@ import { axiosInstance } from './request.service';
  * /profile GET
  */
 export async function getProfile(studentID: string): Promise<GetStudentResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const r = await getStudentMockResponse(studentID);
     return { ...r, student: new Student(r.student) };
   }
@@ -52,7 +52,7 @@ export async function patchProfile(params: {
   contactEmail?: string
   usosID?: string
 }): Promise<PatchStudentResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const r = await patchStudentMockResponse(params);
     return { ok: true, student: new Student(r.student) };
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Navbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { appEnv } from '../../appEnv';
 
 interface FooterComponentProps {
   onRefresh: () => void
@@ -21,9 +22,13 @@ function FooterComponent(props: FooterComponentProps): JSX.Element {
       <Navbar.Text>
         <a href="https://www.pw.edu.pl/engpw" className="m-2">{t('FOOTER.PW_URL')}</a>
       </Navbar.Text>
-      <div className="float-right">
-        <Button className="btn button btn-primary" onClick={onRefresh}>Mock page refresh (to see changes to navbar and main page courses)</Button>
-      </div>
+      {appEnv().useMocks
+        ? (
+          <div className="float-right">
+            <Button className="btn button btn-primary" onClick={onRefresh}>Mock page refresh (to see changes to navbar and main page courses)</Button>
+          </div>
+        )
+        : <></>}
     </Navbar>
   );
 }

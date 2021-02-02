@@ -30,15 +30,15 @@ import {
 import { postSubmissionMockResponse } from '../mocks/in-memory-resource-mocks';
 import { CourseLaboratory } from '../../interfaces/courseLaboratory';
 import { axiosInstance } from './request.service';
-import { config } from '../../config';
 import { CourseTask } from '../../interfaces/courseTask';
 import { SubmissionGrade } from '../../interfaces/misc';
+import { appEnv } from '../../appEnv';
 
 /**
  * /public/course GET
  */
 export async function getPublicCourses(): Promise<IGetCoursesResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { courses } = await getCoursesListMockResponse();
     return { courses: courses.map((x) => new Course(x)) };
   }
@@ -50,7 +50,7 @@ export async function getPublicCourses(): Promise<IGetCoursesResponse> {
  * /course GET
  */
 export async function getAdminCourses(): Promise<IGetCoursesResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     const { courses } = await getCoursesListMockResponse();
     return { courses: courses.map((x) => new Course(x)) };
   }
@@ -62,7 +62,7 @@ export async function getAdminCourses(): Promise<IGetCoursesResponse> {
  * /public/course/:id GET
  */
 export async function getPublicCourse(_id: string): Promise<IGetCourseResponse> {
-  if (config.useMocks) { return getCourseMockResponse(_id); }
+  if (appEnv().useMocks) { return getCourseMockResponse(_id); }
   const { course } = (await axiosInstance.get(`/public/course/${_id}`)).data as IGetCourseResponse;
   return { course: new Course(course) };
 }
@@ -71,7 +71,7 @@ export async function getPublicCourse(_id: string): Promise<IGetCourseResponse> 
  * /course/:id GET
  */
 export async function getAdminCourse(_id: string): Promise<IGetCourseResponse> {
-  if (config.useMocks) { return getCourseMockResponse(_id); }
+  if (appEnv().useMocks) { return getCourseMockResponse(_id); }
   const { course } = (await axiosInstance.get(`/course/${_id}`)).data as IGetCourseResponse;
   return { course: new Course(course) };
 }
@@ -80,8 +80,7 @@ export async function getAdminCourse(_id: string): Promise<IGetCourseResponse> {
  * /course/:id PUT
  */
 export async function putAdminCourse(course: ICourseStubCore): Promise<IPostCourseResponse> {
-  console.log(course);
-  if (config.useMocks) { return putCourseMockResponse(course); }
+  if (appEnv().useMocks) { return putCourseMockResponse(course); }
   const {
     _id,
     active,
@@ -111,7 +110,7 @@ export async function putAdminCourse(course: ICourseStubCore): Promise<IPostCour
  * /course/:id DELETE
  */
 export async function deleteAdminCourse(_id: string): Promise<IApiPostResponse> {
-  if (config.useMocks) { return deleteCourseMockResponse(_id); }
+  if (appEnv().useMocks) { return deleteCourseMockResponse(_id); }
   const { ok } = (await axiosInstance.delete(`/course/${_id}`)).data as IApiPostResponse;
   return { ok };
 }
@@ -122,7 +121,7 @@ export async function deleteAdminCourse(_id: string): Promise<IApiPostResponse> 
 export async function getAdminCourseGroup(
   courseID: string, groupID: string,
 ): Promise<IGetCourseGroupResponse> {
-  if (config.useMocks) { return getCourseGroupMockResponse(courseID, groupID); }
+  if (appEnv().useMocks) { return getCourseGroupMockResponse(courseID, groupID); }
   const { courseId, courseName, group } = (await axiosInstance.get(`/public/course/${courseID}/group/${groupID}`)).data as IGetCourseGroupResponse;
   return { courseId, courseName, group: new CourseGroup(group) };
 }
@@ -133,7 +132,7 @@ export async function getAdminCourseGroup(
 export async function putAdminCourseGroup(
   courseId: string, group: IGroupStub,
 ): Promise<IPostCourseGroupResponse> {
-  if (config.useMocks) { return setCourseGroupResponse(courseId, group); }
+  if (appEnv().useMocks) { return setCourseGroupResponse(courseId, group); }
   const { ok, group: _group } = (await axiosInstance.put(`/course/${courseId}/group/${group._id}`, {
     group: {
       _id: group._id,
@@ -150,7 +149,7 @@ export async function deleteAdminCourseGroup(
   courseId: string,
   groupId: string,
 ): Promise<IApiPostResponse> {
-  if (config.useMocks) { return deleteGroupMockResponse(courseId, groupId); }
+  if (appEnv().useMocks) { return deleteGroupMockResponse(courseId, groupId); }
   const { ok } = (await axiosInstance.delete(`/course/${courseId}/group/${groupId}`)).data as IApiPostResponse;
   return { ok };
 }
@@ -162,7 +161,7 @@ export async function getPublicCourseLaboratory(
   courseID: string,
   labID: string,
 ): Promise<IGetLaboratoryResponse> {
-  if (config.useMocks) { return getLaboratoryMockResponse(courseID, labID); }
+  if (appEnv().useMocks) { return getLaboratoryMockResponse(courseID, labID); }
   const {
     courseId,
     courseName,
@@ -179,7 +178,7 @@ export async function getAdminCourseLaboratory(
   courseID: string,
   labID: string,
 ): Promise<IGetLaboratoryResponse> {
-  if (config.useMocks) { return getLaboratoryMockResponse(courseID, labID); }
+  if (appEnv().useMocks) { return getLaboratoryMockResponse(courseID, labID); }
   const {
     courseId,
     courseName,
@@ -198,7 +197,7 @@ export async function putAdminLaboratory(
 ): Promise<IPutCourseLaboratoryResponse> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { tasks: _tasks, ...toSend } = lab;
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return setCourseLabMockResponse(courseID, new CourseLaboratory({ ...toSend, tasks: {} }));
   }
   const
@@ -214,7 +213,7 @@ export async function putAdminLaboratory(
 export async function putAdminCourseLaboratoryTask(
   courseID: string, labID: string, groupID: string, task: CourseTask,
 ): Promise<IPutCourseLaboratoryTaskResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return putAdminCourseLaboratoryTaskMockResponse(courseID, labID, groupID, task);
   }
   const { ok, task: _task } = (
@@ -230,7 +229,7 @@ export async function deleteAdminCourseLaboratory(
   courseID: string,
   labID: string,
 ): Promise<IApiPostResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return deleteLaboratoryMockResponse(courseID, labID);
   }
   const { ok } = (await axiosInstance.delete(`/course/${courseID}/laboratory/${labID}`)).data as IApiPostResponse;
@@ -247,7 +246,7 @@ export async function postSubmission(
   studentID: string,
   note: string,
 ): Promise<IApiPostResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return postSubmissionMockResponse(
       courseID,
       laboratoryID,
@@ -269,7 +268,7 @@ export async function postSubmission(
 export async function patchCourseGroupStudent(
   courseID: string, groupID: string, studentID: string, grade?: SubmissionGrade | null,
 ): Promise<IPatchCourseGroupStudentResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return patchCourseGroupStudentMockResponse(studentID, courseID, groupID, grade);
   }
   const { group, ok } = (await axiosInstance.patch(`/course/${courseID}/group/${groupID}/student/${studentID}`, {
@@ -287,7 +286,7 @@ export async function patchCourseGroupStudent(
 export async function deleteCourseGroupStudent(
   courseID: string, groupID: string, studentID: string,
 ): Promise<IApiPostResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return deleteCourseGroupStudentMockResponse(courseID, groupID, studentID);
   }
   const { ok } = (await axiosInstance.delete(`/course/${courseID}/group/${groupID}/student/${studentID}`)).data as IPatchCourseGroupStudentResponse;

@@ -1,4 +1,4 @@
-import { config } from '../../config';
+import { appEnv } from '../../appEnv';
 import {
   IApiPostResponse, IGetSubmissionsResponse, IPatchSubmissionResponse,
 } from '../../interfaces/api';
@@ -16,7 +16,7 @@ import { axiosInstance } from './request.service';
 export async function getSubmissions(
   courseFilter: string, studentFilter: string, statusFilter: number, final = true,
 ): Promise<IGetSubmissionsResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter, final);
   }
   const { data } = await axiosInstance.get('/submissions', {
@@ -35,7 +35,7 @@ export async function getSubmissions(
  * /submissions/:id GET
  */
 export async function getSubmission(id: string) {
-  // if (config.useMocks) {
+  // if (appEnv().useMocks) {
   //   return getSubmissionMockResponse(id);
   // }
   const a = document.createElement('a');
@@ -52,7 +52,7 @@ export async function getSubmission(id: string) {
  * /submissions/:id DELETE
  */
 export async function deleteSubmission(id: string): Promise<IApiPostResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return deleteSubmissionMockResponse(id);
   }
   const { data } = await axiosInstance.delete(`/submissions/${id}`);
@@ -67,7 +67,7 @@ export async function deleteSubmission(id: string): Promise<IApiPostResponse> {
 export async function patchSubmission(
   submission: ISubmissionMeta,
 ): Promise<IPatchSubmissionResponse> {
-  if (config.useMocks) {
+  if (appEnv().useMocks) {
     return patchSubmissionMockResponse(submission);
   }
   const {

@@ -14,6 +14,7 @@ import { AuthNav } from '../auth-nav';
 import { AppContext } from '../../services/contexts/app-context';
 import { IArticleMeta } from '../../interfaces/article';
 import { Role } from '../../interfaces/user';
+import { appEnv } from '../../appEnv';
 
 interface NavigationBarComponentProps {
   courses: Course[]
@@ -170,7 +171,7 @@ function NavigationBarComponent(props: NavigationBarComponentProps): JSX.Element
               </NavDropdown.Item>
             </NavDropdown>
           ) : <></>}
-          { user ? (
+          { appEnv().useMocks && user ? (
             <Button
               className="nav-link"
               style={{ opacity: 0.5, borderWidth: 0 }}
