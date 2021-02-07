@@ -92,17 +92,17 @@ export function SubmissionListComponent(props: SubmissionListComponentProps): JS
                         </Col>
                       )}
                       <Col>
-                        <Link className="nav-link" to={`/admin/courses/${submission.forCourseID}`}>
+                        <Link className="nav-link" to={`/admin/courses/${submission.forCourseId}`}>
                           {submission.forCourseName}
                         </Link>
                       </Col>
                       <Col>
-                        <Link className="nav-link" to={`/admin/courses/${submission.forCourseID}/laboratory/${submission.forLabID}`}>
+                        <Link className="nav-link" to={`/admin/courses/${submission.forCourseId}/laboratory/${submission.forLabId}`}>
                           {submission.forLabName}
                         </Link>
                       </Col>
                       <Col>
-                        <Link className="nav-link" to={`/admin/courses/${submission.forCourseID}/group/${submission.forGroupID}`}>
+                        <Link className="nav-link" to={`/admin/courses/${submission.forCourseId}/group/${submission.forGroupId}`}>
                           {submission.forGroupName}
                         </Link>
                       </Col>

@@ -77,9 +77,9 @@ export async function postSubmissionMockResponse(
 
   const submissions = getIMSubmissions();
   submissions.filter((x) => x.submittedBy._id === studentID
-    && x.forCourseID === courseID
-    && x.forGroupID === group._id
-    && x.forLabID === laboratoryID)
+    && x.forCourseId === courseID
+    && x.forGroupId === group._id
+    && x.forLabId === laboratoryID)
     .forEach((s) => {
       s.final = false;
     });
@@ -87,11 +87,11 @@ export async function postSubmissionMockResponse(
   setIMSubmissions([...submissions, {
     _id: v4(),
     final: true,
-    forCourseID: courseID,
+    forCourseId: courseID,
     forCourseName: course.name,
-    forGroupID: group._id,
+    forGroupId: group._id,
     forGroupName: group.name,
-    forLabID: lab._id,
+    forLabId: lab._id,
     forLabName: lab.name,
     note,
     submittedAt: new Date(),

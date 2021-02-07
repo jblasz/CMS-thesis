@@ -5,7 +5,7 @@ import {
   IPatchResourceResponse,
   IPutResourceResponse,
 } from '../../interfaces/api';
-import { Permission } from '../../interfaces/resource';
+import { NormalizeResourceMeta, Permission } from '../../interfaces/resource';
 import { getResourcesMockResponse } from '../mocks';
 import {
   deleteResourceMockResponse,
@@ -23,7 +23,7 @@ export async function getAdminResources(): Promise<IGetResourcesResponse> {
   }
   const { data } = await axiosInstance.get('/resource');
   const { resources } = data as IGetResourcesResponse;
-  return { resources };
+  return { resources: resources.map((x) => NormalizeResourceMeta(x)) };
 }
 
 /**
@@ -57,7 +57,7 @@ export async function putAdminResource(
 
   const { data } = await axiosInstance.put(`/resource/${id}`, file);
   const { ok, resource } = data as IPutResourceResponse;
-  return { ok, resource };
+  return { ok, resource: NormalizeResourceMeta(resource) };
 }
 
 /**
@@ -74,7 +74,7 @@ export async function patchAdminResource(
     permission,
   });
   const { ok, resource } = data as IPatchResourceResponse;
-  return { ok, resource };
+  return { ok, resource: NormalizeResourceMeta(resource) };
 }
 
 /**

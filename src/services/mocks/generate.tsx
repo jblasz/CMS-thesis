@@ -33,15 +33,15 @@ export function generateSubmissionMock(
   const submissions = getIMSubmissions();
   submissions.push({
     _id: v4(),
-    forLabID: task.forLabId || v4(),
+    forLabId: task.forLabId || v4(),
     forLabName: task.forLabName || 'lab name',
     note: loremIpsum(),
     submittedAt: new Date(task.dateFrom || 0),
     submittedBy: student,
     final: Math.random() > 0.2,
-    forCourseID: course._id,
+    forCourseId: course._id,
     forCourseName: course.name,
-    forGroupID: group._id,
+    forGroupId: group._id,
     forGroupName: group.name,
     grade: Math.random() > 0.5
       ? SubmissionGrade.A
@@ -62,7 +62,7 @@ export function generateStudentMock(id = v4()) {
     email: `mail_${n}@domain.com`,
     contactEmail: 'contactemail1',
     name: `student Mk ${n}`,
-    usosID: '123321',
+    usosId: '123321',
   });
   students.push(s);
   setIMStudents(students);

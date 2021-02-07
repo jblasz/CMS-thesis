@@ -97,12 +97,12 @@ export function StudentSubmissionListComponent(): JSX.Element {
                       key={submission._id}
                     >
                       <td>
-                        <Link className="nav-link" to={`/courses/${submission.forCourseID}`}>
+                        <Link className="nav-link" to={`/courses/${submission.forCourseId}`}>
                           {submission.forCourseName}
                         </Link>
                       </td>
                       <td>
-                        <Link className="nav-link" to={`/courses/${submission.forCourseID}/laboratory/${submission.forLabID}`}>
+                        <Link className="nav-link" to={`/courses/${submission.forCourseId}/laboratory/${submission.forLabId}`}>
                           {submission.forLabName}
                         </Link>
                       </td>

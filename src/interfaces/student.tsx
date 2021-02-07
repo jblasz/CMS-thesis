@@ -4,7 +4,7 @@ export interface IStudent {
   fullname?: string
   email: string
   contactEmail: string
-  usosID: string
+  usosId: string
   registeredAt?: Date
 }
 
@@ -15,7 +15,7 @@ export class Student implements IStudent {
 
   email = ''
 
-  usosID = ''
+  usosId = ''
 
   contactEmail = ''
 
@@ -29,7 +29,7 @@ export class Student implements IStudent {
       this.email = o.email || '';
       this.contactEmail = o.contactEmail || '';
       this.name = o.name || o.fullname || '';
-      this.usosID = o.usosID || '';
+      this.usosId = o.usosId || '';
       this.registeredAt = (o.registeredAt && new Date(o.registeredAt)) || new Date(0);
     }
   }

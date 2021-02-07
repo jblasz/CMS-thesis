@@ -2,6 +2,8 @@ import { appEnv } from '../../appEnv';
 import {
   IApiPostResponse, IGetCodesResponse, IPostCodeNewResponse, IPostCodeResponse,
 } from '../../interfaces/api';
+import { NormalizeCode } from '../../interfaces/code';
+import { NormalizeCourseGroupMeta } from '../../interfaces/misc';
 import {
   deleteCodeMockResponse, getCodesMockResponse, postCodeMockResponse, postCodeNewMockResponse,
 } from '../mocks/in-memory-code-mocks';
@@ -20,7 +22,7 @@ export async function postCode(studentID: string, code: string): Promise<IPostCo
     },
   });
   const { ok, type, courseSignup } = data as IPostCodeResponse;
-  return { ok, type, courseSignup };
+  return { ok, type, courseSignup: NormalizeCourseGroupMeta(courseSignup) };
 }
 
 /**
@@ -37,7 +39,7 @@ export async function getCodes(inactive = false, courseId?:string): Promise<IGet
     },
   });
   const { codes } = data as IGetCodesResponse;
-  return { codes };
+  return { codes: (codes && codes.length && codes.map((x) => NormalizeCode(x))) || [] };
 }
 
 /**
@@ -51,8 +53,7 @@ export async function postCodeNew(
   }
   const { data } = await axiosInstance.post(`/code/${groupId}`, { validThrough });
   const { code } = data as IPostCodeNewResponse;
-  code.validThrough = new Date(code.validThrough);
-  return { code };
+  return { code: NormalizeCode(code) };
 }
 
 /**

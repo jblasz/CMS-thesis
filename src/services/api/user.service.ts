@@ -19,7 +19,7 @@ import { axiosInstance } from './request.service';
  * /public/user POST
  */
 export async function postUser(
-  jwt: string, gid: string, email: string, name: string, usosID: string,
+  jwt: string, gid: string, email: string, name: string, usosId: string,
 ): Promise<{
     response: IPostUserResponse,
     isAdmin: boolean
@@ -27,7 +27,7 @@ export async function postUser(
   if (appEnv().useMocks) {
     Cookies.set('authorization', jwt);
     return {
-      response: await postUserMockResponse(gid, email, name, usosID),
+      response: await postUserMockResponse(gid, email, name, usosId),
       isAdmin: true,
     };
   }
@@ -53,7 +53,7 @@ export async function postUser(
           contactEmail: user.email,
           email: user.email,
           name: user.fullname,
-          usosID: '',
+          usosId: '',
           registeredAt: new Date(user.registeredAt),
         }),
         submissions: [],
@@ -118,7 +118,7 @@ export async function patchAdminUser(id: string, params: {
   name?: string
   email?: string
   contactEmail?: string
-  usosID?: string
+  usosId?: string
 }): Promise<PatchStudentResponse> {
   if (appEnv().useMocks) {
     const r = await patchStudentMockResponse({
@@ -126,7 +126,7 @@ export async function patchAdminUser(id: string, params: {
       name: params.name,
       email: params.email,
       contactEmail: params.contactEmail,
-      usosID: params.usosID,
+      usosId: params.usosId,
     });
     return { ok: true, student: new Student(r.student) };
   }

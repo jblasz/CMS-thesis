@@ -5,7 +5,7 @@ import {
   IGetStudentCoursesResponse,
   IGetStudentDashboardResponse,
 } from '../../interfaces/api';
-import { PendingLaboratory } from '../../interfaces/misc';
+import { CourseLabGroupMetaWithDates, NormalizeCourseGroupMetaWithGrade, PendingLaboratory } from '../../interfaces/misc';
 import { StudentCourse } from '../../interfaces/studentCourse';
 import {
   getLandingPageMockResponse,
@@ -61,7 +61,7 @@ export async function getStudentDashboard(
   }
   const { data } = await axiosInstance.get('/dashboard/studentSummary');
   const { upcoming } = data as IGetStudentDashboardResponse;
-  return { upcoming };
+  return { upcoming: upcoming.map((x) => CourseLabGroupMetaWithDates(x)) };
 }
 
 /**
@@ -74,7 +74,7 @@ export async function getStudentCourses(studentID: string): Promise<IGetStudentC
   }
   const { data } = await axiosInstance.get('/student/courses');
   const { courses } = data as IGetStudentCoursesResponse;
-  return { courses };
+  return { courses: courses.map((x) => NormalizeCourseGroupMetaWithGrade(x)) };
 }
 
 /**
@@ -99,7 +99,7 @@ export async function getLandingPage() {
     return getLandingPageMockResponse();
   }
   const { data } = await axiosInstance.get('/public/landingPage');
-  return { landingPage: data.landingPage || '' };
+  return { landingPage: (data && data.landingPage) || '' };
 }
 
 /**
@@ -110,5 +110,5 @@ export async function putLandingPage(v: string) {
     return putLandingPageMockResponse(v);
   }
   const { data } = await axiosInstance.put('/landingPage', { landingPage: v });
-  return { landingPage: data.landingPage || '' };
+  return { landingPage: (data && data.landingPage) || '' };
 }

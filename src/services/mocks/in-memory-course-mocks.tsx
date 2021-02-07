@@ -215,7 +215,7 @@ export async function patchCourseGroupStudentMockResponse(
         contactEmail: student.contactEmail,
         email: student.email,
         name: student.name,
-        usosID: student.usosID,
+        usosId: student.usosId,
         grade: grade || undefined,
       });
     } else {

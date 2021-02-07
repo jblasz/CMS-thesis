@@ -9,6 +9,25 @@ export interface IUsedBy {
   groupId: string
 }
 
+export function NormalizeUsedBy(o?: IUsedBy): IUsedBy {
+  if (o) {
+    return {
+      courseId: o.courseId || '',
+      courseName: o.courseName || '',
+      groupId: o.groupId || '',
+      labId: o.labId || '',
+      labName: o.labName || '',
+    };
+  }
+  return {
+    courseId: '',
+    courseName: '',
+    groupId: '',
+    labId: '',
+    labName: '',
+  };
+}
+
 export enum Permission {
   ALL = 'all',
   LOGGED_IN = 'loggedIn',
@@ -23,14 +42,31 @@ export interface IResourceMeta {
   usedBy: IUsedBy[]
 }
 
+export function NormalizeResourceMeta(o?: IResourceMeta): IResourceMeta {
+  if (o) {
+    return {
+      _id: o._id || '',
+      name: o.name || '',
+      permission: o.permission || Permission.NONE,
+      usedBy: o.usedBy && o.usedBy.map((x) => NormalizeUsedBy(x)),
+    };
+  }
+  return {
+    _id: '',
+    name: '',
+    permission: Permission.NONE,
+    usedBy: [],
+  };
+}
+
 export interface ISubmissionMeta {
   _id: string
   submittedBy: IStudent
-  forCourseID: string
+  forCourseId: string
   forCourseName: string
-  forGroupID: string
+  forGroupId: string
   forGroupName: string
-  forLabID: string
+  forLabId: string
   forLabName: string
   submittedAt: Date
   note: string

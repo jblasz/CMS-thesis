@@ -2,6 +2,8 @@ import { appEnv } from '../../appEnv';
 import {
   GetStudentResponse, IUserResponse, PatchStudentResponse,
 } from '../../interfaces/api';
+import { NormalizeCourseGroupMetaWithGrade } from '../../interfaces/misc';
+import { SubmissionMeta } from '../../interfaces/resource';
 import { Student } from '../../interfaces/student';
 import { getStudentMockResponse, patchStudentMockResponse } from '../mocks/in-memory-student-mocks';
 import { axiosInstance } from './request.service';
@@ -28,7 +30,7 @@ export async function getProfile(studentID: string): Promise<GetStudentResponse>
         contactEmail: email,
         email,
         name: fullname,
-        usosID: '',
+        usosId: '',
         registeredAt: new Date(registeredAt),
       }),
       submissions: [],
@@ -36,9 +38,9 @@ export async function getProfile(studentID: string): Promise<GetStudentResponse>
   }
   const { attends, student, submissions } = data as GetStudentResponse;
   return {
-    attends,
+    attends: attends.map((x) => NormalizeCourseGroupMetaWithGrade(x)),
     student: new Student(student),
-    submissions,
+    submissions: submissions.map((x) => SubmissionMeta(x)),
   };
 }
 
@@ -50,7 +52,7 @@ export async function patchProfile(params: {
   name?: string
   email?: string
   contactEmail?: string
-  usosID?: string
+  usosId?: string
 }): Promise<PatchStudentResponse> {
   if (appEnv().useMocks) {
     const r = await patchStudentMockResponse(params);

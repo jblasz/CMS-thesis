@@ -67,7 +67,7 @@ function AdminStudentsComponent(): JSX.Element {
                 {student.email}
               </td>
               <td>
-                {student.usosID}
+                {student.usosId}
               </td>
               <td>
                 {(student.registeredAt && formatDate(student.registeredAt)) || ''}

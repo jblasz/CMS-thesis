@@ -19,7 +19,7 @@ export async function getUserMockResponse(gid: string): Promise<IGetUserResponse
 }
 
 export function postUserMockResponse(
-  gid: string, email: string, name: string, usosID: string,
+  gid: string, email: string, name: string, usosId: string,
 ): Promise<IPostUserResponse> {
   const students = getIMStudents();
   const s = students.find((x) => x._id === gid);
@@ -29,7 +29,7 @@ export function postUserMockResponse(
       contactEmail: email,
       email,
       name,
-      usosID,
+      usosId,
       registeredAt: new Date(),
     });
     setIMStudents(students);
@@ -46,7 +46,7 @@ export function patchStudentMockResponse(params: {
   name?: string
   email?: string
   contactEmail?: string
-  usosID?: string
+  usosId?: string
 }): Promise<PatchStudentResponse> {
   const { studentID, ...rest } = params;
   const student = getIMStudents().find((x) => x._id === studentID);
@@ -60,8 +60,8 @@ export function patchStudentMockResponse(params: {
       student.email = rest.email as string;
     } else if (key === 'contactEmail') {
       student.contactEmail = rest.contactEmail as string;
-    } else if (key === 'usosID') {
-      student.usosID = rest.usosID as string;
+    } else if (key === 'usosId') {
+      student.usosId = rest.usosId as string;
     }
   });
   return Promise.resolve({

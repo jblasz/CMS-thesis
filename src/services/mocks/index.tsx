@@ -75,11 +75,11 @@ export async function populateInMemoryDBWithSomeMocks() {
   setIMSubmissions([{
     _id: 'staticSubmission0',
     final: true,
-    forCourseID: course._id,
+    forCourseId: course._id,
     forCourseName: course.name,
-    forGroupID: group._id,
+    forGroupId: group._id,
     forGroupName: group.name,
-    forLabID: lab._id,
+    forLabId: lab._id,
     forLabName: lab.name,
     note: 'Note to submission',
     submittedAt: new Date(),
@@ -89,11 +89,11 @@ export async function populateInMemoryDBWithSomeMocks() {
   {
     _id: 'staticSubmission1',
     final: false,
-    forCourseID: course._id,
+    forCourseId: course._id,
     forCourseName: course.name,
-    forGroupID: group._id,
+    forGroupId: group._id,
     forGroupName: group.name,
-    forLabID: lab._id,
+    forLabId: lab._id,
     forLabName: lab.name,
     note: 'Note to a non-final submission submission',
     submittedAt: new Date(0),
@@ -101,11 +101,11 @@ export async function populateInMemoryDBWithSomeMocks() {
   }, {
     _id: 'staticSubmission2',
     final: true,
-    forCourseID: course._id,
+    forCourseId: course._id,
     forCourseName: course.name,
-    forGroupID: group._id,
+    forGroupId: group._id,
     forGroupName: group.name,
-    forLabID: course.laboratories[1]._id,
+    forLabId: course.laboratories[1]._id,
     forLabName: course.laboratories[1].name,
     note: 'Note to failed submission',
     submittedAt: new Date(),
@@ -114,11 +114,11 @@ export async function populateInMemoryDBWithSomeMocks() {
   }, {
     _id: 'staticSubmission3',
     final: true,
-    forCourseID: course._id,
+    forCourseId: course._id,
     forCourseName: course.name,
-    forGroupID: group._id,
+    forGroupId: group._id,
     forGroupName: group.name,
-    forLabID: course.laboratories[2]._id,
+    forLabId: course.laboratories[2]._id,
     forLabName: course.laboratories[2].name,
     note: 'Note to not yet resolved submission',
     submittedAt: new Date(),
@@ -325,7 +325,7 @@ export async function getStudentCourseMockResponse(
 
   const inGroupStudent = group.students.find((x) => x._id === studentID);
   const grade = inGroupStudent && inGroupStudent.grade;
-  const submissions = getIMSubmissions().filter((x) => x.forCourseID === course._id);
+  const submissions = getIMSubmissions().filter((x) => x.forCourseId === course._id);
 
   return Promise.resolve({
     course: StudentCourse({
@@ -341,7 +341,7 @@ export async function getStudentCourseMockResponse(
       laboratories: laboratories
         ? laboratories.map((lab) => {
           const taskId = lab.tasks[group._id] && lab.tasks[group._id].resourceId;
-          const sub = submissions.find((x) => x.final && x.forLabID === lab._id);
+          const sub = submissions.find((x) => x.final && x.forLabId === lab._id);
           return ({
             _id: lab._id,
             name: lab.name,

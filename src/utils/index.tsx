@@ -7,7 +7,7 @@ export function formatDate(date: Date, withHourMinute = false) {
       hour: '2-digit',
       minute: '2-digit',
     } : {}),
-  }).format(date);
+  }).format(new Date(date));
 }
 
 export function generateList(count: number, stackAdditionalRandom = 0) {

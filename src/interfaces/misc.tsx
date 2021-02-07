@@ -24,8 +24,36 @@ export interface ICourseGroupMeta {
   active: boolean
 }
 
+export function NormalizeCourseGroupMeta(o?: ICourseGroupMeta): ICourseGroupMeta {
+  if (o) {
+    return {
+      active: !!o.active,
+      groupName: o.courseName || '',
+      courseId: o.courseId || '',
+      courseName: o.courseName || '',
+      groupId: o.groupId || '',
+    };
+  }
+  return {
+    active: true,
+    courseId: '',
+    courseName: '',
+    groupId: '',
+    groupName: '',
+  };
+}
+
 export interface ICourseGroupMetaWithGrade extends ICourseGroupMeta {
   grade?: SubmissionGrade
+}
+
+export function NormalizeCourseGroupMetaWithGrade(
+  o?: ICourseGroupMetaWithGrade,
+): ICourseGroupMetaWithGrade {
+  return {
+    ...NormalizeCourseGroupMeta(o),
+    grade: o && o.grade,
+  };
 }
 
 export interface ICourseLabGroupMeta extends ICourseGroupMeta {
