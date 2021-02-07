@@ -91,7 +91,7 @@ export async function putAdminCourse(course: ICourseStubCore): Promise<IPostCour
     semester,
     shown,
   } = course;
-  const { course: _course } = (await axiosInstance.post(`/course/${course._id}`, {
+  const { course: _course } = (await axiosInstance.put(`/course/${course._id}`, {
     course: {
       _id,
       active,
