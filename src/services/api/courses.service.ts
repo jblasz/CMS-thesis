@@ -122,7 +122,7 @@ export async function getAdminCourseGroup(
   courseID: string, groupID: string,
 ): Promise<IGetCourseGroupResponse> {
   if (appEnv().useMocks) { return getCourseGroupMockResponse(courseID, groupID); }
-  const { courseId, courseName, group } = (await axiosInstance.get(`/public/course/${courseID}/group/${groupID}`)).data as IGetCourseGroupResponse;
+  const { courseId, courseName, group } = (await axiosInstance.get(`/course/${courseID}/group/${groupID}`)).data as IGetCourseGroupResponse;
   return { courseId, courseName, group: new CourseGroup(group) };
 }
 
