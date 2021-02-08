@@ -105,7 +105,8 @@ export interface IUserResponse {
   isAdmin: boolean,
   _id: string,
   googleId: string,
-  fullname: string,
+  fullname?: string,
+  name: string,
   email: string,
   registeredAt: string
 }

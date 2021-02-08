@@ -20,6 +20,7 @@ export async function getProfile(studentID: string): Promise<GetStudentResponse>
   if (data.profile) {
     const {
       _id, email,
+      name,
       fullname,
       registeredAt,
     } = data.profile as IUserResponse;
@@ -29,7 +30,7 @@ export async function getProfile(studentID: string): Promise<GetStudentResponse>
         _id,
         contactEmail: email,
         email,
-        name: fullname,
+        name: name || fullname || '',
         usosId: '',
         registeredAt: new Date(registeredAt),
       }),
