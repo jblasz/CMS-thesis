@@ -52,7 +52,7 @@ export async function postUser(
           _id: user._id,
           contactEmail: user.email,
           email: user.email,
-          name: user.fullname,
+          name: user.fullname || user.name,
           usosId: '',
           registeredAt: new Date(user.registeredAt),
         }),
