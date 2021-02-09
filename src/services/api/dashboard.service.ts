@@ -31,7 +31,7 @@ export async function getDashboardLaboratories(
   }
   const { data } = await axiosInstance.get('/dashboard/laboratory', {
     params: {
-      time: 7,
+      time: 31,
     },
   });
   const { laboratories } = data as IGetDashboardLaboratoriesResponse;
