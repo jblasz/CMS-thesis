@@ -16,15 +16,16 @@ import { axiosInstance } from './request.service';
 export async function getSubmissions(
   courseFilter: string, studentFilter: string, statusFilter: number, final = true,
 ): Promise<IGetSubmissionsResponse> {
+  console.log(courseFilter, studentFilter, statusFilter, final);
   if (appEnv().useMocks) {
     return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter, final);
   }
   const { data } = await axiosInstance.get('/submissions', {
     params: {
-      course: courseFilter,
-      student: studentFilter,
-      status: statusFilter,
-      final,
+      ...(courseFilter ? { course: courseFilter } : {}),
+      ...(studentFilter ? { student: studentFilter } : {}),
+      ...(statusFilter ? { status: statusFilter } : {}),
+      ...(final ? { final: true } : {}),
     },
   });
   const { submissions } = data as IGetSubmissionsResponse;
@@ -71,9 +72,10 @@ export async function patchSubmission(
     return patchSubmissionMockResponse(submission);
   }
   const {
-    submittedBy, forLabId, submittedAt, note, grade,
+    submittedBy, forLabId, submittedAt, note, grade, _id,
   } = submission;
   const { data } = await axiosInstance.patch(`/submissions/${submission._id}`, {
+    ...(_id ? { _id } : {}),
     ...(submittedBy ? { submittedByStudentId: submittedBy._id } : {}),
     ...(forLabId ? { forLabId } : {}),
     ...(submittedAt ? { submittedAt } : {}),

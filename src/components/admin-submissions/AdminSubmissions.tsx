@@ -133,7 +133,9 @@ function AdminSubmissionsComponent(): JSX.Element {
                       >
                         {[
                           <option key="" value="">{t('ADMIN.SUBMISSIONS.ANY_COURSE')}</option>,
-                          ...courses.map((x) => <option key={x.id} value={x.id}>{x.name}</option>),
+                          ...courses.map(
+                            (x) => <option key={x.id} value={x.name}>{x.name}</option>,
+                          ),
                         ]}
                       </FormControl>
                     </InputGroup.Prepend>
@@ -159,14 +161,16 @@ function AdminSubmissionsComponent(): JSX.Element {
                       >
                         {
                           (() => {
-                            const matchedCourse = courses.find((x) => x.id === courseFilter);
+                            const matchedCourse = courses.find((x) => x.name === courseFilter);
                             return [
                               <option key="" value="">{t('ADMIN.SUBMISSIONS.ANY_STUDENT')}</option>,
                               ...students
                                 .filter(
-                                  (x) => matchedCourse?.students.map((y) => y.id).includes(x.id),
+                                  (x) => matchedCourse?.students.map(
+                                    (y) => y.name
+                                    ).includes(x.name),
                                 )
-                                .map((x) => (<option key={x.id} value={x.id}>{x.name}</option>)),
+                                .map((x) => (<option key={x.id} value={x.name}>{x.name}</option>)),
                             ];
                           })()
                         }

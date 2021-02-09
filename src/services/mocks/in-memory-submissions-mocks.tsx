@@ -12,8 +12,8 @@ export async function getAdminDashboardMockResponse(): Promise<IGetAdminDashboar
 export function getSubmissionsMockResponse(
   courseFilter: string, studentFilter: string, statusFilter: number, final = true,
 ) {
-  const submissions = getIMSubmissions().filter((x) => x.forCourseId.includes(courseFilter)
-    && x.submittedBy._id.includes(studentFilter)
+  const submissions = getIMSubmissions().filter((x) => x.forCourseName.includes(courseFilter)
+    && x.submittedBy.name.includes(studentFilter)
     && (
       statusFilter === 0
       || (statusFilter === 1 && x.grade)
