@@ -3,6 +3,7 @@ import { SubmissionGrade } from './misc';
 export interface ICourseGroupStudent {
   _id: string
   name: string
+  fullname?: string
   email: string
   usosId: string
   grade?: SubmissionGrade
@@ -25,7 +26,7 @@ export class CourseGroupStudent implements ICourseGroupStudent {
   constructor(o?: ICourseGroupStudent) {
     if (o) {
       this._id = o._id || '';
-      this.name = o.name || '';
+      this.name = o.name || o.fullname || '';
       this.email = o.email || '';
       this.usosId = o.usosId || '';
       this.contactEmail = o.contactEmail || '';
