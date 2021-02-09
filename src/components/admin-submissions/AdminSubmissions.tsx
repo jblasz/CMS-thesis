@@ -29,7 +29,7 @@ function AdminSubmissionsComponent(): JSX.Element {
   const [courseFilter, setCourseFilter] = useState('');
   const [studentFilter, setStudentFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState<number>(
-    2,
+    1,
   );
   const [finalFilter, setFinalFilter] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -199,8 +199,8 @@ function AdminSubmissionsComponent(): JSX.Element {
                         }}
                         value={statusFilter}
                       >
-                        <option value={2}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_UNGRADED')}</option>
-                        <option value={1}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_GRADED')}</option>
+                        <option value={1}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_UNGRADED')}</option>
+                        <option value={2}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_GRADED')}</option>
                         <option value={0}>{t('ADMIN.SUBMISSIONS.STATUS_FILTER_ALL')}</option>
                       </FormControl>
                     </InputGroup.Prepend>
