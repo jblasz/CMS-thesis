@@ -16,7 +16,6 @@ import { axiosInstance } from './request.service';
 export async function getSubmissions(
   courseFilter: string, studentFilter: string, statusFilter: number, final = true,
 ): Promise<IGetSubmissionsResponse> {
-  console.log(courseFilter, studentFilter, statusFilter, final);
   if (appEnv().useMocks) {
     return getSubmissionsMockResponse(courseFilter, studentFilter, statusFilter, final);
   }

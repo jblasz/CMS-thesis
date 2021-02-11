@@ -56,6 +56,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
       const [r, r2, r3] = await Promise.all([
         getAdminCourseLaboratory(courseID, labID), getAdminResources(), getAdminCourse(courseID),
       ]);
+      console.log(r, r2, r3);
       setGroupHash(r3.course.groups.reduce((agg, curr) => ({ ...agg, [curr._id]: curr.name }), {}));
       const lab = new CourseLaboratory(r.laboratory);
       validateAndSetLaboratory(lab);
@@ -63,7 +64,6 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
       const firstGroup = Object.keys(lab.tasks) && Object.keys(lab.tasks)[0];
       setChosenGroup(firstGroup || '');
       setEditorText((lab.tasks[firstGroup] && lab.tasks[firstGroup].description) || '');
-      setLoading(false);
     } catch (e) {
       console.error(e);
       setError(e);

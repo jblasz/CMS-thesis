@@ -1,5 +1,5 @@
 import { SubmissionGrade } from './misc';
-import { IStudent } from './student';
+import { IStudent, Student } from './student';
 
 export interface IUsedBy {
   courseId: string
@@ -75,8 +75,33 @@ export interface ISubmissionMeta {
 }
 
 export function SubmissionMeta(s: ISubmissionMeta): ISubmissionMeta {
+  if (s) {
+    return {
+      _id: s._id || '',
+      submittedBy: new Student(s.submittedBy),
+      final: !!s.final,
+      forCourseId: s.forCourseId || '',
+      forCourseName: s.forCourseName || '',
+      forGroupId: s.forGroupId || '',
+      forGroupName: s.forGroupName || '',
+      forLabId: s.forLabId || '',
+      forLabName: s.forLabName || '',
+      note: s.note || '',
+      submittedAt: new Date(s.submittedAt),
+      ...(s.grade ? { grade: s.grade } : {}),
+    };
+  }
   return {
-    ...s,
-    submittedAt: new Date(s.submittedAt),
+    _id: '',
+    final: false,
+    forCourseId: '',
+    forCourseName: '',
+    forGroupId: '',
+    forGroupName: '',
+    forLabId: '',
+    forLabName: '',
+    note: '',
+    submittedAt: new Date(0),
+    submittedBy: new Student(),
   };
 }

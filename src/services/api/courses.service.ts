@@ -255,7 +255,11 @@ export async function postSubmission(
       note,
     );
   }
-  const { ok } = (await axiosInstance.post(`/course/${courseID}/laboratory/${laboratoryID}/submission`, data)).data as IApiPostResponse;
+  const { ok } = (await axiosInstance.post(`/course/${courseID}/laboratory/${laboratoryID}/submission`, data, {
+    headers: {
+      'student-note': note || '',
+    },
+  })).data as IApiPostResponse;
   return { ok };
 }
 
