@@ -9,7 +9,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { IArticleMeta } from '../../interfaces/article';
-import { deleteArticle, getArticles, putArticle } from '../../services/api/articles.service';
+import { deleteArticle, getAdminArticles, putArticle } from '../../services/api/articles.service';
 import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
@@ -23,7 +23,7 @@ export function AdminArticlesComponent(): JSX.Element {
   const getAndSetHeaders = useCallback(async () => {
     try {
       setLoading(true);
-      const { articles: _articles } = await getArticles();
+      const { articles: _articles } = await getAdminArticles();
       setArticles(_articles);
     } catch (e) {
       setError(e);

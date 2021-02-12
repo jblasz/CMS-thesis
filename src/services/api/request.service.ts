@@ -4,4 +4,5 @@ import { appEnv } from '../../appEnv';
 export const axiosInstance = axios.create({
   baseURL: appEnv().backendAddress,
   withCredentials: false,
+  timeout: 10000,
 });

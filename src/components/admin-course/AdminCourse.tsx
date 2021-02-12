@@ -72,7 +72,8 @@ function AdminCourseComponent(): JSX.Element {
               className="mx-1"
               variant="primary"
               type="submit"
-              onClick={async () => {
+              onClick={async (event) => {
+                event.preventDefault();
                 await putAdminCourse(course);
                 await getAndSetCourse();
               }}
@@ -82,9 +83,10 @@ function AdminCourseComponent(): JSX.Element {
           </Col>
           <Button
             className="mx-2"
-            onClick={async () => {
+            onClick={async (event) => {
               let succeeded = false;
               try {
+                event.preventDefault();
                 setLoading(true);
                 await deleteAdminCourse(course._id);
                 succeeded = true;

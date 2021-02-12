@@ -12,7 +12,7 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { Article, IArticle } from '../../interfaces/article';
-import { deleteArticle, getArticle, putArticle } from '../../services/api/articles.service';
+import { deleteArticle, getAdminArticle, putArticle } from '../../services/api/articles.service';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 import { EditorComponent } from '../editor/Editor';
@@ -34,7 +34,7 @@ export function AdminArticleComponent(): JSX.Element {
   const getAndSetArticle = useCallback(async () => {
     try {
       setLoading(true);
-      const { article: _article } = await getArticle(id);
+      const { article: _article } = await getAdminArticle(id);
       setArticle(Article(_article));
     } catch (e) {
       setError(e);

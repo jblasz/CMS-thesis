@@ -24,7 +24,7 @@ export async function getSubmissions(
       ...(courseFilter ? { course: courseFilter } : {}),
       ...(studentFilter ? { student: studentFilter } : {}),
       ...(statusFilter ? { status: statusFilter } : {}),
-      ...(final ? { final: true } : {}),
+      ...(final ? { final: true } : { final: false }),
     },
   });
   const { submissions } = data as IGetSubmissionsResponse;
