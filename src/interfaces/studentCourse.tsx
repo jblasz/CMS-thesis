@@ -19,7 +19,7 @@ export interface IStudentCourseLaboratory {
   name: string
   grade?: SubmissionGrade
   latestSubmissionId?: string
-  taskId?: string
+  resourceId?: string
   dateFrom?: Date
   dateTo?: Date
 }
@@ -28,7 +28,7 @@ export function StudentCourseLaboratory(o: IStudentCourseLaboratory): IStudentCo
   return {
     _id: o._id || '',
     name: o.name || '',
-    ...(o.taskId ? { taskId: o.taskId } : {}),
+    ...(o.resourceId ? { resourceId: o.resourceId } : {}),
     ...(o.dateFrom ? { dateFrom: new Date(o.dateFrom) } : {}),
     ...(o.dateTo ? { dateTo: new Date(o.dateTo) } : {}),
     ...(o.grade ? { grade: o.grade } : {}),

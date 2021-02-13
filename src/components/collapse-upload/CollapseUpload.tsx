@@ -57,12 +57,12 @@ export function CollapseUploadComponent(props: CollapseUploadComponentProps) {
                 disabled={!file}
                 className="button btn-primary"
                 onClick={async (event) => {
+                  event.preventDefault();
                   try {
                     if (!file) {
                       return;
                     }
                     setLoading(true);
-                    event.preventDefault();
                     onUpload(file, note);
                   } catch (e) {
                     setError(e);

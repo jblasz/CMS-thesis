@@ -170,9 +170,9 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
                                   <ButtonGroup>
                                     <Button
                                       title={t('STUDENT.DASHBOARD.DOWNLOAD_TASK')}
-                                      disabled={!lab.taskId}
+                                      disabled={!lab.resourceId}
                                       onClick={async () => {
-                                        getAdminResource(lab.taskId as string);
+                                        getAdminResource(lab.resourceId as string);
                                       }}
                                     >
                                       <FontAwesomeIcon icon={faTasks} />

@@ -55,12 +55,14 @@ export function AdminCodesListComponent(props: AdminCodesListComponentProps): JS
               <td>
                 <Row>
                   <ButtonGroup>
-                    <Button title={t('ADMIN.CODES.COPY_LINK_TO_CLIPBOARD')}>
+                    <Button
+                      title={t('ADMIN.CODES.COPY_LINK_TO_CLIPBOARD')}
+                      onClick={() => {
+                        navigator.clipboard.writeText(code._id);
+                      }}
+                    >
                       <FontAwesomeIcon
                         icon={faClipboard}
-                        onClick={() => {
-                          navigator.clipboard.writeText(code._id);
-                        }}
                       />
                     </Button>
                     <Button
