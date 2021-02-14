@@ -16,8 +16,8 @@ export function getSubmissionsMockResponse(
     && x.submittedBy.name.includes(studentFilter)
     && (
       statusFilter === 0
-      || (statusFilter === 1 && x.grade)
-      || (statusFilter === 2 && !x.grade)
+      || (statusFilter === 2 && x.grade)
+      || (statusFilter === 1 && !x.grade)
     )
     && x.final === final);
   return Promise.resolve({ submissions });

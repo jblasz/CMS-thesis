@@ -127,12 +127,14 @@ function AdminResourcesComponent(): JSX.Element {
                                 >
                                   <FontAwesomeIcon icon={faUpload} />
                                 </Button>
-                                <Button title={t('ADMIN.RESOURCES.COPY_LINK_TO_CLIPBOARD')}>
+                                <Button
+                                  title={t('ADMIN.RESOURCES.COPY_LINK_TO_CLIPBOARD')}
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(`${appEnv().backendAddress}/resource/${resource._id}`);
+                                  }}
+                                >
                                   <FontAwesomeIcon
                                     icon={faClipboard}
-                                    onClick={() => {
-                                      navigator.clipboard.writeText(`${appEnv().backendAddress}/resource/${resource._id}`);
-                                    }}
                                   />
                                 </Button>
                               </ButtonGroup>

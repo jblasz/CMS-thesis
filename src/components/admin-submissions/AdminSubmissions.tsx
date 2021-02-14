@@ -68,8 +68,9 @@ function AdminSubmissionsComponent(): JSX.Element {
 
       setCourses(_courses as BareCourse[]);
       setStudents(_students);
+      console.log(1);
       if (_courses && _courses[0]) {
-        setCourseFilter(_courses[0].id);
+        setCourseFilter(_courses[0].name);
         const { submissions: _submissions } = await getSubmissions(
           _courses[0].id, '', 2, true,
         );
@@ -80,6 +81,7 @@ function AdminSubmissionsComponent(): JSX.Element {
         );
         setSubmissions(_submissions);
       }
+      console.log(2);
     } catch (e) {
       setError(e);
     } finally {
