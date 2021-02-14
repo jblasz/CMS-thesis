@@ -257,7 +257,8 @@ export async function postSubmission(
   }
   const { ok } = (await axiosInstance.post(`/course/${courseID}/laboratory/${laboratoryID}/submission`, data, {
     headers: {
-      'note': note || '',
+      note: note || '',
+      'student-note': note || '',
     },
   })).data as IApiPostResponse;
   return { ok };
