@@ -19,7 +19,9 @@ export async function getProfile(studentID: string): Promise<GetStudentResponse>
   const { data } = await axiosInstance.get('/profile');
   if (data.profile) {
     const {
-      _id, email,
+      _id,
+      email,
+      contactEmail,
       name,
       fullname,
       registeredAt,
@@ -28,7 +30,7 @@ export async function getProfile(studentID: string): Promise<GetStudentResponse>
       attends: [],
       student: new Student({
         _id,
-        contactEmail: email,
+        contactEmail,
         email,
         name: name || fullname || '',
         usosId: '',

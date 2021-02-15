@@ -107,6 +107,7 @@ export interface IUserResponse {
   googleId: string,
   fullname?: string,
   name: string,
+  contactEmail: string
   email: string,
   registeredAt: string
 }
