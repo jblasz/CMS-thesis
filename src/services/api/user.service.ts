@@ -131,8 +131,12 @@ export async function patchAdminUser(id: string, params: {
     return { ok: true, student: new Student(r.student) };
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { email, ...rest } = params;
-  const { data } = await axiosInstance.patch(`/students/${id}`, rest);
+  const { contactEmail, usosId, name } = params;
+  const { data } = await axiosInstance.patch(`/students/${id}`, {
+    ...(contactEmail ? { contactEmail } : {}),
+    ...(name ? { name, fullname: name } : {}),
+    ...(usosId ? { usosId } : {}),
+  });
   const { ok, student } = data as PatchStudentResponse;
   return { ok, student: new Student(student) };
 }

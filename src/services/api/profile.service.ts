@@ -62,8 +62,14 @@ export async function patchProfile(params: {
     return { ok: true, student: new Student(r.student) };
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { email, studentID, ...rest } = params;
-  const { data } = await axiosInstance.patch('/profile', rest);
+  const {
+    contactEmail, name, usosId,
+  } = params;
+  const { data } = await axiosInstance.patch('/profile', {
+    ...(contactEmail ? { contactEmail } : {}),
+    ...(name ? { name, fullname: name } : {}),
+    ...(usosId ? { usosId } : {}),
+  });
   const { ok, student } = data as PatchStudentResponse;
   return { ok, student: new Student(student) };
 }
