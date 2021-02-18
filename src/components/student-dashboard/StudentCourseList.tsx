@@ -172,7 +172,7 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
                                       title={t('STUDENT.DASHBOARD.DOWNLOAD_TASK')}
                                       disabled={!lab.resourceId}
                                       onClick={async () => {
-                                        getAdminResource(lab.resourceId as string);
+                                        await getAdminResource(lab.resourceId as string);
                                       }}
                                     >
                                       <FontAwesomeIcon icon={faTasks} />
@@ -229,6 +229,7 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
                                       user.student._id,
                                       note,
                                     );
+                                    await getAndSetCourse(course._id);
                                   } catch (e) {
                                     setError(e);
                                   } finally {

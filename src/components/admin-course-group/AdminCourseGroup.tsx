@@ -59,7 +59,10 @@ function AdminCourseGroupComponent(): JSX.Element {
     try {
       setLoading(true);
       const [{ group: _group }, { students: _students }, { codes: _codes }] = await Promise.all(
-        [getAdminCourseGroup(courseID, groupID), getAdminUsers(), getCodes(true, courseID)],
+        [getAdminCourseGroup(courseID, groupID),
+          getAdminUsers(),
+          getCodes(true, courseID, groupID),
+        ],
       );
       const filtered = _students
         .filter((x) => !_group.students.find((y) => y._id === x._id))
