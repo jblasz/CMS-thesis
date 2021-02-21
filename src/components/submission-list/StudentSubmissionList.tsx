@@ -32,7 +32,7 @@ export function StudentSubmissionListComponent(): JSX.Element {
         throw new Error('must be a student to retrieve student data');
       }
       setLoading(true);
-      const { submissions: _submissions } = await getSubmissions('', user.student._id, 0);
+      const { submissions: _submissions } = await getSubmissions('', user.student.name, 0);
       setSubmissions(_submissions.sort((a, b) => {
         if (a.final !== b.final) {
           return a.final ? -1 : 1;

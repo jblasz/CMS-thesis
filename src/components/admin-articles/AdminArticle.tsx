@@ -158,10 +158,10 @@ export function AdminArticleComponent(): JSX.Element {
               </div>
             </Form.Group>
             <Form.Group>
-              <Form.Label>{t('ADMIN.ARTICLE.AVAILABLE_FROM')}</Form.Label>
+              <Form.Label title={t('ADMIN.ARTICLE.AVAILABLE_FROM_TOOLTIP')}>{t('ADMIN.ARTICLE.AVAILABLE_FROM')}</Form.Label>
               <div>
                 <DatePicker
-                  value={(article.availableFrom && article.availableFrom.toISOString()) || ''}
+                  value={(article.availableFrom && new Date(article.availableFrom).toString()) || ''}
                   disabled={!availableFrom}
                   onChange={(date) => {
                     if (date instanceof Date) {
@@ -169,6 +169,9 @@ export function AdminArticleComponent(): JSX.Element {
                       setArticle(Article(article));
                     }
                   }}
+                  showTimeSelect
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  timeFormat="HH:mm"
                 />
               </div>
             </Form.Group>

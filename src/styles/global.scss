@@ -8,11 +8,11 @@
   --black: black;
   --granite: #5e6472;
 
-  --ming: #006D77;
-  --middle-blue-green: #83C5BE;
-  --alice-blue: #83C5BE;
-  --unbleached-silk: #FFDDD2;
-  --dark-salmon: #E29578;
+  --ming: #006d77;
+  --middle-blue-green: #83c5be;
+  --alice-blue: #83c5be;
+  --unbleached-silk: #ffddd2;
+  --dark-salmon: #e29578;
 
   --rose-ebony: #5a393e;
   --rose-dust: #aa6373;
@@ -63,8 +63,8 @@ body {
 }
 
 .footer {
-  clear: 'both';
-  position: 'relative';
+  clear: "both";
+  position: "relative";
   height: var(--footer-height);
   margin-top: -var(--footer-height);
 }
@@ -100,7 +100,6 @@ a.btn.btn-primary {
   @include master.btn-common;
   @include master.colorset-inherit;
 }
-
 
 .show > .btn-primary.dropdown-toggle,
 .btn-primary:not(:disabled):not(.disabled):hover,
@@ -140,7 +139,8 @@ a {
   border: 0;
   box-sizing: border-box;
   height: 100%;
-  &:before, &:after {
+  &:before,
+  &:after {
     box-sizing: border-box;
   }
 
@@ -162,7 +162,8 @@ a {
       border: 2px solid master.$col-4;
       padding: 40px;
       height: 100%;
-      &:before, &:after {
+      &:before,
+      &:after {
         content: "•";
         position: absolute;
         width: 14px;
@@ -239,7 +240,8 @@ a {
     .dropdown-item {
       @include master.colorset-inherit;
       background: transparent;
-      &:active, &:hover {
+      &:active,
+      &:hover {
         @include master.nav-colorset-alt;
         a {
           @include master.nav-colorset-alt;
@@ -300,6 +302,20 @@ a {
     @include master.nav-colorset-alt();
   }
   .card-body {
-    @include master.nav-colorset(); 
+    @include master.nav-colorset();
+  }
+}
+
+// set z-index of text editor to 0, why it is 1 idk
+.DraftEditor-editorContainer {
+  z-index: 0;
+}
+
+.react-datepicker-wrapper {
+  min-width: 300px;
+  .react-datepicker__input-container {
+    input {
+      min-width: 100%;
+    }
   }
 }

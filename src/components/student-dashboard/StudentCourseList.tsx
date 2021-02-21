@@ -35,6 +35,7 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
   const { focus } = props;
   const [t] = useTranslation();
   const [error, setError] = useState('');
+  const [uploadError, setUploadError] = useState('');
   const [loading, setLoading] = useState(false);
   const [courses, setCourses] = useState<ICourseGroupMetaWithGrade[]>([]);
   const [course, setCourse] = useState<IStudentCourse>();
@@ -217,6 +218,7 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
                           </tr>
                           <tr>
                             <td>
+                              {uploadError ? <WarningStripComponent error={uploadError} /> : <></>}
                               <CollapseUploadComponent
                                 uncollapsed={uncollapsedIndex === index}
                                 onUpload={async (data: FormData, note: string) => {
@@ -231,7 +233,7 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
                                     );
                                     await getAndSetCourse(course._id);
                                   } catch (e) {
-                                    setError(e);
+                                    setUploadError(e);
                                   } finally {
                                     setLoading(false);
                                   }

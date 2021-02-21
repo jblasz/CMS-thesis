@@ -88,7 +88,7 @@
   "CODE_VALIDATION": {
     "CODE_VALIDATION": "Validate a code",
     "CAN_INPUT_ANY_KIND": "Any valid code can be input here. You can sign up for multiple courses with the same google account.",
-    "SUBMIT": "Submit", 
+    "SUBMIT": "Submit",
     "ERROR": "Failed to validate the code",
     "SUCCESS": "Code validated successfully",
     "COURSE_SIGNUP_SUCCESS": "You have successfully signed up for a course. Click below to view the details.",
@@ -170,7 +170,8 @@
       "TASK": "Task resource",
       "PUBLIC_DESCRIPTION": "Laboratory description",
       "UPLOAD": "Upload changes to public description",
-      "UPLOAD_CHANGES_TO": "Upload changes to task for"
+      "UPLOAD_CHANGES_TO": "Upload changes to task for",
+      "NAME": "Name"
     },
     "RESOURCES": {
       "HEADER": "Resources",
@@ -247,7 +248,8 @@
       "MAJOR_PL": "Button/dropdown name (PL)",
       "MINOR_PL": "Becomes a button if this is empty, dropdown entry otherwise (PL)",
       "AVAILABILITY": "Availability",
-      "AVAILABLE_FROM": "Set availability (whether it becomes available only after some date)",
+      "AVAILABLE_FROM": "Set availability (see tooltip)",
+      "AVAILABLE_FROM_TOOLTIP": "Set after which date non-admin users can see this subpage. Note that the date picker input and display is localized to your timezone, but sent to the server after conversion to UTC",
       "LIMITED_AVAILABILITY": "Limited",
       "NO_LIMITED_AVAILABILITY": "Unlimited",
       "CONTENTS_EN": "English contents",
@@ -319,7 +321,7 @@
       "NO_SUBMISSIONS": "You have not made any submissions yet",
       "NOTE": "Attached note",
       "DOWNLOAD_SUBMISSION": "Download submission",
-      "COPY_LINK_TO_CLIPBOARD":"Copy resource link to clipboard"
+      "COPY_LINK_TO_CLIPBOARD": "Copy resource link to clipboard"
     }
   }
 }

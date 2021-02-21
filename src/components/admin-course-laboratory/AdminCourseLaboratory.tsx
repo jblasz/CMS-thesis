@@ -190,7 +190,7 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                 <Col className="text-center">
                   <p>{t('ADMIN.LABORATORY.START')}</p>
                   <DatePicker
-                    value={task.dateFrom?.toISOString()}
+                    value={task.dateFrom?.toString()}
                     onChange={(date) => {
                       if (date instanceof Date) {
                         task.dateFrom = new Date(date);
@@ -201,18 +201,26 @@ function AdminCourseLaboratoryComponent(): JSX.Element {
                         );
                       }
                     }}
+                    showTimeSelect
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    timeFormat="HH:mm"
                   />
                 </Col>
                 <Col className="text-center">
                   <p>{t('ADMIN.LABORATORY.END')}</p>
                   <DatePicker
-                    value={task.dateTo?.toISOString()}
+                    value={task.dateTo?.toString()}
                     onChange={(date) => {
                       if (date instanceof Date) {
                         task.dateTo = new Date(date);
                         validateAndSetLaboratory(laboratory, chosenGroupID, task);
+                      } else {
+                        console.error('expected date');
                       }
                     }}
+                    showTimeSelect
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    timeFormat="HH:mm"
                   />
                 </Col>
                 <Col className="text-center">

@@ -87,7 +87,7 @@
   "CODE_VALIDATION": {
     "CODE_VALIDATION": "Użyj kodu",
     "CAN_INPUT_ANY_KIND": "Możesz zapisać się na wiele zajęć pod jednym kontem google.",
-    "SUBMIT": "Zatwierdź", 
+    "SUBMIT": "Zatwierdź",
     "ERROR": "Błąd zatwierdzania kodu",
     "SUCCESS": "Kod zatwierdzony pomyślnie",
     "COURSE_SIGNUP_SUCCESS": "Zapis na zajęcia zakończony. Kliknij poniżej po więcej informacji..",
@@ -242,7 +242,8 @@
       "MAJOR_PL": "Button/dropdown name (PL)",
       "MINOR_PL": "Becomes a button if this is empty, dropdown entry otherwise (PL)",
       "AVAILABILITY": "Dostępność",
-      "AVAILABLE_FROM": "Ustaw dostępność (od kiedy podstrona będzie widoczna), włącz powyższe aby umożliwić wybór daty",
+      "AVAILABLE_FROM": "Ustaw dostępność (zobacz tooltip)",
+      "AVAILABLE_FROM_TOOLTIP": "Set after which date non-admin users can see this subpage. Note that the date picker is localized, but the displayed string value will be normalized to UTC",
       "LIMITED_AVAILABILITY": "Ograniczona",
       "NO_LIMITED_AVAILABILITY": "Nieograniczona",
       "CONTENTS_EN": "Zawartość angielska",
