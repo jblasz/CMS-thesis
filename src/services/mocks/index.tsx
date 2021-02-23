@@ -128,9 +128,9 @@ export async function populateInMemoryDBWithSomeMocks() {
   ]);
 
   // varied course types
-  generateCourseMock('course-with-groups', 'Course with groups, no labs', false, true, true);
-  generateCourseMock('course-with-labs', 'Course with labs, no groups', true, false, true);
-  generateCourseMock('course-with-nothing', 'No labs, groups or gods', false, false, true);
+  generateCourseMock('course-with-groups', 'Machine Learning', false, true, true);
+  generateCourseMock('course-with-labs', 'Natural Language Processing', true, false, true);
+  generateCourseMock('course-with-nothing', 'Calculus LXI', false, false, true);
 
   // 3 articles
   setIMArticles([
