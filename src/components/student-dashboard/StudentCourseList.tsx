@@ -14,7 +14,7 @@ import {
 } from 'react-bootstrap';
 import Dropdown from 'react-dropdown';
 import { useTranslation } from 'react-i18next';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ICourseGroupMetaWithGrade } from '../../interfaces/misc';
 import { IStudentCourse, StudentCourse } from '../../interfaces/studentCourse';
 import { postSubmission } from '../../services/api/courses.service';
@@ -29,10 +29,11 @@ import { LoadingSpinner } from '../loading-spinner';
 
 interface StudentCourseListComponentProps {
   focus: string
+  onUpload: () => void
 }
 
 export function StudentCourseListComponent(props: StudentCourseListComponentProps): JSX.Element {
-  const { focus } = props;
+  const { focus, onUpload } = props;
   const [t] = useTranslation();
   const [error, setError] = useState('');
   const [uploadError, setUploadError] = useState('');
@@ -84,7 +85,7 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
   }, [getAndSetCourses]);
 
   if (!user || !user.student) {
-    return <Redirect to="/404" />;
+    return <></>;
   }
 
   if (loading) {
@@ -236,6 +237,7 @@ export function StudentCourseListComponent(props: StudentCourseListComponentProp
                                     setUploadError(e);
                                   } finally {
                                     setLoading(false);
+                                    onUpload();
                                   }
                                 }}
                               />

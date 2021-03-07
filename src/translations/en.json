@@ -116,7 +116,8 @@
       "GROUPS_COUNT": "Grps",
       "STUDENTS_COUNT": "Students",
       "LAB_COUNT": "Labs",
-      "CREATE_COURSE": "New course"
+      "CREATE_COURSE": "New course",
+      "UNNAMED": "As yet unnamed"
     },
     "COURSE": {
       "NAME": "Name",
@@ -154,7 +155,7 @@
       "STUDENTS_ID": "ID",
       "STUDENTS_NAME": "Name",
       "STUDENTS_EMAIL": "Email",
-      "STUDENTS_NA": "N/A",
+      "STUDENT_NA": "N/A",
       "STUDENTS_FINAL_GRADE": "Final grade",
       "STUDENTS_CONTACT_EMAIL": "Contact email"
     },
@@ -269,7 +270,7 @@
   "PENDING": {
     "LABS": {
       "TITLE": "Upcoming labs",
-      "TIMERANGE": "next 30 days",
+      "TIMERANGE": "next 31 days",
       "COURSENAME": "Course",
       "LABNAME": "Lab",
       "GROUPNAME": "Group",

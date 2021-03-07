@@ -19,17 +19,18 @@ import { formatDate } from '../../utils';
 import { WarningStripComponent } from '../info/WarningStrip';
 import { LoadingSpinner } from '../loading-spinner';
 
-export function StudentSubmissionListComponent(): JSX.Element {
-  const [submissions, setSubmissions] = useState<ISubmissionMeta[]>([]);
+export function StudentSubmissionListComponent(props: {flip: number}): JSX.Element {
+  const { flip } = props;
   const [t] = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { user } = useContext(AppContext);
+  const [submissions, setSubmissions] = useState<ISubmissionMeta[]>([]);
 
   const getAndSetSubmissions = useCallback(async () => {
     try {
       if (!user || !user.student || !user.student._id) {
-        throw new Error('must be a student to retrieve student data');
+        return;
       }
       setLoading(true);
       const { submissions: _submissions } = await getSubmissions('', user.student.name, 0);
@@ -48,7 +49,7 @@ export function StudentSubmissionListComponent(): JSX.Element {
 
   useEffect(() => {
     getAndSetSubmissions();
-  }, [getAndSetSubmissions]);
+  }, [getAndSetSubmissions, flip]);
 
   if (loading) {
     return <LoadingSpinner />;

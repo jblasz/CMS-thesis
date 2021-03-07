@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Card,
   CardDeck, Container, Row,
@@ -12,6 +12,10 @@ import { StudentCourseListComponent } from './StudentCourseList';
 export function StudentDashboardComponent(): JSX.Element {
   const [t] = useTranslation();
   const focus = new URLSearchParams(useLocation().search).get('focus');
+  const [flip, setFlip] = useState(0);
+  const onUpload = useCallback(() => {
+    setFlip(flip + 1);
+  }, [flip]);
 
   return (
     <Container>
@@ -25,13 +29,12 @@ export function StudentDashboardComponent(): JSX.Element {
               <PendingCoursesComponent />
             </Card.Body>
           </Card>
-          {/* <div className="w-100" /> */}
           <Card className="p-0 m-2 col-sm-7">
             <Card.Header>
               {t('STUDENT.DASHBOARD.YOUR_COURSES')}
             </Card.Header>
             <Card.Body>
-              <StudentCourseListComponent focus={focus || ''} />
+              <StudentCourseListComponent focus={focus || ''} onUpload={onUpload} />
             </Card.Body>
           </Card>
           <div className="w-100" />
@@ -40,7 +43,7 @@ export function StudentDashboardComponent(): JSX.Element {
               {t('STUDENT.DASHBOARD.YOUR_SUBMISSIONS')}
             </Card.Header>
             <Card.Body>
-              <StudentSubmissionListComponent />
+              <StudentSubmissionListComponent flip={flip} />
             </Card.Body>
           </Card>
         </Row>

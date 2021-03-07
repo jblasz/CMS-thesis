@@ -261,7 +261,7 @@
   "PENDING": {
     "LABS": {
       "TITLE": "Nadchodzące laboratoria",
-      "TIMERANGE": "następne 30 dni",
+      "TIMERANGE": "następne 31 dni",
       "COURSENAME": "Zajęcia",
       "LABNAME": "Lab",
       "GROUPNAME": "Grupa",

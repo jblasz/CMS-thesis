@@ -101,6 +101,13 @@ function App():JSX.Element {
     return <LoadingSpinner />;
   }
 
+  function wrap404(component: () => JSX.Element, asAdmin = true): () => JSX.Element {
+    if (!user || (asAdmin && user.role !== Role.ADMIN)) {
+      return Component404;
+    }
+    return component;
+  }
+
   return (
     <div className="App">
       <AppContext.Provider value={{
@@ -123,22 +130,20 @@ function App():JSX.Element {
               <Route exact path="/research" component={ResearchComponent} />
               <Route exact path="/articles/:id" component={ArticlesComponent} />
               <Route exact path="/code" component={CodeValidationComponent} />
-              <Route exact path="/dashboard" component={user ? StudentDashboardComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/profile" component={user ? ProfileComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/dashboard" component={user && user.role === Role.ADMIN ? StudentDashboardComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/profile" component={user && user.role === Role.ADMIN ? ProfileComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin" component={user && user.role === Role.ADMIN ? AdminPanelComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/resources" component={user && user.role === Role.ADMIN ? AdminResourcesComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/students" component={user && user.role === Role.ADMIN ? AdminStudentsComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/students/:id" component={user && user.role === Role.ADMIN ? AdminStudentComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/courses" component={user && user.role === Role.ADMIN ? AdminCoursesComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/courses/:id" component={user && user.role === Role.ADMIN ? AdminCourseComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/courses/:courseID/group/:groupID" component={user && user.role === Role.ADMIN ? AdminCourseGroupComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/courses/:courseID/laboratory/:labID" component={user && user.role === Role.ADMIN ? AdminCourseLaboratoryComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/submissions" component={user && user.role === Role.ADMIN ? AdminSubmissionsComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/articles" component={user && user.role === Role.ADMIN ? AdminArticlesComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/articles/:id" component={user && user.role === Role.ADMIN ? AdminArticleComponent : () => <Redirect to="/404" />} />
-              <Route exact path="/admin/landingPage" component={user && user.role === Role.ADMIN ? AdminLandingPageComponent : () => <Redirect to="/404" />} />
+              <Route exact path="/profile" component={wrap404(ProfileComponent, false)} />
+              <Route exact path="/dashboard" component={wrap404(StudentDashboardComponent, false)} />
+              <Route exact path="/admin" component={wrap404(AdminPanelComponent)} />
+              <Route exact path="/admin/resources" component={wrap404(AdminResourcesComponent)} />
+              <Route exact path="/admin/students" component={wrap404(AdminStudentsComponent)} />
+              <Route exact path="/admin/students/:id" component={wrap404(AdminStudentComponent)} />
+              <Route exact path="/admin/courses" component={wrap404(AdminCoursesComponent)} />
+              <Route exact path="/admin/courses/:id" component={wrap404(AdminCourseComponent)} />
+              <Route exact path="/admin/courses/:courseID/group/:groupID" component={wrap404(AdminCourseGroupComponent)} />
+              <Route exact path="/admin/courses/:courseID/laboratory/:labID" component={wrap404(AdminCourseLaboratoryComponent)} />
+              <Route exact path="/admin/submissions" component={wrap404(AdminSubmissionsComponent)} />
+              <Route exact path="/admin/articles" component={wrap404(AdminArticlesComponent)} />
+              <Route exact path="/admin/articles/:id" component={wrap404(AdminArticleComponent)} />
+              <Route exact path="/admin/landingPage" component={wrap404(AdminLandingPageComponent)} />
               <Route path="/404" component={Component404} />
               <Redirect to="/404" />
             </Switch>
